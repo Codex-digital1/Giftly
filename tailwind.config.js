@@ -10,6 +10,9 @@ module.exports = {
         primary: "#ff4d6d",
          secondary: "#ff758f",
       },
+      fontFamily: {
+        'great-vibes': ['Great Vibes', 'cursive'],
+      },
     },
   },
   plugins: [
