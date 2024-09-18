@@ -5,9 +5,6 @@ import GiftShopBanner from '../../components/home/GiftShopBanner';
 const Home = () => {
     return (
         <div>
-            Welcome 🌱🎉
-
-
             {/* Featured Products */}
             <div className='max-w-6xl mx-auto'>
                 <FeaturedProducts />

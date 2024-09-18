@@ -11,9 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-/* font great vibes */
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+/* font great vibes and Playfair Display*/
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer components {
+  .btn-primary {
+    @apply flex items-center gap-2 bg-primary whitespace-nowrap
+    py-1 px-2  text-white text-sm font-normal cursor-pointer rounded hover:bg-[#BF2718] transition-all duration-300 ease-in;
+  }
+  .btn-secondary {
+    @apply py-3 px-6 bg-primary text-white text-sm font-semibold cursor-pointer  hover:bg-[#BF2718] transition-all duration-300 ease-in;
+  }
+}
