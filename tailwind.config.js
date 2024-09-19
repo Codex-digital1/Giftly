@@ -5,12 +5,16 @@ module.exports = {
     extend: {
       colors: {
         primary: "#ff4d6d",
-        secondary: "#ff758f",
+        secondary: "#FFF3F5",
       },
       fontFamily: {
-        Allura: "Allura",
+        'great-vibes': ['Great Vibes', 'cursive'],
+        "playfair-display": ["Playfair Display", "serif"]
       },
     },
   },
-  plugins: [require("daisyui")],
-};
+  plugins: [
+    require('daisyui'),
+  ],
+}
+
