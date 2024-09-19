@@ -35,7 +35,7 @@ export default function Carousel() {
   };
   return (
   <Container> 
-    <div className='py-10 mx-auto'>
+    <div className='md:py-10 mx-auto'>
   <Swiper
     ref={swiperRef}
     spaceBetween={30}
