@@ -7,6 +7,9 @@ module.exports = {
         primary: "#ff4d6d",
         secondary: "#ff758f",
       },
+      fontFamily: {
+        Allura: "Allura",
+      },
     },
   },
   plugins: [require("daisyui")],
