@@ -8,8 +8,7 @@ module.exports = {
     extend: {
       colors: {
         primary: "#ff4d6d",
-        secondary: "#ff758f",
-        tertiary:"#FFF3F5"
+        secondary: "#FFF3F5",
       },
       fontFamily: {
         'great-vibes': ['Great Vibes', 'cursive'],
