@@ -28,11 +28,3 @@ code {
 .scale-up {
   animation: scaleUp 4s ease-in-out;
 }
-
-.swiper-slide {
-  pointer-events: auto !important; /* Ensure swiper slides are interactive */
-}
-
-.swiper-slide button {
-  pointer-events: auto !important; /* Ensure buttons inside the slide are clickable */
-}

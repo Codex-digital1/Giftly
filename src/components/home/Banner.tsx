@@ -6,7 +6,6 @@ import { Swiper as SwiperInstance } from "swiper";
 
 import "swiper/css";
 import "swiper/css/effect-fade";
-import "swiper/css/pagination";
 
 interface BannerItem {
   image: string;
@@ -23,26 +22,6 @@ const Banner: React.FC = () => {
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    if (swiperInstance) {
-      const handleSlideChange = () => {
-        slideRefs.current.forEach((slideElement) => {
-          if (slideElement) {
-            slideElement.classList.remove("scale-up");
-            // Force reflow to restart the animation
-            void slideElement.offsetWidth; // Correctly typed
-            slideElement.classList.add("scale-up");
-          }
-        });
-      };
-
-      swiperInstance.on("slideChange", handleSlideChange);
-      return () => {
-        swiperInstance.off("slideChange", handleSlideChange);
-      };
-    }
-  }, [swiperInstance]);
-
-  useEffect(() => {
     const getData = async () => {
       const res = await fetch("/banner.json");
       const data = await res.json();
@@ -54,21 +33,7 @@ const Banner: React.FC = () => {
 
   return (
     <div className="relative w-full h-[90vh]">
-      {/* slider buttons */}
-      <div className="absolute inset-0 flex items-center justify-between bg-transparent px-4 z-20">
-        <button
-          className="p-2 bg-primary rounded-full"
-          onClick={() => swiperInstance?.slidePrev()}
-        >
-          <MdKeyboardArrowLeft color="white" size={25} />
-        </button>
-        <button
-          className="p-2 bg-primary rounded-full"
-          onClick={() => swiperInstance?.slideNext()}
-        >
-          <MdKeyboardArrowRight color="white" size={25} />
-        </button>
-      </div>
+      {/* Swiper Component */}
       <Swiper
         modules={[Controller, EffectFade, Autoplay]}
         effect="fade"
@@ -84,31 +49,52 @@ const Banner: React.FC = () => {
           <SwiperSlide key={index}>
             <div
               ref={(el) => (slideRefs.current[index] = el)}
-              className="relative w-full h-full bg-no-repeat bg-cover scale-up z-40"
+              className="relative w-full h-full bg-no-repeat bg-cover"
               style={{
                 backgroundImage: `url(${item.image})`,
               }}
             >
-              <div className="absolute w-full h-full bg-[#000] opacity-50 z-[10] pointer-events-none"></div>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white z-[50]">
-                <h4 className="xl:text-5xl lg:text-4xl md:text-2xl text-2xl font-bold mb-2 uppercase">
-                  {item.seconderyHeading}
-                </h4>
-                <h2 className="xl:text-7xl lg:text-6xl md:text-5xl text-4xl font-bold mb-2 uppercase">
-                  {item.mainHeading}
-                </h2>
-                <p className="max-w-xl mb-5 text-xs md:text-sm">
-                  {item.description}
-                </p>
+              {/* Background Overlay */}
+              <div className="absolute inset-0 bg-[#000] opacity-50 z-10"></div>
 
-                <button className="capitalize px-8 text-md font-medium rounded cursor-pointer text-black bg-white btn z-[10000] hover:text-white hover:bg-black">
-                  shop now
-                </button>
+              {/* Slide Content */}
+              <div className="absolute inset-0 flex items-center justify-center text-center text-white z-20">
+                <div>
+                  <h4 className="xl:text-5xl lg:text-4xl md:text-2xl text-2xl font-medium mb-2 uppercase">
+                    {item.seconderyHeading}
+                  </h4>
+                  <h2 className="xl:text-7xl lg:text-6xl md:text-5xl text-4xl font-bold mb-2 uppercase">
+                    {item.mainHeading}
+                  </h2>
+                  <p className="max-w-lg mx-auto mb-5 text-xs md:text-sm">
+                    {item.description}
+                  </p>
+
+                  <button className="capitalize px-8 btn text-lg border-none font-medium rounded cursor-pointer text-black bg-white hover:text-white hover:bg-black z-30">
+                    shop now
+                  </button>
+                </div>
               </div>
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
+
+      {/* Slider Controls */}
+      <div className="absolute top-1/2 w-full flex justify-between px-4 z-30">
+        <button
+          className="p-2 bg-primary rounded-full"
+          onClick={() => swiperInstance?.slidePrev()}
+        >
+          <MdKeyboardArrowLeft color="white" size={25} />
+        </button>
+        <button
+          className="p-2 bg-primary rounded-full"
+          onClick={() => swiperInstance?.slideNext()}
+        >
+          <MdKeyboardArrowRight color="white" size={25} />
+        </button>
+      </div>
     </div>
   );
 };
