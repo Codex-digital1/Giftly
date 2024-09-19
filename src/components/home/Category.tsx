@@ -10,12 +10,14 @@ const Category: React.FC = () => {
         <div className="absolute group-hover:w-full duration-500 w-[25%] h-full bg-black opacity-50 z-20 right-0 top-0"></div>
         <div className="p-5 w-full h-full flex items-center justify-end">
           <div className="flex flex-col items-center justify-center z-50">
-            <h3 className="text-white text-4xl mb-4 font-Allura">Gifts Shop</h3>
-            <h2 className="text-white text-5xl capitalize font-serif">
+            <h3 className="text-white xl:text-5xl lg:text-4xl md:text-3xl text-2xl  mb-4 font-Allura">
+              Gifts Shop
+            </h3>
+            <h2 className="text-white xl:text-5xl lg:text-4xl md:text-3xl text-2xl capitalize font-serif">
               Happy gift for you
             </h2>
 
-            <button className="btn bg-red-500 rounded-none text-white border-none px-8 text-xl mt-12">
+            <button className="btn bg-red-500 rounded-none text-white border-none px-8 text-xl mt-8 md:mt-12">
               Buy Now
             </button>
           </div>
@@ -30,12 +32,14 @@ const Category: React.FC = () => {
         <div className="absolute group-hover:w-full duration-500 w-[25%] h-full bg-black opacity-50 z-20 right-0 top-0"></div>
         <div className="p-5 w-full h-full flex items-center justify-end">
           <div className="flex flex-col items-center justify-center z-50">
-            <h3 className="text-white text-4xl mb-4 font-Allura">Gifts Shop</h3>
-            <h2 className="text-white text-5xl capitalize font-serif">
+            <h3 className="text-white xl:text-5xl lg:text-4xl md:text-3xl text-2xl  mb-4 font-Allura">
+              Gifts Shop
+            </h3>
+            <h2 className="text-white xl:text-5xl lg:text-4xl md:text-3xl text-2xl capitalize font-serif">
               Virtual Experiences
             </h2>
 
-            <button className="btn bg-red-500 rounded-none text-white border-none px-8 text-xl mt-12">
+            <button className="btn bg-red-500 rounded-none text-white border-none px-8 text-xl mt-8 md:mt-12">
               Buy Now
             </button>
           </div>
