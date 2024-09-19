@@ -4,7 +4,7 @@ import { FaCartPlus } from "react-icons/fa6";
 
 const FeaturedProducts: React.FC = () => {
     return (
-        <div className='container  my-24'>
+        <div className='my-24'>
             <div>
                 <h3 className='text-primary text-center  font-light my-3 font-great-vibes text-3xl'>Top Collections</h3>
                 <h1 className='font-medium text-3xl text-center uppercase text-[#333333]'>Featured Products</h1>
