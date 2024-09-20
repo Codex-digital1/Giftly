@@ -1,8 +1,8 @@
 // import React from 'react';
 const GiftShopBanner = () => {
     return (
-        <div className="bg-secondary my-24 py-12  md:py-[100px] ">
-            <div className="flex flex-col md:flex-row gap-10 p-4 overflow-hidden max-w-6xl mx-auto">
+        <div className="bg-secondary section-to-section-margin py-12  md:py-[100px] ">
+            <div className="flex flex-col md:flex-row gap-10 p-4 overflow-hidden max-w-6xl container mx-auto">
                 <div className="flex-1  grid place-content-center">
                     <div className="text-[#333] space-y-4">
                         <h3 className="text-3xl font-great-vibes">Gifts Shop</h3>

@@ -4,13 +4,13 @@ import { FaCartPlus } from "react-icons/fa6";
 
 const FeaturedProducts: React.FC = () => {
     return (
-        <div className='my-24'>
+        <div className='section-to-section-margin max-w-6xl container mx-auto'>
             <div>
                 <h3 className='text-primary text-center  font-light my-3 font-great-vibes text-3xl'>Top Collections</h3>
                 <h1 className='font-medium text-3xl text-center uppercase text-[#333333]'>Featured Products</h1>
 
                 {/* Gift card */}
-                <div className='mt-12  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-2 '>
+                <div className='mt-12  grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4  gap-6 p-2 '>
 
                     <div className='min-w-[270px] group w-full text-center border-2 border-[#EBEBEB] rounded relative overflow-hidden shadow-sm'>
 
