@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import FeaturedProducts from '../../components/home/FeaturedProducts';
 import GiftShopBanner from '../../components/home/GiftShopBanner';
 
