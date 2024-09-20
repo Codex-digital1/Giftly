@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-
+ import eroor from '../../../src/img/eroor.svg'
 const Error = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       <div className="text-center">
-        <h1 className="text-6xl font-bold text-red-600">404</h1>
+         <img src={eroor} alt="" />
         <p className="text-xl text-gray-700 mt-4">
           Oops! The page you're looking for doesn't exist.
         </p>
@@ -13,7 +13,7 @@ const Error = () => {
         </p>
         <Link
           to="/"
-          className="mt-6 inline-block px-6 py-3 bg-blue-600 text-white text-lg rounded-lg hover:bg-blue-700 transition-colors"
+          className="mt-6 inline-block px-6 py-3 bg-primary text-white text-lg rounded-lg  transition-colors"
         >
           Go back to Home
         </Link>
