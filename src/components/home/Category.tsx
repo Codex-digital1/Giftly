@@ -17,7 +17,7 @@ const Category: React.FC = () => {
               Happy gift for you
             </h2>
 
-            <button className="btn bg-red-500 rounded-none text-white border-none px-8 text-xl mt-8 md:mt-12">
+            <button className="btn-secondary  mt-8 md:mt-12">
               Buy Now
             </button>
           </div>
@@ -39,7 +39,7 @@ const Category: React.FC = () => {
               Virtual Experiences
             </h2>
 
-            <button className="btn bg-red-500 rounded-none text-white border-none px-8 text-xl mt-8 md:mt-12">
+            <button className="btn-secondary  mt-8 md:mt-12">
               Buy Now
             </button>
           </div>

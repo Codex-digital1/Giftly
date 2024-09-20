@@ -32,7 +32,7 @@ const Banner: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-[90vh]">
+    <div className="relative w-full h-[320px] md:[570px] lg:h-[700px]">
       {/* Swiper Component */}
       <Swiper
         modules={[Controller, EffectFade, Autoplay]}
@@ -70,7 +70,7 @@ const Banner: React.FC = () => {
                     {item.description}
                   </p>
 
-                  <button className="capitalize px-8 btn text-lg border-none font-medium rounded cursor-pointer text-black bg-white hover:text-white hover:bg-black z-30">
+                  <button className="btn-secondary  z-30">
                     shop now
                   </button>
                 </div>
@@ -83,13 +83,13 @@ const Banner: React.FC = () => {
       {/* Slider Controls */}
       <div className="absolute top-1/2 w-full flex justify-between px-4 z-30">
         <button
-          className="p-2 bg-primary rounded-full"
+          className="p-1 md:p-2 bg-primary rounded-full"
           onClick={() => swiperInstance?.slidePrev()}
         >
           <MdKeyboardArrowLeft color="white" size={25} />
         </button>
         <button
-          className="p-2 bg-primary rounded-full"
+          className="p-1 md:p-2 bg-primary rounded-full"
           onClick={() => swiperInstance?.slideNext()}
         >
           <MdKeyboardArrowRight color="white" size={25} />
