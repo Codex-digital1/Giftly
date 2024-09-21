@@ -1,13 +1,11 @@
 import React from "react";
-import { FaFacebookF, FaTwitter } from "react-icons/fa";
-import { IoLogoInstagram, IoMdGift } from "react-icons/io";
+import { IoMdGift } from "react-icons/io";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { GiSelfLove } from "react-icons/gi";
 import { SlBasket } from "react-icons/sl";
 import { IoSearch } from "react-icons/io5";
 import { NavLink } from "react-router-dom";
-
-const NavItem = ["Home", "All gift", "About us"];
+ 
 
 const Navbar: React.FC = () => {
   return (
