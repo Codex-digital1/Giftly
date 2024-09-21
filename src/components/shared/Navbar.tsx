@@ -4,8 +4,16 @@ import { MdOutlineManageAccounts } from "react-icons/md";
 import { GiSelfLove } from "react-icons/gi";
 import { SlBasket } from "react-icons/sl";
 import { IoSearch } from "react-icons/io5";
-import { NavLink } from "react-router-dom";
- 
+import { Link, NavLink } from "react-router-dom";
+
+const megaMenu = [
+  { name: "Home", path: "/" },
+  { name: "All Gift", path: "/allGift" },
+  { name: "About Us", path: "/aboutUs" },
+  { name: <MdOutlineManageAccounts />, path: "/account" },
+  { name: <GiSelfLove />, path: "/wishList" },
+  { name: <SlBasket />, path: "/cart" },
+];
 
 const Navbar: React.FC = () => {
   return (
@@ -46,77 +54,60 @@ const Navbar: React.FC = () => {
         </div>
 
         <IoMdGift className="md:text-4xl text-base font-bold" />
-        <h1 className="md:text-2xl text-base font-bold">Giftly</h1>
+        <Link to="/" className="md:text-2xl text-base font-bold">
+          Giftly
+        </Link>
       </div>
-
-      {/* Mega menu */}
+      {/* Mega menu leftSide */}
       <nav className="space-x-4 md:flex hidden">
-        <NavLink
-          className={({ isActive }) =>
-            isActive
-              ? "font-semibold text-lg md:text-xl lg:text-2xl text-primary  "
-              : "font-semibold text-lg md:text-xl lg:text-2xl"
-          }
-          to="/"
-        >
-          Home
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            isActive
-              ? "font-semibold text-lg md:text-xl lg:text-2xl   text-primary  "
-              : "font-semibold text-lg md:text-xl lg:text-2xl  "
-          }
-          to="/allGift"
-        >
-          All Gift
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            isActive
-              ? "font-semibold text-lg md:text-xl lg:text-2xl   text-primary  "
-              : "font-semibold text-lg md:text-xl lg:text-2xl    text-black"
-          }
-          to="/aboutUs"
-        >
-          About Us
-        </NavLink>
+        {megaMenu?.slice(0, 3).map((menu) => (
+          <NavLink
+            key={menu.path}
+            className={({ isActive }) =>
+              isActive
+                ? "font-semibold text-lg md:text-xl lg:text-2xl text-primary  "
+                : "font-semibold text-lg md:text-xl lg:text-2xl"
+            }
+            to={menu.path}
+          >
+            {menu.name}
+          </NavLink>
+        ))}
       </nav>
-
       {/* Input */}
-      <label className="relative  md:flex hidden justify-center items-center">
+      <label className="relative group md:flex hidden justify-center items-center">
         <input
           type="text"
-          className="md:w-[300px]  w-[200px] rounded-full border border-primary md:px-6 px-2 md:p-1 text-secondary"
+          className="md:w-[300px]  w-[200px] rounded-full  border border-black md:px-6 px-2 md:p-1 text-black   focus:outline-none focus:border-primary hover:border-primary"
           placeholder="Search here for find you Gift..."
         />
-        <IoSearch className="text-primary absolute right-6 mt-0 hover:text-textYellow cursor-pointer" />
+        <IoSearch className="group-hover:text-primary absolute right-6 mt-0 hover:text-textYellow cursor-pointer" />
       </label>
-
-      {/* For small screen input */}
-      <label className="relative md:hidden flex justify-center items-center ">
+      {/* input for sm */}
+      <label className="relative group md:hidden flex justify-center items-center ">
         <input
           type="text"
-          className="text-black w-[150px] rounded-full border border-primary px-2 md:p-1"
+          className="text-black w-[150px] rounded-full border border-black px-2 md:p-1 focus:outline-none focus:border-primary hover:border-primary"
           placeholder="Search.."
         />
-        <IoSearch className="text-primary absolute right-3 mt-0 hover:text-textYellow cursor-pointer" />
+        <IoSearch className="group-hover:text-primary absolute right-3 mt-0 hover:text-textYellow cursor-pointer" />
       </label>
-
-      {/* Icons */}
+      {/* mega menu Icons rightSide */}
       <div className="flex justify-center items-center gap-x-4 md:gap-x-6">
-        <h1 className="md:text-3xl text-lg flex cursor-pointer justify-center items-center gap-x-1 text-primary">
-          <MdOutlineManageAccounts />
-        </h1>
-        <h1 className=" md:text-3xl text-lg flex cursor-pointer justify-center items-center gap-x-1 text-primary">
-          <GiSelfLove />
-        </h1>
-        <h1 className="text-primary cursor-pointer md:text-3xl text-lg font-bold flex justify-center items-center gap-x-1">
-          <SlBasket />
-        </h1>
+        {megaMenu?.slice(3, 6).map((menu) => (
+          <NavLink
+            key={menu.path}
+            className={({ isActive }) =>
+              isActive
+                ? "text-primary font-semibold text-lg md:text-3xl   "
+                : "font-semibold text-black text-lg md:text-3xl "
+            }
+            to={menu.path}
+          >
+            {menu.name}
+          </NavLink>
+        ))}
       </div>
-
-
     </div>
   );
 };
