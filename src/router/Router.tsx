@@ -7,6 +7,7 @@ import AboutUs from "../pages/aboutUs/AboutUs";
 import Account from "../pages/acount/Account";
 import WishList from "../pages/wishList/WishList";
 import Cart from "../pages/cart/Cart";
+import ProductDetails from "../pages/details/ProductDetails";
 
 const router = createBrowserRouter([
   {
@@ -20,25 +21,29 @@ const router = createBrowserRouter([
       },
       {
         path: "/allGift",
-        element:<Allgift></Allgift>
+        element: <Allgift></Allgift>
       },
       {
         path: "aboutUs",
-        element:<AboutUs></AboutUs>
+        element: <AboutUs></AboutUs>
       },
       {
-        path:'/account',
-        element:<Account></Account>
+        path: '/account',
+        element: <Account></Account>
       },
       {
-        path:'/wishlist',
-        element:<WishList></WishList>
+        path: '/wishlist',
+        element: <WishList></WishList>
       },
       {
-        path:'/cart',
-        element:<Cart></Cart>
+        path: '/cart',
+        element: <Cart></Cart>
+      },  
+      {
+        path: "/productDetails",
+        element: <ProductDetails />
       }
-      
+ 
     ],
   },
 ]);
