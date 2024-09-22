@@ -2,7 +2,7 @@
 const Slide = () => {
  
   return (
-    <div className="flex flex-col md:flex-row justify-center items-center pb-12">
+    <div className="flex md:mt-5 flex-col md:flex-row justify-center items-center pb-12">
     <div className="relative md:w-1/3 ">
       <div className=" h-[280px] mt-5 w-[280px]  rounded-full bg-primary flex justify-center items-center shadow-xl shadow-slate-800">
         <img

@@ -9,7 +9,7 @@ const Category: React.FC = () => {
       >
         <div className="absolute group-hover:w-full duration-500 w-[25%] h-full bg-black opacity-50 z-20 right-0 top-0"></div>
         <div className="p-5 w-full h-full flex items-center justify-end">
-          <div className="flex flex-col items-center justify-center z-50">
+          <div className="flex flex-col items-center justify-center z-20">
             <h3 className="text-white xl:text-5xl lg:text-4xl md:text-3xl text-2xl  mb-4 font-Allura">
               Gifts Shop
             </h3>
@@ -17,7 +17,7 @@ const Category: React.FC = () => {
               Happy gift for you
             </h2>
 
-            <button className="btn-secondary  mt-8 md:mt-12">
+            <button className="btn-secondary z-0  mt-8 md:mt-12">
               Buy Now
             </button>
           </div>
@@ -31,7 +31,7 @@ const Category: React.FC = () => {
       >
         <div className="absolute group-hover:w-full duration-500 w-[25%] h-full bg-black opacity-50 z-20 right-0 top-0"></div>
         <div className="p-5 w-full h-full flex items-center justify-end">
-          <div className="flex flex-col items-center justify-center z-50">
+          <div className="flex flex-col items-center justify-center z-30">
             <h3 className="text-white xl:text-5xl lg:text-4xl md:text-3xl text-2xl  mb-4 font-Allura">
               Gifts Shop
             </h3>
