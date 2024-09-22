@@ -31,11 +31,28 @@ code {
   }
 }
 
-.section-to-section-margin{
-  @apply mt-8 mb-8 md:mt-16 md:mb-16 lg:mt-24 lg:mb-24;
+
+@layer utilities {
+
+  .section-to-section-margin{
+    @apply mt-8 mb-8 md:mt-16 md:mb-16 lg:mt-24 lg:mb-24;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-none {
+    -ms-overflow-style: none; /* Internet Explorer and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }
+
 
 
 .inter{
   font-family: "Inter", system-ui;
 }
+
+
+/*  */
+
