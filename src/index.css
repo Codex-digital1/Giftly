@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -11,19 +15,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 
 @layer components {
   .btn-primary {
     @apply flex items-center gap-2 bg-primary whitespace-nowrap
-    py-1 px-2  text-white text-sm font-normal cursor-pointer rounded hover:bg-[#BF2718] transition-all duration-300 ease-in;
+    py-1 px-2  text-white text-sm font-normal cursor-pointer rounded hover:bg-[#BF2718] transition-all duration-300 ease-linear capitalize;
   }
   .btn-secondary {
-    @apply py-3 px-6 bg-primary text-white text-sm font-semibold cursor-pointer  hover:bg-[#BF2718] transition-all duration-300 ease-in;
+    @apply py-3 px-6 md:px-8 text-sm md:text-xl  bg-primary text-white  font-semibold cursor-pointer  hover:bg-[#BF2718] transition-all duration-300 ease-linear border-none capitalize;
   }
+}
+
+.section-to-section-margin{
+  @apply mt-8 mb-8 md:mt-16 md:mb-16 lg:mt-24 lg:mb-24;
 }
 
 

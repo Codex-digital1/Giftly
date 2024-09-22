@@ -8,8 +8,8 @@ import 'swiper/css/navigation'
 
 // import required modules
 import { Autoplay, Pagination, Navigation  } from 'swiper/modules'
-import Slide from './Slide'
-import { useRef, useState } from 'react'
+import Slide from "../../home/Feedback/Slide"
+import { useRef} from 'react'
 import Container from '../../shared/Container'
 
 

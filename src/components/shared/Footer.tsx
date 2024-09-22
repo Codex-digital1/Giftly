@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
         <div>
             <div>
             <footer className="w-full ">
-                <div className="mx-auto max-w-7xl px-4  sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-6xl px-4  sm:px-6 ">
 
                     <div className="flex justify-between flex-col py-14 gap-14 lg:gap-20 min-[1124px]:flex-row">
                         <div className="block  xl:max-w-lg">
