@@ -11,7 +11,7 @@ import { RiMenuUnfold4Line2 } from "react-icons/ri";
 
 const megaMenu = [
   { name: "Home", path: "/" },
-  { name: "All Gift", path: "/allGift" },
+  { name: "All Gift", path: "/all-gift" },
   { name: "About Us", path: "/aboutUs" },
   { name: <MdOutlineManageAccounts />, path: "/account" },
   { name: <GiSelfLove />, path: "/wishList" },
@@ -46,7 +46,6 @@ const navLink = (
   </div>
 );
 const Navbar: React.FC = ({ user }) => {
-  user=true
   const [isOpen, setIsOpen] = useState(false);
 
   return (
