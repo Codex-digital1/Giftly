@@ -15,7 +15,7 @@ const ProfileInfo = () => {
         {!changeProfile && (
           <button
             onClick={() => setChangeProfile(!changeProfile)}
-            className="text-xl btn font-medium btn-success text-white border-none"
+            className="font-medium btn-secondary text-white btn border-none"
           >
             Change Profile Picture
           </button>

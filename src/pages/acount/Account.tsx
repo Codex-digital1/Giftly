@@ -4,6 +4,7 @@ const Account = () => {
   return (
     <div className="px-10 py-24">
       <div className="flex justify-center gap-8">
+        {/* left side dorwer */}
         <div className="w-[400px]">
           <div className="p-6 flex items-center gap-2 shadow-lg rounded-lg">
             <img
@@ -43,6 +44,7 @@ const Account = () => {
             </Link>
           </div>
         </div>
+        {/* daynamic content */}
         <div className="w-full">
           <Outlet />
         </div>

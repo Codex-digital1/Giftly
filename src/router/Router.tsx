@@ -28,9 +28,22 @@ const router = createBrowserRouter([
         element: <Allgift></Allgift>,
       },
       {
-        path: "aboutUs",
+        path: "/aboutUs",
         element: <AboutUs></AboutUs>,
       },
+      {
+        path: "/wishlist",
+        element: <WishList></WishList>,
+      },
+      {
+        path: "/cart",
+        element: <Cart></Cart>,
+      },
+      {
+        path: "/productDetails",
+        element: <ProductDetails></ProductDetails>,
+      },
+      //  ( Profile ) Nesting route 
       {
         path: "/account",
         element: <Account></Account>,
@@ -52,18 +65,6 @@ const router = createBrowserRouter([
             element: <MyRating />,
           },
         ],
-      },
-      {
-        path: "/wishlist",
-        element: <WishList></WishList>,
-      },
-      {
-        path: "/cart",
-        element: <Cart></Cart>,
-      },
-      {
-        path: "/productDetails",
-        element: <ProductDetails></ProductDetails>,
       },
     ],
   },
