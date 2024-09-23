@@ -5,9 +5,11 @@ import Footer from '../components/shared/Footer';
 
 const Layouts: React.FC = () => {
     return (
-        <div>
+        <div> 
             <Navbar></Navbar>
+            <div className="min-h-[calc(100vh-510px)]">
             <Outlet></Outlet>
+            </div>
             <Footer></Footer>
         </div>
     );

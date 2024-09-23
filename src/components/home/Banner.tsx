@@ -32,7 +32,7 @@ const Banner: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-[320px] md:[570px] lg:h-[700px]">
+    <div className="relative mt-20 w-full h-[320px] md:[570px] lg:h-[700px]">
       {/* Swiper Component */}
       <Swiper
         modules={[Controller, EffectFade, Autoplay]}
