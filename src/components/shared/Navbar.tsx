@@ -22,7 +22,7 @@ const Navbar: React.FC = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className=" fixed w-full bg-white z-50 top-0 ">
+    <div className="fixed w-full bg-white z-50 top-0">
       <div className=" container mx-auto bg-white  h-20 flex justify-between items-center px-2">
         {/* Logo */}
         <div className="flex justify-center bg-white items-center cursor-pointer text-primary">
