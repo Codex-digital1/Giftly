@@ -8,6 +8,10 @@ import Account from "../pages/acount/Account";
 import WishList from "../pages/wishList/WishList";
 import Cart from "../pages/cart/Cart";
 import ProductDetails from "../pages/details/ProductDetails";
+import ProfileInfo from "../pages/acount/ProfileInfo";
+import MyOrders from "../pages/acount/MyOrders";
+import MyRating from "../pages/acount/MyRating";
+import MyWishlist from "../pages/acount/MyWishlist";
 
 const router = createBrowserRouter([
   {
@@ -21,28 +25,46 @@ const router = createBrowserRouter([
       },
       {
         path: "/allGift",
-        element:<Allgift></Allgift>
+        element: <Allgift></Allgift>,
       },
       {
         path: "aboutUs",
-        element:<AboutUs></AboutUs>
+        element: <AboutUs></AboutUs>,
       },
       {
-        path:'/account',
-        element:<Account></Account>
+        path: "/account",
+        element: <Account></Account>,
+        children: [
+          {
+            path: "",
+            element: <ProfileInfo />,
+          },
+          {
+            path: "my-orders",
+            element: <MyOrders />,
+          },
+          {
+            path: "my-wishlist",
+            element: <MyWishlist />,
+          },
+          {
+            path: "my-rating",
+            element: <MyRating />,
+          },
+        ],
       },
       {
-        path:'/wishlist',
-        element:<WishList></WishList>
+        path: "/wishlist",
+        element: <WishList></WishList>,
       },
       {
-        path:'/cart',
-        element:<Cart></Cart>
+        path: "/cart",
+        element: <Cart></Cart>,
       },
       {
-        path:'/productDetails',
-        element:<ProductDetails></ProductDetails>
-      }
+        path: "/productDetails",
+        element: <ProductDetails></ProductDetails>,
+      },
     ],
   },
 ]);
