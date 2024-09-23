@@ -1,23 +1,23 @@
-import React from "react";
 import GiftCard from "../shared/GiftCard";
 import { Link } from "react-router-dom";
 import SectionHeading from "../shared/SectionHeading";
 import MyContainer from "../shared/MyContainer";
+import { drawerPropsType } from "../../types/Types";
 
-const BestSellinGift: React.FC = () => {
+const BestSellinGift = ({drawerToggle}: drawerPropsType) => {
   return (
     <div>
       <MyContainer>
         <SectionHeading title="New Arrivals" subTitle="Best Selling Gifts" />
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          <GiftCard />
-          <GiftCard />
-          <GiftCard />
-          <GiftCard />
-          <GiftCard />
-          <GiftCard />
-          <GiftCard />
-          <GiftCard />
+          <GiftCard drawerToggle={drawerToggle} />
+          <GiftCard drawerToggle={drawerToggle} />
+          <GiftCard drawerToggle={drawerToggle} />
+          <GiftCard drawerToggle={drawerToggle} />
+          <GiftCard drawerToggle={drawerToggle} />
+          <GiftCard drawerToggle={drawerToggle} />
+          <GiftCard drawerToggle={drawerToggle} />
+          <GiftCard drawerToggle={drawerToggle} />
         </div>
         <div className="text-center">
           <Link

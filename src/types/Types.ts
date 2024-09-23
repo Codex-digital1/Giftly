@@ -6,5 +6,10 @@ export type myContainerProps = {
 
 export type sectionHeadingProps = {
   title: string;
-  subTitle: string;
+  subTitle?: string;
 };
+
+export type drawerPropsType ={
+  drawerToggle: ()=> void,
+   isOpenDrawer?: boolean
+}
