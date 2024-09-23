@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { FaCartPlus, FaStar } from "react-icons/fa";
 import cartImage from "../../img/g3.jpg";
-const GiftCard = () => {
+import { drawerPropsType } from "../../types/Types";
+const GiftCard = ({drawerToggle}: drawerPropsType) => {
   return (
     <div className="border flex flex-col justify-between rounded-md group overflow-hidden">
       <Link to="/ " className="inline-block relative">
@@ -49,15 +50,17 @@ const GiftCard = () => {
             <FaStar className="text-base text-[#f9ca63]" />
           </span>
         </div>
-        <div className='flex text-white gap-3  justify-center items-center'>
-                                    <div className='btn-primary'>
-                                        <span><FaCartPlus /></span>
-                                        <span>Add to cart</span>
-                                    </div>
-                                    <div className='btn-primary'>
-                                        <span>Buy Now</span>
-                                    </div>
-                                </div>
+        <div className="flex text-white gap-3  justify-center items-center">
+          <div className="btn-primary" onClick={drawerToggle}>
+            <span>
+              <FaCartPlus />
+            </span>
+            <span>Add to cart</span>
+          </div>
+          <div className="btn-primary">
+            <span>Buy Now</span>
+          </div>
+        </div>
       </div>
     </div>
   );
