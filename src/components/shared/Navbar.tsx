@@ -18,7 +18,6 @@ const megaMenu = [
 ];
 
 const Navbar: React.FC = ({ user }) => {
-  user = true;
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -165,7 +164,7 @@ const Navbar: React.FC = ({ user }) => {
                         Login
                       </Link>
                       <Link
-                        to="/signup"
+                        to="/signUp"
                         className="px-4 py-3 hover:bg-neutral-100 transition font-semibold"
                       >
                         Sign Up
