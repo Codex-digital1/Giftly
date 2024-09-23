@@ -1,4 +1,9 @@
-import { FaFacebookF, FaLinkedinIn, FaTwitter } from "react-icons/fa6";
+import {
+  FaArrowRightLong,
+  FaFacebookF,
+  FaLinkedinIn,
+  FaTwitter,
+} from "react-icons/fa6";
 import aboutUsImage from "../../../src/img/aboutUs.svg";
 import aboutGift from "../../../src/img/logo.png";
 import { TbPlayerPlayFilled, TbTruckDelivery } from "react-icons/tb";
@@ -6,6 +11,7 @@ import { RiSecurePaymentLine } from "react-icons/ri";
 import { FiGift } from "react-icons/fi";
 import { MdNotificationsActive } from "react-icons/md";
 import getInTouch from "../../../src/img/getintouch2.svg";
+import goal from "../../../src/img/goal.svg";
 // Services Data
 const servicesData = [
   {
@@ -31,6 +37,29 @@ const servicesData = [
     title: "Real-time Notifications",
     describe:
       "Get immediate updates on your gift's delivery status. preferences, ensuring a memorable . You'll receive real-time notifications to ensure you're always in the loop from the moment your gift is sent to its final delivery.",
+  },
+];
+
+const goalData = [
+  {
+    title: "Delivering Personalized Gifting Experiences:",
+    description:
+      "Our primary goal is to ensure that every gift on Giftly feels uniquely personal. We want to offer users the ability to customize their gifts in meaningful ways, allowing them to express their love, care, and thoughtfulness in a way that reflects their unique relationship with the recipient.",
+  },
+  {
+    title: "Creating a Seamless and Hassle-Free Experience: ",
+    description:
+      "We strive to provide a smooth and intuitive platform where users can easily browse, select, and customize their gifts. Our aim is to remove any barriers in the gifting process, making it as effortless as possible for users to send personalized virtual gifts that bring joy to their loved ones.",
+  },
+  {
+    title: "Constant Innovation to Meet Evolving Needs:",
+    description:
+      "At Giftly, we are committed to innovation. We continuously improve and expand our services to keep pace with the evolving needs of our users. Whether its adding new gift categories, enhancing customization options, or integrating the latest technologies, we’re always working to provide a better gifting experience.",
+  },
+  {
+    title: "Bringing People Closer, No Matter the Distance:",
+    description:
+      "We believe that thoughtful gifts can bridge any gap, whether geographical or emotional. Our platform is designed to help people connect with their loved ones by providing an easy, accessible way to send personalized gifts, making every special occasion more memorable, even if they can’t be together in person.",
   },
 ];
 
@@ -112,8 +141,37 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
+      {/* title */}
+      <div className="mt-5">
+        <h3 className="text-primary text-center  font-light my-3 font-great-vibes text-3xl">
+          Our Goal
+        </h3>
+        <h1 className="font-medium text-3xl text-center uppercase text-[#333333]">
+          Our Mission and Vision
+        </h1>
+      </div>
+      {/* Our Goal */}
+      <section className="flex flex-col-reverse md:flex-row md:h-[500px] border-l-4 border-primary rounded-3xl mt-10">
+        <div className=" flex-1 flex items-center p-4">
+          <div className="space-y-4">
+            {goalData?.map((data) => (
+              <div className="flex gap-x-2">
+                <FaArrowRightLong className="w-24 text-2xl text-primary " />
+                <h1 className="text-justify">
+                  <span className="font-semibold">{data?.title}</span>
+                  <span>{data?.description}</span>
+                </h1>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className=" flex justify-center items-center ">
+          <img src={goal} className=" h-[500px]" alt="goal" />
+        </div>
+      </section>
+
       {/* Get in touch ! */}
-      <section className="md:flex justify-center items-center ">
+      <section className="md:flex justify-center items-center md:h-[500px] border-r-4 border-primary rounded-3xl">
         <div className="flex justify-center items-center h-[500px] ">
           <img
             src={getInTouch}
@@ -123,49 +181,53 @@ const AboutUs = () => {
         </div>
         {/* form */}
         <div className="w-full max-w-md rounded-lg bg-white px-10 pb-10 pt-8 h-[500px]  ">
-            <div className="mb-6">
-                <h2 className="text-center text-3xl font-semibold tracking-tight font-great-vibes text-primary">Get in Touch</h2>
-                <p className="text-center text-sm text-zinc-500 dark:text-zinc-400 font-playfair-display">We would love to hear from you! Whether you have a question, need assistance, or want to give feedback, reach out to us at:</p>
+          <div className="mb-6">
+            <h2 className="text-center text-3xl font-semibold tracking-tight font-great-vibes text-primary">
+              Get in Touch
+            </h2>
+            <p className="text-center text-sm text-zinc-500 dark:text-zinc-400 font-playfair-display">
+              We would love to hear from you! Whether you have a question, need
+              assistance, or want to give feedback, reach out to us at:
+            </p>
+          </div>
+          <form className="w-full  space-y-2">
+            <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
+              <label className="block font-medium" htmlFor="name">
+                Name
+              </label>
+              <input
+                className="h-10 w-full rounded border px-3 py-2 text-sm leading-tight focus:outline-none focus:border-primary dark:border-zinc-700"
+                id="name"
+                placeholder="Your Name"
+                name="name"
+                type="text"
+              />
             </div>
-            <form className="w-full  space-y-3">
-                <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
-                    <label className="block font-medium" htmlFor="name">
-                        Name
-                    </label>
-                    <input
-                        className="h-10 w-full rounded border px-3 py-2 text-sm leading-tight focus:outline-none focus:border-primary dark:border-zinc-700"
-                        id="name"
-                        placeholder="Your Name"
-                        name="name"
-                        type="text"
-                    />
-                </div>
-                <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
-                  
-                    <label className="block font-medium" htmlFor="_email">
-                        Email
-                    </label>
-                    <input
-                        className="h-10 w-full rounded border px-3 py-2 text-sm leading-tight focus:outline-none focus:border-primary dark:border-zinc-700"
-                        id="_email"
-                        placeholder="Your Email"
-                        name="email"
-                        type="email"
-                    />
-                </div>
-                <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
-                    <label className="block font-medium" htmlFor="_message">
-                        Message
-                    </label>
-                    <textarea
-                        className="min-h-[80px] w-full rounded border px-3 py-2 leading-tight focus:outline-none focus:border-primary dark:border-zinc-700"
-                        id="_message"
-                        placeholder="what's in your mind"
-                        name="message"
-                    />
-                </div>
-                <button className="btn-primary h-10 w-28">Send Message</button>
-            </form>
+            <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
+              <label className="block font-medium" htmlFor="_email">
+                Email
+              </label>
+              <input
+                className="h-10 w-full rounded border px-3 py-2 text-sm leading-tight focus:outline-none focus:border-primary dark:border-zinc-700"
+                id="_email"
+                placeholder="Your Email"
+                name="email"
+                type="email"
+              />
+            </div>
+            <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
+              <label className="block font-medium" htmlFor="_message">
+                Message
+              </label>
+              <textarea
+                className="min-h-[80px] w-full rounded border px-3 py-2 leading-tight focus:outline-none focus:border-primary dark:border-zinc-700"
+                id="_message"
+                placeholder="what's in your mind"
+                name="message"
+              />
+            </div>
+            <button className="btn-primary h-10 w-28">Send Message</button>
+          </form>
         </div>
       </section>
     </div>
