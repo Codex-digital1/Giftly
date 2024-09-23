@@ -12,6 +12,8 @@ import ProfileInfo from "../pages/acount/ProfileInfo";
 import MyOrders from "../pages/acount/MyOrders";
 import MyRating from "../pages/acount/MyRating";
 import MyWishlist from "../pages/acount/MyWishlist";
+import Login from "../pages/authentication/Login";
+import Register from "../pages/authentication/Register";
 
 const router = createBrowserRouter([
   {
@@ -43,7 +45,15 @@ const router = createBrowserRouter([
         path: "/productDetails",
         element: <ProductDetails></ProductDetails>,
       },
-      //  ( Profile ) Nesting route 
+      {
+        path: "/login",
+        element: <Login></Login>,
+      },
+      {
+        path: "/signUp",
+        element: <Register></Register>,
+      },
+      //  ( Profile ) Nesting route
       {
         path: "/account",
         element: <Account></Account>,
