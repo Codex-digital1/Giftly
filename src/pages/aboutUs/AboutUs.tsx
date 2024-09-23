@@ -5,6 +5,7 @@ import { TbPlayerPlayFilled, TbTruckDelivery } from "react-icons/tb";
 import { RiSecurePaymentLine } from "react-icons/ri";
 import { FiGift } from "react-icons/fi";
 import { MdNotificationsActive } from "react-icons/md";
+import getInTouch from "../../../src/img/getintouch2.svg";
 // Services Data
 const servicesData = [
   {
@@ -92,26 +93,80 @@ const AboutUs = () => {
       <section>
         <h1 className="text-xl font-bold text-primary mt-3">Services</h1>
         <hr className="w-40 border border-primary mb-3" />
-     <div className="flex justify-center">
-     <div className="grid md:grid-cols-4 justify-center gap-x-2 items-center gap-y-2">
-          {
-            servicesData?.map(cartData => (
-          <div className="w-[373px] h-[182px] border rounded-xl p-4 space-y-3 bg-white  cursor-pointer  hover:border-primary duration-500">
-            <h1 className="flex gap-x-2 items-center text-xl font-semibold">
-              <span className="text-primary text-3xl">{cartData?.icon}</span>
-              {cartData?.title}
-            </h1>
-            <p className="text-sm font-playfair-display text-justify">
-              {cartData?.describe}
-              <span className="text-primary">See more...</span>
-            </p>
+        <div className="flex justify-center">
+          <div className="grid md:grid-cols-4 justify-center gap-x-2 items-center gap-y-2">
+            {servicesData?.map((cartData) => (
+              <div className="w-[373px] h-[182px] border rounded-xl p-4 space-y-3 bg-white  cursor-pointer  hover:border-primary duration-500">
+                <h1 className="flex gap-x-2 items-center text-xl font-semibold">
+                  <span className="text-primary text-3xl">
+                    {cartData?.icon}
+                  </span>
+                  {cartData?.title}
+                </h1>
+                <p className="text-sm font-playfair-display text-justify">
+                  {cartData?.describe}
+                  <span className="text-primary">See more...</span>
+                </p>
+              </div>
+            ))}
           </div>
-            ))
-          }
-         
         </div>
-
-     </div>
+      </section>
+      {/* Get in touch ! */}
+      <section className="md:flex justify-center items-center ">
+        <div className="flex justify-center items-center h-[500px] ">
+          <img
+            src={getInTouch}
+            className=" h-[500px]  rounded-xl mt-0 "
+            alt="Get in Touch"
+          />
+        </div>
+        {/* form */}
+        <div className="w-full max-w-md rounded-lg bg-white px-10 pb-10 pt-8 h-[500px]  ">
+            <div className="mb-6">
+                <h2 className="text-center text-3xl font-semibold tracking-tight font-great-vibes text-primary">Get in Touch</h2>
+                <p className="text-center text-sm text-zinc-500 dark:text-zinc-400 font-playfair-display">We would love to hear from you! Whether you have a question, need assistance, or want to give feedback, reach out to us at:</p>
+            </div>
+            <form className="w-full  space-y-3">
+                <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
+                    <label className="block font-medium" htmlFor="name">
+                        Name
+                    </label>
+                    <input
+                        className="h-10 w-full rounded border px-3 py-2 text-sm leading-tight focus:outline-none focus:border-primary dark:border-zinc-700"
+                        id="name"
+                        placeholder="Your Name"
+                        name="name"
+                        type="text"
+                    />
+                </div>
+                <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
+                  
+                    <label className="block font-medium" htmlFor="_email">
+                        Email
+                    </label>
+                    <input
+                        className="h-10 w-full rounded border px-3 py-2 text-sm leading-tight focus:outline-none focus:border-primary dark:border-zinc-700"
+                        id="_email"
+                        placeholder="Your Email"
+                        name="email"
+                        type="email"
+                    />
+                </div>
+                <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
+                    <label className="block font-medium" htmlFor="_message">
+                        Message
+                    </label>
+                    <textarea
+                        className="min-h-[80px] w-full rounded border px-3 py-2 leading-tight focus:outline-none focus:border-primary dark:border-zinc-700"
+                        id="_message"
+                        placeholder="what's in your mind"
+                        name="message"
+                    />
+                </div>
+                <button className="btn-primary h-10 w-28">Send Message</button>
+            </form>
+        </div>
       </section>
     </div>
   );
