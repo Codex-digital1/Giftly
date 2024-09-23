@@ -36,7 +36,7 @@ const Navbar: React.FC = ({ user }) => {
           <label className="relative group flex  justify-center items-center">
             <input
               type="text"
-              className="md:w-[300px]  w-[200px] rounded-full  border border-black md:px-6 px-2 md:p-1 text-black   focus:outline-none focus:border-primary hover:border-primary"
+              className="lg:w-[300px] md:-w[280px]  w-[200px] rounded-full  border border-black md:px-6 px-2 md:p-1 text-black   focus:outline-none focus:border-primary hover:border-primary"
               placeholder="find your Gift..."
             />
             <IoSearch className="group-hover:text-primary absolute right-6 mt-0 hover:text-textYellow cursor-pointer" />
@@ -49,8 +49,8 @@ const Navbar: React.FC = ({ user }) => {
               key={menu.path}
               className={({ isActive }) =>
                 isActive
-                  ? "font-bold text-lg  text-primary  "
-                  : "font-bold text-lg "
+                  ? "font-bold md:text-lg text-primary  "
+                  : "font-bold text-lg  "
               }
               to={menu.path}
             >
