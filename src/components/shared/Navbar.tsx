@@ -10,7 +10,7 @@ import { RiMenuUnfold4Line2 } from "react-icons/ri";
 
 const megaMenu = [
   { name: "Home", path: "/" },
-  { name: "All Gift", path: "/all-gift" },
+  { name: "All Gift", path: "/allGift" },
   { name: "About Us", path: "/aboutUs" },
   { name: <MdOutlineManageAccounts />, path: "/account" },
   { name: <GiSelfLove />, path: "/wishList" },
@@ -36,6 +36,7 @@ const Navbar: React.FC = ({ user }) => {
             <input
               type="text"
               className="  border border-secondary md:w-full rounded-lg  md:p-3 p-2  text-black   focus:outline-none focus:border-primary hover:border-primary"
+
               placeholder="find your Gift..."
             />
             <IoSearch className="group-hover:text-primary absolute right-2 md:right-6  mt-0 text-xl  cursor-pointer" />
@@ -48,8 +49,8 @@ const Navbar: React.FC = ({ user }) => {
               key={menu.path}
               className={({ isActive }) =>
                 isActive
-                  ? "font-bold text-lg  text-primary  "
-                  : "font-bold text-lg "
+                  ? "font-bold md:text-lg text-primary  "
+                  : "font-bold text-lg  "
               }
               to={menu.path}
             >
@@ -164,7 +165,7 @@ const Navbar: React.FC = ({ user }) => {
                         Login
                       </Link>
                       <Link
-                        to="/signup"
+                        to="/signUp"
                         className="px-4 py-3 hover:bg-neutral-100 transition font-semibold"
                       >
                         Sign Up

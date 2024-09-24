@@ -8,6 +8,12 @@ import Account from "../pages/acount/Account";
 import WishList from "../pages/wishList/WishList";
 import Cart from "../pages/cart/Cart";
 import ProductDetails from "../pages/details/ProductDetails";
+import ProfileInfo from "../pages/acount/ProfileInfo";
+import MyOrders from "../pages/acount/MyOrders";
+import MyRating from "../pages/acount/MyRating";
+import MyWishlist from "../pages/acount/MyWishlist";
+import Login from "../pages/authentication/Login";
+import Register from "../pages/authentication/Register";
 
 const router = createBrowserRouter([
   {
@@ -20,27 +26,36 @@ const router = createBrowserRouter([
         element: <Home></Home>,
       },
       {
-        path: "/all-gift",
-        element:<Allgift></Allgift>
+        path: "/allGift",
+        element: <Allgift></Allgift>,
       },
       {
-        path: "aboutUs",
-        element:<AboutUs></AboutUs>
+        path: "/aboutUs",
+        element: <AboutUs></AboutUs>,
       },
       {
-        path:'/account',
-        element:<Account></Account>
+        path: "/wishlist",
+        element: <WishList></WishList>,
       },
       {
-        path:'/wishlist',
-        element:<WishList></WishList>
+        path: "/cart",
+        element: <Cart></Cart>,
       },
       {
-        path:'/cart',
-        element:<Cart></Cart>
+        path: "/productDetails",
+        element: <ProductDetails></ProductDetails>,
       },
       {
-        path:'/productDetails/:id',
+        path: "/login",
+        element: <Login></Login>,
+      },
+      {
+        path: "/signUp",
+        element: <Register></Register>,
+      },
+      //  ( Profile ) Nesting route
+      {
+        path:'/productDetails',
         element:<ProductDetails></ProductDetails>
       }
     ],

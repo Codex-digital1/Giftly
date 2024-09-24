@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaCartPlus, FaStar } from "react-icons/fa";
 import cartImage from "../../img/g3.jpg";
+import { drawerPropsType } from "../../types/Types";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 interface Gift {
@@ -21,7 +22,7 @@ interface Gift {
   availability: boolean;
   quantity: number;
 }
-const GiftCard: React.FC<{ gift: Gift }> = ({ gift }) => {
+const GiftCard: React.FC<{ gift: Gift }> = ({drawerToggle}: drawerPropsType{ gift }) => {
   const {
     _id,
     giftName,
@@ -75,17 +76,15 @@ const GiftCard: React.FC<{ gift: Gift }> = ({ gift }) => {
         <div className="flex justify-center items-center">
           <Rating style={{ maxWidth: 180 }} value={rating} readOnly />
         </div>
-        <div className="flex text-white gap-3  justify-center items-center">
-          <div className="btn-primary">
-            <span>
-              <FaCartPlus />
-            </span>
-            <span>Add to cart</span>
-          </div>
-          <div className="btn-primary">
-            <span>Buy Now</span>
-          </div>
-        </div>
+        <div className='flex text-white gap-3  justify-center items-center'>
+                                    <div className='btn-primary'>
+                                        <span><FaCartPlus /></span>
+                                        <span>Add to cart</span>
+                                    </div>
+                                    <div className='btn-primary'>
+                                        <span>Buy Now</span>
+                                    </div>
+                                </div>
       </div>
     </div>
     }
