@@ -2,18 +2,35 @@ import React, { useRef, useState } from 'react'
 import { FaStar } from "react-icons/fa";
 // @ts-ignore
 import ReactImageMagnify from 'react-image-magnify';
-import img1 from '/Details-page-img/detailsImg1.webp';
-import img2 from '/Details-page-img/detailsImg2.webp';
-import img3 from '/Details-page-img/detailsImg3.webp';
+// import img1 from '/Details-page-img/detailsImg1.webp';
+// import img2 from '/Details-page-img/detailsImg2.webp';
+// import img3 from '/Details-page-img/detailsImg3.webp';
 
 import { FaGoogle } from "react-icons/fa";
 import { FaAngleLeft, FaAngleRight, FaFacebook, FaTwitter } from 'react-icons/fa6';
 import ReviewModal from './ReviewModal';
+import { useParams } from 'react-router-dom';
+import useAxiosPublic from '../../Hooks/useAxiosPublic';
+import { useQuery } from '@tanstack/react-query';
 
 const ProductDetails: React.FC = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const images = [img1, img2, img3, img1, img2, img3, img1, img2, img3];
-    const [currentImg, setCurrentImg] = useState(images[0])
+
+    const { id } = useParams();
+    const axiosPublic = useAxiosPublic();
+
+    const { data: giftDetails = {}, isLoading, error } = useQuery({
+        queryKey: ['getGiftDetails', id],
+        queryFn: async () => {
+            const { data } = await axiosPublic.get(`/getSingleGiftDetails/${id}`);
+            return data?.data;
+        },
+    });
+
+    const [currentImg, setCurrentImg] = useState(giftDetails?.giftImage[0])
+
+    const { giftName, store, size, rating, quantity, price, description, color, brand, availability, giftImage } = giftDetails;
+    console.log(giftDetails)
 
     const scrollElement = useRef<HTMLDivElement>(null);
     const scrollRight = () => {
@@ -32,6 +49,11 @@ const ProductDetails: React.FC = () => {
         setCurrentImg(img)
     }
 
+
+    if (isLoading) return 'loading.... ';
+    if (error) return <div>Error fetching asset details</div>;
+
+
     return (
         <div className='container mx-auto my-10 mt-20'>
 
@@ -47,7 +69,7 @@ const ProductDetails: React.FC = () => {
                                     alt: 'Wristwatch by Ted Baker London',
                                     isFluidWidth: true,
                                     src: currentImg,
-                                    
+
                                 },
                                 largeImage: {
                                     src: currentImg,
@@ -59,11 +81,11 @@ const ProductDetails: React.FC = () => {
                                 enlargedImagePosition: 'beside'
                             }}
                             style={{
-                                width: 'auto', 
+                                width: 'auto',
                                 height: '100%',
-                                maxWidth: '500px', 
+                                maxWidth: '500px',
                                 maxHeight: '500px',
-                                objectFit: 'cover' 
+                                objectFit: 'cover'
                             }}
                         />
                     </div>
@@ -77,7 +99,7 @@ const ProductDetails: React.FC = () => {
 
                         <button className='bg-white shadow-md z-20 rounded-full p-1 absolute right-[-20px] text-lg hidden md:block' onClick={scrollRight}><FaAngleRight /></button>
 
-                        {images.map((img, index) => (
+                        {giftDetails?.giftImage?.map((img, index) => (
                             <div
                                 key={index}
 
@@ -95,7 +117,7 @@ const ProductDetails: React.FC = () => {
                 <div className=' w-full md:w-3/5 p-5 space-y-6 text-[#333]'>
                     {/* description and title */}
                     <div className='space-y-3'>
-                        <h1 className='text-3xl font-bold'>Flower</h1>
+                        <h1 className='text-3xl font-bold'>{giftName}</h1>
                         <div className='flex gap-1 items-center'>
                             <span className='text-yellow-400'><FaStar /></span>
                             <span className='text-yellow-400'><FaStar /></span>

@@ -2,6 +2,7 @@ import React from 'react'
 import { IoSearchOutline } from "react-icons/io5";
 import { FaCartPlus } from "react-icons/fa6";
 import { Gift } from '../../types/Types';
+import { Link } from 'react-router-dom';
 
 interface FeatureProductCardProps {
     gift: Gift;
@@ -9,9 +10,10 @@ interface FeatureProductCardProps {
 
 const FeatureProductCard: React.FC<FeatureProductCardProps> = ({ gift }) => {
 
-    const { giftName, price, availability, giftImage } = gift
-    console.log(giftImage)
+    const { giftName, price, availability, giftImage, _id } = gift
+    // console.log(giftImage)
     return (
+        <Link to={`/getAGiftDetails/${_id}`}>
             <div className='min-w-[270px] group w-full text-center border-2 border-[#EBEBEB] rounded relative overflow-hidden shadow-sm'>
 
                 <div className=' h-[270px]'>
@@ -52,6 +54,7 @@ const FeatureProductCard: React.FC<FeatureProductCardProps> = ({ gift }) => {
                 </div>
 
             </div>
+        </Link>
     )
 }
 

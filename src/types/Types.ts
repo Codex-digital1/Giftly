@@ -16,6 +16,7 @@ export type drawerPropsType = {
 
 // interfaces/Gift.ts
 export interface Gift {
+  _id: string,
   giftName: string;
   price: number;
   availability: string;
