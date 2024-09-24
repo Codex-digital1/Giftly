@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCartPlus } from "react-icons/fa6";
 import { IoSearchOutline } from "react-icons/io5";
 import InfiniteScroll from "react-infinite-scroller";
 import Card from "./card";
+import axios from "axios";
+import GiftCard from "../../components/shared/GiftCard";
+
 
 const giftsData = [
   {
@@ -34,6 +37,7 @@ const giftsData = [
 
 const Allgift = () => {
   const [filter, setFilter] = useState("");
+  const [gifts, setGift] = useState([]);
   const [search, setSearch] = useState("");
   const [searchText, setSearchText] = useState("");
   const [priceRange, setPriceRange] = useState([0, 100]);
@@ -41,6 +45,20 @@ const Allgift = () => {
   const [rating, setRating] = useState(0);
   const [availability, setAvailability] = useState(false);
   const [sortOption, setSortOption] = useState("default");
+  useEffect(()=>{
+    const getData=async ()=>{
+      try {
+        const {data}= await axios.get('http://localhost:3000/getAllGift')
+        setGift(data.data);
+       } catch (error) {
+         console.log(error);
+         
+       }
+    }
+    getData()
+   
+  },[])
+
 
   // Function to filter gifts based on state
   const filterGifts = (gifts) => {
@@ -162,12 +180,9 @@ const Allgift = () => {
           {/* card container */}
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
+          
+          {gifts.length>0 && gifts.map(gift=><GiftCard key={gift._id} gift={gift}/>)}
+          
 
           </div>
         </div>

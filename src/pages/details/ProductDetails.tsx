@@ -1,0 +1,281 @@
+import React, { useEffect, useRef, useState } from "react";
+import { FaStar } from "react-icons/fa";
+import ReactImageMagnify from "react-image-magnify";
+import { Rating } from "@smastrom/react-rating";
+import "@smastrom/react-rating/style.css";
+
+import { FaGoogle } from "react-icons/fa";
+import {
+  FaAngleLeft,
+  FaAngleRight,
+  FaFacebook,
+  FaTwitter,
+} from "react-icons/fa6";
+import ReviewModal from "./ReviewModal";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+
+const ProductDetails: React.FC = () => {
+  const { id } = useParams();
+  const [gift, setGift] = useState({});
+  const [count, setCount] = useState(1);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [currentImg, setCurrentImg] = useState('');
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const { data } = await axios.get(`http://localhost:3000/${id}`);
+        setGift(data.data);
+        setCurrentImg(data.data.giftImage[0])
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getData();
+  }, [id]);
+  const {
+    _id,
+    giftName,
+    store,
+    brand,
+    discount,
+    price,
+    rating,
+    giftImage,
+    productAddBy,
+    description,
+    size,
+    color,
+    type,
+    category,
+    availability,
+    quantity,
+  } = gift || {};
+  console.log(gift);
+  const scrollElement = useRef<HTMLDivElement>(null);
+
+  const scrollRight = () => {
+    if (scrollElement.current) {
+      scrollElement.current.scrollLeft += 300;
+    }
+  };
+
+  const scrollLeft = () => {
+    if (scrollElement.current) {
+      scrollElement.current.scrollLeft -= 300;
+    }
+  };
+
+  const setCurrent = (img: string) => {
+    setCurrentImg(img);
+  };
+
+  return (
+    <>
+      {Object.keys(gift).length > 0 && (
+        <div className="container mx-auto my-10 mt-20">
+          <div className="w-full flex flex-col md:flex-row gap-6">
+            <div className="relative w-full  md:w-2/5">
+              <div className="h-[500px] w-full">
+                <ReactImageMagnify
+                  {...{
+                    smallImage: {
+                      alt: "Wristwatch by Ted Baker London",
+                      isFluidWidth: true,
+                      src: currentImg,
+                    },
+                    largeImage: {
+                      src: currentImg,
+                      width: 1000,
+                      height: 1000,
+                      isHintEnabled: true,
+                    },
+                    enlargedImageContainerStyle: { background: "#fff" },
+                    enlargedImagePosition: "beside",
+                  }}
+                  style={{
+                    width: "auto",
+                    height: "100%",
+                    maxWidth: "500px",
+                    maxHeight: "500px",
+                    objectFit: "cover",
+                  }}
+                />
+              </div>
+
+              <div
+                ref={scrollElement}
+                className="flex flex-col justify-around items-center gap-4 md:gap-6 overflow-scroll scrollbar-none transition-all" // Use overflow-x-auto for scrolling
+              >
+
+                <div className="absolute bottom-0 flex gap-2">
+                <button
+                  className="bg-white shadow-md z-50 rounded-full p-1 text-lg hidden md:block"
+                  onClick={scrollLeft}
+                >
+                  <FaAngleLeft />
+                </button>
+
+                <div className="flex gap-2 w-2/3 overflow-hidden">
+                {giftImage?.map((img:string, index:number) => (
+                  <div
+                    key={index}
+                    onClick={() => setCurrent(img)}
+                    className=" h-[100px] w-[100px] border-2 border-primary flex-shrink-0" // Add flex-shrink-0 here
+                    style={{
+                        backgroundImage: `url(${img})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                    }}
+                  />
+                ))}
+                </div>
+                    <button
+                      className="bg-white shadow-md z-50 rounded-full p-1  text-lg hidden md:block"
+                      onClick={scrollRight}
+                    >
+                      <FaAngleRight />
+                    </button>
+                </div>
+              </div>
+            </div>
+
+            <div className=" w-full md:w-3/5 p-5 space-y-6 text-[#333]">
+              {/* description and title */}
+              <div className="space-y-3">
+                <h1 className="text-3xl font-bold">{giftName}</h1>
+                <div className="flex gap-1 items-center">
+                  <Rating  style={{ maxWidth: 150 }} value={rating} readOnly />
+                  <span className="ml-3 font-medium text-blue-500 text-sm hover:underline cursor-pointer">
+                    {}27 Reviews
+                  </span>
+                </div>
+
+                <p className="">{description}</p>
+              </div>
+              {/* price */}
+              <div className="border-y-2 py-5 border-gray-200">
+                <p className="text-3xl text-primary font-semibold">৳ {price}</p>
+                <p className="flex gap-2 font-medium">
+                  <small className="text-gray-500 line-through ">
+                    ৳{(discount + price).toFixed(2)}
+                  </small>
+                  <small>-{((discount / price) * 100).toFixed(0)}%</small>
+                </p>
+              </div>
+
+              {/* buttons */}
+              <div>
+                <div className="flex flex-col gap-4">
+                  <div className="flex gap-4 items-center">
+                    <span className="font-bold w-24">Size:</span>
+                    <span className="uppercase flex gap-2">
+                      <a className="h-8 w-8 border border-primary grid place-content-center">
+                        S
+                      </a>
+                      <a className="h-8 w-8 border border-[#333] grid place-content-center">
+                        M
+                      </a>
+                      <a className="h-8 w-8 border border-[#333] grid place-content-center">
+                        L
+                      </a>
+                    </span>
+                  </div>
+
+                  <div className="flex gap-4 items-center">
+                    <span className="font-bold w-24">Color:</span>
+                    <span className="uppercase flex gap-5 ml-1">
+                      <a className="h-6 w-6 border outline outline-2 outline-offset-4 outline-primary bg-primary"></a>
+                      <a className="h-6 w-6 border outline outline-2 outline-offset-4 outline-[#333] bg-yellow-500"></a>
+                      <a className="h-6 w-6 border outline outline-2 outline-offset-4 outline-[#333] bg-green-500"></a>
+                    </span>
+                  </div>
+
+                  <div className="flex gap-4 items-center">
+                    <span className="font-bold w-24">Type:</span>
+                    <span>{type}</span>
+                  </div>
+
+                  <div className="flex gap-4 items-center">
+                    <span className="font-bold w-24">Availability:</span>
+                    <span className="bg-[#a6f6a6] py-1 px-2 rounded-2xl">
+                      {availability}
+                    </span>
+                  </div>
+
+                  <div className="flex gap-4 items-center">
+                    <span className="font-bold w-24">Quantity:</span>
+                    <span className="uppercase flex gap-2">
+                      <span onClick={()=>count>1 &&setCount(p=>p-=1)} className="h-8 w-8 border border-[#333] grid place-content-center">
+                        -
+                      </span>
+                      <span className="h-8 w-8 border border-[#333] bg-gray-200 grid place-content-center">
+                        {count}
+                      </span>
+                      <span
+                      onClick={()=>setCount(p=>p+=1)}
+                      className="h-8 w-8 border border-[#333] grid place-content-center">
+                        +
+                      </span>
+                    </span>
+                  </div>
+
+                  <div className="my-4">
+                    <div className="flex flex-wrap gap-4">
+                      <button className="btn-secondary">Add To Cart</button>
+                      <button className="btn-secondary">Buy it now</button>
+                    </div>
+                    <button className="btn-secondary mt-4">
+                      Add To Wishlist
+                    </button>
+                  </div>
+
+                  <div className="text-xl flex gap-3 items-center ">
+                    <p className="text-4xl font-great-vibes">Share with us: </p>
+                    <div className="flex gap-2">
+                      <span className="hover:text-primary transition-all duration-200 cursor-pointer">
+                        <FaFacebook />
+                      </span>
+                      <span className="hover:text-primary transition-all duration-200 cursor-pointer">
+                        <FaTwitter />
+                      </span>
+                      <span className="hover:text-primary transition-all duration-200 cursor-pointer">
+                        <FaGoogle />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* review section */}
+          <div className="mt-10">
+            <div className="flex flex-col gap-4">
+              <div>
+                <div className="flex flex-wrap gap-4">
+                  <button className="btn-secondary">Description</button>
+                  <button
+                    className="btn-secondary"
+                    onClick={() => setIsModalVisible(true)}
+                  >
+                    Write a review
+                  </button>
+                </div>
+              </div>
+
+              {/* Render the Modal and pass the state */}
+              <ReviewModal
+                isVisible={isModalVisible}
+                onClose={setIsModalVisible}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default ProductDetails;
