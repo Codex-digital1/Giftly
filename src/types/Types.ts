@@ -19,7 +19,7 @@ export interface Gift {
   giftName: string;
   price: number;
   availability: string;
-  giftImage?: string[];
+  giftImage: string[];
   description?: string;
   store: string,
   brand: string,

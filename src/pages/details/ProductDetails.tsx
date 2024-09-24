@@ -15,9 +15,7 @@ const ProductDetails: React.FC = () => {
     const images = [img1, img2, img3, img1, img2, img3, img1, img2, img3];
     const [currentImg, setCurrentImg] = useState(images[0])
 
-
     const scrollElement = useRef<HTMLDivElement>(null);
-
     const scrollRight = () => {
         if (scrollElement.current) {
             scrollElement.current.scrollLeft += 300;
@@ -33,7 +31,6 @@ const ProductDetails: React.FC = () => {
     const setCurrent = (img: string) => {
         setCurrentImg(img)
     }
-
 
     return (
         <div className='container mx-auto my-10 mt-20'>
