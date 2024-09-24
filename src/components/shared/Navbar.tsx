@@ -17,9 +17,9 @@ const megaMenu = [
   { name: <SlBasket />, path: "/cart" },
 ];
 
-const Navbar: React.FC = ({ user }) => {
+const Navbar: React.FC = ({user}) => {
   const [isOpen, setIsOpen] = useState(false);
-
+ 
   return (
     <div className="fixed w-full bg-white z-50 top-0">
       <div className=" container mx-auto bg-white  h-20 flex justify-between items-center px-2">
