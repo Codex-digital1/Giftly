@@ -1,0 +1,224 @@
+[
+      {
+        "giftName": "Customizable Mug",
+        "store": "Giftly",
+        "brand": "MugMaster",
+        "discount": 10,
+        "price": 15.99,
+        "rating": 4.7,
+        "giftImage": [
+          "image1.jpg",
+          "image2.jpg",
+          "image3.jpg",
+          "image4.jpg"
+        ],
+        "productAddBy": "admin",
+        "description": "A customizable mug perfect for any occasion. Add your own photos or text.",
+        "size": "M",
+        "color": "White",
+        "type": "Personalized Gift",
+        "category": "All",
+        "availability": "In Stock",
+        "quantity": 150
+      },
+      {
+        "giftName": "Flower Bouquet",
+        "store": "Giftly",
+        "brand": "FloraGifts",
+        "discount": 15,
+        "price": 25.50,
+        "rating": 4.9,
+        "giftImage": [
+          "flower1.jpg",
+          "flower2.jpg",
+          "flower3.jpg",
+          "flower4.jpg"
+        ],
+        "productAddBy": "admin",
+        "description": "A beautiful bouquet of fresh flowers, perfect for any occasion.",
+        "size": "L",
+        "color": "Mixed",
+        "type": "Floral Gift",
+        "category": "Gift for Her",
+        "availability": "In Stock",
+        "quantity": 80
+      },
+      {
+        "giftName": "Personalized Keychain",
+        "store": "Giftly",
+        "brand": "KeyMaster",
+        "discount": 5,
+        "price": 8.99,
+        "rating": 4.5,
+        "giftImage": [
+          "keychain1.jpg",
+          "keychain2.jpg",
+          "keychain3.jpg",
+          "keychain4.jpg"
+        ],
+        "productAddBy": "user123",
+        "description": "A custom keychain with engraved name, a great small gift option.",
+        "size": "S",
+        "color": "Silver",
+        "type": "Accessory Gift",
+        "category": "Gift for Him",
+        "availability": "In Stock",
+        "quantity": 200
+      },
+      {
+        "giftName": "Custom T-shirt",
+        "store": "Giftly",
+        "brand": "TeeMaster",
+        "discount": 20,
+        "price": 19.99,
+        "rating": 4.8,
+        "giftImage": [
+          "tshirt1.jpg",
+          "tshirt2.jpg",
+          "tshirt3.jpg",
+          "tshirt4.jpg"
+        ],
+        "productAddBy": "admin",
+        "description": "A personalized t-shirt with your own design, available in various colors.",
+        "size": "XL",
+        "color": "Black",
+        "type": "Clothing Gift",
+        "category": "All",
+        "availability": "Out of Stock",
+        "quantity": 0
+      },
+      {
+        "giftName": "Wireless Earbuds",
+        "store": "Giftly",
+        "brand": "TechSound",
+        "discount": 25,
+        "price": 49.99,
+        "rating": 4.6,
+        "giftImage": [
+          "earbuds1.jpg",
+          "earbuds2.jpg",
+          "earbuds3.jpg",
+          "earbuds4.jpg"
+        ],
+        "productAddBy": "techadmin",
+        "description": "High-quality wireless earbuds with noise cancellation.",
+        "size": "M",
+        "color": "Black",
+        "type": "Tech Gift",
+        "category": "Tech Gift",
+        "availability": "In Stock",
+        "quantity": 50
+      },
+      {
+        "giftName": "Leather Wallet",
+        "store": "Giftly",
+        "brand": "LeatherCraft",
+        "discount": 10,
+        "price": 29.99,
+        "rating": 4.3,
+        "giftImage": [
+          "wallet1.jpg",
+          "wallet2.jpg",
+          "wallet3.jpg",
+          "wallet4.jpg"
+        ],
+        "productAddBy": "admin",
+        "description": "A stylish leather wallet, perfect for everyday use.",
+        "size": "L",
+        "color": "Brown",
+        "type": "Accessory Gift",
+        "category": "Gift for Him",
+        "availability": "In Stock",
+        "quantity": 120
+      },
+      {
+        "giftName": "Custom Necklace",
+        "store": "Giftly",
+        "brand": "JewelCraft",
+        "discount": 20,
+        "price": 35.99,
+        "rating": 4.8,
+        "giftImage": [
+          "necklace1.jpg",
+          "necklace2.jpg",
+          "necklace3.jpg",
+          "necklace4.jpg"
+        ],
+        "productAddBy": "admin",
+        "description": "A personalized necklace with engraved initials, perfect for special occasions.",
+        "size": "M",
+        "color": "Gold",
+        "type": "Jewelry Gift",
+        "category": "Gift for Her",
+        "availability": "In Stock",
+        "quantity": 75
+      },
+      {
+        "giftName": "Smartwatch",
+        "store": "Giftly",
+        "brand": "TechWear",
+        "discount": 30,
+        "price": 99.99,
+        "rating": 4.9,
+        "giftImage": [
+          "smartwatch1.jpg",
+          "smartwatch2.jpg",
+          "smartwatch3.jpg",
+          "smartwatch4.jpg"
+        ],
+        "productAddBy": "techadmin",
+        "description": "A modern smartwatch with fitness tracking and notifications.",
+        "size": "L",
+        "color": "Silver",
+        "type": "Tech Gift",
+        "category": "Tech Gift",
+        "availability": "In Stock",
+        "quantity": 60
+      },
+      {
+        "giftName": "Photo Frame",
+        "store": "Giftly",
+        "brand": "FrameWorks",
+        "discount": 15,
+        "price": 14.99,
+        "rating": 4.4,
+        "giftImage": [
+          "frame1.jpg",
+          "frame2.jpg",
+          "frame3.jpg",
+          "frame4.jpg"
+        ],
+        "productAddBy": "admin",
+        "description": "A stylish photo frame to display cherished memories.",
+        "size": "M",
+        "color": "White",
+        "type": "Home Decor",
+        "category": "All",
+        "availability": "In Stock",
+        "quantity": 90
+      },
+      {
+        "giftName": "Bluetooth Speaker",
+        "store": "Giftly",
+        "brand": "SoundBoom",
+        "discount": 25,
+        "price": 45.99,
+        "rating": 4.7,
+        "giftImage": [
+          "speaker1.jpg",
+          "speaker2.jpg",
+          "speaker3.jpg",
+          "speaker4.jpg"
+        ],
+        "productAddBy": "techadmin",
+        "description": "A portable Bluetooth speaker with high-quality sound.",
+        "size": "M",
+        "color": "Blue",
+        "type": "Tech Gift",
+        "category": "Tech Gift",
+        "availability": "In Stock",
+        "quantity": 100
+      }
+    ]
+
+  
