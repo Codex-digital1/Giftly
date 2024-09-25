@@ -65,17 +65,19 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     };
 
-    const updateUserProfile = async (name: string) => {
+    const updateUserProfile = async (name: string, photoURL: string, phoneNumber:string, email: string) => {
         if (auth.currentUser) {
-            try {
-                await updateProfile(auth.currentUser, { displayName: name });
-            } catch (error: any) {
-                toast.error("Failed to update profile: " + error.message);
-            }
+          try {
+            await updateProfile(auth.currentUser, { displayName: name, photoURL: photoURL, phoneNumber:phoneNumber, email:email });
+            toast.success('Profile updated successfully!');
+          } catch (error: any) {
+            toast.error("Failed to update profile: " + error.message);
+          }
         } else {
-            toast.error("User not authenticated.");
+          toast.error("User not authenticated.");
         }
-    };
+      };
+    
 
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, (user) => {
