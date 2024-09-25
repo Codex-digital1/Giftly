@@ -24,9 +24,6 @@ interface AuthProviderProps {
 }
 
 // Initialize Firebase app
-
-
-
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -113,6 +110,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         logOut,
         updateUserProfile,
     };
+
+ 
 
     return (
         <AuthContext.Provider value={authInfo}>

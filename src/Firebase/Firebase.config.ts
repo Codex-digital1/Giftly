@@ -1,17 +1,17 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
+import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBIVCUsttyuULG1Jdvu3y0tzWtH6CNllPQ",
-  authDomain: "giftly-a5f0f.firebaseapp.com",
-  projectId: "giftly-a5f0f",
-  storageBucket: "giftly-a5f0f.appspot.com",
-  messagingSenderId: "297511728214",
-  appId: "1:297511728214:web:4e748e6a1b50121d5e77f7"
+  apiKey: "AIzaSyD6wjnIPPAF8-yOG-L4j1smb-qULAQB_sA",
+  authDomain: "giftly-ba979.firebaseapp.com",
+  projectId: "giftly-ba979",
+  storageBucket: "giftly-ba979.appspot.com",
+  messagingSenderId: "832467487474",
+  appId: "1:832467487474:web:87885a010939ef6d939e6b"
 };
 
 // Initialize Firebase
