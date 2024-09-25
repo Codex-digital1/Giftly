@@ -1,13 +1,5 @@
 import { useState } from "react";
-import Card from "./card";
-interface Gift {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-  rating: number;
-  available: boolean;
-}
+ 
 
 const giftsData: Gift[] = [
   {
@@ -38,21 +30,17 @@ const giftsData: Gift[] = [
 ];
 
 const Allgift = () => {
-
-  
-  // const [filter, setFilter] = useState<string>("");
-  // const [search, setSearch] = useState<string>("");
-  // const [searchText, setSearchText] = useState<string>("");
-
-
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
-  const [category, setCategory] = useState<string>("All");
-  const [rating, setRating] = useState<number>(0);
-  const [availability, setAvailability] = useState<boolean>(false);
-  const [sortOption, setSortOption] = useState<string>("default");
+  const [filter, setFilter] = useState("");
+  const [search, setSearch] = useState("");
+  const [searchText, setSearchText] = useState("");
+  const [priceRange, setPriceRange] = useState([0, 100]);
+  const [category, setCategory] = useState("All");
+  const [rating, setRating] = useState(0);
+  const [availability, setAvailability] = useState(false);
+  const [sortOption, setSortOption] = useState("default");
 
   // Function to filter gifts based on state
-  const filterGifts = (gifts: Gift[]) => {
+  const filterGifts = (gifts) => {
     return gifts
       .filter((gift) => category === "All" || gift.category === category)
       .filter(
@@ -70,7 +58,6 @@ const Allgift = () => {
   };
 
   const filteredGifts = filterGifts(giftsData);
-  console.log(filteredGifts);
 
   return (
     <>
@@ -172,12 +159,9 @@ const Allgift = () => {
           {/* card container */}
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
+          
+          {gifts.length>0 && gifts.map(gift=><GiftCard key={gift._id} gift={gift}/>)}
+          
 
           </div>
         </div>

@@ -25,10 +25,10 @@ const Navbar: React.FC = () => {
  const handleLogOut = () => {
   logOut?.();
  }
- console.log(user);
+//  console.log(user);
   return (
     <div className="fixed w-full bg-white z-50 top-0">
-      <div className=" container mx-auto bg-white  h-20 flex justify-between items-center px-2">
+      <div className=" container mx-auto bg-white  h-20 flex justify-between items-center  px-2">
         {/* Logo */}
         <div className="flex justify-center bg-white items-center cursor-pointer text-primary">
           <IoMdGift className="md:text-4xl text-base font-bold" />
@@ -37,14 +37,15 @@ const Navbar: React.FC = () => {
           </Link>
         </div>
         {/* Input */}
-        <form>
-          <label className="relative group flex  justify-center items-center">
+        <form className="md:w-1/3">
+          <label className="relative group flex justify-center items-center">
             <input
               type="text"
-              className="lg:w-[300px] md:-w[280px]  w-[200px] rounded-full  border border-black md:px-6 px-2 md:p-1 text-black   focus:outline-none focus:border-primary hover:border-primary"
+              className="  border border-primary border-opacity-45 md:w-full rounded-lg  md:p-3 p-2  text-black   focus:outline-none focus:border-primary hover:border-primary"
+
               placeholder="find your Gift..."
             />
-            <IoSearch className="group-hover:text-primary absolute right-6 mt-0 hover:text-textYellow cursor-pointer" />
+            <IoSearch className="group-hover:text-primary absolute right-2 md:right-6  mt-0 text-xl  cursor-pointer" />
           </label>
         </form>
           {/* Mega menu leftSide */}
@@ -64,8 +65,8 @@ const Navbar: React.FC = () => {
           ))}
         </nav>
         {/* mega menu Icons rightSide */}
-        <div className=" flex gap-5">
-          <div className="flex justify-center items-center gap-x-4 md:gap-x-6">
+        <div className=" flex md:gap-5 gap-1">
+          <div className="flex justify-center items-center gap-x-2 md:gap-x-6">
             {megaMenu?.slice(4, 6).map((menu) => (
               <NavLink
                 key={menu.path}
