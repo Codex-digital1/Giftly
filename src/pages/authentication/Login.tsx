@@ -1,5 +1,5 @@
 import { useState } from "react";
-import getInTouch from "../../../src/img/Login-bro.svg";
+import getInTouch from "../../../src/img/register.svg";
 import { Link } from "react-router-dom";
 import useAuth from "../../Provider/useAuth";
 import { log } from "console";
