@@ -33,6 +33,7 @@ const FeaturedProducts: React.FC = () => {
                             return <FeatureProductCard key={index} gift={gift} />
                         })
                     }
+
                 </div>
 
             </div>
