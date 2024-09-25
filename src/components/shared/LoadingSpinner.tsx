@@ -1,4 +1,4 @@
-import { HashLoader } from 'react-spinners'
+import { ClockLoader, HashLoader } from 'react-spinners'
 
 const LoadingSpinner = ({ smallHeight }) => {
   return (

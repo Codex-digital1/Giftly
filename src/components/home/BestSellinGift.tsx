@@ -4,7 +4,7 @@ import SectionHeading from "../shared/SectionHeading";
 import MyContainer from "../shared/MyContainer";
 import { drawerPropsType } from "../../types/Types";
 import useAuth from "../../Provider/useAuth";
-import LoadingSpinner from './../shared/LoadingSpinner';
+import LoadingSpinner from '../shared/LoadingSpinner';
 
 const BestSellinGift = ({drawerToggle}: drawerPropsType) => {
   const {gifts,loading} =useAuth()

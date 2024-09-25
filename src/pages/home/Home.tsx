@@ -7,15 +7,12 @@ import Feedback from "../../components/home/Feedback/Feedback";
 import PromotionalBanner from "../../components/home/PromotionalBanner";
 import { useState } from "react";
 import Drawer from "../../components/cart/Drawer";
-import ChatApp from "../chatApp/ChatApp";
 
 const Home = () => {
  
 
 
   const [isOpenDrawer, setIsOpenDrawer] = useState<boolean>(false);
-  const [isOpenChat, setIsOpenChat] = useState<boolean>(false);
-
   const drawerToggle = () => {
     setIsOpenDrawer(!isOpenDrawer);
   };
@@ -30,13 +27,6 @@ const Home = () => {
       <PromotionalBanner />
       <Feedback></Feedback>
       <Drawer drawerToggle={drawerToggle} isOpenDrawer={isOpenDrawer} />
-
-      <div className="absolute top-[1400px] left-20 z-30">
-        <button className="btn-secondary" onClick={()=>setIsOpenChat(!isOpenChat)}>Chat</button>
-        {
-          isOpenChat && <ChatApp />
-        }
-      </div>
     </div>
   );
 };

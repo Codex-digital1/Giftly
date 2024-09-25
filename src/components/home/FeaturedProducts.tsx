@@ -2,7 +2,7 @@ import React from 'react';
 import FeatureProductCard from './FeatureProductCard';
 import { Gift } from '../../types/Types';
 import useAuth from '../../Provider/useAuth';
-import LoadingSpinner from './../shared/LoadingSpinner';
+import LoadingSpinner from '../shared/LoadingSpinner';
 
 
 const FeaturedProducts: React.FC = () => {

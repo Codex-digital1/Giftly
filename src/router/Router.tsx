@@ -51,14 +51,14 @@ const router = createBrowserRouter([
         path: "/productDetails",
         element: <ProductDetails></ProductDetails>,
       },
-      {
-        path: "/chatApp",
-        element: <ChatApp></ChatApp>,
-      },
-      {
-        path: "/join", // Place /join inside the children of the root
-        element: <Join></Join>,
-      },
+      // {
+      //   path: "/chatApp",
+      //   element: <ChatApp></ChatApp>,
+      // },
+      // {
+      //   path: "/join", // Place /join inside the children of the root
+      //   element: <Join></Join>,
+      // },
       {
         path: "/login",
         element: <Login></Login>,

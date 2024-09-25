@@ -1,28 +1,57 @@
 import React, { useContext, useEffect, useState } from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
-import logo from "/logo.png";
-// import { user } from "./Join";
+import adminLogo from "/admin.gif";
 import socketIo from "socket.io-client";
+import { RxCross2 } from "react-icons/rx";
 import { AuthContext } from '../../Provider/AuthProvider';
+import axios from 'axios';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
 
 let socket;
 
 const ENDPOINT = "http://localhost:3000/";
 
-const ChatApp: React.FC = () => {
-  const { user, loading } = useContext(AuthContext)
-
-  console.log(user)
-  const [userInfo, setUserInfo] = useState(user);
+const ChatApp: React.FC = ({ setIsOpenChat }) => {
+  const { user, loading } = useContext(AuthContext);
+  const [userInfo, setUserInfo] = useState("Guest");
   const [id, setId] = useState("");
   const [messages, setMessages] = useState<any[]>([]);
 
+  // Set the user info when available
+  useEffect(() => {
+    if (user?.displayName) {
+      setUserInfo(user.displayName);
+    }
+  }, [user]);
+
+  // Send a message with timestamp to avoid duplication
   const send = () => {
-    const message = (document.getElementById('chatInput') as HTMLInputElement).value;
-    console.log("Sending message:", message);
+    const messageInput = (document.getElementById('chatInput') as HTMLInputElement);
+    const message = messageInput.value;
+
     if (message.trim()) {
-      socket.emit('message', { message, id });
-      (document.getElementById('chatInput') as HTMLInputElement).value = "";
+      const timestamp = new Date().toISOString(); // Unique timestamp
+      axios.post('http://localhost:3000/messages', { userInfo, message, timestamp })
+        .then(() => {
+          socket.emit('message', { message, id, userInfo, timestamp });
+          messageInput.value = "";
+        })
+        .catch(err => console.error("Error sending message:", err));
+    }
+  };
+
+  // Fetch messages from the database
+  const fetchMessages = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/messages');
+      setMessages((prevMessages) => {
+        const uniqueMessages = response.data.filter((msg: any) => {
+          return !prevMessages.some((existingMsg) => existingMsg.timestamp === msg.timestamp);
+        });
+        return [...prevMessages, ...uniqueMessages];
+      });
+    } catch (err) {
+      console.error("Error fetching messages:", err);
     }
   };
 
@@ -30,74 +59,72 @@ const ChatApp: React.FC = () => {
     socket = socketIo(ENDPOINT, { transports: ['websocket'] });
 
     socket.on('connect', () => {
-      console.log("Connected with ID:", socket.id);
       setId(socket.id);
     });
 
+    // Emit the user joining the chat
     socket.emit('joined', { userInfo });
-    console.log("User joined:", userInfo);
 
-    socket.on('welcome', (data) => {
-      console.log("Welcome message:", data.message);
-      setMessages((prevMessages) => [...prevMessages, data]);
-    });
+    // Fetch initial messages once
+    fetchMessages();
 
-    socket.on('userJoined', (data) => {
-      console.log("User joined:", data.message);
-      setMessages((prevMessages) => [...prevMessages, data]);
-    });
-
-    socket.on('leave', (data) => {
-      console.log("User left:", data.message);
-      setMessages((prevMessages) => [...prevMessages, data]);
-    });
-
+    // Listen for new messages from the server
     socket.on('sendMessage', (data) => {
-      console.log("Received message:", data.message);
-      setMessages((prevMessages) => [...prevMessages, data]);
+      // Add the message if it doesn't exist based on timestamp
+      setMessages((prevMessages) => {
+        const exists = prevMessages.some((msg) => msg.timestamp === data.timestamp);
+        if (!exists) {
+          return [...prevMessages, data];
+        }
+        return prevMessages;
+      });
     });
 
     return () => {
-      socket.off(); // Clean up socket connection
-      console.log("Socket disconnected");
+      socket.off(); // Clean up the socket on unmount
     };
-  }, [userInfo, user]);
+  }, [userInfo]);
 
   return (
-    <div className="flex flex-col justify-between max-w-lg bg-gray-100 container mx-auto border-2 mt-[100px] border-red-500 h-[600px] z-50">
+    <div className="overflow-hidden flex flex-col justify-between w-full h-full lg:max-w-lg lg:h-[450px] bg-gray-100 shadow-xl lg:container lg:mx-auto border-2 lg:mb-[100px] border-primary z-50 rounded-lg">
       {/* Chat Header */}
-      <div className="bg-red-500 text-white p-4 flex justify-between items-center">
-        <div className="flex items-center space-x-3">
-          <button className="text-xl">←</button>
-          <img src={logo} alt="Seller Avatar" className="w-10 h-10 rounded-full" />
-          <span className="text-xl">{user?.name || "Seller Name"}</span>
-          <span className="ml-2 h-2 w-2 bg-green-500 rounded-full"></span>
+      <div className="bg-primary text-white p-4 flex justify-between items-center">
+        <div className="relative flex items-center space-x-4">
+          <button className="text-2xl font-bold cursor-pointer">←</button>
+          <img src={adminLogo} alt="Giftly" className="w-10 h-10 rounded-full " />
+          <span className="text-xl">{"Giftly"}</span>
+          <span className="top-[26px] left-[48px] z-50 h-3 w-3 bg-green-500 rounded-full absolute"></span>
+        </div>
+
+        <div className='font-bold text-2xl cursor-pointer' onClick={() => setIsOpenChat(prev => !prev)}>
+          <RxCross2 />
         </div>
       </div>
 
       {/* Chat Body */}
       <ScrollToBottom className="flex-1 p-4 overflow-auto">
-        <h1>{userInfo}</h1>
         <div className="space-y-4">
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`flex ${msg.userInfo === user ? "justify-end" : "justify-start"}`}
-            >
+          {loading ? <LoadingSpinner smallHeight={true} /> : <>
+            {messages.map((msg, index) => (
               <div
-                className={`${msg.userInfo === user ? "bg-red-500 text-white" : "bg-gray-300 text-black"} p-3 rounded-lg max-w-xs`}
+                key={index}
+                className={`flex ${msg.userInfo === userInfo ? "justify-end" : "justify-start"}`}
               >
-                <p>{msg.message}</p>
-                <span className="text-xs text-gray-500">{msg.userInfo}</span>
+                <div
+                  className={`${msg.userInfo === userInfo ? "bg-primary text-white" : "bg-gray-300 text-black"} p-3 rounded-lg max-w-xs`}
+                >
+                  <p>{msg.message}</p>
+                  <span className="text-xs text-gray-500">{msg.userInfo}</span>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </>}
         </div>
       </ScrollToBottom>
 
       {/* Chat Input */}
       <div className="bg-white p-4 flex space-x-4 border-t border-gray-300">
-        <button className="text-red-500 text-2xl">📷</button>
+        <button className="text-primary text-2xl">📷</button>
         <form className="flex flex-1">
           <input
             id="chatInput"
@@ -109,7 +136,7 @@ const ChatApp: React.FC = () => {
           <button
             onClick={send}
             type="button"
-            className="bg-red-500 text-white px-4 ml-2 rounded-lg"
+            className="bg-primary text-white px-4 ml-2 rounded-lg"
           >
             Send
           </button>
