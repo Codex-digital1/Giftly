@@ -1,76 +1,95 @@
 import { useState } from "react";
+import useAuth from "../../Provider/useAuth";
+import axios from "axios";
 
 const ProfileInfo = () => {
-  const [changeProfile, setChangeProfile] = useState<boolean>(false);
+  const {user,updateUserProfile} = useAuth();
+//  Upload image
+const preset_key = "fkaap0pt";  
+const cloud_name = "dhmf91dsb";
+
+
+const [uploadedImageUrl,setUploadedImageUrl] = useState();
+console.log(uploadedImageUrl);
+const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+    const form = e.currentTarget;
+    const nameValue = (form.elements.namedItem("name") as HTMLInputElement).value;
+   // image 
+   const imageInput = form.elements.namedItem("image") as HTMLInputElement;
+   const imageFile = imageInput.files?.[0];
+  
+   const formData = new FormData();
+   formData.append('file', imageFile );
+   formData.append("upload_preset", preset_key)
+   axios.post(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, formData)
+   .then(res => setUploadedImageUrl(res.data.secure_url))
+   .catch(error => console.log(error))
+
+  //  update image
+  if (uploadedImageUrl) {  
+    updateUserProfile(nameValue,uploadedImageUrl); 
+    
+} else {
+    updateUserProfile(nameValue, ""); // If no image, just update name
+} 
+
+}
 
   return (
     <div className="p-5 shadow-lg border-t-4 border-primary">
       <h2 className="text-2xl font-medium inter">Personal Information</h2>
-      <div className="p-5 text-lg flex items-center gap-5">
-        <img
-          src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  <form onSubmit={handleUpdate}>
+  <div className="p-5 text-lg flex items-center gap-5">
+       <div>
+       <img
+          src={user?.photoURL}
           alt="user"
           className="w-[100px] mr-3 border rounded-lg"
         />
-        {!changeProfile && (
-          <button
-            onClick={() => setChangeProfile(!changeProfile)}
-            className="font-medium btn-secondary text-white btn border-none"
-          >
-            Change Profile Picture
-          </button>
-        )}
-
-        {changeProfile && <input type="file" placeholder="update profile" />}
+        <p>{user?.email}</p>
+        <p>{user?.phoneNumber}</p>
+       </div>
+          <div>
+                <label htmlFor="image" className="block mb-3 text-sm font-semibold">
+                  Select Image:
+                </label>
+                <input
+                  required
+                  type="file"
+                  id="image"
+                  name="image"
+                  accept="image/*"
+                />
+              </div>
       </div>
-      <form className="flex flex-col gap-4 mt-10">
+      <div className="flex flex-col gap-4 mt-10">
         <input
           type="text"
           placeholder="Username"
+          name="name"
           className="input input-bordered"
         />
         <input
           type="text"
           placeholder="Email"
+          name="email"
           className="input input-bordered"
         />
         <input
           type="text"
           placeholder="Mobile Number"
+          name="phone"
           className="input input-bordered"
         />
-
-        <div className="flex items-center gap-5">
-          <label htmlFor="male" className="cursor-pointer text-xl">
-            <input
-              type="radio"
-              name="gender"
-              id="male"
-              value="male"
-              className="mx-2"
-            />
-            Male
-          </label>
-
-          <label htmlFor="female" className="cursor-pointer text-xl">
-            <input
-              type="radio"
-              name="gender"
-              id="female"
-              value="female"
-              className="mx-2"
-            />
-            Female
-          </label>
-        </div>
-
         <button
           type="submit"
           className="btn px-8 bg-primary text-white hover:bg-red-500 text-xl max-w-36"
         >
           Update
         </button>
-      </form>
+      </div>
+  </form>
     </div>
   );
 };

@@ -1,24 +1,15 @@
 import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import useAxiosPublic from '../../Hooks/useAxiosPublic';
 import FeatureProductCard from './FeatureProductCard';
 import { Gift } from '../../types/Types';
+import useAuth from '../../Provider/useAuth';
+import LoadingSpinner from './../shared/LoadingSpinner';
 
 
 const FeaturedProducts: React.FC = () => {
-    const axiosPublic = useAxiosPublic()
-    const user = true;
-
-    const { data: getAllGift = []} = useQuery<Gift[]>({
-        queryKey: ["getAllGift"],
-        enabled: user,
-        queryFn: async () => {
-            const { data } = await axiosPublic.get(`/getAllGift`);
-            return data?.data;
-        },
-    });
-
-    console.log(getAllGift)
+    const {gifts,loading} =useAuth()
+    console.log(gifts);
+  
+    if(loading) <LoadingSpinner/>
     return (
         <div className='section-to-section-margin  container mx-auto'>
             <div>
@@ -29,7 +20,7 @@ const FeaturedProducts: React.FC = () => {
 
                 <div className='mt-12  grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4  gap-6 p-2 '>
                     {
-                        getAllGift?.map((gift, index) => {
+                        gifts?.map((gift, index) => {
                             return <FeatureProductCard key={index} gift={gift} />
                         })
                     }

@@ -10,6 +10,8 @@ import Drawer from "../../components/cart/Drawer";
 import ChatApp from "../chatApp/ChatApp";
 
 const Home = () => {
+ 
+
 
   const [isOpenDrawer, setIsOpenDrawer] = useState<boolean>(false);
   const [isOpenChat, setIsOpenChat] = useState<boolean>(false);

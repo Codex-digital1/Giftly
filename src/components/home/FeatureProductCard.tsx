@@ -9,21 +9,35 @@ interface FeatureProductCardProps {
 }
 
 const FeatureProductCard: React.FC<FeatureProductCardProps> = ({ gift }) => {
-
-    const { giftName, price, availability, giftImage, _id } = gift
-    // console.log(giftImage)
+    const {
+        _id,
+        giftName,
+        store,
+        brand,
+        discount,
+        price,
+        rating,
+        giftImage,
+        productAddBy,
+        description,
+        size,
+        color,
+        type,
+        category,
+        availability,
+        quantity,
+      } = gift||{}
     return (
-        <Link to={`/getAGiftDetails/${_id}`}>
-            <div className='min-w-[270px] group w-full text-center border-2 border-[#EBEBEB] rounded relative overflow-hidden shadow-sm'>
+        <Link to={`/productDetails/${_id}`} className='min-w-[270px] group w-full text-center border-2 border-[#EBEBEB] rounded relative overflow-hidden shadow-sm'>
 
-                <div className=' h-[270px]'>
-                    <img src={giftImage[0]} alt={giftName} className='w-full h-full group-hover:scale-110  transition-all duration-300 ease-in-out ' />
-                </div>
+            <div className=' h-[270px]'>
+                <img src={giftImage[0]} alt="" className='mx-auto h-full group-hover:scale-110  transition-all duration-300 ease-in-out ' />
+            </div>
 
-                <div className='mt-4 mb-2'>
-                    <h3 className='text-sm font-semibold uppercase text-[#333333] group-hover:opacity-0  transition-all duration-300 ease-in-out'>{giftName}</h3>
-                    <p className='text-primary text-xl font-semibold group-hover:opacity-0  transition-all duration-300 ease-in-out'>${price}</p>
-                </div>
+            <div className='mt-4 mb-2'>
+                <h3 className='text-sm font-semibold uppercase text-[#333333] group-hover:opacity-0  transition-all duration-300 ease-in-out'>{giftName}</h3>
+                <p className='text-primary text-xl font-semibold group-hover:opacity-0  transition-all duration-300 ease-in-out'>৳ {price}</p>
+            </div>
 
                 {/* New */}
                 <span className='bg-primary text-sm text-white absolute w-[130px] h-[30px] top-[15px] -left-10 -rotate-45 z-10'>New</span>
@@ -53,8 +67,7 @@ const FeatureProductCard: React.FC<FeatureProductCardProps> = ({ gift }) => {
                     </div>
                 </div>
 
-            </div>
-        </Link>
+        </Link >
     )
 }
 

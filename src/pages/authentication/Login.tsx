@@ -1,9 +1,12 @@
 import { useState } from "react";
-import getInTouch from "../../../src/img/Login-bro.svg";
+import getInTouch from "../../../src/img/register.svg";
 import { Link } from "react-router-dom";
+import useAuth from "../../Provider/useAuth";
+import { log } from "console";
+import { emit } from "process";
 
 const Login: React.FC = () => {
-    const [showPassword, setShowPassword] = useState(true);
+     const {login,googleLogin} = useAuth();
     const handelform = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -13,13 +16,30 @@ const Login: React.FC = () => {
 
         const emailValue = email.value;
         const passwordValue = password.value;
-
+         login(emailValue,passwordValue)
+         .then(result => {
+            console.log(result.user);
+         })
+         .catch(error => {
+              console.log(error.message)
+            })
         console.log(emailValue,passwordValue);
 
     };
+
+const handleGoogleLogin = () => {
+googleLogin()
+.then(result => {
+    console.log(result.user);
+})
+.catch(error => {
+    console.log(error);
+})
+}
+
     return (
-        <div className="md:flex justify-center px-5 md:px-0 py-10 items-center mt-24 bg-[#F4F4F4] ">
-            <div className="hidden lg:flex justify-center items-center md:w-1/2">
+        <div className="md:flex justify-center px-5 md:px-0 py-10 items-center mt-24 border hover:border-primary duration-700 rounded-xl container mx-auto ">
+            <div className="hidden md:flex justify-center items-center md:w-1/2">
                 <img
                     src={getInTouch}
                     className="rounded-xl mt-0 text-center"
@@ -27,21 +47,12 @@ const Login: React.FC = () => {
                 />
             </div>
             {/* form */}
-            <div className="antialiased  md:w-1/2 md:mr-5">
-                <div className="max-w-lg mx-auto my-10 bg-white p-8 rounded-xl shadow-lg shadow-slate-300">
+            <div className="antialiased  md:w-1/2">
+                <div className="max-w-lg mx-auto bg-white p-8 rounded-xl shadow-lg shadow-slate-300">
                     <h1 className="text-4xl font-medium">Login</h1>
                     <p className="text-slate-500">Hi, Welcome back 👋</p>
 
-                    <div className="my-5">
-                        <button className="w-full text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-primary hover:text-slate-900 hover:shadow transition duration-150">
-                            <img
-                                src="https://www.svgrepo.com/show/355037/google.svg"
-                                className="w-6 h-6"
-                                alt="Google"
-                            />
-                            <span>Login with Google</span>
-                        </button>
-                    </div>
+                  
 
                     <form onSubmit={handelform} className="my-10">
                         <div className="flex flex-col space-y-5">
@@ -93,6 +104,18 @@ const Login: React.FC = () => {
                                 </svg>
                                 <span>Login</span>
                             </button>
+
+                        
+                        <button onClick={handleGoogleLogin} className="w-full text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-primary hover:text-slate-900 hover:shadow transition duration-150">
+                            <img
+                                src="https://www.svgrepo.com/show/355037/google.svg"
+                                className="w-6 h-6"
+                                alt="Google"
+                            />
+                            <span>Login with Google</span>
+                        </button>
+                  
+
 
                             <p className="text-center">
                                 Not registered yet?{" "}

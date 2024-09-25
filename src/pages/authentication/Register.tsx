@@ -1,63 +1,87 @@
-import { useState } from "react";
-import getInTouch from "../../../src/img/signup.svg";
-import useAuth from "./../../Hook/useAuth";
+import register from "../../../src/img/register.svg";
 import { Link } from "react-router-dom";
+import useAuth from "../../Provider/useAuth";
+import { toast } from "react-toastify";
+import { Toaster } from "react-hot-toast";
+import { useState } from "react";
+import axios from "axios";
 
 const Register: React.FC = () => {
-  const [showPassword, setShowPassword] = useState(true);
-  // const {Authprovidre} = useAuth();
+ const {createUser,updateUserProfile,googleLogin} = useAuth()
+ 
+//  Upload image
+const preset_key = "fkaap0pt";  
+const cloud_name = "dhmf91dsb";
+
+
+const [uploadedImageUrl,setUploadedImageUrl] = useState();
+console.log(uploadedImageUrl);
+// handle Register form data 
   const handelform = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const form = e.currentTarget;
-    const email = form.elements.namedItem("email") as HTMLInputElement;
-    const password = form.elements.namedItem("password") as HTMLInputElement;
-    const name = form.elements.namedItem("name") as HTMLInputElement;
+    const nameValue = (form.elements.namedItem("name") as HTMLInputElement).value;
+    const emailValue = (form.elements.namedItem("email") as HTMLInputElement).value;
+    const passwordValue = (form.elements.namedItem("password") as HTMLInputElement).value;
+    // image 
     const imageInput = form.elements.namedItem("image") as HTMLInputElement;
-
-    const emailValue = email.value;
-    const passwordValue = password.value;
-    const nameValue = name.value;
-
-    // Handle file input
     const imageFile = imageInput.files?.[0];
-    if (imageFile) {
-      console.log("Image File:", imageFile.name);
-    }
 
-    try {
-        console.log('hahah');
-    } catch (err) {
-      console.log(err);
+    const formData = new FormData();
+    formData.append('file', imageFile );
+    formData.append("upload_preset", preset_key)
+    axios.post(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, formData)
+    .then(res => setUploadedImageUrl(res.data.secure_url))
+    .catch(error => console.log(error))
+
+
+
+console.log(imageFile);
+
+    
+    console.log(emailValue,passwordValue,nameValue);
+    createUser(emailValue, passwordValue,nameValue)
+    .then((result) => {
+      toast.success('Successfully created account!')
+      console.log(result.user);
+      if (uploadedImageUrl) {  
+        updateUserProfile(nameValue, uploadedImageUrl); 
+    } else {
+        updateUserProfile(nameValue, ""); // If no image, just update name
     }
+    })
+    .catch(error => {
+      console.log(error);
+    })
   };
-
+  // Google login
+  const handleGoogleLogin = () => {
+    googleLogin()
+    .then(result => {
+        console.log(result.user);
+    })
+    .catch(error => {
+        console.log(error);
+    })
+    }
+  
+  
   return (
-    <div className="md:flex justify-center px-5 md:px-0 py-10 items-center mt-24 bg-[#F4F4F4]">
-      <div className="hidden lg:flex justify-center items-center md:w-1/2">
+    <div className="md:flex justify-center p-5 rounded-xl items-center mt-24  container mx-auto border hover:border-primary duration-700 ">
+      <div><Toaster/></div>
+
+      <div className="md:flex hidden justify-center items-center md:w-1/2  ">
         <img
-          src={getInTouch}
+          src={register}
           className="rounded-xl mt-0 text-center"
           alt="Get in Touch"
         />
       </div>
-      <div className="antialiased md:w-1/2 md:mr-5">
-        <div className="max-w-lg mx-auto my-10 bg-white p-8 rounded-xl shadow-lg shadow-slate-300">
+      <div className="antialiased md:w-1/2">
+        <div className="max-w-xl mx-auto border p-8 rounded-xl shadow-lg shadow-slate-300">
           <h1 className="text-4xl font-medium">Register</h1>
           <p className="text-slate-500">Hi, Welcome back 👋</p>
-
-          <div className="my-5">
-            <button className="w-full text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-primary hover:text-slate-900 hover:shadow transition duration-150">
-              <img
-                src="https://www.svgrepo.com/show/355037/google.svg"
-                className="w-6 h-6"
-                alt="Google"
-              />
-              <span>Login with Google</span>
-            </button>
-          </div>
-
-          <form onSubmit={handelform} className="my-10">
+          <form onSubmit={handelform} className="my-6">
             <div className="flex flex-col space-y-5">
               <label htmlFor="name">
                 <p className="font-medium text-slate-700 pb-2">
@@ -67,7 +91,7 @@ const Register: React.FC = () => {
                   id="name"
                   name="name"
                   type="text"
-                  className="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-primary hover:shadow"
+                  className="w-full py-3 border   border-slate-200 rounded-lg px-3 focus:outline-none focus:border-primary hover:shadow "
                   placeholder="Enter your name"
                 />
               </label>
@@ -81,7 +105,6 @@ const Register: React.FC = () => {
                   placeholder="Enter your email"
                 />
               </label>
-
               <label htmlFor="password">
                 <p className="font-medium text-slate-700 pb-2">Password</p>
                 <input
@@ -92,20 +115,6 @@ const Register: React.FC = () => {
                   placeholder="Enter your password"
                 />
               </label>
-
-              <div>
-                <label htmlFor="image" className="block mb-2 text-sm">
-                  Select Image:
-                </label>
-                <input
-                  required
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                />
-              </div>
-
               <div className="text-end">
                 <a href="#" className="font-medium text-primary">
                   Forgot Password?
@@ -132,6 +141,23 @@ const Register: React.FC = () => {
                 </svg>
                 <span>Register</span>
               </button>
+
+
+
+ 
+            <button onClick={handleGoogleLogin} className="w-full text-center py-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-primary hover:text-slate-900 hover:shadow transition duration-150">
+              <img
+                src="https://www.svgrepo.com/show/355037/google.svg"
+                className="w-6 h-6"
+                alt="Google"
+              />
+              <span>Login with Google</span>
+            </button>
+ 
+
+
+
+
 
               <p className="text-center">
                 All ready have an account ?{" "}
