@@ -1,13 +1,21 @@
-import getInTouch from "../../../src/img/signup.svg";
+import register from "../../../src/img/register.svg";
 import { Link } from "react-router-dom";
 import useAuth from "../../Provider/useAuth";
 import { toast } from "react-toastify";
 import { Toaster } from "react-hot-toast";
+import { useState } from "react";
+import axios from "axios";
 
 const Register: React.FC = () => {
+ const {createUser,updateUserProfile,googleLogin} = useAuth()
  
-const {createUser,updateUserProfile,googleLogin} = useAuth()
- 
+//  Upload image
+const preset_key = "fkaap0pt";  
+const cloud_name = "dhmf91dsb";
+
+
+const [uploadedImageUrl,setUploadedImageUrl] = useState();
+console.log(uploadedImageUrl);
 // handle Register form data 
   const handelform = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -15,17 +23,32 @@ const {createUser,updateUserProfile,googleLogin} = useAuth()
     const nameValue = (form.elements.namedItem("name") as HTMLInputElement).value;
     const emailValue = (form.elements.namedItem("email") as HTMLInputElement).value;
     const passwordValue = (form.elements.namedItem("password") as HTMLInputElement).value;
+    // image 
     const imageInput = form.elements.namedItem("image") as HTMLInputElement;
     const imageFile = imageInput.files?.[0];
-    if (imageFile) {
-      console.log("Image File:", imageFile.name);
-    }
+
+    const formData = new FormData();
+    formData.append('file', imageFile );
+    formData.append("upload_preset", preset_key)
+    axios.post(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, formData)
+    .then(res => setUploadedImageUrl(res.data.secure_url))
+    .catch(error => console.log(error))
+
+
+
+console.log(imageFile);
+
+    
     console.log(emailValue,passwordValue,nameValue);
     createUser(emailValue, passwordValue,nameValue)
     .then((result) => {
       toast.success('Successfully created account!')
       console.log(result.user);
-      updateUserProfile(nameValue)
+      if (uploadedImageUrl) {  
+        updateUserProfile(nameValue, uploadedImageUrl); 
+    } else {
+        updateUserProfile(nameValue, ""); // If no image, just update name
+    }
     })
     .catch(error => {
       console.log(error);
@@ -49,7 +72,7 @@ const {createUser,updateUserProfile,googleLogin} = useAuth()
 
       <div className="md:flex hidden justify-center items-center md:w-1/2  ">
         <img
-          src={getInTouch}
+          src={register}
           className="rounded-xl mt-0 text-center"
           alt="Get in Touch"
         />
@@ -58,8 +81,6 @@ const {createUser,updateUserProfile,googleLogin} = useAuth()
         <div className="max-w-xl mx-auto border p-8 rounded-xl shadow-lg shadow-slate-300">
           <h1 className="text-4xl font-medium">Register</h1>
           <p className="text-slate-500">Hi, Welcome back 👋</p>
-
-      
           <form onSubmit={handelform} className="my-6">
             <div className="flex flex-col space-y-5">
               <label htmlFor="name">
@@ -84,7 +105,6 @@ const {createUser,updateUserProfile,googleLogin} = useAuth()
                   placeholder="Enter your email"
                 />
               </label>
-
               <label htmlFor="password">
                 <p className="font-medium text-slate-700 pb-2">Password</p>
                 <input
@@ -95,20 +115,6 @@ const {createUser,updateUserProfile,googleLogin} = useAuth()
                   placeholder="Enter your password"
                 />
               </label>
-
-              <div>
-                <label htmlFor="image" className="block mb-3 text-sm font-semibold">
-                  Select Image:
-                </label>
-                <input
-                  required
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                />
-              </div>
-
               <div className="text-end">
                 <a href="#" className="font-medium text-primary">
                   Forgot Password?
