@@ -55,7 +55,7 @@ const router = createBrowserRouter([
       },
       //  ( Profile ) Nesting route
       {
-        path:'/productDetails',
+        path:'/productDetails/:id',
         element:<ProductDetails></ProductDetails>
       }
     ],

@@ -20,14 +20,14 @@ const ProductDetails: React.FC = () => {
   const [gift, setGift] = useState({});
   const [count, setCount] = useState(1);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [currentImg, setCurrentImg] = useState('');
+  const [currentImg, setCurrentImg] = useState("");
 
   useEffect(() => {
     const getData = async () => {
       try {
         const { data } = await axios.get(`http://localhost:3000/${id}`);
         setGift(data.data);
-        setCurrentImg(data.data.giftImage[0])
+        setCurrentImg(data.data.giftImage[0]);
       } catch (error) {
         console.log(error);
       }
@@ -76,8 +76,8 @@ const ProductDetails: React.FC = () => {
       {Object.keys(gift).length > 0 && (
         <div className="container mx-auto my-10 mt-20">
           <div className="w-full flex flex-col md:flex-row gap-6">
-            <div className="relative w-full  md:w-2/5">
-              <div className="h-[500px] w-full">
+            <div className="relative flex flex-col flex-shrink justify-between  w-full  md:w-2/5">
+              <div className="max-h-[500px] w-full">
                 <ReactImageMagnify
                   {...{
                     smallImage: {
@@ -96,7 +96,7 @@ const ProductDetails: React.FC = () => {
                   }}
                   style={{
                     width: "auto",
-                    height: "100%",
+                    // height: "100%",
                     maxWidth: "500px",
                     maxHeight: "500px",
                     objectFit: "cover",
@@ -108,36 +108,38 @@ const ProductDetails: React.FC = () => {
                 ref={scrollElement}
                 className="flex flex-col justify-around items-center gap-4 md:gap-6 overflow-scroll scrollbar-none transition-all" // Use overflow-x-auto for scrolling
               >
-
-                <div className="absolute bottom-0 flex gap-2">
-                <button
-                  className="bg-white shadow-md z-50 rounded-full p-1 text-lg hidden md:block"
-                  onClick={scrollLeft}
+                <div
+                  ref={scrollElement}
+                  className="flex justify-around items-center gap-4 md:gap-6 overflow-scroll scrollbar-none transition-all" // Use overflow-x-auto for scrolling
                 >
-                  <FaAngleLeft />
-                </button>
+                  <button
+                    className="bg-white shadow-md z-20 rounded-full p-1 absolute left-0 text-lg hidden md:block"
+                    onClick={scrollLeft}
+                  >
+                    <FaAngleLeft />
+                  </button>
 
-                <div className="flex gap-2 w-2/3 overflow-hidden">
-                {giftImage?.map((img:string, index:number) => (
-                  <div
-                    key={index}
-                    onClick={() => setCurrent(img)}
-                    className=" h-[100px] w-[100px] border-2 border-primary flex-shrink-0" // Add flex-shrink-0 here
-                    style={{
+                  <button
+                    className="bg-white shadow-md z-20 rounded-full p-1 absolute right-[-20px] text-lg hidden md:block"
+                    onClick={scrollRight}
+                  >
+                    <FaAngleRight />
+                  </button>
+
+                  {giftImage.map((img:string, index:number) => (
+                    <div
+                      key={index}
+                      onClick={() => setCurrent(img)}
+                      className="h-[100px] w-[100px] border-2 border-primary flex-shrink-0" // Add flex-shrink-0 here
+                      style={{
                         backgroundImage: `url(${img})`,
                         backgroundSize: "cover",
                         backgroundPosition: "center",
-                    }}
-                  />
-                ))}
+                      }}
+                    />
+                  ))}
                 </div>
-                    <button
-                      className="bg-white shadow-md z-50 rounded-full p-1  text-lg hidden md:block"
-                      onClick={scrollRight}
-                    >
-                      <FaAngleRight />
-                    </button>
-                </div>
+
               </div>
             </div>
 
@@ -146,7 +148,7 @@ const ProductDetails: React.FC = () => {
               <div className="space-y-3">
                 <h1 className="text-3xl font-bold">{giftName}</h1>
                 <div className="flex gap-1 items-center">
-                  <Rating  style={{ maxWidth: 150 }} value={rating} readOnly />
+                  <Rating style={{ maxWidth: 150 }} value={rating} readOnly />
                   <span className="ml-3 font-medium text-blue-500 text-sm hover:underline cursor-pointer">
                     {}27 Reviews
                   </span>
@@ -161,7 +163,7 @@ const ProductDetails: React.FC = () => {
                   <small className="text-gray-500 line-through ">
                     ৳{(discount + price).toFixed(2)}
                   </small>
-                  <small>-{((discount / price) * 100).toFixed(0)}%</small>
+                  <small>-{((discount / (discount + price)) * 100).toFixed(0)}%</small>
                 </p>
               </div>
 
@@ -207,15 +209,19 @@ const ProductDetails: React.FC = () => {
                   <div className="flex gap-4 items-center">
                     <span className="font-bold w-24">Quantity:</span>
                     <span className="uppercase flex gap-2">
-                      <span onClick={()=>count>1 &&setCount(p=>p-=1)} className="h-8 w-8 border border-[#333] grid place-content-center">
+                      <span
+                        onClick={() => count > 1 && setCount((p) => (p -= 1))}
+                        className="h-8 w-8 border border-[#333] grid place-content-center"
+                      >
                         -
                       </span>
                       <span className="h-8 w-8 border border-[#333] bg-gray-200 grid place-content-center">
                         {count}
                       </span>
                       <span
-                      onClick={()=>setCount(p=>p+=1)}
-                      className="h-8 w-8 border border-[#333] grid place-content-center">
+                        onClick={() => setCount((p) => (p += 1))}
+                        className="h-8 w-8 border border-[#333] grid place-content-center"
+                      >
                         +
                       </span>
                     </span>

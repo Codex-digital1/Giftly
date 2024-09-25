@@ -22,7 +22,7 @@ interface Gift {
   availability: boolean;
   quantity: number;
 }
-const GiftCard: React.FC<{ gift: Gift }> = ({drawerToggle}: drawerPropsType{ gift }) => {
+const GiftCard: React.FC<{ gift: Gift }> = ({ gift }) => {
   const {
     _id,
     giftName,
@@ -54,18 +54,18 @@ const GiftCard: React.FC<{ gift: Gift }> = ({drawerToggle}: drawerPropsType{ gif
         <span className="bg-primary text-white absolute top-3 group-hover:animate-bounce left-3 inline-block py-1 px-3 text-xs">
           Sell!
         </span>
-      </Link>
+      
 
       <div className="p-4 text-center space-y-2">
         <p className="text-xs italic font-medium text-gray-600 hover:text-primary">
           Love Gift {category}
         </p>
-        <Link
-          to="/"
+        <div
+        
           className="text-lg block font-medium text-gray-800 hover:text-primary"
         >
           Showpiece
-        </Link>
+        </div>
         <h3 className="text-lg font-bold text-gray-800 space-x-2">
           <span className="line-through text-gray-600 decoration-primary font-normal text-sm ">
             {(price + discount).toFixed(2)}৳
@@ -86,6 +86,7 @@ const GiftCard: React.FC<{ gift: Gift }> = ({drawerToggle}: drawerPropsType{ gif
                                     </div>
                                 </div>
       </div>
+    </Link>
     </div>
     }
     </>
