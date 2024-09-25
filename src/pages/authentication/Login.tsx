@@ -1,12 +1,10 @@
-import { useState } from "react";
 import getInTouch from "../../../src/img/register.svg";
 import { Link } from "react-router-dom";
 import useAuth from "../../Provider/useAuth";
-import { log } from "console";
-import { emit } from "process";
+
 
 const Login: React.FC = () => {
-     const {login,googleLogin} = useAuth();
+     const {login,googleLogin} = useAuth() ?? {};
     const handelform = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -16,7 +14,7 @@ const Login: React.FC = () => {
 
         const emailValue = email.value;
         const passwordValue = password.value;
-         login(emailValue,passwordValue)
+         login?.(emailValue,passwordValue)
          .then(result => {
             console.log(result.user);
          })
@@ -28,7 +26,7 @@ const Login: React.FC = () => {
     };
 
 const handleGoogleLogin = () => {
-googleLogin()
+googleLogin?.()
 .then(result => {
     console.log(result.user);
 })

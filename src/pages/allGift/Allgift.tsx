@@ -1,10 +1,15 @@
 import { useState } from "react";
-import { FaCartPlus } from "react-icons/fa6";
-import { IoSearchOutline } from "react-icons/io5";
-import InfiniteScroll from "react-infinite-scroller";
 import Card from "./card";
+interface Gift {
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+  rating: number;
+  available: boolean;
+}
 
-const giftsData = [
+const giftsData: Gift[] = [
   {
     id: 1,
     name: "Gift A",
@@ -33,17 +38,21 @@ const giftsData = [
 ];
 
 const Allgift = () => {
-  const [filter, setFilter] = useState("");
-  const [search, setSearch] = useState("");
-  const [searchText, setSearchText] = useState("");
-  const [priceRange, setPriceRange] = useState([0, 100]);
-  const [category, setCategory] = useState("All");
-  const [rating, setRating] = useState(0);
-  const [availability, setAvailability] = useState(false);
-  const [sortOption, setSortOption] = useState("default");
+
+  
+  // const [filter, setFilter] = useState<string>("");
+  // const [search, setSearch] = useState<string>("");
+  // const [searchText, setSearchText] = useState<string>("");
+
+
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
+  const [category, setCategory] = useState<string>("All");
+  const [rating, setRating] = useState<number>(0);
+  const [availability, setAvailability] = useState<boolean>(false);
+  const [sortOption, setSortOption] = useState<string>("default");
 
   // Function to filter gifts based on state
-  const filterGifts = (gifts) => {
+  const filterGifts = (gifts: Gift[]) => {
     return gifts
       .filter((gift) => category === "All" || gift.category === category)
       .filter(
@@ -61,6 +70,7 @@ const Allgift = () => {
   };
 
   const filteredGifts = filterGifts(giftsData);
+  console.log(filteredGifts);
 
   return (
     <>

@@ -9,7 +9,7 @@ const FeaturedProducts: React.FC = () => {
     const axiosPublic = useAxiosPublic()
     const user = true;
 
-    const { data: getAllGift = [], refetch } = useQuery<Gift[]>({
+    const { data: getAllGift = [],} = useQuery<Gift[]>({
         queryKey: ["getAllGift"],
         enabled: user,
         queryFn: async () => {

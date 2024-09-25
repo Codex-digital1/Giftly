@@ -1,4 +1,3 @@
-import React from 'react'
 import { FaCartPlus } from 'react-icons/fa6'
 import { IoSearchOutline } from 'react-icons/io5'
 
