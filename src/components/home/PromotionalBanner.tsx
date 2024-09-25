@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import MyContainer from "../shared/MyContainer";
 import giftBox from "../../img/gift-box.png";
 const PromotionalBanner = () => {

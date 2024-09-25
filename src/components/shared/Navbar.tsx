@@ -19,10 +19,11 @@ const megaMenu = [
 ];
 
 const Navbar: React.FC = () => {
-  const {user,logOut}=useAuth();
+  const { user, logOut } = useAuth() ?? {};
+  
   const [isOpen, setIsOpen] = useState(false);
  const handleLogOut = () => {
-  logOut();
+  logOut?.();
  }
 //  console.log(user);
   return (

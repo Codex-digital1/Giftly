@@ -3,19 +3,12 @@ import { Link } from "react-router-dom";
 import useAuth from "../../Provider/useAuth";
 import { toast } from "react-toastify";
 import { Toaster } from "react-hot-toast";
-import { useState } from "react";
-import axios from "axios";
+ 
 
 const Register: React.FC = () => {
- const {createUser,updateUserProfile,googleLogin} = useAuth()
+ const {createUser,updateUserProfile,googleLogin} = useAuth() ?? {} ;
  
-//  Upload image
-const preset_key = "fkaap0pt";  
-const cloud_name = "dhmf91dsb";
 
-
-const [uploadedImageUrl,setUploadedImageUrl] = useState();
-console.log(uploadedImageUrl);
 // handle Register form data 
   const handelform = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,32 +16,18 @@ console.log(uploadedImageUrl);
     const nameValue = (form.elements.namedItem("name") as HTMLInputElement).value;
     const emailValue = (form.elements.namedItem("email") as HTMLInputElement).value;
     const passwordValue = (form.elements.namedItem("password") as HTMLInputElement).value;
-    // image 
-    const imageInput = form.elements.namedItem("image") as HTMLInputElement;
-    const imageFile = imageInput.files?.[0];
+ 
 
-    const formData = new FormData();
-    formData.append('file', imageFile );
-    formData.append("upload_preset", preset_key)
-    axios.post(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, formData)
-    .then(res => setUploadedImageUrl(res.data.secure_url))
-    .catch(error => console.log(error))
+ 
 
 
-
-console.log(imageFile);
-
-    
-    console.log(emailValue,passwordValue,nameValue);
-    createUser(emailValue, passwordValue,nameValue)
+    createUser?.(emailValue, passwordValue)
     .then((result) => {
       toast.success('Successfully created account!')
       console.log(result.user);
-      if (uploadedImageUrl) {  
-        updateUserProfile(nameValue, uploadedImageUrl); 
-    } else {
-        updateUserProfile(nameValue, ""); // If no image, just update name
-    }
+      
+        updateUserProfile?.(nameValue, ""); 
+   
     })
     .catch(error => {
       console.log(error);
@@ -56,7 +35,7 @@ console.log(imageFile);
   };
   // Google login
   const handleGoogleLogin = () => {
-    googleLogin()
+    googleLogin?.()
     .then(result => {
         console.log(result.user);
     })
