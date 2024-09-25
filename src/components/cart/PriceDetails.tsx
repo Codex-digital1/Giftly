@@ -2,16 +2,26 @@ import { Link } from "react-router-dom";
 import PriceDetailsIteItem from "./PriceDetailsIteItem"
 import { TbShoppingBag } from "react-icons/tb";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
+import useAuth from "../../Provider/useAuth";
 
 const PriceDetails = () => {
+  const {cart,removeToCart}=useAuth()
+  const totalPrice=cart.reduce((accumulator:number, currentValue:object,) => {
+    // return updated accumulator
+   return accumulator+=currentValue?.price
+  }, 0);
+  const totalDiscount=cart.reduce((accumulator:number, currentValue:object,) => {
+    // return updated accumulator
+   return accumulator+=currentValue?.discount
+  }, 0);
   return (
     <div className="mt-8 ">
        {/* Price Info */}
        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-      <PriceDetailsIteItem title="Discount" price={566}/>
+      <PriceDetailsIteItem title="Discount" price={totalDiscount}/>
       <PriceDetailsIteItem title="Delivery" price={966}/>
       <PriceDetailsIteItem title="Subtotal" price={966}/>
-      <PriceDetailsIteItem title="Total" price={966}/>
+      <PriceDetailsIteItem title="Total" price={Math.ceil(totalPrice)}/>
       
        </div>
        {/* Cupon Code */}

@@ -1,6 +1,8 @@
 import { useState } from "react";
+import useAuth from "../../Provider/useAuth";
 
 const ProfileInfo = () => {
+  const {user} = useAuth();
   const [changeProfile, setChangeProfile] = useState<boolean>(false);
 
   return (
@@ -8,7 +10,7 @@ const ProfileInfo = () => {
       <h2 className="text-2xl font-medium inter">Personal Information</h2>
       <div className="p-5 text-lg flex items-center gap-5">
         <img
-          src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+          src={user?.photoURL}
           alt="user"
           className="w-[100px] mr-3 border rounded-lg"
         />

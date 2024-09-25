@@ -14,6 +14,7 @@ import {
 import ReviewModal from "./ReviewModal";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import useAuth from "../../Provider/useAuth";
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams();
@@ -21,6 +22,7 @@ const ProductDetails: React.FC = () => {
   const [count, setCount] = useState(1);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentImg, setCurrentImg] = useState("");
+  const { addToCart,addToWishlist}=useAuth()
 
   useEffect(() => {
     const getData = async () => {
@@ -52,7 +54,6 @@ const ProductDetails: React.FC = () => {
     availability,
     quantity,
   } = gift || {};
-  console.log(gift);
   const scrollElement = useRef<HTMLDivElement>(null);
 
   const scrollRight = () => {
@@ -229,10 +230,13 @@ const ProductDetails: React.FC = () => {
 
                   <div className="my-4">
                     <div className="flex flex-wrap gap-4">
-                      <button className="btn-secondary">Add To Cart</button>
+                      <button 
+                      onClick={()=>addToCart(gift)} className="btn-secondary">Add To Cart</button>
                       <button className="btn-secondary">Buy it now</button>
                     </div>
-                    <button className="btn-secondary mt-4">
+                    <button
+                    onClick={()=>addToWishlist(gift)} 
+                    className="btn-secondary mt-4">
                       Add To Wishlist
                     </button>
                   </div>

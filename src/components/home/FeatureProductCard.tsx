@@ -2,24 +2,41 @@ import React from 'react'
 import { IoSearchOutline } from "react-icons/io5";
 import { FaCartPlus } from "react-icons/fa6";
 import { Gift } from '../../types/Types';
+import { Link } from 'react-router-dom';
 
 interface FeatureProductCardProps {
     gift: Gift;
 }
 
 const FeatureProductCard: React.FC<FeatureProductCardProps> = ({ gift }) => {
-
-    const { giftName, price, availability } = gift
+    const {
+        _id,
+        giftName,
+        store,
+        brand,
+        discount,
+        price,
+        rating,
+        giftImage,
+        productAddBy,
+        description,
+        size,
+        color,
+        type,
+        category,
+        availability,
+        quantity,
+      } = gift||{}
     return (
-        <div className='min-w-[270px] group w-full text-center border-2 border-[#EBEBEB] rounded relative overflow-hidden shadow-sm'>
+        <Link to={`/productDetails/${_id}`} className='min-w-[270px] group w-full text-center border-2 border-[#EBEBEB] rounded relative overflow-hidden shadow-sm'>
 
             <div className=' h-[270px]'>
-                <img src="/Feature-products-img/img1.jpg" alt="" className='w-full h-full group-hover:scale-110  transition-all duration-300 ease-in-out ' />
+                <img src={giftImage[0]} alt="" className='mx-auto h-full group-hover:scale-110  transition-all duration-300 ease-in-out ' />
             </div>
 
             <div className='mt-4 mb-2'>
                 <h3 className='text-sm font-semibold uppercase text-[#333333] group-hover:opacity-0  transition-all duration-300 ease-in-out'>{giftName}</h3>
-                <p className='text-primary text-xl font-semibold group-hover:opacity-0  transition-all duration-300 ease-in-out'>${price}</p>
+                <p className='text-primary text-xl font-semibold group-hover:opacity-0  transition-all duration-300 ease-in-out'>৳ {price}</p>
             </div>
 
             {/* New */}
@@ -50,7 +67,7 @@ const FeatureProductCard: React.FC<FeatureProductCardProps> = ({ gift }) => {
                 </div>
             </div>
 
-        </div>
+        </Link >
     )
 }
 

@@ -7,8 +7,11 @@ import Feedback from "../../components/home/Feedback/Feedback";
 import PromotionalBanner from "../../components/home/PromotionalBanner";
 import { useState } from "react";
 import Drawer from "../../components/cart/Drawer";
+import useAuth from "../../Provider/useAuth";
 
 const Home = () => {
+ 
+
 
   const [isOpenDrawer, setIsOpenDrawer] = useState<boolean>(false);
 

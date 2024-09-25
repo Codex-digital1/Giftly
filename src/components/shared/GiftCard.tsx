@@ -4,6 +4,7 @@ import cartImage from "../../img/g3.jpg";
 import { drawerPropsType } from "../../types/Types";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
+import useAuth from "../../Provider/useAuth";
 interface Gift {
   _id: string;
   giftName: string;
@@ -23,6 +24,8 @@ interface Gift {
   quantity: number;
 }
 const GiftCard: React.FC<{ gift: Gift }> = ({ gift }) => {
+  const { addToCart,addToWishlist}=useAuth()
+
   const {
     _id,
     giftName,
@@ -45,7 +48,8 @@ const GiftCard: React.FC<{ gift: Gift }> = ({ gift }) => {
     <>
     {
       gift && <div className="border flex flex-col justify-between rounded-md group overflow-hidden">
-      <Link to={`/productDetails/${_id}`} className="inline-block relative">
+      <div  className="inline-block relative">
+      <Link to={`/productDetails/${_id}`}>
         <img
           src={giftImage[0] || cartImage}
           alt=""
@@ -74,19 +78,20 @@ const GiftCard: React.FC<{ gift: Gift }> = ({ gift }) => {
         </h3>
         {/* Ratings */}
         <div className="flex justify-center items-center">
-          <Rating style={{ maxWidth: 180 }} value={rating} readOnly />
+          <Rating style={{ maxWidth: 140 }} value={rating} readOnly />
         </div>
-        <div className='flex text-white gap-3  justify-center items-center'>
-                                    <div className='btn-primary'>
+      </div>
+      </Link>
+        <div className='flex mb-5 text-white gap-3  justify-center items-center'>
+                                    <div onClick={()=>addToCart(gift)} className='btn-primary'>
                                         <span><FaCartPlus /></span>
-                                        <span>Add to cart</span>
+                                        <span >Add to cart</span>
                                     </div>
-                                    <div className='btn-primary'>
+                                    <div  className='btn-primary'>
                                         <span>Buy Now</span>
                                     </div>
-                                </div>
-      </div>
-    </Link>
+          </div>
+    </div>
     </div>
     }
     </>

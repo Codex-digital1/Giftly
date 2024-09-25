@@ -1,6 +1,8 @@
 import { Link, Outlet } from "react-router-dom";
+import useAuth from "../../Provider/useAuth";
 
 const Account = () => {
+  const {user} = useAuth();
   return (
     <div className="px-10 py-24">
       <div className="flex justify-center gap-8">
@@ -8,13 +10,13 @@ const Account = () => {
         <div className="w-[400px]">
           <div className="p-6 flex items-center gap-2 shadow-lg rounded-lg">
             <img
-              src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              src={user?.photoURL}
               alt="user"
               className="w-[80px] h-auto rounded-lg  mr-3"
             />
             <div>
               <p className="text-gray-700">Hello,</p>
-              <h4 className="text-xl inter capitalize">jakareya</h4>
+              <h4 className="text-xl inter capitalize">{user?.displayName}</h4>
             </div>
           </div>
           <div className="flex flex-col items-center justify-center mt-5 shadow-xl">
