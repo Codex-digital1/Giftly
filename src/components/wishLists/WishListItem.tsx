@@ -1,7 +1,11 @@
 import gitImage from '../../img/g3.jpg'
+import useAuth from '../../Provider/useAuth';
 import TableTd from '../shared/TableTd';
 import TableTh from '../shared/TableTh';
+import WishList from './../../pages/wishList/WishList';
 const WishListItem = () => {
+  const {wishlist ,addToCart,removeToWishlist}=useAuth()
+
   return (
     <div>
       <div className="overflow-x-auto">
@@ -16,34 +20,39 @@ const WishListItem = () => {
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-gray-200 text-center">
+         {wishlist.map(list=>(<tbody 
+         key={list?._id}
+         className="divide-y divide-gray-200 text-center">
             <tr className="odd:bg-gray-50">
               <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                 <img
-                  src={gitImage}
+                  src={list?.giftImage[0]}
                   alt=""
                   className="w-20 p-1 bg-white border mx-auto"
                 />
               </td>
-              <TableTd tdHeading='Showpiece'/>
+              <TableTd tdHeading={list?.giftName}/>
               <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
-                670<span className='text-lg'>৳</span>
+                {list?.price}<span className='text-lg'>৳</span>
               </td>
              
-              <TableTd tdHeading='  In Stock'/>
+              <TableTd tdHeading={list?.availability}/>
               <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
-                <div className='flex gap-1 justify-center'>
-                  <div className="btn-primary">
+                <div className='flex gap-4 justify-center'>
+                  <div onClick={()=>addToCart(list)} className="btn-primary">
                     <span>Add to Cart</span>
                   </div>
-                  <div className="btn-primary">
+                  <div onClick={()=>removeToWishlist(list)} className="btn-primary">
                     <span>Remove</span>
                   </div>
                 </div>
               </td>
             </tr>
-          </tbody>
+          </tbody>))}
         </table>
+        {
+          wishlist?.length === 0 && <center className=" my-4 text-xl font-semibold">Your wishlist is empty. Start adding items to see them here!</center>
+        }
       </div>
     </div>
   );
