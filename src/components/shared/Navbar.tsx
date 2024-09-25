@@ -7,6 +7,7 @@ import { IoSearch } from "react-icons/io5";
 import { Link, NavLink } from "react-router-dom";
 import avatarImg from "../../assets/placeholder.jpg";
 import { RiMenuUnfold4Line2 } from "react-icons/ri";
+import useAuth from "../../Provider/useAuth";
 
 const megaMenu = [
   { name: "Home", path: "/" },
@@ -17,9 +18,13 @@ const megaMenu = [
   { name: <SlBasket />, path: "/cart" },
 ];
 
-const Navbar: React.FC = ({user}) => {
+const Navbar: React.FC = () => {
+  const {user,logOut}=useAuth();
   const [isOpen, setIsOpen] = useState(false);
- 
+ const handleLogOut = () => {
+  logOut();
+ }
+ console.log(user);
   return (
     <div className="fixed w-full bg-white z-50 top-0">
       <div className=" container mx-auto bg-white  h-20 flex justify-between items-center px-2">
@@ -138,9 +143,6 @@ const Navbar: React.FC = ({user}) => {
                   </div>
                   {user ? (
                     <>
-                      <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
-                        {user.displayName}
-                      </div>
                       <Link to={"/account"}>
                         <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
                           Profile
@@ -151,7 +153,7 @@ const Navbar: React.FC = ({user}) => {
                           Dashboard
                         </div>
                       </Link>
-                      <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
+                      <div onClick={handleLogOut} className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
                         Logout
                       </div>
                     </>
