@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import logo from "/logo.png";
-import { user } from "./Join";
+// import { user } from "./Join";
 import socketIo from "socket.io-client";
+import { AuthContext } from '../../Provider/AuthProvider';
 
 let socket;
 
 const ENDPOINT = "http://localhost:3000/";
 
 const ChatApp: React.FC = () => {
+  const { user, loading } = useContext(AuthContext)
+
+  console.log(user)
   const [userInfo, setUserInfo] = useState(user);
   const [id, setId] = useState("");
   const [messages, setMessages] = useState<any[]>([]);
@@ -57,7 +61,7 @@ const ChatApp: React.FC = () => {
       socket.off(); // Clean up socket connection
       console.log("Socket disconnected");
     };
-  }, [userInfo]);
+  }, [userInfo, user]);
 
   return (
     <div className="flex flex-col justify-between max-w-lg bg-gray-100 container mx-auto border-2 mt-[100px] border-red-500 h-[600px] z-50">
@@ -66,7 +70,7 @@ const ChatApp: React.FC = () => {
         <div className="flex items-center space-x-3">
           <button className="text-xl">←</button>
           <img src={logo} alt="Seller Avatar" className="w-10 h-10 rounded-full" />
-          <span className="text-xl">Seller Name</span>
+          <span className="text-xl">{user?.name || "Seller Name"}</span>
           <span className="ml-2 h-2 w-2 bg-green-500 rounded-full"></span>
         </div>
       </div>
