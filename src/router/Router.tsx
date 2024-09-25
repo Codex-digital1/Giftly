@@ -17,6 +17,8 @@ import Users from "../pages/Dashboard/Admin/Users/Users";
 import Gift from "../pages/Dashboard/User/Gift/Gift";
 import OrderHistory from "../pages/Dashboard/Admin/OrderHistory/OrderHistory";
 import ManageOrders from "../pages/Dashboard/User/ManageOrders/ManageOrders";
+import Login from "../pages/authentication/Login";
+import Register from "../pages/authentication/Register";
 
 const router = createBrowserRouter([
   {
@@ -45,32 +47,26 @@ const router = createBrowserRouter([
         element: <Cart></Cart>,
       },
       {
+        path: "/account",
+        element: <Account></Account>,
+      },
+      {
         path: "/productDetails",
         element: <ProductDetails></ProductDetails>,
       },
-      //  ( Profile ) Nesting route 
       {
-        path: "/account",
-        element: <Account></Account>,
-        children: [
-          {
-            path: "",
-            element: <ProfileInfo />,
-          },
-          {
-            path: "my-orders",
-            element: <MyOrders />,
-          },
-          {
-            path: "my-wishlist",
-            element: <MyWishlist />,
-          },
-          {
-            path: "my-rating",
-            element: <MyRating />,
-          },
-        ],
+        path: "/login",
+        element: <Login></Login>,
       },
+      {
+        path: "/signUp",
+        element: <Register></Register>,
+      },
+      //  ( Profile ) Nesting route
+      {
+        path:'/productDetails/:id',
+        element:<ProductDetails></ProductDetails>
+      }
     ],
   },
   {

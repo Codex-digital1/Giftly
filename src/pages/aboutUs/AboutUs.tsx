@@ -123,7 +123,7 @@ const AboutUs = () => {
         <h1 className="text-xl font-bold text-primary mt-3">Services</h1>
         <hr className="w-40 border border-primary mb-3" />
         <div className="flex justify-center">
-          <div className="grid md:grid-cols-4 justify-center gap-x-2 items-center gap-y-2">
+          <div className="grid lg:grid-cols-4 md:grid-cols-3 justify-center gap-x-2 items-center gap-y-2">
             {servicesData?.map((cartData) => (
               <div className="w-[373px] h-[182px] border rounded-xl p-4 space-y-3 bg-white  cursor-pointer  hover:border-primary duration-500">
                 <h1 className="flex gap-x-2 items-center text-xl font-semibold">
@@ -151,7 +151,7 @@ const AboutUs = () => {
         </h1>
       </div>
       {/* Our Goal */}
-      <section className="flex flex-col-reverse md:flex-row md:h-[500px] border-l-4 border-primary rounded-3xl mt-10">
+      <section className="flex flex-col-reverse md:flex-row border-l-4 border-primary rounded-3xl mt-10">
         <div className=" flex-1 flex items-center p-4">
           <div className="space-y-4">
             {goalData?.map((data) => (
