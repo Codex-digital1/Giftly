@@ -2,7 +2,8 @@ import { Link, Outlet } from "react-router-dom";
 import useAuth from "../../Provider/useAuth";
 
 const Account = () => {
-  const {user} = useAuth();
+  const { user } = useAuth();
+
   return (
     <div className="px-10 py-24">
       <div className="flex justify-center gap-8">

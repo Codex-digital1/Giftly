@@ -2,7 +2,7 @@ import { useState } from "react";
 import useAuth from "../../Provider/useAuth";
 
 const ProfileInfo = () => {
-  const {user} = useAuth();
+  const { user } = useAuth();
   const [changeProfile, setChangeProfile] = useState<boolean>(false);
 
   return (
@@ -30,16 +30,19 @@ const ProfileInfo = () => {
           type="text"
           placeholder="Username"
           className="input input-bordered"
+          defaultValue={user?.displayName}
         />
         <input
           type="text"
           placeholder="Email"
           className="input input-bordered"
+          defaultValue={user?.email}
         />
         <input
           type="text"
           placeholder="Mobile Number"
           className="input input-bordered"
+          defaultValue={user?.phoneNumber}
         />
 
         <div className="flex items-center gap-5">
