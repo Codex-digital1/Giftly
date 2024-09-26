@@ -56,7 +56,7 @@ const router = createBrowserRouter([
           },
           {
             path:'my-orders',
-            element:<ProfileInfo></ProfileInfo>
+            element:<MyOrders></MyOrders>
           },
 
           {
