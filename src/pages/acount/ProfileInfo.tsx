@@ -78,18 +78,21 @@ const ProfileInfo = () => {
           placeholder="Username"
           name="name"
           className="input input-bordered"
+          defaultValue={user?.displayName}
         />
         <input
           type="text"
           placeholder="Email"
           name="email"
           className="input input-bordered"
+          defaultValue={user?.email}
         />
         <input
           type="text"
           placeholder="Mobile Number"
           name="phone"
           className="input input-bordered"
+          defaultValue={user?.phoneNumber}
         />
         <button
           type="submit"
