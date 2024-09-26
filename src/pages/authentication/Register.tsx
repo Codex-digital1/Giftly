@@ -1,26 +1,45 @@
 import register from "../../../src/img/register.svg";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../Provider/useAuth";
-import { toast } from "react-toastify";
-import { Toaster } from "react-hot-toast";
- 
+import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa6";
+import { useState } from "react";
+import { ImSpinner10 } from "react-icons/im";
 
 const Register: React.FC = () => {
- const {createUser,updateUserProfile,googleLogin} = useAuth() ?? {} ;
- 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location?.state || "/";
+  const [passwordShow,setPasswordShow]=useState(false)
+  const [passwordShow1,setPasswordShow1]=useState(false)
 
-// handle Register form data 
-  const handelform = (e: React.FormEvent<HTMLFormElement>) => {
+  const { createUser, updateUserProfile, googleLogin,loading } = useAuth() ?? {};
+
+  // handle Register form data
+  const handelform = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const nameValue = (form.elements.namedItem("name") as HTMLInputElement).value;
-    const emailValue = (form.elements.namedItem("email") as HTMLInputElement).value;
-    const passwordValue = (form.elements.namedItem("password") as HTMLInputElement).value;
- 
+    const nameValue = (form.elements.namedItem("name") as HTMLInputElement)
+      .value;
+    const emailValue = (form.elements.namedItem("email") as HTMLInputElement)
+      .value;
+    const passwordValue = (
+      form.elements.namedItem("password") as HTMLInputElement
+    ).value;
+    const confirmPasswordValue = (
+      form.elements.namedItem("confirm-password") as HTMLInputElement
+    ).value;
 
- 
+    if (passwordValue !== confirmPasswordValue) {
+      return toast.error("Password and confirm password must be the same.");
+    }
 
+    await createUser?.(emailValue, passwordValue)
+      .then((result) => {
+        toast.success("Successfully created account!");
+        console.log(result.user);
 
+<<<<<<< HEAD
     createUser?.(emailValue, passwordValue)
     .then((result) => {
       toast.success('Successfully created account!')
@@ -32,23 +51,29 @@ const Register: React.FC = () => {
     .catch(error => {
       console.log(error);
     })
+=======
+        updateUserProfile?.(nameValue, "");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    // navigate(from);
+>>>>>>> aac1bd35692964916c756b06dfcb4880ca7c488c
   };
   // Google login
-  const handleGoogleLogin = () => {
-    googleLogin?.()
-    .then(result => {
-        console.log(result.user);
+  const handleGoogleLogin = async () => {
+    await googleLogin?.()
+    .then((result) => {
+      navigate(from);
+      console.log(result.user);
     })
-    .catch(error => {
-        console.log(error);
-    })
-    }
-  
-  
+    .catch((error) => {
+      console.log(error);
+    });
+  };
+
   return (
     <div className="md:flex justify-center p-5 rounded-xl items-center mt-24  container mx-auto border hover:border-primary duration-700 ">
-      <div><Toaster/></div>
-
       <div className="md:flex hidden justify-center items-center md:w-1/2  ">
         <img
           src={register}
@@ -67,6 +92,7 @@ const Register: React.FC = () => {
                   Enter your name
                 </p>
                 <input
+                required
                   id="name"
                   name="name"
                   type="text"
@@ -77,6 +103,7 @@ const Register: React.FC = () => {
               <label htmlFor="email">
                 <p className="font-medium text-slate-700 pb-2">Email address</p>
                 <input
+                required
                   id="email"
                   name="email"
                   type="email"
@@ -84,16 +111,41 @@ const Register: React.FC = () => {
                   placeholder="Enter your email"
                 />
               </label>
+              <div className="relative">
+
               <label htmlFor="password">
                 <p className="font-medium text-slate-700 pb-2">Password</p>
                 <input
+                required
                   id="password"
                   name="password"
-                  type="password"
+                  type={passwordShow?'text':'password'}
                   className="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-primary hover:shadow"
                   placeholder="Enter your password"
                 />
               </label>
+              <div onClick={()=>{setPasswordShow(!passwordShow)}} className='absolute text-3xl right-4 top-[52%] hover:cursor-pointer'>
+            {passwordShow?<FaEye />:<FaEyeSlash />}
+            </div>
+              </div>
+              <div className="relative">
+                <label htmlFor="confirm-password">
+                  <p className="font-medium text-slate-700 pb-2">
+                    Confirm Password
+                  </p>
+                  <input
+                  required
+                    id="confirm-password"
+                    name="confirm-password"
+                    type={passwordShow1?'text':'password'}
+                    className="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-primary hover:shadow"
+                    placeholder="Enter your confirm-password"
+                  />
+                </label>
+                <div onClick={()=>{setPasswordShow1(!passwordShow1)}} className='absolute text-3xl right-4 top-[52%] hover:cursor-pointer'>
+            {passwordShow1?<FaEye />:<FaEyeSlash />}
+            </div>
+              </div>
               <div className="text-end">
                 <a href="#" className="font-medium text-primary">
                   Forgot Password?
@@ -104,39 +156,38 @@ const Register: React.FC = () => {
                 type="submit"
                 className="w-full py-3 font-medium text-white btn-primary inline-flex space-x-2 items-center justify-center"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-                  />
-                </svg>
-                <span>Register</span>
+                {loading ? (
+                <ImSpinner10 className="animate-spin mx-auto text-xl" />
+              ) : (
+                <><svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                />
+              </svg>
+              <span>Register</span></>
+              )}
               </button>
 
-
-
- 
-            <button onClick={handleGoogleLogin} className="w-full text-center py-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-primary hover:text-slate-900 hover:shadow transition duration-150">
-              <img
-                src="https://www.svgrepo.com/show/355037/google.svg"
-                className="w-6 h-6"
-                alt="Google"
-              />
-              <span>Login with Google</span>
-            </button>
- 
-
-
-
-
+              <button
+                onClick={handleGoogleLogin}
+                className="w-full text-center py-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-primary hover:text-slate-900 hover:shadow transition duration-150"
+              >
+                <img
+                  src="https://www.svgrepo.com/show/355037/google.svg"
+                  className="w-6 h-6"
+                  alt="Google"
+                />
+                <span>Login with Google</span>
+              </button>
 
               <p className="text-center">
                 All ready have an account ?{" "}
@@ -144,7 +195,7 @@ const Register: React.FC = () => {
                   href="#"
                   className="text-primary font-medium inline-flex space-x-1 items-center"
                 >
-                  <Link to="/login" >Login now</Link>
+                  <Link to="/login">Login now</Link>
                   <span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

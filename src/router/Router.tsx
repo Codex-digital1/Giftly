@@ -12,9 +12,13 @@ import ProfileInfo from "../pages/acount/ProfileInfo";
 import MyOrders from "../pages/acount/MyOrders";
 import MyRating from "../pages/acount/MyRating";
 import MyWishlist from "../pages/acount/MyWishlist";
+import Dashboard from "../layouts/Dashboard";
+import Users from "../pages/Dashboard/Admin/Users/Users";
+import Gift from "../pages/Dashboard/User/Gift/Gift";
+import OrderHistory from "../pages/Dashboard/Admin/OrderHistory/OrderHistory";
+import ManageOrders from "../pages/Dashboard/User/ManageOrders/ManageOrders";
 import Login from "../pages/authentication/Login";
 import Register from "../pages/authentication/Register";
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -51,7 +55,7 @@ const router = createBrowserRouter([
           },
           {
             path:'my-orders',
-            element:<ProfileInfo></ProfileInfo>
+            element:<MyOrders></MyOrders>
           },
 
           {
@@ -83,6 +87,28 @@ const router = createBrowserRouter([
       }
     ],
   },
+  {
+    path:'/dashboard',
+    element: <Dashboard/>,
+    children:[
+      {
+        path:'manage-users',
+        element:<Users/>
+      },
+      {
+        path:'manage-gift',
+        element:<Gift/>
+      },
+      {
+        path:'order-history',
+        element:<OrderHistory/>
+      },
+      {
+        path:'manage-orders',
+        element:<ManageOrders/>
+      }
+    ]
+  }
 ]);
 
 export default router;
