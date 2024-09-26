@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
   const {user,logOut,handleFilterChange}=useAuth();
   const [isOpen, setIsOpen] = useState(false);
  const handleLogOut = () => {
-  logOut();
+  logOut?.();
  }
  const handleSearch=e=>{
 //   e.preventDefault();
@@ -35,8 +35,8 @@ const Navbar: React.FC = () => {
  }
 //  console.log(user);
   return (
-    <div className="fixed w-full bg-white z-50 top-0">
-      <div className=" container mx-auto bg-white  h-20 flex justify-between items-center  px-2">
+    <div className="fixed w-full bg-secondary z-50 top-0">
+      <div className=" container mx-auto bg-secondary h-20 flex justify-between items-center  px-2">
         {/* Logo */}
         <div className="flex justify-center bg-white items-center cursor-pointer text-primary">
           <IoMdGift className="md:text-4xl text-base font-bold" />
@@ -45,7 +45,7 @@ const Navbar: React.FC = () => {
           </Link>
         </div>
         {/* Input */}
-        <form onSubmit={handleSearch} className="md:w-1/3">
+        <form  className="md:w-1/3">
           <label className="relative group flex justify-center items-center">
             <input
               type="text"
@@ -54,7 +54,7 @@ const Navbar: React.FC = () => {
                 handleFilterChange(e)
                 navigate('/allGift')
               }}
-              className="  border border-primary border-opacity-45 md:w-full rounded-lg  md:p-3 p-2  text-black   focus:outline-none focus:border-primary hover:border-primary"
+              className="border border-primary border-opacity-45 md:w-full rounded-lg  md:p-3 p-2  text-black   focus:outline-none focus:border-primary hover:border-primary"
 
               placeholder="find your Gift..."
             />
@@ -64,7 +64,7 @@ const Navbar: React.FC = () => {
           </label>
         </form>
           {/* Mega menu leftSide */}
-          <nav className="space-x-4 md:flex hidden">
+          <nav className="space-x-4 lg:flex hidden">
           {megaMenu?.slice(0, 3).map((menu) => (
             <NavLink
               key={menu.path}
@@ -138,9 +138,9 @@ const Navbar: React.FC = () => {
             </div>
             {/* Login Logout functionality */}
             {isOpen && (
-              <div className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-[10vw] bg-white overflow-hidden -left-[240%] md:left-0 top-12 text-sm">
+              <div className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-[25vw]  lg:w-[20vw] bg-white overflow-hidden -right-2  top-12 text-sm">
                 <div className="flex flex-col cursor-pointer ">
-                  <div className="md:hidden">
+                  <div className="lg:hidden">
                     {
                       // navLink for menu
                       megaMenu?.slice(0,3).map((menu) => (

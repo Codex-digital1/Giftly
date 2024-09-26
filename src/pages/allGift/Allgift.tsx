@@ -1,44 +1,14 @@
-import { useEffect, useState } from "react";
-import { FaCartPlus } from "react-icons/fa6";
-import { IoSearchOutline } from "react-icons/io5";
-import InfiniteScroll from "react-infinite-scroller";
-import Card from "./card";
-import axios from "axios";
-import GiftCard from "../../components/shared/GiftCard";
+import { useState } from "react";
 import useAuth from "../../Provider/useAuth";
-
-const giftsData = [
-  {
-    id: 1,
-    name: "Gift A",
-    category: "For Him",
-    price: 50,
-    rating: 4,
-    available: true,
-  },
-  {
-    id: 2,
-    name: "Gift B",
-    category: "Tech Gifts",
-    price: 150,
-    rating: 5,
-    available: false,
-  },
-  {
-    id: 3,
-    name: "Gift C",
-    category: "For Her",
-    price: 80,
-    rating: 3,
-    available: true,
-  },
-  // Add more gift objects
-];
+import GiftCard from "../../components/shared/GiftCard";
+import LoadingSpinner from "../../components/shared/LoadingSpinner";
 
 const Allgift = () => {
-  const { handleFilterChange,allGifts,gifts, filters } = useAuth();
-console.log(allGifts.map(i=>i.category));
-const giftCategory=[...new Set(gifts?.map(gift=>gift?.category))]
+  const { handleFilterChange, allGifts, gifts, filters, loading } = useAuth();
+  // console.log(allGifts.map(i=>i.category));
+  const giftCategory: string[] = [
+    ...new Set(gifts?.map((gift) => gift?.category)),
+  ];
 
   return (
     <>
@@ -53,7 +23,7 @@ const giftCategory=[...new Set(gifts?.map(gift=>gift?.category))]
         </div>
         {/* Filters Section */}
         <div id="all-gift-container" className="my-8">
-          <div className="grid grid-cols-3 md:grid-cols-5 gap-6 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-8">
             {/* Category Filter */}
             <div>
               <label className="block text-lg font-semibold text-gray-700 mb-2">
@@ -64,9 +34,11 @@ const giftCategory=[...new Set(gifts?.map(gift=>gift?.category))]
                 name="category"
                 onChange={handleFilterChange}
               >
-                {
-                  giftCategory?.map((category,i)=><option key={i} value={category}>{category}</option>)
-                }
+                {giftCategory?.map((category: string, i: number) => (
+                  <option key={i} value={category}>
+                    {category}
+                  </option>
+                ))}
                 {/* <option value="All">All</option>
                 <option value="For Him">Gifts for Him</option>
                 <option value="For Her">Gifts for Her</option>
@@ -95,18 +67,7 @@ const giftCategory=[...new Set(gifts?.map(gift=>gift?.category))]
                   className="border rounded-md p-2 w-full"
                 />
               </div>
-              {/* <input
-                type="range"
-                min={0}
-                max={5000}
-                name="price"
-                value={filters?.priceMin}
-                onChange={handleFilterChange}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-              /> */}
-              {/* <p className="mt-2 text-lg text-gray-600">
-                Price: ${filters?.priceMin} - ${filters?.priceMax}
-              </p> */}
+              
             </div>
 
             {/* Rating Filter */}
@@ -162,8 +123,9 @@ const giftCategory=[...new Set(gifts?.map(gift=>gift?.category))]
             </div>
           </div>
           {/* card container */}
+          {loading && <LoadingSpinner large={true} card={false} smallHeight={false}  />}
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {allGifts?.length > 0 &&
               allGifts?.map((gift) => <GiftCard key={gift?._id} gift={gift} />)}
           </div>

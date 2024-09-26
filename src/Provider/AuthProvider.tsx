@@ -8,27 +8,11 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { createContext, useEffect, useState, ReactNode } from "react";
-// import { toast } from "react-toastify";
 import toast from "react-hot-toast";
 import auth from "../Firebase/Firebase.config";
 import axios from "axios";
 
-interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-  setLoading: (loading: boolean) => void;
-  login: (email: string, password: string) => Promise<UserCredential>;
-  createUser: (email: string, password: string) => Promise<UserCredential>;
-  googleLogin: () => Promise<UserCredential>;
-  logOut: () => Promise<void>;
-  updateUserProfile: (name: string) => Promise<void>;
-  setUser: (user: User | null) => void;
-  gifts: GiftType[];
-  cart: GiftType[];
-  setWishlist: (gift: GiftType[]) => void;
-  setCart: (gift: GiftType[]) => void;
-  wishList: GiftType[];
-}
+// Define GiftType
 type GiftType = {
   _id: string;
   giftName: string;
@@ -48,13 +32,43 @@ type GiftType = {
   quantity: number;
 };
 
+// Define AuthContextType
+interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+  login: (email: string, password: string) => Promise<UserCredential>;
+  createUser: (email: string, password: string) => Promise<UserCredential>;
+  googleLogin: () => Promise<UserCredential>;
+  logOut: () => Promise<void>;
+  updateUserProfile: (name: string, photoURL: string, phoneNumber: string, email: string) => Promise<void>;
+  setUser: (user: User | null) => void;
+  gifts?: GiftType[];
+  allGifts?: GiftType[];
+  cart: GiftType[];
+  addToCart: (gift: GiftType) => void;
+  addToWishlist: (gift: GiftType) => void;
+  wishlist: GiftType[];
+  removeToWishlist: (gift: GiftType) => void;
+  removeToCart: (gift: GiftType) => void;
+  handleFilterChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  filters: {
+    category: string;
+    priceMin: number;
+    priceMax: number;
+    rating: number;
+    availability: string;
+    sortBy: string;
+    search: string;
+  };
+}
+
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-// Initialize Firebase app
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -63,16 +77,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [allGifts, setAllGifts] = useState<GiftType[]>([]);
 
   const [cart, setCart] = useState<GiftType[]>(() => {
-    // Load cart items from local storage on initial render
     const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
   });
 
   const [wishlist, setWishlist] = useState<GiftType[]>(() => {
-    // Load cart items from local storage on initial render
-    const Wishlist = localStorage.getItem("wishlist");
-    return Wishlist ? JSON.parse(Wishlist) : [];
+    const savedWishlist = localStorage.getItem("wishlist");
+    return savedWishlist ? JSON.parse(savedWishlist) : [];
   });
+
   const [filters, setFilters] = useState({
     category: '',
     priceMin: 0,
@@ -81,9 +94,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     availability: 'all',
     sortBy: '',
     search: ''
-});
+  });
 
-  const createUser = async (email: string, password: string) => {
+  const createUser = async (email: string, password: string): Promise<UserCredential> => {
     setLoading(true);
     try {
       return await createUserWithEmailAndPassword(auth, email, password);
@@ -95,7 +108,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<UserCredential> => {
     setLoading(true);
     try {
       return await signInWithEmailAndPassword(auth, email, password);
@@ -107,11 +120,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const googleLogin = async () => {
+  const googleLogin = async (): Promise<UserCredential> => {
     setLoading(true);
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
       toast.success("Login Successfully");
+      return result;
     } catch (error: any) {
       toast.error(error.message);
       throw error;
@@ -120,10 +134,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const updateUserProfile = async (name: string) => {
+  const updateUserProfile = async (name: string, photoURL: string, phoneNumber: string, email: string) => {
     if (auth.currentUser) {
       try {
-        await updateProfile(auth.currentUser, { displayName: name });
+        await updateProfile(auth.currentUser, { displayName: name, photoURL, phoneNumber, email });
+        toast.success('Profile updated successfully!');
       } catch (error: any) {
         toast.error("Failed to update profile: " + error.message);
       }
@@ -153,89 +168,78 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
         const { data } = await axios.get("http://localhost:3000/getAllGift");
         setGifts(data.data);
-        // console.log(data.data);
-        setLoading(false);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     })();
   }, [filters]);
+
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get("http://localhost:3000/getAllGift",{ params: filters });
+        const { data } = await axios.get("http://localhost:3000/getAllGift", { params: filters });
         setAllGifts(data.data);
-        // console.log(data.data);
-        setLoading(false);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     })();
   }, [filters]);
 
-  const handleFilterChange = (e) => {
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     e.preventDefault();
-    console.log(e.target.name,' :',e.target.value);
     setFilters({ ...filters, [e.target.name]: e.target.value });
-    console.log(filters);
-};
+  };
 
   const addToCart = (gift: GiftType) => {
     const isExist = cart.find((item) => item._id === gift._id);
     if (isExist) {
-      return toast.error("All Ready Added");
+      return toast.error("Already Added");
     }
     setCart((prevCart) => {
       const updatedCart = [...prevCart, gift];
-
-      // Save updated cart to local storage
       localStorage.setItem("cart", JSON.stringify(updatedCart));
       return updatedCart;
     });
-    toast.success(`${gift?.giftName} add to cart successfully`);
+    toast.success(`${gift.giftName} added to cart successfully`);
   };
 
   const addToWishlist = (gift: GiftType) => {
     const isExist = wishlist.find((item) => item._id === gift._id);
     if (isExist) {
-      return toast.error("All Ready Added");
+      return toast.error("Already Added");
     }
     setWishlist((prevWishlist) => {
-      const updatedCart = [...prevWishlist, gift];
-
-      // Save updated cart to local storage
-      localStorage.setItem("wishlist", JSON.stringify(updatedCart));
-      return updatedCart;
-    });
-    toast.success(`${gift?.giftName} add to Wishlist successfully`);
-  };
-  const removeToWishlist = (gift: GiftType) => {
-    const updateWishlist = wishlist.filter((item) => item._id !== gift._id);
-    setWishlist(() => {
-      const updatedWishlist = [...updateWishlist];
-      // Save updated cart to local storage
+      const updatedWishlist = [...prevWishlist, gift];
       localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
       return updatedWishlist;
     });
-    toast.error(`${gift?.giftName} remove form Wishlist successfully`);
+    toast.success(`${gift.giftName} added to Wishlist successfully`);
   };
-  const removeToCart = (gift:object) => {
-    console.log(gift);
-    const updateCart = cart.filter((item) => item?._id !== gift?.id);
-    setCart(() => {
-      const updatedCart = [...updateCart];
-      // Save updated cart to local storage
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
-      return updatedCart;
-    });
-    toast.error(`${gift?.giftName} remove form Wishlist successfully`);
+
+  const removeToWishlist = (gift: GiftType) => {
+    const updatedWishlist = wishlist.filter((item) => item._id !== gift._id);
+    setWishlist(updatedWishlist);
+    localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+    toast.error(`${gift.giftName} removed from Wishlist successfully`);
+  };
+
+  const removeToCart = (gift: GiftType) => {
+    const updatedCart = cart.filter((item) => item._id !== gift._id);
+    setCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    toast.error(`${gift.giftName} removed from Cart successfully`);
   };
 
   const authInfo: AuthContextType = {
@@ -257,13 +261,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     removeToWishlist,
     removeToCart,
     handleFilterChange,
-    filters
-
-    
+    filters,
   };
 
   return (
-    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={authInfo}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 
