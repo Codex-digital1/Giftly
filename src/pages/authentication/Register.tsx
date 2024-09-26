@@ -26,7 +26,7 @@ const Register: React.FC = () => {
       toast.success('Successfully created account!')
       console.log(result.user);
       
-        updateUserProfile?.(nameValue, ""); 
+        updateUserProfile?.(nameValue); 
    
     })
     .catch(error => {
