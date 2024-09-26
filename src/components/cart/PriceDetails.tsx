@@ -27,7 +27,7 @@ const PriceDetails = () => {
        {/* Cupon Code */}
        <div className="max-w-3xl mx-auto">
         <p className="my-4">If You Have Promotion Code, Please Inter it here</p>
-        <div className="grid md:grid-cols-3 grid-cols-1">
+        <div className="grid md:grid-cols-3 grid-cols-1 gap-3">
            <div className="flex gap-[1px] items-center md:col-span-2">
            <input type="text" className="border w-full p-2  outline-none focus:border-primary rounded"/>  <button className="btn-primary py-3 px-6">Apply</button>
            </div>
