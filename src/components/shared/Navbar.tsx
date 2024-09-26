@@ -4,7 +4,7 @@ import { MdOutlineManageAccounts } from "react-icons/md";
 import { GiSelfLove } from "react-icons/gi";
 import { SlBasket } from "react-icons/sl";
 import { IoSearch } from "react-icons/io5";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import avatarImg from "../../assets/placeholder.jpg";
 import { RiMenuUnfold4Line2 } from "react-icons/ri";
 import useAuth from "../../Provider/useAuth";
@@ -19,10 +19,19 @@ const megaMenu = [
 ];
 
 const Navbar: React.FC = () => {
-  const {user,logOut}=useAuth();
+  const navigate=useNavigate()
+  const {user,logOut,handleFilterChange}=useAuth();
   const [isOpen, setIsOpen] = useState(false);
  const handleLogOut = () => {
   logOut();
+ }
+ const handleSearch=e=>{
+//   e.preventDefault();
+// console.log(e.target.value);
+
+//   handleFilterChange(e)
+//   return <a href="#all-gift-container" ></a>
+
  }
 //  console.log(user);
   return (
@@ -36,15 +45,22 @@ const Navbar: React.FC = () => {
           </Link>
         </div>
         {/* Input */}
-        <form className="md:w-1/3">
+        <form onSubmit={handleSearch} className="md:w-1/3">
           <label className="relative group flex justify-center items-center">
             <input
               type="text"
+              name="search"
+              onChange={(e)=>{
+                handleFilterChange(e)
+                navigate('/allGift')
+              }}
               className="  border border-primary border-opacity-45 md:w-full rounded-lg  md:p-3 p-2  text-black   focus:outline-none focus:border-primary hover:border-primary"
 
               placeholder="find your Gift..."
             />
-            <IoSearch className="group-hover:text-primary absolute right-2 md:right-6  mt-0 text-xl  cursor-pointer" />
+            <button type="submit" className="absolute right-2 md:right-6  mt-0 ">
+            <IoSearch type="" className="group-hover:text-primary text-xl  cursor-pointer" />
+            </button>
           </label>
         </form>
           {/* Mega menu leftSide */}

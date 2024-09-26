@@ -8,7 +8,7 @@ import LoadingSpinner from './../shared/LoadingSpinner';
 
 const BestSellinGift = ({drawerToggle}: drawerPropsType) => {
   const {gifts,loading} =useAuth()
-  console.log(gifts);
+  // console.log(gifts);
 
   if(loading) <LoadingSpinner/>
   

@@ -60,6 +60,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const provider = new GoogleAuthProvider();
   const [gifts, setGifts] = useState<GiftType[]>([]);
+  const [allGifts, setAllGifts] = useState<GiftType[]>([]);
 
   const [cart, setCart] = useState<GiftType[]>(() => {
     // Load cart items from local storage on initial render
@@ -72,6 +73,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const Wishlist = localStorage.getItem("wishlist");
     return Wishlist ? JSON.parse(Wishlist) : [];
   });
+  const [filters, setFilters] = useState({
+    category: '',
+    priceMin: 0,
+    priceMax: 5000,
+    rating: 0,
+    availability: 'all',
+    sortBy: '',
+    search: ''
+});
 
   const createUser = async (email: string, password: string) => {
     setLoading(true);
@@ -155,7 +165,27 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.log(error);
       }
     })();
-  }, []);
+  }, [filters]);
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true);
+        const { data } = await axios.get("http://localhost:3000/getAllGift",{ params: filters });
+        setAllGifts(data.data);
+        // console.log(data.data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [filters]);
+
+  const handleFilterChange = (e) => {
+    e.preventDefault();
+    console.log(e.target.name,' :',e.target.value);
+    setFilters({ ...filters, [e.target.name]: e.target.value });
+    console.log(filters);
+};
 
   const addToCart = (gift: GiftType) => {
     const isExist = cart.find((item) => item._id === gift._id);
@@ -219,12 +249,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     logOut,
     updateUserProfile,
     gifts,
+    allGifts,
     cart,
     addToCart,
     addToWishlist,
     wishlist,
     removeToWishlist,
-    removeToCart
+    removeToCart,
+    handleFilterChange,
+    filters
 
     
   };
