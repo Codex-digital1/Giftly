@@ -1,13 +1,7 @@
-import { useEffect, useState } from "react";
-import { FaCartPlus } from "react-icons/fa6";
-import { IoSearchOutline } from "react-icons/io5";
-import InfiniteScroll from "react-infinite-scroller";
-import Card from "./card";
-import axios from "axios";
-import GiftCard from "../../components/shared/GiftCard";
+import { useState } from "react";
+ 
 
-
-const giftsData = [
+const giftsData: Gift[] = [
   {
     id: 1,
     name: "Gift A",
@@ -37,7 +31,6 @@ const giftsData = [
 
 const Allgift = () => {
   const [filter, setFilter] = useState("");
-  const [gifts, setGifts] = useState([]);
   const [search, setSearch] = useState("");
   const [searchText, setSearchText] = useState("");
   const [priceRange, setPriceRange] = useState([0, 100]);
@@ -45,19 +38,26 @@ const Allgift = () => {
   const [rating, setRating] = useState(0);
   const [availability, setAvailability] = useState(false);
   const [sortOption, setSortOption] = useState("default");
-  useEffect(()=>{
-    const getData=async ()=>{
-      try {
-        const {data}= await axios.get('http://localhost:3000/getAllGift')
-        setGifts(data.data);
-       } catch (error) {
-         console.log(error);
-         
-       }
-    }
-    getData()
-   
-  },[])
+
+  // Function to filter gifts based on state
+  const filterGifts = (gifts) => {
+    return gifts
+      .filter((gift) => category === "All" || gift.category === category)
+      .filter(
+        (gift) => gift.price >= priceRange[0] && gift.price <= priceRange[1]
+      )
+      .filter((gift) => gift.rating >= rating)
+      .filter((gift) => (availability ? gift.available : true))
+      .sort((a, b) => {
+        if (sortOption === "price-low-high") return a.price - b.price;
+        if (sortOption === "price-high-low") return b.price - a.price;
+        if (sortOption === "popularity") return b.rating - a.rating; // Assuming rating as popularity
+        if (sortOption === "newest") return b.id - a.id; // Assuming higher id is newer
+        return 0; // Default sorting
+      });
+  };
+
+  const filteredGifts = filterGifts(giftsData);
 
   return (
     <>

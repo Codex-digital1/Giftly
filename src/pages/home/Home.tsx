@@ -7,12 +7,9 @@ import Feedback from "../../components/home/Feedback/Feedback";
 import PromotionalBanner from "../../components/home/PromotionalBanner";
 import { useState } from "react";
 import Drawer from "../../components/cart/Drawer";
-
 const Home = () => {
- 
+ const [isOpenDrawer, setIsOpenDrawer] = useState<boolean>(false);
 
-
-  const [isOpenDrawer, setIsOpenDrawer] = useState<boolean>(false);
   const drawerToggle = () => {
     setIsOpenDrawer(!isOpenDrawer);
   };

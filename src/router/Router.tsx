@@ -14,8 +14,8 @@ import MyRating from "../pages/acount/MyRating";
 import MyWishlist from "../pages/acount/MyWishlist";
 import Login from "../pages/authentication/Login";
 import Register from "../pages/authentication/Register";
-import ChatApp from "../pages/chatApp/ChatApp";
-import Join from "../pages/chatApp/Join";
+// import ChatApp from "../pages/chatApp/ChatApp";
+// import Join from "../pages/chatApp/Join";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +46,25 @@ const router = createBrowserRouter([
       {
         path: "/account",
         element: <Account></Account>,
+        children:[
+          {
+            path:'',
+            element:<ProfileInfo></ProfileInfo>
+          },
+          {
+            path:'my-orders',
+            element:<ProfileInfo></ProfileInfo>
+          },
+
+          {
+            path:'my-wishlist',
+            element:<MyWishlist></MyWishlist>
+          },
+          {
+            path:'my-rating',
+            element:<MyRating></MyRating>
+          }
+        ]
       },
       {
         path: "/productDetails",
