@@ -1,19 +1,23 @@
-import { ClockLoader, HashLoader } from 'react-spinners'
+import { ClockLoader } from 'react-spinners';
 
-const LoadingSpinner = ({ smallHeight }) => {
+interface LoadingSpinnerProps {
+  smallHeight?: boolean;
+  card?: boolean;
+  large?: boolean;
+}
+
+const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ smallHeight, card, large }) => {
   return (
     <div
-      className={` ${smallHeight ? 'h-[250px]' : 'h-[70vh]'}
+      className={`${smallHeight ? 'h-[250px]' : ''}${card ? 'h-[42vh]' : ''}${large ? 'h-[70vh]' : ''}
       flex 
       flex-col 
       justify-center 
       items-center `}
     >
-      <ClockLoader size={100} color='#e46f6c' />
+      <ClockLoader size={130} color="#e46f6c" />
     </div>
-  )
-}
+  );
+};
 
-
-
-export default LoadingSpinner
+export default LoadingSpinner;
