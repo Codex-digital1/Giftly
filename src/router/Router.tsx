@@ -19,6 +19,8 @@ import OrderHistory from "../pages/Dashboard/Admin/OrderHistory/OrderHistory";
 import ManageOrders from "../pages/Dashboard/User/ManageOrders/ManageOrders";
 import Login from "../pages/authentication/Login";
 import Register from "../pages/authentication/Register";
+import Profile from "../pages/Dashboard/Common/Profile/Profile";
+import Statistics from "../pages/Dashboard/Admin/Statistics/Statistics";
 
 const router = createBrowserRouter([
   {
@@ -74,6 +76,10 @@ const router = createBrowserRouter([
     element: <Dashboard/>,
     children:[
       {
+        path:'statistics',
+        element:<Statistics/>
+      },
+      {
         path:'manage-users',
         element:<Users/>
       },
@@ -88,6 +94,10 @@ const router = createBrowserRouter([
       {
         path:'manage-orders',
         element:<ManageOrders/>
+      },
+      {
+        path:'profile',
+        element:<Profile/>
       }
     ]
   }
