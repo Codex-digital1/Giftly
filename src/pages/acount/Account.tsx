@@ -1,8 +1,8 @@
 import { Link, Outlet } from "react-router-dom";
 import useAuth from "../../Provider/useAuth";
-
+import imageD from '../../assets/placeholder.jpg'
 const Account = () => {
-  const {user} = useAuth();
+  const {user} = useAuth() ?? {};
   return (
     <div className="px-10 py-24">
       <div className="flex justify-center gap-8">
@@ -10,7 +10,7 @@ const Account = () => {
         <div className="w-[400px]">
           <div className="p-6 flex items-center gap-2 shadow-lg rounded-lg">
             <img
-              src={user?.photoURL}
+              src={user?.photoURL || imageD}
               alt="user"
               className="w-[80px] h-auto rounded-lg  mr-3"
             />

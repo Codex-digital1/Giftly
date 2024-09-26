@@ -14,39 +14,16 @@ import auth from "../Firebase/Firebase.config";
 import axios from "axios";
 
 interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-  setLoading: (loading: boolean) => void;
-  login: (email: string, password: string) => Promise<UserCredential>;
-  createUser: (email: string, password: string) => Promise<UserCredential>;
-  googleLogin: () => Promise<UserCredential>;
-  logOut: () => Promise<void>;
-  updateUserProfile: (name: string) => Promise<void>;
-  setUser: (user: User | null) => void;
-  gifts: GiftType[];
-  cart: GiftType[];
-  setWishlist: (gift: GiftType[]) => void;
-  setCart: (gift: GiftType[]) => void;
-  wishList: GiftType[];
+    user: User | null;
+    loading: boolean;
+    setLoading: (loading: boolean) => void;
+    login: (email: string, password: string) => Promise<UserCredential>;
+    createUser: (email: string, password: string) => Promise<UserCredential>;
+    googleLogin: () => Promise<UserCredential>;
+    logOut: () => Promise<void>;
+    updateUserProfile: (name: string) => Promise<void>;
+    setUser: (user: User | null) => void;
 }
-type GiftType = {
-  _id: string;
-  giftName: string;
-  store: string;
-  brand: string;
-  discount: number;
-  price: number;
-  rating: number;
-  giftImage: string;
-  productAddBy: string;
-  description: string;
-  size: string;
-  color: string;
-  type: string;
-  category: string;
-  availability: boolean;
-  quantity: number;
-};
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -110,17 +87,19 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const updateUserProfile = async (name: string) => {
-    if (auth.currentUser) {
-      try {
-        await updateProfile(auth.currentUser, { displayName: name });
-      } catch (error: any) {
-        toast.error("Failed to update profile: " + error.message);
-      }
-    } else {
-      toast.error("User not authenticated.");
-    }
-  };
+    const updateUserProfile = async (name: string, photoURL: string, phoneNumber:string, email: string) => {
+        if (auth.currentUser) {
+          try {
+            await updateProfile(auth.currentUser, { displayName: name, photoURL: photoURL, phoneNumber:phoneNumber, email:email });
+            toast.success('Profile updated successfully!');
+          } catch (error: any) {
+            toast.error("Failed to update profile: " + error.message);
+          }
+        } else {
+          toast.error("User not authenticated.");
+        }
+      };
+    
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (user) => {

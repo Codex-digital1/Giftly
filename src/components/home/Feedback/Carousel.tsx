@@ -14,8 +14,7 @@ import Container from '../../shared/Container'
 
 
 export default function Carousel() {
-  const swiperRef = useRef(null);
-
+  const swiperRef = useRef<any>(null); 
   const handleMouseEnter = () => {
     if (swiperRef.current) {
       swiperRef.current.swiper.autoplay.stop();
