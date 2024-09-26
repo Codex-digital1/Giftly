@@ -14,9 +14,6 @@ import MyRating from "../pages/acount/MyRating";
 import MyWishlist from "../pages/acount/MyWishlist";
 import Login from "../pages/authentication/Login";
 import Register from "../pages/authentication/Register";
-// import ChatApp from "../pages/chatApp/ChatApp";
-// import Join from "../pages/chatApp/Join";
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -70,14 +67,6 @@ const router = createBrowserRouter([
         path: "/productDetails",
         element: <ProductDetails></ProductDetails>,
       },
-      // {
-      //   path: "/chatApp",
-      //   element: <ChatApp></ChatApp>,
-      // },
-      // {
-      //   path: "/join", // Place /join inside the children of the root
-      //   element: <Join></Join>,
-      // },
       {
         path: "/login",
         element: <Login></Login>,

@@ -32,7 +32,8 @@
     "react-spinners": "^0.14.1",
     "react-toastify": "^10.0.5",
     "socket.io-client": "^4.8.0",
-    "swiper": "^11.1.14"
+    "swiper": "^11.1.14",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
