@@ -15,15 +15,15 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <div className="relative">
       <Banner />
       <Category />
       <FeaturedProducts></FeaturedProducts>
       <GiftShopBanner></GiftShopBanner>
       <BestSellinGift drawerToggle={drawerToggle} isOpenDrawer={isOpenDrawer}></BestSellinGift>
-      <PromotionalBanner/>
-       <Feedback></Feedback>
-       <Drawer  drawerToggle={drawerToggle} isOpenDrawer={isOpenDrawer}/>
+      <PromotionalBanner />
+      <Feedback></Feedback>
+      <Drawer drawerToggle={drawerToggle} isOpenDrawer={isOpenDrawer} />
     </div>
   );
 };
