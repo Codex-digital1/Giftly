@@ -19,6 +19,7 @@ import OrderHistory from "../pages/Dashboard/Admin/OrderHistory/OrderHistory";
 import ManageOrders from "../pages/Dashboard/User/ManageOrders/ManageOrders";
 import Login from "../pages/authentication/Login";
 import Register from "../pages/authentication/Register";
+import Success from "../pages/success/Success";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>,
+      },
+      {
+        path: "/payment/success/:tranId",
+        element:<Success></Success>
       },
       {
         path: "/allGift",
