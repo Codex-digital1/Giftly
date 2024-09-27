@@ -15,14 +15,20 @@ import ReviewModal from "./ReviewModal";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import useAuth from "../../Provider/useAuth";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
+ 
+
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams();
+  const {user} = useAuth();
+  const axiosPublic = useAxiosPublic()
+  
   const [gift, setGift] = useState({});
   const [count, setCount] = useState(1);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentImg, setCurrentImg] = useState("");
-  const { addToCart,addToWishlist}=useAuth()
+  const { addToCart, addToWishlist } = useAuth();
 
   useEffect(() => {
     const getData = async () => {
@@ -54,6 +60,7 @@ const ProductDetails: React.FC = () => {
     availability,
     quantity,
   } = gift || {};
+
   const scrollElement = useRef<HTMLDivElement>(null);
 
   const scrollRight = () => {
@@ -72,6 +79,48 @@ const ProductDetails: React.FC = () => {
     setCurrentImg(img);
   };
 
+  // btn modal for get user info
+  const [openModal, setOpenModal] = useState(false);
+  useEffect(() => {
+    if (openModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflowY = "auto";
+    }
+    return () => (document.body.style.overflow = "auto");
+  }, [openModal]);
+// handleUserData
+const handleUserData = e => {
+e.preventDefault();
+const form = e.target;
+const name = form.name.value;
+const number = form.number.value;
+const address = form.address.value;
+const email = user?.email;
+const productId = _id;
+ // Prepare the data to be sent in the POST request
+ const paymentDetails = {
+  name,
+  email,
+  number,
+  address,
+  productId,
+};
+
+// Sending the POST request using Axios
+axiosPublic
+  .post('/payment', paymentDetails)
+  .then((response) => {
+    window.location.replace(response?.data?.url)
+    // Handle successful response
+    console.log("Payment details sent successfully:", response.data);
+  })
+  .catch((error) => {
+    // Handle any errors that occur during the POST request
+    console.error("Error in sending payment details:", error);
+  });
+
+}
   return (
     <>
       {Object.keys(gift).length > 0 && (
@@ -127,7 +176,7 @@ const ProductDetails: React.FC = () => {
                     <FaAngleRight />
                   </button>
 
-                  {giftImage.map((img:string, index:number) => (
+                  {giftImage.map((img: string, index: number) => (
                     <div
                       key={index}
                       onClick={() => setCurrent(img)}
@@ -140,7 +189,6 @@ const ProductDetails: React.FC = () => {
                     />
                   ))}
                 </div>
-
               </div>
             </div>
 
@@ -164,7 +212,9 @@ const ProductDetails: React.FC = () => {
                   <small className="text-gray-500 line-through ">
                     ৳{(discount + price).toFixed(2)}
                   </small>
-                  <small>-{((discount / (discount + price)) * 100).toFixed(0)}%</small>
+                  <small>
+                    -{((discount / (discount + price)) * 100).toFixed(0)}%
+                  </small>
                 </p>
               </div>
 
@@ -230,27 +280,146 @@ const ProductDetails: React.FC = () => {
 
                   <div className="my-4">
                     <div className="flex flex-wrap gap-4">
-                      <button 
-                      onClick={()=>addToCart(gift)} className="btn-secondary">Add To Cart</button>
+                      <button
+                        onClick={() => addToCart(gift)}
+                        className="btn-secondary"
+                      >
+                        Add To Cart
+                      </button>
+                    </div>
+
+                   
+                    {/* Pay Button */}
+                      <div
+                      >
+                        <button
+                          onClick={() => setOpenModal(true)}
+                          className="bg-primary text-white btn-secondary m-2"
+                        >
+                          Pay Now
+                        </button>
+                        <div
+
+
+                          className={`fixed flex justify-center items-center z-[100] ${
+                            openModal
+                              ? "visible opacity-1"
+                              : "invisible opacity-0"
+                          } duration-300 inset-0 w-full h-full`}
+                        >
+                          <div
+                          
+                            
+                            className={`absolute overflow-x-hidden overflow-y-scroll w-full h-full flex justify-center bg-white drop-shadow-2xl rounded-lg ${
+                              openModal
+                                ? "translate-y-0 opacity-1 duration-300"
+                                : "translate-y-32 opacity-0 duration-100"
+                            }`}
+                          >
+                            <div
+
+                            className="px-4 sm:px-6 lg:px-8 py-8">
+                              <button
+                            onClick={() => {
+                              setOpenModal(false);
+                            }}
+                                className="mr-0 mx-auto flex btn-secondary text-white px-3 py-2 rounded-lg mb-6"
+                              >
+                                Close
+                              </button>
+                            
+                                <div
+                               
+                                className="space-y-1 lg:mb-6">
+                                  <div
+                                 
+                                  className="rounded-lg border bg-card text-card-foreground shadow-sm">
+                                    <div className="flex flex-col space-y-1.5 lg:p-6 p-2">
+                                      <h3 className="text-2xl font-semibold whitespace-nowrap">
+                                        Enter your info
+                                      </h3>
+                                    </div>
+                                    <div
+                                    
+                                    className="lg:p-6 p-2">
+                                      {/* Shipping Details form */}
+                                      <form onSubmit={handleUserData} className="space-y-4 ">
+                                        <div className="space-y-2">
+                                          <label className="text-sm font-medium">
+                                            Name
+                                          </label>
+                                          <input
+                                            className="bg-transparent flex h-10 w-full rounded-md border px-3"
+                                            name="name"
+                                            placeholder="Enter your name"
+                                          />
+                                        </div>
+                                        <div className="space-y-2">
+                                          <label className="text-sm font-medium">
+                                            Full Address
+                                          </label>
+                                          <input
+                                            className="bg-transparent flex h-10 w-full rounded-md border px-3"
+                                            name="address"
+                                            placeholder="Enter your address"
+                                          />
+                                        </div>
+                                        <div className="space-y-2">
+                                          <label className="text-sm font-medium">
+                                            Phone number
+                                          </label>
+                                          <input
+                                            className="bg-transparent flex h-10 w-full rounded-md border px-3"
+                                            name="number"
+                                            placeholder="Enter you phoe number"
+                                          />
+                                        </div>
+                                     <button className="border min-w-full rounded-md p-1 btn-secondary">Go for Purchase</button>
+                                      </form>
+                                    </div>
+                                  </div>
+                                </div>
+                             
+                            </div>
+                          </div>
+                       
+                      </div>
+
                       <button className="btn-secondary">Buy it now</button>
                     </div>
                     <button
-                    onClick={()=>addToWishlist(gift)} 
-                    className="btn-secondary mt-4">
+                      onClick={() => addToWishlist(gift)}
+                      className="btn-secondary mt-4"
+                    >
                       Add To Wishlist
                     </button>
                   </div>
 
-                  <div className="text-xl flex gap-3 items-center ">
+                  <div
+                    className="text-xl flex gap-3 items-center 
+                   "
+                  >
                     <p className="text-4xl font-great-vibes">Share with us: </p>
                     <div className="flex gap-2">
-                      <span className="hover:text-primary transition-all duration-200 cursor-pointer">
+                      <span
+                        className="hover:text-primary 
+                       transition-all duration-200 cursor- 
+                        pointer"
+                      >
                         <FaFacebook />
                       </span>
-                      <span className="hover:text-primary transition-all duration-200 cursor-pointer">
+                      <span
+                        className="hover:text-primary 
+                       transition-all duration-200 cursor- 
+                        pointer"
+                      >
                         <FaTwitter />
                       </span>
-                      <span className="hover:text-primary transition-all duration-200 cursor-pointer">
+                      <span
+                        className="hover:text-primary 
+                       transition-all duration-200 cursor- 
+                        pointer"
+                      >
                         <FaGoogle />
                       </span>
                     </div>

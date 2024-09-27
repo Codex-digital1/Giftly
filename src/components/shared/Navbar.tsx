@@ -22,9 +22,7 @@ const Navbar: React.FC = () => {
   const navigate=useNavigate()
   const {user,logOut,handleFilterChange}=useAuth();
   const [isOpen, setIsOpen] = useState(false);
- const handleLogOut = () => {
-  logOut?.();
- }
+
  const handleSearch=e=>{
 //   e.preventDefault();
 // console.log(e.target.value);
@@ -160,19 +158,12 @@ const Navbar: React.FC = () => {
                   </div>
                   {user ? (
                     <>
-                      <Link to={"/account"}>
-                        <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
-                          Profile
-                        </div>
-                      </Link>
                       <Link to={"/dashboard"}>
                         <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
                           Dashboard
                         </div>
                       </Link>
-                      <div onClick={handleLogOut} className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
-                        Logout
-                      </div>
+                    
                     </>
                   ) : (
                     <>
