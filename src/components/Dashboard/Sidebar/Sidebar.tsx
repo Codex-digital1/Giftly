@@ -9,6 +9,8 @@ import { IoMdGift } from "react-icons/io";
 import { ImUsers } from "react-icons/im";
 import { RiFileHistoryLine } from "react-icons/ri";
 import useAuth from "../../../Provider/useAuth";
+import { MdOutlineShoppingCartCheckout } from "react-icons/md";
+ 
 
 const Sidebar = () => {
   const [isActive, setActive] = useState(false);
@@ -37,7 +39,7 @@ const {logOut} = useAuth() ?? {};
 
         <button
           onClick={handleToggle}
-          className="mobile-menu-button p-4 focus:outline-none focus:bg-gray-200"
+          className="mobile-menu-button p-4 focus:outline-none focus:bg-primary focus:text-white"
         >
           <AiOutlineBars className="h-5 w-5" />
         </button>
@@ -69,7 +71,7 @@ const {logOut} = useAuth() ?? {};
             <nav>
               {/* Statistics */}
               <NavLink
-                to=""
+                to="statistics"
                 className={({ isActive }) =>
                   `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-primary   hover:text-white ${
                     isActive ? "bg-primary  text-white" : "text-gray-600"
@@ -126,7 +128,7 @@ const {logOut} = useAuth() ?? {};
                   }`
                 }
               >
-              <RiFileHistoryLine className="w-5 h-5" />
+              <MdOutlineShoppingCartCheckout className="w-5 h-5" />
                 <span className="mx-4 font-medium">Manage Orders</span>
               </NavLink>
               {/* user dashboard */}
@@ -179,7 +181,7 @@ const {logOut} = useAuth() ?? {};
             to="/dashboard/profile"
             className={({ isActive }) =>
               `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-primary   hover:text-white ${
-                isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
+                isActive ? "bg-primary  text-white" : "text-gray-600"
               }`
             }
           >
