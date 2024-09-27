@@ -145,11 +145,40 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } else {
       toast.error("User not authenticated.");
     }
-  };
+  };// save user
+  const saveUser = async user => {
+    // console.log(user);
+   const currentUser = {
+     email: user?.email,
+     name: user?.displayName,
+     profileImage:user?.photoURL|| '',
+     role: 'user',
+     phoneNumber:user?.phoneNumber||'',
+     address: {
+       street:user?.street||'',
+       city:user?.city||'',
+       state:user?.state||'',
+       zipCode:user?.zipCode||'',
+       country:user?.country||'',
+     }
+   }
+   await axios.post(`http://localhost:3000/users`,currentUser)
+   .then(response => {
+     return(response.data);
+ })
+ .catch(error => {
+     console.error('There was an error!', error);
+ });
+   // return data
+ }
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+      if (user) {
+        setUser(user)
+        // getToken(currentUser.email)
+        saveUser(user)
+      }
       setLoading(false);
     });
     return () => {
