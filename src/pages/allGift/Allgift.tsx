@@ -9,7 +9,6 @@ const Allgift = () => {
   const giftCategory: string[] = [
     ...new Set(gifts?.map((gift) => gift?.category)),
   ];
-
   return (
     <>
       <div className="container mx-auto mt-20 p-4 min-h-[calc(100vh-530px)]">
