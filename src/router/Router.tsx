@@ -19,7 +19,10 @@ import OrderHistory from "../pages/Dashboard/Admin/OrderHistory/OrderHistory";
 import ManageOrders from "../pages/Dashboard/User/ManageOrders/ManageOrders";
 import Login from "../pages/authentication/Login";
 import Register from "../pages/authentication/Register";
+import Profile from "../pages/Dashboard/Common/Profile/Profile";
+import Statistics from "../pages/Dashboard/Admin/Statistics/Statistics";
 import Success from "../pages/success/Success";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -75,8 +78,12 @@ const router = createBrowserRouter([
     element: <Dashboard/>,
     children:[
       {
-       path:'',
-       element: <h1>Panging</h1>
+        path:'statistics',
+        element:<Statistics/>
+      },
+      {
+        path:'manage-users',
+        element:<Users/>
       },
       {
         path:'manage-gift',
@@ -113,6 +120,7 @@ const router = createBrowserRouter([
         path:'profile',
         element:<ProfileInfo></ProfileInfo>
       },
+      
     ]
   }
 ]);
