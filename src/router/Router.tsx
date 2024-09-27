@@ -50,29 +50,7 @@ const router = createBrowserRouter([
         path: "/cart",
         element: <Cart></Cart>,
       },
-      {
-        path: "/account",
-        element: <Account></Account>,
-        children:[
-          {
-            path:'',
-            element:<ProfileInfo></ProfileInfo>
-          },
-          {
-            path:'my-orders',
-            element:<MyOrders></MyOrders>
-          },
-
-          {
-            path:'my-wishlist',
-            element:<MyWishlist></MyWishlist>
-          },
-          {
-            path:'my-rating',
-            element:<MyRating></MyRating>
-          }
-        ]
-      },
+       
       {
         path: "/productDetails",
         element: <ProductDetails></ProductDetails>,
@@ -85,24 +63,28 @@ const router = createBrowserRouter([
         path: "/signUp",
         element: <Register></Register>,
       },
-      //  ( Profile ) Nesting route
       {
         path:'/productDetails/:id',
         element:<ProductDetails></ProductDetails>
       }
     ],
   },
+  // dash board for user and admin
   {
     path:'/dashboard',
     element: <Dashboard/>,
     children:[
       {
-        path:'manage-users',
-        element:<Users/>
+       path:'',
+       element: <h1>Panging</h1>
       },
       {
         path:'manage-gift',
         element:<Gift/>
+      },
+      {
+        path:'manage-users',
+        element:<Users/>
       },
       {
         path:'order-history',
@@ -111,7 +93,26 @@ const router = createBrowserRouter([
       {
         path:'manage-orders',
         element:<ManageOrders/>
-      }
+      },
+      // user
+      {
+        path:'my-orders',
+        element:<MyOrders></MyOrders>
+      },
+
+      {
+        path:'my-wishlist',
+        element:<MyWishlist></MyWishlist>
+      },
+      {
+        path:'my-rating',
+        element:<MyRating></MyRating>
+      },
+      // shared
+      {
+        path:'profile',
+        element:<ProfileInfo></ProfileInfo>
+      },
     ]
   }
 ]);
