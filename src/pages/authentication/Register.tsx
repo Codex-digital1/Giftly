@@ -20,7 +20,7 @@ const Register: React.FC = () => {
     e.preventDefault();
     const form = e.currentTarget;
     const nameValue = (form.elements.namedItem("name") as HTMLInputElement).value;
-    const receiverName = (form.elements.namedItem("receiver") as HTMLInputElement).value;
+    const receiverName = 'admin';
     const emailValue = (form.elements.namedItem("email") as HTMLInputElement).value;
     const passwordValue = (form.elements.namedItem("password") as HTMLInputElement).value;
     const confirmPasswordValue = (form.elements.namedItem("confirm-password") as HTMLInputElement).value;

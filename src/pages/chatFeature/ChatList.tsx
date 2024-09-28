@@ -1,44 +1,51 @@
 import { useRef } from 'react';
-import './style.css'
+
 const ChatLists = ({ chats }) => {
     const endOfMessages = useRef();
-    const user = localStorage.getItem('user');
+    const user = JSON.parse(localStorage.getItem('userInfo'))?.userName; // Ensure you retrieve the correct user info
 
     function SenderChat({ message, userName, profileImage }) {
         return (
-            <div className='chat_sender'>
-                <img src={profileImage} alt="" />
-                <p>
-                    <strong>{userName} </strong> <br />
-                    {message}
-                </p>
+            <div className="flex justify-end m-4">
+                <div className="bg-[#aff6be] text-black p-3 rounded-lg max-w-xs shadow-lg flex space-x-2">
+                    <div>
+                        <p>
+                            <strong>{userName}</strong> <br />
+                            {message}
+                        </p>
+                    </div>
+                    <img
+                        src={profileImage}
+                        alt=""
+                        className="w-[30px] h-[30px] rounded-full object-cover"
+                    />
+                </div>
             </div>
         );
     }
-    
 
     function ReceiverChat({ message, userName, profileImage }) {
         return (
-            <div className='chat_receiver'>
-                <img src={profileImage} alt="" />
-                <p>
-                    <strong>{userName}</strong> <br />
-                    {message}
-                </p>
+            <div className="flex justify-start m-4">
+                <div className="bg-gray-300 text-black p-3 rounded-lg max-w-xs shadow-lg flex space-x-2">
+                    <img
+                        src={profileImage}
+                        alt=""
+                        className="w-[30px] h-[30px] rounded-full object-cover"
+                    />
+                    <div>
+                        <p>
+                            <strong>{userName}</strong> <br />
+                            {message}
+                        </p>
+                    </div>
+                </div>
             </div>
         );
     }
 
-    // useEffect(() => {
-    //     scrollToBottom();
-    // }, [chats]);
-
-    // const scrollToBottom = () => {
-    //     endOfMessages.current?.scrollIntoView({ behavior: 'smooth' });
-    // };
-
     return (
-        <div className='overflow-y-scroll'>
+        <div className="overflow-y-scroll scrollbar-none flex flex-col h-full">
             {chats?.map((chat, index) => {
                 if (chat.senderUsername === user) {
                     return (

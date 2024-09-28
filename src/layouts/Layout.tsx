@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Outlet } from "react-router-dom";
 import Navbar from '../components/shared/Navbar';
 import Footer from '../components/shared/Footer';
 // import ChatApp from '../pages/chatApp/ChatApp';
 import { MdMessage } from "react-icons/md";
-import { RxCross2 } from 'react-icons/rx';
+// import { RxCross2 } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
 
 const Layouts: React.FC = () => {
-    const [isOpenChat, setIsOpenChat] = useState<boolean>(false);
-
     return (
         <div className="relative">
             <Navbar />
@@ -31,9 +29,9 @@ const Layouts: React.FC = () => {
                 <Link to="/chatInbox">
                     <button
                         className="btn-secondary text-2xl lg:text-3xl p-2 md:p-3 lg:p-4 rounded-full fixed bottom-20 lg:bottom-5 left-5 z-30 lg:z-50 transition-all duration-300 ease-in-out"
-                        onClick={() => setIsOpenChat(!isOpenChat)}
+                        
                     >
-                        {isOpenChat ? <RxCross2 /> : <MdMessage />}
+                        <MdMessage/>
                     </button>
                 </Link>
 

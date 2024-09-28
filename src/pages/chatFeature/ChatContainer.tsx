@@ -1,46 +1,53 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import adminLogo from "/admin.gif";
 import { RxCross2 } from "react-icons/rx";
 import socketIOClient from "socket.io-client";
 import ChatLists from './ChatList';
 import './style.css';
 import toast from "react-hot-toast";
-// import { AuthContext } from "../../Provider/AuthProvider";
+import { useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../Provider/AuthProvider";
 
 // Singleton socket instance
 const socket = socketIOClient("http://localhost:3000", { autoConnect: false });
 const ChatContainer: React.FC = () => {
-    // const { user } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     // State initialization
     const [text, setText] = useState('');
     const [userInfo, setUserInfo] = useState(() => JSON.parse(localStorage.getItem("userInfo")));
     const [receiver, setReceiver] = useState(() => localStorage.getItem("receiver"));
     const [normalUsers, setNormalUsers] = useState([]);
     const [chats, setChats] = useState([]);
-    // const [currentUserRoll, setCurrentUsers] = useState({});
-
+    const [isOpenChat, setIsOpenChat] = useState<boolean>(false);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location?.state || "/";
+    const [currentUser, setCurrentUsers] = useState({});
+    const [loading, setIsLoading] = useState<boolean>(false)
 
     // Fetch current user data
-    // const getSingleData = async () => {
-    //     try {
-    //         const response = await fetch(`http://localhost:3000/user/getUser/${user?.email}`, { method: 'GET' });
-    //         if (response.ok) {
-    //             const currentUser = await response.json();
-    //             setCurrentUsers(currentUser);
-    //             setIsLoading(false); // Data has loaded
-    //         } else {
-    //             console.log('Failed to fetch user data');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error fetching user:', error);
-    //     }
-    // };
+    const getSingleData = async () => {
+        try {
+            setIsLoading(true)
+            const response = await fetch(`http://localhost:3000/user/getUser/${user?.email}`, { method: 'GET' });
+            if (response.ok) {
+                const currentUser = await response.json();
+                setCurrentUsers(currentUser);
+                setIsLoading(false); // Data has loaded
+            } else {
+                console.log('Failed to fetch user data');
+            }
+        } catch (error) {
+            console.error('Error fetching user:', error);
+        }
+    };
 
-    // useEffect(() => {
-    //     if (user?.email) {
-    //         getSingleData();
-    //     }
-    // }, [user?.email]);
+    useEffect(() => {
+        if (user?.email) {
+            getSingleData();
+        }
+    }, [user?.email]);
+    console.log(currentUser)
 
     // Fetch all users
     const getData = async () => {
@@ -101,7 +108,7 @@ const ChatContainer: React.FC = () => {
             if (notification.receiver === userInfo.userName) {
                 // Display toast notification for a longer duration (e.g., 5 seconds)
                 toast.success(notification.message, {
-                    duration: 3000,
+                    duration: 6000,
                     position: 'top-center',
                 });
             }
@@ -152,50 +159,69 @@ const ChatContainer: React.FC = () => {
         localStorage.removeItem("receiver");
         setUserInfo(null);
         setReceiver(null);
+        navigate(from)
     };
-
+    console.log(currentUser?.role)
     return (
         <div className="my-[100px] flex flex-col justify-between w-full bg-gray-100 shadow-xl lg:container lg:mx-auto border-2 border-primary z-50 rounded-lg h-[500px]">
+
             {/* Chat Header */}
             <div className="bg-primary text-white p-4 flex justify-between items-center">
                 <div className="relative flex items-center space-x-4">
-                    <button className="text-2xl font-bold cursor-pointer">←</button>
+                    {/* <button className="text-2xl font-bold cursor-pointer">←</button> */}
                     <img src={adminLogo} alt="Giftly" className="w-10 h-10 rounded-full" />
-                    <span className="text-xl">{"Giftly"}</span>
-                    <span className="top-[26px] left-[48px] z-50 h-3 w-3 bg-green-500 rounded-full absolute"></span>
+                    <span className="text-xl">{"Admin"}</span>
+                    <span className="top-[26px] left-[15px] z-50 h-3 w-3 bg-green-500 rounded-full absolute"></span>
                     <h4>Sender: {userInfo?.userName}</h4>
                     <h4>Receiver: {receiver}</h4>
                 </div>
-                <div className='space-x-3 flex gap-2'>
-                    <div className='font-bold text-2xl cursor-pointer'>
-                        <RxCross2 />
+                <div className="space-x-3 flex gap-2">
+                    <div className="font-bold text-2xl cursor-pointer">
+                        {/* <RxCross2 /> */}
+                        {/* <p className="chats_logout" onClick={Logout}>
+                            <strong>Logout</strong>
+                        </p>
+                         */}
+                        <button className="bg-white text-primary text-2xl  p-2 rounded-full z-50 transition-all duration-300 ease-in-out"
+                            onClick={() => {
+                                setIsOpenChat(!isOpenChat)
+                                Logout()
+                            }}>
+                            <RxCross2 />
+                        </button>
                     </div>
-                    <p className="chats_logout" onClick={Logout}>
-                        <strong>Logout</strong>
-                    </p>
                 </div>
             </div>
 
-            {/* Main Chat Container */}
-            <div className="flex h-full overflow-hidden">
-                {/* Sidebar section */}
-                <div className={`sidebar w-[150px] h-full border-4 border-blue-600 overflow-y-scroll`}>
-                    {normalUsers.map((user, index) => (
-                        <div className="cursor-pointer hover:bg-fuchsia-300" key={index} onClick={() => {
-                            setReceiver(user?.userName);
-                            localStorage.setItem("receiver", user?.userName); // Persist receiver in localStorage
-                        }}>
-                            <img src={user.profileImage} alt={user?.userName} />
-                            <p>{user?.userName}</p>
-                        </div>
-                    ))}
+            <div className="flex h-full overflow-hidden scrollbar-none">
+                {/* Conditionally render sidebar content based on currentUser role */}
+                <div className="sidebar w-[150px] lg:w-[250px] h-full border-r-2 border-gray-300 scrollbar-none overflow-y-scroll bg-white p-4">
+                    {
+                        currentUser?.role === 'admin'
+                            ? normalUsers.map((presentUser, index) => (
+                                <div
+                                    className="cursor-pointer hover:bg-secondary flex items-center space-x-4 p-2 rounded-lg"
+                                    key={index}
+                                    onClick={() => {
+                                        setReceiver(presentUser?.userName);
+                                        localStorage.setItem("receiver", presentUser?.userName);
+                                    }}
+                                >
+                                    <img src={presentUser.profileImage} alt={presentUser?.userName} className="w-10 h-10 rounded-full object-cover" />
+                                    <p className="font-medium text-gray-700">{presentUser?.userName}</p>
+                                </div>
+                            ))
+                            : <p>For user</p>
+                    }
                 </div>
 
                 {/* Chat list section */}
-                <div className="flex-1 h-full border-4 border-blue-600 overflow-y-auto">
+                <div className="flex-1 h-full">
                     <ChatLists chats={chats} />
                 </div>
             </div>
+
+
 
             {/* Chat Input */}
             <div className="bg-white p-4 flex space-x-4 border-t border-gray-300">
@@ -221,6 +247,7 @@ const ChatContainer: React.FC = () => {
                 </form>
             </div>
         </div>
+
     );
 };
 

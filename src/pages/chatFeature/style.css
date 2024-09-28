@@ -71,25 +71,25 @@
     padding: 0 10%;
 }
 /* chats list  */
-.chats_list {
-    height: 75vh;
+/* .chats_list {
+    height: 100vh;
     overflow: scroll;
     overflow-x: hidden;
     border: 2px solid red;
-}
-.chat_sender {
+} */
+/* .chat_sender {
     display: flex;
     justify-content: flex-end;
     flex-direction: row
-}
+} */
 
-.chat_sender img,
+/* .chat_sender img,
 .chat_receiver img {
     width: 30px;
     height: 30px;
     border-radius: 100%;
-}
-
+} */
+/* 
 .chat_sender p {
     padding: 10px;
     background-color: #fff;
@@ -109,7 +109,7 @@
     background-color: #aff6be;
     border-radius: 10px;
     max-width: 60%,
-}
+} */
 
 /* input text  */
 
