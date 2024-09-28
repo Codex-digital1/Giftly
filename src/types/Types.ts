@@ -16,23 +16,24 @@ export type drawerPropsType = {
 
 // interfaces/Gift.ts
 export interface Gift {
-  _id: string,
+  _id: string;
   giftName: string;
+  store: string;
+  brand: string;
+  discount: number;
   price: number;
-  availability: string;
-  giftImage: string[];
-  description?: string;
-  store: string,
-  brand: string,
-  discount: number,
-  rating: number,
-  productAddBy: string,
-  size: string,
-  color: string,
-  type: string,
-  category: string,
-  quantity: number
+  rating: number;
+  giftImage: string[];  // This is an array of strings (image URLs)
+  productAddBy: string;
+  description: string;
+  size: string;
+  color: string;
+  type: string;
+  category: string;
+  availability: boolean;
+  quantity: number;
 }
+
 export interface GiftType {
   _id: string;
   giftName: string;
@@ -48,7 +49,7 @@ export interface GiftType {
   color?: string;
   type?: string;
   category?: string;
-  availability: string; 
+  availability: boolean; 
   quantity?: number;
 }
 

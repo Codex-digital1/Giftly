@@ -11,14 +11,13 @@ interface GiftCardProps {
 }
 
 const GiftCard: React.FC<GiftCardProps> = ({ gift }) => {
-  const { addToCart } = useAuth();
+  const { addToCart } = useAuth() ?? {};
 
   // Destructure gift properties with optional chaining
   const {
     _id,
     giftName,
-    store,
-    brand,
+     
     discount,
     price,
     rating,
@@ -61,7 +60,7 @@ const GiftCard: React.FC<GiftCardProps> = ({ gift }) => {
               </div>
             </Link>
             <div className="flex mb-5 text-white gap-3 justify-center items-center">
-              <div onClick={() => addToCart(gift)} className="btn-primary">
+              <div onClick={() => addToCart?.(gift)} className="btn-primary">
                 <span><FaCartPlus /></span>
                 <span>Add to cart</span>
               </div>

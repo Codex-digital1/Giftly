@@ -21,14 +21,14 @@ import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams();
-  const {user} = useAuth();
+  const {user} = useAuth() ?? {};
   const axiosPublic = useAxiosPublic()
   
   const [gift, setGift] = useState({});
   const [count, setCount] = useState(1);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentImg, setCurrentImg] = useState("");
-  const { addToCart, addToWishlist } = useAuth();
+  const { addToCart, addToWishlist } = useAuth() ?? {} ;
 
   useEffect(() => {
     const getData = async () => {
@@ -388,7 +388,7 @@ axiosPublic
                       <button className="btn-secondary">Buy it now</button>
                     </div>
                     <button
-                      onClick={() => addToWishlist(gift)}
+                      onClick={() => addToWishlist?.(gift)}
                       className="btn-secondary mt-4"
                     >
                       Add To Wishlist
@@ -437,7 +437,7 @@ axiosPublic
                   <button className="btn-secondary">Description</button>
                   <button
                     className="btn-secondary"
-                    onClick={() => setIsModalVisible(true)}
+                    onClick={() => setIsModalVisible?.(true)}
                   >
                     Write a review
                   </button>
