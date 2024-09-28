@@ -22,7 +22,7 @@ let socket;
 const ENDPOINT = "http://localhost:3000/";
 
 const ChatApp: React.FC<ChatAppProps> = ({ setIsOpenChat }) => {
-  const { user, loading } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext) ?? {};
 
   const [userInfo, setUserInfo] = useState("Guest");
   const [id, setId] = useState("");
