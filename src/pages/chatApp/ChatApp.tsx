@@ -1,4 +1,5 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, {  useContext, useEffect, useState } from 'react';
+// import ScrollToBottom from 'react-scroll-to-bottom';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import adminLogo from "/admin.gif";
 import socketIo from "socket.io-client";
@@ -36,7 +37,7 @@ const ChatApp: React.FC<ChatAppProps> = ({ setIsOpenChat }) => {
   }, [user]);
 
   // Send a message with timestamp to avoid duplication
-  const send = useCallback(() => {
+  const send = () => {
     const messageInput = (document.getElementById('chatInput') as HTMLInputElement);
     const message = messageInput.value;
 
@@ -49,7 +50,7 @@ const ChatApp: React.FC<ChatAppProps> = ({ setIsOpenChat }) => {
         })
         .catch(err => console.error("Error sending message:", err));
     }
-  }, [userInfo, id])
+  }
 
   const fetchMessages = async () => {
     try {
