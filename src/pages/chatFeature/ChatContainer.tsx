@@ -4,6 +4,7 @@ import { RxCross2 } from "react-icons/rx";
 import socketIOClient from "socket.io-client";
 import ChatLists from './ChatList';
 import './style.css';
+import toast from "react-hot-toast";
 // import { AuthContext } from "../../Provider/AuthProvider";
 
 // Singleton socket instance
@@ -95,6 +96,17 @@ const ChatContainer: React.FC = () => {
             setChats((prevChats) => [...prevChats, msg]);
         });
 
+        // Listen for notifications
+        socket.on("notification", (notification) => {
+            if (notification.receiver === userInfo.userName) {
+                // Display toast notification for a longer duration (e.g., 5 seconds)
+                toast.success(notification.message, {
+                    duration: 3000,
+                    position: 'top-center',
+                });
+            }
+        });
+
         return () => {
             socket.off("chat");
             socket.off("message");
@@ -169,12 +181,12 @@ const ChatContainer: React.FC = () => {
                 {/* Sidebar section */}
                 <div className={`sidebar w-[150px] h-full border-4 border-blue-600 overflow-y-scroll`}>
                     {normalUsers.map((user, index) => (
-                        <div key={index} onClick={() => {
-                            setReceiver(user.userName);
-                            localStorage.setItem("receiver", user.userName); // Persist receiver in localStorage
+                        <div className="cursor-pointer hover:bg-fuchsia-300" key={index} onClick={() => {
+                            setReceiver(user?.userName);
+                            localStorage.setItem("receiver", user?.userName); // Persist receiver in localStorage
                         }}>
-                            <img src={user.profileImage} alt={user.userName} />
-                            <p>{user.userName}</p>
+                            <img src={user.profileImage} alt={user?.userName} />
+                            <p>{user?.userName}</p>
                         </div>
                     ))}
                 </div>

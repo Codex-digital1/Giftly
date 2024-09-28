@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import './style.css'
 const ChatLists = ({ chats }) => {
     const endOfMessages = useRef();
@@ -29,13 +29,13 @@ const ChatLists = ({ chats }) => {
         );
     }
 
-    useEffect(() => {
-        scrollToBottom();
-    }, [chats]);
+    // useEffect(() => {
+    //     scrollToBottom();
+    // }, [chats]);
 
-    const scrollToBottom = () => {
-        endOfMessages.current?.scrollIntoView({ behavior: 'smooth' });
-    };
+    // const scrollToBottom = () => {
+    //     endOfMessages.current?.scrollIntoView({ behavior: 'smooth' });
+    // };
 
     return (
         <div className='overflow-y-scroll'>
