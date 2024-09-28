@@ -71,6 +71,7 @@ interface AuthProviderProps {
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  console.log(user)
   const [loading, setLoading] = useState<boolean>(true);
   const provider = new GoogleAuthProvider();
   const [gifts, setGifts] = useState<GiftType[]>([]);

@@ -5,57 +5,82 @@ import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { useState } from "react";
 import { ImSpinner10 } from "react-icons/im";
-
+import _ from 'lodash';
 const Register: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location?.state || "/";
-  const [passwordShow,setPasswordShow]=useState(false)
-  const [passwordShow1,setPasswordShow1]=useState(false)
+  const [passwordShow, setPasswordShow] = useState(false)
+  const [passwordShow1, setPasswordShow1] = useState(false)
 
-  const { createUser, updateUserProfile, googleLogin,loading } = useAuth() ?? {};
+  const { createUser, updateUserProfile, googleLogin, loading } = useAuth() ?? {};
 
   // handle Register form data
   const handelform = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const nameValue = (form.elements.namedItem("name") as HTMLInputElement)
-      .value;
-    const emailValue = (form.elements.namedItem("email") as HTMLInputElement)
-      .value;
-    const passwordValue = (
-      form.elements.namedItem("password") as HTMLInputElement
-    ).value;
-    const confirmPasswordValue = (
-      form.elements.namedItem("confirm-password") as HTMLInputElement
-    ).value;
+    const nameValue = (form.elements.namedItem("name") as HTMLInputElement).value;
+    const receiverName = (form.elements.namedItem("receiver") as HTMLInputElement).value;
+    const emailValue = (form.elements.namedItem("email") as HTMLInputElement).value;
+    const passwordValue = (form.elements.namedItem("password") as HTMLInputElement).value;
+    const confirmPasswordValue = (form.elements.namedItem("confirm-password") as HTMLInputElement).value;
 
     if (passwordValue !== confirmPasswordValue) {
       return toast.error("Password and confirm password must be the same.");
     }
 
-    await createUser?.(emailValue, passwordValue)
-      .then((result) => {
-        toast.success("Successfully created account!");
-        console.log(result.user);
+    // if (!nameValue || !receiverName) return;
+    const userInfo = {
+      userName: nameValue,
+      role: 'user',
+      email: emailValue,
+      profileImage: `https://picsum.photos/id/${_.random(1, 1000)}/200/300`
+    };
+    console.log(userInfo)
 
-        updateUserProfile?.(nameValue, "");
+    try {
+      await createUser?.(emailValue, passwordValue);
+      // toast.success("user created successfully!");
+
+      localStorage.setItem('userInfo', JSON.stringify(userInfo));
+      localStorage.setItem('receiver', receiverName);
+
+      // নতুন ব্যবহারকারীর তথ্য সার্ভারে পোস্ট করা হচ্ছে
+      const response = await fetch("http://localhost:3000/user/createUser", {
+        method: 'POST',
+        // credentials: "include",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userInfo)
+      });
+
+      if (response.ok) {
+        const createdUser = await response.json();
+        toast.success("user saved successfully!");
+        console.log('user created:', createdUser);
+      } else {
+        console.log('failed to created user');
+      }
+
+      await updateUserProfile?.(nameValue, "");
+      // navigate(from);
+    } catch (error) {
+      console.error("found error:", error);
+    }
+  };
+
+
+  // Google login
+  const handleGoogleLogin = async () => {
+    await googleLogin?.()
+      .then((result) => {
+        navigate(from);
+        console.log(result.user);
       })
       .catch((error) => {
         console.log(error);
       });
-    // navigate(from);
-  };
-  // Google login
-  const handleGoogleLogin = async () => {
-    await googleLogin?.()
-    .then((result) => {
-      navigate(from);
-      console.log(result.user);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
   };
 
   return (
@@ -78,7 +103,7 @@ const Register: React.FC = () => {
                   Enter your name
                 </p>
                 <input
-                required
+                  required
                   id="name"
                   name="name"
                   type="text"
@@ -86,10 +111,23 @@ const Register: React.FC = () => {
                   placeholder="Enter your name"
                 />
               </label>
+              <label htmlFor="receiver">
+                <p className="font-medium text-slate-700 pb-2">
+                  Enter receiver name
+                </p>
+                <input
+                  required
+                  id="receiver"
+                  name="receiver"
+                  type="text"
+                  className="w-full py-3 border   border-slate-200 rounded-lg px-3 focus:outline-none focus:border-primary hover:shadow "
+                  placeholder="Enter your receiver"
+                />
+              </label>
               <label htmlFor="email">
                 <p className="font-medium text-slate-700 pb-2">Email address</p>
                 <input
-                required
+                  required
                   id="email"
                   name="email"
                   type="email"
@@ -99,20 +137,20 @@ const Register: React.FC = () => {
               </label>
               <div className="relative">
 
-              <label htmlFor="password">
-                <p className="font-medium text-slate-700 pb-2">Password</p>
-                <input
-                required
-                  id="password"
-                  name="password"
-                  type={passwordShow?'text':'password'}
-                  className="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-primary hover:shadow"
-                  placeholder="Enter your password"
-                />
-              </label>
-              <div onClick={()=>{setPasswordShow(!passwordShow)}} className='absolute text-3xl right-4 top-[52%] hover:cursor-pointer'>
-            {passwordShow?<FaEye />:<FaEyeSlash />}
-            </div>
+                <label htmlFor="password">
+                  <p className="font-medium text-slate-700 pb-2">Password</p>
+                  <input
+                    required
+                    id="password"
+                    name="password"
+                    type={passwordShow ? 'text' : 'password'}
+                    className="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-primary hover:shadow"
+                    placeholder="Enter your password"
+                  />
+                </label>
+                <div onClick={() => { setPasswordShow(!passwordShow) }} className='absolute text-3xl right-4 top-[52%] hover:cursor-pointer'>
+                  {passwordShow ? <FaEye /> : <FaEyeSlash />}
+                </div>
               </div>
               <div className="relative">
                 <label htmlFor="confirm-password">
@@ -120,17 +158,17 @@ const Register: React.FC = () => {
                     Confirm Password
                   </p>
                   <input
-                  required
+                    required
                     id="confirm-password"
                     name="confirm-password"
-                    type={passwordShow1?'text':'password'}
+                    type={passwordShow1 ? 'text' : 'password'}
                     className="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-primary hover:shadow"
                     placeholder="Enter your confirm-password"
                   />
                 </label>
-                <div onClick={()=>{setPasswordShow1(!passwordShow1)}} className='absolute text-3xl right-4 top-[52%] hover:cursor-pointer'>
-            {passwordShow1?<FaEye />:<FaEyeSlash />}
-            </div>
+                <div onClick={() => { setPasswordShow1(!passwordShow1) }} className='absolute text-3xl right-4 top-[52%] hover:cursor-pointer'>
+                  {passwordShow1 ? <FaEye /> : <FaEyeSlash />}
+                </div>
               </div>
               <div className="text-end">
                 <a href="#" className="font-medium text-primary">
@@ -143,24 +181,24 @@ const Register: React.FC = () => {
                 className="w-full py-3 font-medium text-white btn-primary inline-flex space-x-2 items-center justify-center"
               >
                 {loading ? (
-                <ImSpinner10 className="animate-spin mx-auto text-xl" />
-              ) : (
-                <><svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-                />
-              </svg>
-              <span>Register</span></>
-              )}
+                  <ImSpinner10 className="animate-spin mx-auto text-xl" />
+                ) : (
+                  <><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                    />
+                  </svg>
+                    <span>Register</span></>
+                )}
               </button>
 
               <button
