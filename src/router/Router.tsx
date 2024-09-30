@@ -4,7 +4,6 @@ import Home from "../pages/home/Home";
 import Error from "../pages/error/Error";
 import Allgift from "../pages/allGift/Allgift";
 import AboutUs from "../pages/aboutUs/AboutUs";
-import Account from "../pages/acount/Account";
 import WishList from "../pages/wishList/WishList";
 import Cart from "../pages/cart/Cart";
 import ProductDetails from "../pages/details/ProductDetails";
@@ -19,6 +18,8 @@ import OrderHistory from "../pages/Dashboard/Admin/OrderHistory/OrderHistory";
 import ManageOrders from "../pages/Dashboard/User/ManageOrders/ManageOrders";
 import Login from "../pages/authentication/Login";
 import Register from "../pages/authentication/Register";
+import Statistics from "../pages/Dashboard/Admin/Statistics/Statistics";
+import Success from "../pages/success/Success";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>,
+      },
+      {
+        path: "/payment/success/:tranId",
+        element:<Success></Success>
       },
       {
         path: "/allGift",
@@ -46,29 +51,7 @@ const router = createBrowserRouter([
         path: "/cart",
         element: <Cart></Cart>,
       },
-      {
-        path: "/account",
-        element: <Account></Account>,
-        children:[
-          {
-            path:'',
-            element:<ProfileInfo></ProfileInfo>
-          },
-          {
-            path:'my-orders',
-            element:<MyOrders></MyOrders>
-          },
-
-          {
-            path:'my-wishlist',
-            element:<MyWishlist></MyWishlist>
-          },
-          {
-            path:'my-rating',
-            element:<MyRating></MyRating>
-          }
-        ]
-      },
+       
       {
         path: "/productDetails",
         element: <ProductDetails></ProductDetails>,
@@ -81,17 +64,21 @@ const router = createBrowserRouter([
         path: "/signUp",
         element: <Register></Register>,
       },
-      //  ( Profile ) Nesting route
       {
         path:'/productDetails/:id',
         element:<ProductDetails></ProductDetails>
       }
     ],
   },
+  // dash board for user and admin
   {
     path:'/dashboard',
     element: <Dashboard/>,
     children:[
+      {
+        path:'statistics',
+        element:<Statistics/>
+      },
       {
         path:'manage-users',
         element:<Users/>
@@ -101,13 +88,37 @@ const router = createBrowserRouter([
         element:<Gift/>
       },
       {
+        path:'manage-users',
+        element:<Users/>
+      },
+      {
         path:'order-history',
         element:<OrderHistory/>
       },
       {
         path:'manage-orders',
         element:<ManageOrders/>
-      }
+      },
+      // user
+      {
+        path:'my-orders',
+        element:<MyOrders></MyOrders>
+      },
+
+      {
+        path:'my-wishlist',
+        element:<MyWishlist></MyWishlist>
+      },
+      {
+        path:'my-rating',
+        element:<MyRating></MyRating>
+      },
+      // shared
+      {
+        path:'profile',
+        element:<ProfileInfo></ProfileInfo>
+      },
+      
     ]
   }
 ]);

@@ -8,14 +8,20 @@ import { Link } from "react-router-dom";
 import { IoMdGift } from "react-icons/io";
 import { ImUsers } from "react-icons/im";
 import { RiFileHistoryLine } from "react-icons/ri";
+import useAuth from "../../../Provider/useAuth";
+import { MdOutlineShoppingCartCheckout } from "react-icons/md";
+ 
 
 const Sidebar = () => {
   const [isActive, setActive] = useState(false);
-
+const {logOut} = useAuth() ?? {};
   // Sidebar Responsive Handler
   const handleToggle = () => {
     setActive(!isActive);
   };
+  const handleLogOut = () => {
+    logOut?.();
+   }
   return (
     <>
       {/* Small Screen Navbar */}
@@ -33,7 +39,7 @@ const Sidebar = () => {
 
         <button
           onClick={handleToggle}
-          className="mobile-menu-button p-4 focus:outline-none focus:bg-gray-200"
+          className="mobile-menu-button p-4 focus:outline-none focus:bg-primary focus:text-white"
         >
           <AiOutlineBars className="h-5 w-5" />
         </button>
@@ -122,8 +128,45 @@ const Sidebar = () => {
                   }`
                 }
               >
-              <RiFileHistoryLine className="w-5 h-5" />
+              <MdOutlineShoppingCartCheckout className="w-5 h-5" />
                 <span className="mx-4 font-medium">Manage Orders</span>
+              </NavLink>
+              {/* user dashboard */}
+                {/* my order */}
+                <NavLink
+                to="my-orders"
+                className={({ isActive }) =>
+                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-primary   hover:text-white ${
+                    isActive ? "bg-primary  text-white" : "text-gray-600"
+                  }`
+                }
+              >
+              <RiFileHistoryLine className="w-5 h-5" />
+                <span className="mx-4 font-medium">My Order</span>
+              </NavLink>
+              {/* my wishlist */}
+                <NavLink
+                to="my-wishlist"
+                className={({ isActive }) =>
+                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-primary   hover:text-white ${
+                    isActive ? "bg-primary  text-white" : "text-gray-600"
+                  }`
+                }
+              >
+              <RiFileHistoryLine className="w-5 h-5" />
+                <span className="mx-4 font-medium">My Wishlist</span>
+              </NavLink>
+              {/* my rating */}
+                <NavLink
+                to="my-rating"
+                className={({ isActive }) =>
+                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-primary   hover:text-white ${
+                    isActive ? "bg-primary  text-white" : "text-gray-600"
+                  }`
+                }
+              >
+              <RiFileHistoryLine className="w-5 h-5" />
+                <span className="mx-4 font-medium">My rating</span>
               </NavLink>
             </nav>
           </div>
@@ -132,12 +175,13 @@ const Sidebar = () => {
         <div>
           <hr />
 
+          {/* shared */}
           {/* Profile Menu */}
           <NavLink
             to="/dashboard/profile"
             className={({ isActive }) =>
               `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-primary   hover:text-white ${
-                isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
+                isActive ? "bg-primary  text-white" : "text-gray-600"
               }`
             }
           >
@@ -145,7 +189,7 @@ const Sidebar = () => {
 
             <span className="mx-4 font-medium">Profile</span>
           </NavLink>
-          <button className="flex w-full items-center px-4 py-2 mt-5 text-gray-600 hover:bg-primary   hover:text-white transition-colors duration-300 transform">
+          <button onClick={handleLogOut} className="flex w-full items-center px-4 py-2 mt-5 text-gray-600 hover:bg-primary   hover:text-white transition-colors duration-300 transform">
             <GrLogout className="w-5 h-5" />
 
             <span className="mx-4 font-medium">Logout</span>

@@ -41,7 +41,7 @@ interface AuthContextType {
   createUser: (email: string, password: string) => Promise<UserCredential>;
   googleLogin: () => Promise<UserCredential>;
   logOut: () => Promise<void>;
-  updateUserProfile: (name: string, photoURL: string, phoneNumber: string, email: string) => Promise<void>;
+  updateUserProfile: (name: string, photoURL: string) => Promise<void>;
   setUser: (user: User | null) => void;
   gifts?: GiftType[];
   allGifts?: GiftType[];
@@ -134,10 +134,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const updateUserProfile = async (name: string, photoURL: string, phoneNumber: string, email: string) => {
+  const updateUserProfile = async (name: string,   photoURL: string) => {
     if (auth.currentUser) {
       try {
-        await updateProfile(auth.currentUser, { displayName: name, photoURL, phoneNumber, email });
+        await updateProfile(auth.currentUser, { displayName: name,   photoURL:photoURL, });
         toast.success('Profile updated successfully!');
       } catch (error: any) {
         toast.error("Failed to update profile: " + error.message);
@@ -172,6 +172,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
    // return data
  }
 
+
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -185,6 +186,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       unSubscribe();
     };
   }, []);
+      useEffect(() => {
+        const unSubscribe = onAuthStateChanged(auth, (user) => {
+          setUser(user)
+          setLoading(false);
+        });
+        return () => {
+          unSubscribe();
+        };
+      }, []);
 
   const logOut = async () => {
     setLoading(true);
