@@ -11,6 +11,7 @@ import { createContext, useEffect, useState, ReactNode } from "react";
 import toast from "react-hot-toast";
 import auth from "../Firebase/Firebase.config";
 import axios from "axios";
+import _ from 'lodash';
 
 // Define GiftType
 type GiftType = {
@@ -134,10 +135,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const updateUserProfile = async (name: string,   photoURL: string) => {
+  const updateUserProfile = async (name: string, photoURL: string) => {
     if (auth.currentUser) {
       try {
-        await updateProfile(auth.currentUser, { displayName: name,   photoURL:photoURL, });
+        await updateProfile(auth.currentUser, { displayName: name, photoURL: photoURL, });
         toast.success('Profile updated successfully!');
       } catch (error: any) {
         toast.error("Failed to update profile: " + error.message);
@@ -146,31 +147,46 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       toast.error("User not authenticated.");
     }
   };// save user
-  const saveUser = async user => {
+  const saveUser = async (user) => {
+
+    const alternateImage = `https://picsum.photos/id/${_.random(1, 1000)}/200/300`;
     // console.log(user);
-   const currentUser = {
-     email: user?.email,
-     name: user?.displayName,
-     profileImage:user?.photoURL|| '',
-     role: 'user',
-     phoneNumber:user?.phoneNumber||'',
-     address: {
-       street:user?.street||'',
-       city:user?.city||'',
-       state:user?.state||'',
-       zipCode:user?.zipCode||'',
-       country:user?.country||'',
-     }
-   }
-   await axios.post(`http://localhost:3000/users`,currentUser)
-   .then(response => {
-     return(response.data);
- })
- .catch(error => {
-     console.error('There was an error!', error);
- });
-   // return data
- }
+    const currentUser = {
+      email: user?.email,
+      name: user?.displayName,
+      profileImage: user?.photoURL || alternateImage,
+      role: 'user',
+      phoneNumber: user?.phoneNumber || '',
+      address: {
+        street: user?.street || '',
+        city: user?.city || '',
+        state: user?.state || '',
+        zipCode: user?.zipCode || '',
+        country: user?.country || '',
+      }
+    }
+
+    // if (!nameValue || !receiverName) return;
+    const userInfo = {
+      name: user?.displayName || "name not found",
+      role: 'user',
+      email: user?.email,
+      profileImage: user?.photoURL || alternateImage
+    };
+  
+
+      localStorage.setItem('userInfo', JSON.stringify(userInfo));
+      localStorage.setItem('receiver', "Site-admin");
+
+    await axios.post(`http://localhost:3000/users`, currentUser)
+      .then(response => {
+        return (response.data);
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      });
+    // return data
+  }
 
 
   useEffect(() => {
@@ -186,6 +202,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       unSubscribe();
     };
   }, []);
+
   const logOut = async () => {
     setLoading(true);
     try {
