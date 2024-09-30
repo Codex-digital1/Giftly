@@ -186,16 +186,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       unSubscribe();
     };
   }, []);
-      useEffect(() => {
-        const unSubscribe = onAuthStateChanged(auth, (user) => {
-          setUser(user)
-          setLoading(false);
-        });
-        return () => {
-          unSubscribe();
-        };
-      }, []);
-
   const logOut = async () => {
     setLoading(true);
     try {
