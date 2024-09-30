@@ -23,17 +23,9 @@ const Navbar: React.FC = () => {
   const {user,logOut,handleFilterChange}=useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
- const handleSearch=e=>{
-//   e.preventDefault();
-// console.log(e.target.value);
-
-//   handleFilterChange(e)
-//   return <a href="#all-gift-container" ></a>
-
- }
-//  console.log(user);
+ 
   return (
-    <div className="fixed w-full bg-secondary z-50 top-0">
+    <div className="fixed w-full bg-secondary z-50 top-0 shadow-2xl">
       <div className=" container mx-auto bg-secondary h-20 flex justify-between items-center  px-2">
         {/* Logo */}
         <div className="flex justify-center bg-white items-center cursor-pointer text-primary">
