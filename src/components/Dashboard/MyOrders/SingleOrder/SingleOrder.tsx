@@ -17,7 +17,10 @@ const SingleOrder = () => {
             Completed
           </button>
         ) : (
-          <Link to="/" className="inline-block">
+          <Link
+            to={`/dashboard/my-orders/order-status/12334ug655454534`}
+            className="inline-block"
+          >
             <button className="btn-primary">
               Track My Order <FaArrowRightLong />
             </button>
