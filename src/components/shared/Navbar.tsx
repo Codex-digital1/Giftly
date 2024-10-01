@@ -8,6 +8,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import avatarImg from "../../assets/placeholder.jpg";
 import { RiMenuUnfold4Line2 } from "react-icons/ri";
 import useAuth from "../../Provider/useAuth";
+import { log } from "console";
 
 const megaMenu = [
   { name: "Home", path: "/" },
@@ -155,7 +156,9 @@ const Navbar: React.FC = () => {
                           Dashboard
                         </div>
                       </Link>
-                    
+                      <div onClick={()=> logOut()} className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
+                          Logout
+                        </div>
                     </>
                   ) : (
                     <>
