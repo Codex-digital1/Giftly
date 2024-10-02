@@ -1,35 +1,41 @@
+import { useEffect, useRef } from 'react';
 import './style.css';
 
 interface Chat {
     message: string;
+    receiverUsername: string;
     senderUsername: string;
-    profileImage: string;
-    image?: string; // Optional image prop
+    profileImage: string | undefined;
+    image?: string | null;
 }
 
 interface ChatListsProps {
     chats: Chat[];
-    endOfMessages: React.RefObject<HTMLDivElement>;
+    sender: string | null;
 }
 
-const ChatLists: React.FC<ChatListsProps> = ({ chats, endOfMessages }) => {
-    const user = JSON.parse(localStorage.getItem('userInfo') || '{}')?.name; // Ensure you retrieve the correct user info
+const ChatLists: React.FC<ChatListsProps> = ({ chats, sender}) => {
+    const endOfMessages = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        endOfMessages.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [chats]);
 
     const SenderChat: React.FC<Chat> = ({ message, senderUsername, profileImage, image }) => {
         return (
             <div className="flex justify-end m-4">
                 <div className="bg-primary text-white p-3 rounded-lg max-w-sm shadow-lg flex flex-col">
-                    {/* Display image if exists */}
                     {image && (
                         <img
                             src={image}
                             alt="Received"
-                            className="h-[100px] w-full object-cover rounded-sm my-3" // Fixed size for the image
+                            className="h-[100px] w-full object-cover rounded-sm my-3"
                         />
                     )}
-                    <p className='font-medium text-end overflow-wrap-break-word word-break-break-word whitespace-normal my-3'>{message}</p>
-
-                    <div className='flex justify-start gap-4 flex-row-reverse '>
+                    <p className='font-medium text-end overflow-wrap-break-word word-break-break-word whitespace-normal my-3'>
+                        {message}
+                    </p>
+                    <div className='flex justify-start gap-4 flex-row-reverse'>
                         <img
                             src={profileImage}
                             alt=""
@@ -54,17 +60,16 @@ const ChatLists: React.FC<ChatListsProps> = ({ chats, endOfMessages }) => {
                         />
                         <strong className='mt-1'>{senderUsername}</strong> <br />
                     </div>
-                    {/* Display image if exists */}
                     {image && (
                         <img
                             src={image}
                             alt="Received"
-                            className="h-[100px] w-full object-cover rounded-sm my-3" // Fixed size for the image
+                            className="h-[100px] w-full object-cover rounded-sm my-3"
                         />
                     )}
-
-                    <p className='font-medium overflow-wrap-break-word word-break-break-word whitespace-normal'>{message}</p>
-
+                    <p className='font-medium overflow-wrap-break-word word-break-break-word whitespace-normal'>
+                        {message}
+                    </p>
                 </div>
             </div>
         );
@@ -73,14 +78,14 @@ const ChatLists: React.FC<ChatListsProps> = ({ chats, endOfMessages }) => {
     return (
         <div className="overflow-y-scroll scrollbar-none flex flex-col h-full">
             {chats?.map((chat, index) => {
-                if (chat.senderUsername === user) {
+                if (chat.senderUsername === sender) {
                     return (
                         <SenderChat
                             key={index}
                             message={chat.message}
                             senderUsername={chat.senderUsername}
                             profileImage={chat.profileImage}
-                            image={chat.image} // Pass image prop
+                            image={chat.image}
                         />
                     );
                 } else {
@@ -90,12 +95,11 @@ const ChatLists: React.FC<ChatListsProps> = ({ chats, endOfMessages }) => {
                             message={chat.message}
                             senderUsername={chat.senderUsername}
                             profileImage={chat.profileImage}
-                            image={chat.image} // Pass image prop
+                            image={chat.image}
                         />
                     );
                 }
             })}
-            {/* Scroll to this div to ensure scrolling to the bottom */}
             <div ref={endOfMessages}></div>
         </div>
     );

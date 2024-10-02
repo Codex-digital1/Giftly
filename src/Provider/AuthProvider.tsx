@@ -74,6 +74,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const provider = new GoogleAuthProvider();
+  // get all user
+  const [allUser, setAllUsers] = useState<any[]>([]);
   const [gifts, setGifts] = useState<GiftType[]>([]);
   const [allGifts, setAllGifts] = useState<GiftType[]>([]);
 
@@ -148,12 +150,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };// save user
   const saveUser = async (user) => {
-
     const alternateImage = `https://picsum.photos/id/${_.random(1, 1000)}/200/300`;
     // console.log(user);
     const currentUser = {
       email: user?.email,
-      name: user?.displayName,
+      name: user?.displayName || "Anonymous",
       profileImage: user?.photoURL || alternateImage,
       role: 'user',
       phoneNumber: user?.phoneNumber || '',
@@ -163,21 +164,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         state: user?.state || '',
         zipCode: user?.zipCode || '',
         country: user?.country || '',
+      },
+      chat: {
+        sender: user?.displayName || "Anonymous",
+        receiver: "Admin"
       }
     }
-
-    // if (!nameValue || !receiverName) return;
-    const userInfo = {
-      name: user?.displayName || "name not found",
-      role: 'user',
-      email: user?.email,
-      profileImage: user?.photoURL || alternateImage
-    };
-  
-
-      localStorage.setItem('userInfo', JSON.stringify(userInfo));
-      localStorage.setItem('receiver', "Site-admin");
-
     await axios.post(`http://localhost:3000/users`, currentUser)
       .then(response => {
         return (response.data);
@@ -185,16 +177,16 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       .catch(error => {
         console.error('There was an error!', error);
       });
-    // return data
+
   }
 
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        saveUser(user)
         setUser(user)
         // getToken(currentUser.email)
-        saveUser(user)
       }
       setLoading(false);
     });
@@ -214,6 +206,27 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(false);
     }
   };
+
+  // Fetch all users
+  const getData = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/user/getUsers', { method: 'GET' });
+      if (response.ok) {
+        const users = await response.json();
+        setAllUsers(users);
+      } else {
+        console.log('Failed to fetch users');
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+}, []);
+
+
 
   useEffect(() => {
     (async () => {
@@ -308,6 +321,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     removeToCart,
     handleFilterChange,
     filters,
+    allUser,
+    getData
   };
 
   return (

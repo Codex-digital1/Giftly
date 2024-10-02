@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import adminLogo from "/admin.gif";
-import bg from "/bg.jpeg";
+import bg from "/wallpaper.jpeg";
 import { RxCross2 } from "react-icons/rx";
 import socketIOClient from "socket.io-client";
 import ChatLists from './ChatList';
@@ -9,24 +9,43 @@ import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
 
+interface User {
+    _id: string;
+    email: string;
+    name: string;
+    profileImage: string;
+    role: string;
+    chat: { sender: string; receiver: string };
+}
+
+interface Chat {
+    message: string;
+    receiverUsername: string;
+    senderUsername: string;
+    profileImage: string | undefined; // Allowing undefined here
+    image?: string | null; // This already handles null or undefined
+}
 // Singleton socket instance
 const socket = socketIOClient("http://localhost:3000", { autoConnect: false });
 
 const ChatContainer: React.FC = () => {
-    const { user } = useContext(AuthContext);
+    const { user, allUser, getData, setLoading, loading } = useContext(AuthContext);
+
+    const [currentUser, setCurrentUsers] = useState<User | null>(null);
+    const [sender, setSender] = useState<string | null>(null);
+    const [receiver, setReceiver] = useState<string | null>(null);
+    const [receiverInfo, setReceiverInfo] = useState<User | null>(null)
+
+
     const [text, setText] = useState<string>('');
-    const [userInfo, setUserInfo] = useState<object>(() => JSON.parse(localStorage.getItem("userInfo") || '{}'));
-    const [receiver, setReceiver] = useState<string | null>(() => localStorage.getItem("receiver"));
-    const [normalUsers, setNormalUsers] = useState<any[]>([]);
-    const [chats, setChats] = useState<any[]>([]);
+    const [chats, setChats] = useState<Chat[]>([]);
     const [isOpenChat, setIsOpenChat] = useState<boolean>(false);
+
     const navigate = useNavigate();
     const location = useLocation();
     const from = location?.state || "/";
-    const [currentUser, setCurrentUsers] = useState<object>({});
-    const [loading, setIsLoading] = useState<boolean>(false);
+
     const [selectedImage, setSelectedImage] = useState<string | null>(null); // Base64 image
-    const endOfMessages = useRef<HTMLDivElement | null>(null);
 
     // Handle image selection
     const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,21 +59,18 @@ const ChatContainer: React.FC = () => {
             reader.readAsDataURL(file);
         }
     };
-    console.log("image", selectedImage)
-    // Scroll to bottom when chats update
-    useEffect(() => {
-        endOfMessages.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [chats]);
 
     // Fetch current user data
     const getSingleData = async () => {
         try {
-            setIsLoading(true);
+            setLoading(true);
             const response = await fetch(`http://localhost:3000/user/getUser/${user?.email}`, { method: 'GET' });
             if (response.ok) {
                 const currentGetUser = await response.json();
                 setCurrentUsers(currentGetUser);
-                setIsLoading(false);
+                setSender(currentGetUser?.chat?.sender || "");
+                setReceiver(currentGetUser?.chat?.receiver || "");
+                setLoading(false);
             } else {
                 console.log('Failed to fetch user data');
             }
@@ -62,28 +78,13 @@ const ChatContainer: React.FC = () => {
             console.error('Error fetching user:', error);
         }
     };
-
     useEffect(() => {
         if (user?.email) {
             getSingleData();
         }
     }, [user?.email]);
 
-    // Fetch all users
-    const getData = async () => {
-        try {
-            const response = await fetch('http://localhost:3000/user/getUsers', { method: 'GET' });
-            if (response.ok) {
-                const users = await response.json();
-                setNormalUsers(users);
-            } else {
-                console.log('Failed to fetch users');
-            }
-        } catch (error) {
-            console.error('Error fetching users:', error);
-        }
-    };
-
+    // fetch all user data
     useEffect(() => {
         getData();
     }, []);
@@ -105,12 +106,55 @@ const ChatContainer: React.FC = () => {
         }
     };
 
+    // Function to update the current user's receiver
+    const updateReceiverName = async (receiverName: string) => {
+        try {
+            const response = await fetch(`http://localhost:3000/user/updateReceiver/${currentUser._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ receiver: receiverName }),
+            });
+
+            if (response.ok) {
+                const updatedUser = await response.json();
+                console.log(updatedUser)
+                setCurrentUsers(updatedUser); // Update the current user with the new receiver
+                setSender(updatedUser?.chat.sender)
+                setReceiver(updatedUser?.chat.receiver)
+            } else {
+                console.log('Failed to update receiver');
+            }
+        } catch (error) {
+            console.error('Error updating receiver:', error);
+        }
+    };
+
+    // Function to update the current user's receiver
+    const getReceiverData = async (receiverName: string) => {
+        try {
+
+            const res = await fetch(`http://localhost:3000/user/getReceiver/${receiverName}`, { method: 'GET', });
+
+
+            if (res.ok) {
+                const getCurrentReceiver = await res.json();
+                setReceiverInfo(getCurrentReceiver);
+            } else {
+                console.log('Failed to get current receiver');
+            }
+        } catch (error) {
+            console.error('Error updating receiver:', error);
+        }
+    };
+
+
     // Initialize Socket and Chat
     useEffect(() => {
         socket.connect();
-        const storedReceiver = localStorage.getItem("receiver");
-        if (userInfo && storedReceiver) {
-            socket.emit("joinRoom", { sender: userInfo.name, receiver: storedReceiver });
+        if (sender && receiver) {
+            socket.emit("joinRoom", { sender, receiver });
         }
 
         socket.on("chat", (fetchedChats) => {
@@ -122,7 +166,7 @@ const ChatContainer: React.FC = () => {
         });
 
         socket.on("notification", (notification) => {
-            if (notification.receiver === userInfo.name) {
+            if (notification.receiver === sender) {
                 toast.success(notification.message, {
                     duration: 6000,
                     position: 'top-center',
@@ -130,31 +174,35 @@ const ChatContainer: React.FC = () => {
             }
         });
 
+        
+
         return () => {
             socket.off("chat");
             socket.off("message");
             socket.disconnect();
         };
-    }, [userInfo, receiver]);
+    }, [sender, receiver]);
+
 
     // Refetch chats when receiver changes
     useEffect(() => {
-        if (userInfo && receiver) {
-            fetchPreviousChats(userInfo?.name, receiver);
+        if (sender && receiver) {
+            fetchPreviousChats(sender, receiver);
         }
     }, [receiver]);
 
+
     const addMessage = (text: string) => {
-        if (!receiver || !userInfo) {
+        if (!receiver || !sender) {
             console.error("Receiver or sender is not defined");
             return;
         }
 
-        const newChat = {
-            senderUsername: userInfo?.name,
+        const newChat: Chat = {
+            senderUsername: sender,
             receiverUsername: receiver,
             message: text,
-            profileImage: userInfo?.profileImage,
+            profileImage: currentUser?.profileImage,
             image: selectedImage, // Use base64 image here
         };
 
@@ -171,11 +219,7 @@ const ChatContainer: React.FC = () => {
 
     // Handle logout
     const Logout = () => {
-        // localStorage.removeItem("userInfo");
-        // localStorage.removeItem("receiver");
-        setUserInfo(null);
-        setReceiver(null);
-        navigate(from)
+        navigate(from);
     };
 
     return (
@@ -190,14 +234,14 @@ const ChatContainer: React.FC = () => {
             <div className="bg-primary border-primary border rounded-lg text-white p-4 flex  justify-between items-center">
                 <div className="relative flex items-center gap-3">
                     <img
-                        src={normalUsers.find(user => user?.name === receiver)?.profileImage || adminLogo}
+                        src={receiverInfo?.profileImage || adminLogo}
                         alt="Giftly" className="relative w-10 h-10 rounded-full" />
-                    <span className="text-xl">{"Admin"}</span>
+                    <span className="text-xl">{receiverInfo?.name || "Giftly"}</span>
                     <span className="top-[24px] left-[31px] z-30 h-[15px] w-[15px] bg-green-500 rounded-full absolute"></span>
-                    <h4>Sender: {userInfo?.name}</h4>
-                    <h4>Receiver: {receiver}</h4>
+                    {/* <h4>Sender: {sender}</h4>
+                    <h4>Receiver: {receiver}</h4> */}
                 </div>
-                <button className="bg-white hover:text-white hover:bg-black text-primary text-2xl p-2 rounded-full z-50 transition-all duration-300 ease-in-out cursor-pointer"
+                <button className="bg-white hover:text-white hover:bg-black text-primary text-2xl p-2 rounded-full z-30 transition-all duration-300 ease-in-out cursor-pointer"
                     onClick={() => {
                         setIsOpenChat(!isOpenChat);
                         Logout();
@@ -206,20 +250,21 @@ const ChatContainer: React.FC = () => {
                 </button>
             </div>
 
-            <div className="flex h-full overflow-hidden scrollbar-none">
-                {currentUser?.role === "admin" && (
+            <div className="flex h-full overflow-y-scroll scrollbar-none">
+                {currentUser?.role === "admin" ? (
                     <div className="sidebar w-[150px] lg:w-[250px] h-full border-r-2 border-gray-300 scrollbar-none overflow-y-scroll bg-white p-4">
                         {
-                            normalUsers
-                                ?.filter((presentUser) => presentUser?.name !== currentUser?.name)
-                                .map((presentUser, index) => {
+                            allUser
+                                ?.filter((presentUser: any) => presentUser?.name !== currentUser?.name)
+                                .map((presentUser: any, index: number) => {
                                     return (
                                         <div
                                             className="cursor-pointer hover:bg-secondary flex items-center space-x-4 p-2 rounded-lg"
                                             key={index}
                                             onClick={() => {
-                                                setReceiver(presentUser?.name);
-                                                localStorage.setItem("receiver", presentUser?.name);
+                                                updateReceiverName(presentUser?.name);
+                                                getReceiverData(presentUser?.name)
+                                                // Update receiver through PUT route
                                             }}
                                         >
                                             <img src={presentUser?.profileImage} alt={presentUser?.name} className="w-10 h-10 rounded-full object-cover" />
@@ -229,11 +274,35 @@ const ChatContainer: React.FC = () => {
                                 })
                         }
                     </div>
-                )}
+                ) : (
+                    <div className="sidebar w-[150px] lg:w-[250px] h-full border-r-2 border-gray-300 scrollbar-none overflow-y-scroll bg-white p-4">
+                        {
+                            allUser
+                                ?.filter((presentUser: any) => presentUser?.role === 'admin')
+                                .map((presentUser: any, index: number) => {
+                                    return (
+                                        <div
+                                            className="cursor-pointer hover:bg-secondary flex items-center space-x-4 p-2 rounded-lg"
+                                            key={index}
+                                            onClick={() => {
+                                                updateReceiverName(presentUser?.name);
+                                                getReceiverData(presentUser?.name)
+                                                // Update receiver through PUT route
+                                            }}
+                                        >
+                                            <img src={presentUser?.profileImage} alt={presentUser?.name} className="w-10 h-10 rounded-full object-cover" />
+                                            <p className="font-medium text-gray-700">{presentUser?.name}</p>
+                                        </div>
+                                    );
+                                })
+                        }
+                    </div>
+                )
+                }
 
                 {/* Chat list section */}
                 <div className="flex-1 h-full">
-                    <ChatLists chats={chats} endOfMessages={endOfMessages} />
+                    <ChatLists chats={chats} sender={sender}/>
                 </div>
             </div>
 

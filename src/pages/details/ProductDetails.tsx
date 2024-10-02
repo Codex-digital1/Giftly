@@ -140,6 +140,7 @@ axiosPublic
                       width: 1000,
                       height: 1000,
                       isHintEnabled: true,
+                      
                     },
                     enlargedImageContainerStyle: { background: "#fff" },
                     enlargedImagePosition: "beside",
@@ -147,6 +148,7 @@ axiosPublic
                   style={{
                     width: "auto",
                     // height: "100%",
+                    zIndex: 1,
                     maxWidth: "500px",
                     maxHeight: "500px",
                     objectFit: "cover",
