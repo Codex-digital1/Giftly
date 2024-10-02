@@ -33,6 +33,7 @@ const Allgift = () => {
                 name="category"
                 onChange={handleFilterChange}
               >
+                <option value="">All Products</option>
                 {giftCategory?.map((category: string, i: number) => (
                   <option key={i} value={category}>
                     {category}

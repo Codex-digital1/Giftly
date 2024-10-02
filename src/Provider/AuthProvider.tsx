@@ -164,7 +164,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
    }
    await axios.post(`http://localhost:3000/users`,currentUser)
    .then(response => {
-     return(response.data);
+  
  })
  .catch(error => {
      console.error('There was an error!', error);

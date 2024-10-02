@@ -40,7 +40,7 @@ const GiftCard: React.FC<GiftCardProps> = ({ gift }) => {
                 Sell!
               </span>
 
-              <div className="p-4 text-center space-y-2">
+              <div className="p-4 text-center space-y-1">
                 <p className="text-xs italic font-medium text-gray-600 hover:text-primary">
                    {category}
                 </p>
@@ -55,7 +55,7 @@ const GiftCard: React.FC<GiftCardProps> = ({ gift }) => {
                 </h3>
                 {/* Ratings */}
                 <div className="flex justify-center items-center">
-                  <Rating style={{ maxWidth: 140 }} value={rating} readOnly />
+                  <Rating style={{ maxWidth: 110 }} value={rating} readOnly />
                 </div>
               </div>
             </Link>
