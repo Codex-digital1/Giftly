@@ -5,7 +5,7 @@ import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import RatingGiftCard from '../../components/Rating/RatingGiftCard';
 
 const MyRating = () => {
-  const { allGifts, loading } = useAuth()
+  const { allGifts, loading } = useAuth() ?? {} ;
 
   console.log(allGifts)
   return (
@@ -28,8 +28,8 @@ const MyRating = () => {
               {/* <h2 className="text-lg font-medium">Product Reviews</h2>
             <p className="text-gray-600">You haven't reviewed any products yet.</p> */}
               {
-                allGifts?.filter((gift) => gift.rating === 0).length > 0 ? (
-                  allGifts.filter((gift) => gift.rating === 0).map((singleGift, index) => {
+                allGifts && allGifts?.filter((gift:any) => gift.rating === 0).length > 0 ? (
+                  allGifts.filter((gift) => gift.rating === 0).map((singleGift , index) => {
                     return <RatingGiftCard key={index} singleGift={singleGift} />
                   })
                 ) : (
@@ -45,7 +45,7 @@ const MyRating = () => {
               {/* <h2 className="text-lg font-medium">Product Reviews</h2>
             <p className="text-gray-600">You haven't reviewed any products yet.</p> */}
               {
-                allGifts?.filter((gift) => gift.rating !== 0).length > 0 ? (
+                allGifts && allGifts?.filter((gift) => gift.rating !== 0).length > 0 ? (
                   allGifts.filter((gift) => gift.rating !== 0).map((singleGift, index) => {
                     return <RatingGiftCard key={index} singleGift={singleGift} />
                   })

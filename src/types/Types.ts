@@ -23,7 +23,7 @@ export interface Gift {
   discount: number;
   price: number;
   rating: number;
-  giftImage: string[];  // This is an array of strings (image URLs)
+  giftImage:any;  // This is an array of strings (image URLs)
   productAddBy: string;
   description: string;
   size: string;
@@ -42,7 +42,7 @@ export interface GiftType {
   discount: number;
   price: number;
   rating: number;
-  giftImage: string[];
+  giftImage: string;
   productAddBy: string;
   description: string;
   size?: string;
