@@ -1,18 +1,11 @@
 import TableTd from "../shared/TableTd"
 import TableTh from "../shared/TableTh"
-import gitImage from '../../img/gift-box.png'
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import useAuth from "../../Provider/useAuth";
 const CartItem = () => {
-  const {cart,removeToCart}=useAuth()
-  const totalPrice=cart.reduce((accumulator, currentValue,) => {
-    // return updated accumulator
-    accumulator+=currentValue?.price
-  }, 0);
-  const totalDiscount=cart.reduce((accumulator, currentValue,) => {
-    // return updated accumulator
-    accumulator+=currentValue?.discount
-  }, 0);
+  const {cart,removeToCart}=useAuth() ?? {};
+  
+ 
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
@@ -27,7 +20,7 @@ const CartItem = () => {
           </tr>
         </thead>
         
-          {cart.map(item=> <tbody
+          {cart?.map(item=> <tbody
           key={item?._id} className="divide-y divide-gray-200 text-center">
           <tr className="odd:bg-gray-50">
             <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
@@ -55,7 +48,8 @@ const CartItem = () => {
                 </button>
               </div>
             </td>
-            <TableTd tdHeading={item?.availability} />
+            <TableTd tdHeading={item?.availability ? 'Available' : 'Not Available'} />
+
             <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
            <p className="flex gap-1 justify-center items-center">
            <span>{item?.price} </span> <FaBangladeshiTakaSign className='text-sm'/>
@@ -64,7 +58,7 @@ const CartItem = () => {
 
             <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
               <div className="flex gap-1 justify-center">
-                <div onClick={()=>removeToCart(item)} className="btn-primary">
+                <div onClick={()=>removeToCart?.(item)} className="btn-primary">
                   <span>Remove</span>
                 </div>
               </div>
@@ -74,7 +68,7 @@ const CartItem = () => {
        
       </table>
       {
-          cart.length === 0 && <center className=" my-4 text-xl font-semibold">Your cart is empty. Start adding items to see them here!</center>
+          cart?.length === 0 && <center className=" my-4 text-xl font-semibold">Your cart is empty. Start adding items to see them here!</center>
         }
     </div>
   );

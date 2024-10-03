@@ -39,26 +39,12 @@ const Register: React.FC = () => {
         toast.success("Successfully created account!");
         console.log(result.user);
 
-<<<<<<< HEAD
-    createUser?.(emailValue, passwordValue)
-    .then((result) => {
-      toast.success('Successfully created account!')
-      console.log(result.user);
-      
-        updateUserProfile?.(nameValue); 
-   
-    })
-    .catch(error => {
-      console.log(error);
-    })
-=======
         updateUserProfile?.(nameValue, "");
       })
       .catch((error) => {
         console.log(error);
       });
     // navigate(from);
->>>>>>> aac1bd35692964916c756b06dfcb4880ca7c488c
   };
   // Google login
   const handleGoogleLogin = async () => {
