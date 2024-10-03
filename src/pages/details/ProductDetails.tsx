@@ -109,7 +109,7 @@ const productId = _id;
 
 // Sending the POST request using Axios
 axiosPublic
-  .post('/payment', paymentDetails)
+  .post('/order', paymentDetails)
   .then((response) => {
     window.location.replace(response?.data?.url)
     // Handle successful response
