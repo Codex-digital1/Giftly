@@ -1,10 +1,8 @@
-import gitImage from '../../img/g3.jpg'
 import useAuth from '../../Provider/useAuth';
 import TableTd from '../shared/TableTd';
 import TableTh from '../shared/TableTh';
-import WishList from './../../pages/wishList/WishList';
 const WishListItem = () => {
-  const {wishlist ,addToCart,removeToWishlist}=useAuth()
+  const {wishlist ,addToCart,removeToWishlist}=useAuth() ?? {};
 
   return (
     <div>
@@ -20,7 +18,7 @@ const WishListItem = () => {
             </tr>
           </thead>
 
-         {wishlist.map(list=>(<tbody 
+         {wishlist?.map(list=>(<tbody 
          key={list?._id}
          className="divide-y divide-gray-200 text-center">
             <tr className="odd:bg-gray-50">
@@ -39,10 +37,10 @@ const WishListItem = () => {
               <TableTd tdHeading={list?.availability}/>
               <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
                 <div className='flex gap-4 justify-center'>
-                  <div onClick={()=>addToCart(list)} className="btn-primary">
+                  <div onClick={()=>addToCart?.(list)} className="btn-primary">
                     <span>Add to Cart</span>
                   </div>
-                  <div onClick={()=>removeToWishlist(list)} className="btn-primary">
+                  <div onClick={()=>removeToWishlist?.(list)} className="btn-primary">
                     <span>Remove</span>
                   </div>
                 </div>

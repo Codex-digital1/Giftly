@@ -12,20 +12,9 @@ const FeatureProductCard: React.FC<FeatureProductCardProps> = ({ gift }) => {
     const {
         _id,
         giftName,
-        store,
-        brand,
-        discount,
         price,
-        rating,
         giftImage,
-        productAddBy,
-        description,
-        size,
-        color,
-        type,
-        category,
         availability,
-        quantity,
       } = gift||{}
     return (
         <Link to={`/productDetails/${_id}`} className='min-w-[270px] group w-full text-center border-2 border-[#EBEBEB] rounded relative overflow-hidden shadow-sm'>

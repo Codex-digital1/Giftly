@@ -25,7 +25,7 @@ const Login: React.FC = () => {
     const passwordValue = password.value;
     await login?.(emailValue, passwordValue)
       .then((result) => {
-          // console.log(result.user);
+          console.log(result.user);
           navigate(from)
         })
         .catch((error) => {
