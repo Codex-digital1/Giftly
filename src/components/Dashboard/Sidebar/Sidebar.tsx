@@ -7,17 +7,20 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { IoMdGift } from "react-icons/io";
 import { ImUsers } from "react-icons/im";
-import { RiFileHistoryLine } from "react-icons/ri";
-import useAuth from "../../../Provider/useAuth";
+ import useAuth from "../../../Provider/useAuth";
 import { MdOutlineShoppingCartCheckout } from "react-icons/md";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import { FaHistory } from "react-icons/fa";
 import { GiSelfLove } from "react-icons/gi";
 
+interface UserRole {
+  role: string; // Define role structure
+}
 const Sidebar = () => {
   const [isActive, setActive] = useState(false);
   const navigate = useNavigate();
-  const [role, setRole] = useState();
+  const [role, setRole] = useState<UserRole | undefined>(undefined);
+ 
   const { logOut, user } = useAuth() ?? {};
   const axiosPublic = useAxiosPublic();
   // Sidebar Responsive Handler
@@ -100,7 +103,6 @@ const Sidebar = () => {
 
               {role?.role === "admin" ? (
                 <div>
-                  {" "}
                   <NavLink
                     to="statistics"
                     end

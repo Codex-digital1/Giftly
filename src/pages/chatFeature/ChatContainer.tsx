@@ -29,7 +29,7 @@ interface Chat {
 const socket = socketIOClient("http://localhost:3000", { autoConnect: false });
 
 const ChatContainer: React.FC = () => {
-    const { user, allUser, getData, setLoading, loading } = useContext(AuthContext);
+    const { user, allUser, getData, setLoading } = useContext(AuthContext) ?? {};
 
     const [currentUser, setCurrentUsers] = useState<User | null>(null);
     const [sender, setSender] = useState<string | null>(null);
@@ -63,14 +63,14 @@ const ChatContainer: React.FC = () => {
     // Fetch current user data
     const getSingleData = async () => {
         try {
-            setLoading(true);
+            setLoading?.(true);
             const response = await fetch(`http://localhost:3000/user/getUser/${user?.email}`, { method: 'GET' });
             if (response.ok) {
                 const currentGetUser = await response.json();
                 setCurrentUsers(currentGetUser);
                 setSender(currentGetUser?.chat?.sender || "");
                 setReceiver(currentGetUser?.chat?.receiver || "");
-                setLoading(false);
+                setLoading?.(false);
             } else {
                 console.log('Failed to fetch user data');
             }
@@ -109,7 +109,7 @@ const ChatContainer: React.FC = () => {
     // Function to update the current user's receiver
     const updateReceiverName = async (receiverName: string) => {
         try {
-            const response = await fetch(`http://localhost:3000/user/updateReceiver/${currentUser._id}`, {
+            const response = await fetch(`http://localhost:3000/user/updateReceiver/${currentUser?._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

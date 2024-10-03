@@ -36,6 +36,8 @@ type GiftType = {
 // Define AuthContextType
 interface AuthContextType {
   user: User | null;
+  allUser: any[];
+  getData: any;
   loading: boolean;
   setLoading: (loading: boolean) => void;
   login: (email: string, password: string) => Promise<UserCredential>;
@@ -149,7 +151,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       toast.error("User not authenticated.");
     }
   };// save user
-  const saveUser = async (user) => {
+  const saveUser = async (user : any ) => {
     const alternateImage = `https://picsum.photos/id/${_.random(1, 1000)}/200/300`;
     // console.log(user);
     const currentUser = {
