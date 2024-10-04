@@ -7,15 +7,14 @@ import Feedback from "../../components/home/Feedback/Feedback";
 import PromotionalBanner from "../../components/home/PromotionalBanner";
 import { useState } from "react";
 import Drawer from "../../components/cart/Drawer";
-import useAuth from "../../Provider/useAuth";
+
 const Home = () => {
-const {user} = useAuth();
-console.log(user);
  const [isOpenDrawer, setIsOpenDrawer] = useState<boolean>(false);
 
   const drawerToggle = () => {
     setIsOpenDrawer(!isOpenDrawer);
   };
+  console.log(import.meta.env.VITE_SERVER_URL);
 
   return (
     <div className="relative">
@@ -23,7 +22,7 @@ console.log(user);
       <Category />
       <FeaturedProducts></FeaturedProducts>
       <GiftShopBanner></GiftShopBanner>
-      <BestSellinGift drawerToggle={drawerToggle} isOpenDrawer={isOpenDrawer}></BestSellinGift>
+      <BestSellinGift drawerToggle={drawerToggle} ></BestSellinGift>
       <PromotionalBanner />
       <Feedback></Feedback>
       <Drawer drawerToggle={drawerToggle} isOpenDrawer={isOpenDrawer} />
