@@ -10,9 +10,9 @@ import {
 import { createContext, useEffect, useState, ReactNode } from "react";
 import toast from "react-hot-toast";
 import auth from "../Firebase/Firebase.config";
-import axios from "axios";
 import _ from 'lodash';
-
+import useAxiosPublic from "../Hooks/useAxiosPublic";
+ 
 // Define GiftType
 type GiftType = {
   _id: string;
@@ -73,6 +73,7 @@ interface AuthProviderProps {
 }
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const axiosPublic = useAxiosPublic()
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const provider = new GoogleAuthProvider();
@@ -172,7 +173,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         receiver: "Admin"
       }
     }
-    await axios.post(`http://localhost:3000/users`, currentUser)
+    await axiosPublic.post('/users', currentUser)
       .then(response => {
         return (response.data);
       })
@@ -212,7 +213,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Fetch all users
   const getData = async () => {
     try {
-      const response = await fetch('http://localhost:3000/user/getUsers', { method: 'GET' });
+      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getUsers`, { method: 'GET' });
       if (response.ok) {
         const users = await response.json();
         setAllUsers(users);
@@ -234,7 +235,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     (async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get("http://localhost:3000/getAllGift");
+        const { data } = await axiosPublic.get("/getAllGift");
         setGifts(data.data);
       } catch (error) {
         console.log(error);
@@ -248,7 +249,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     (async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get("http://localhost:3000/getAllGift", { params: filters });
+        const { data } = await axiosPublic.get("/getAllGift", { params: filters });
         setAllGifts(data.data);
       } catch (error) {
         console.log(error);

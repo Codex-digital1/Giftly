@@ -26,7 +26,7 @@ interface Chat {
     image?: string | null; // This already handles null or undefined
 }
 // Singleton socket instance
-const socket = socketIOClient("http://localhost:3000", { autoConnect: false });
+const socket = socketIOClient(import.meta.env.VITE_SERVER_URL, { autoConnect: false });
 
 const ChatContainer: React.FC = () => {
     const { user, allUser, getData, setLoading } = useContext(AuthContext) ?? {};
@@ -64,7 +64,7 @@ const ChatContainer: React.FC = () => {
     const getSingleData = async () => {
         try {
             setLoading?.(true);
-            const response = await fetch(`http://localhost:3000/user/getUser/${user?.email}`, { method: 'GET' });
+            const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getUser/${user?.email}`, { method: 'GET' });
             if (response.ok) {
                 const currentGetUser = await response.json();
                 setCurrentUsers(currentGetUser);
@@ -92,7 +92,7 @@ const ChatContainer: React.FC = () => {
     // Fetch previous chats for the current chat room
     const fetchPreviousChats = async (sender: string, receiver: string) => {
         try {
-            const response = await fetch(`http://localhost:3000/chat/getChats?sender=${sender}&receiver=${receiver}`, {
+            const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/chat/getChats?sender=${sender}&receiver=${receiver}`, {
                 method: 'GET',
             });
             if (response.ok) {
@@ -109,7 +109,7 @@ const ChatContainer: React.FC = () => {
     // Function to update the current user's receiver
     const updateReceiverName = async (receiverName: string) => {
         try {
-            const response = await fetch(`http://localhost:3000/user/updateReceiver/${currentUser?._id}`, {
+            const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/updateReceiver/${currentUser?._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -135,7 +135,7 @@ const ChatContainer: React.FC = () => {
     const getReceiverData = async (receiverName: string) => {
         try {
 
-            const res = await fetch(`http://localhost:3000/user/getReceiver/${receiverName}`, { method: 'GET', });
+            const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getReceiver/${receiverName}`, { method: 'GET', });
 
 
             if (res.ok) {

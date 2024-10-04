@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactImageMagnify from "react-image-magnify";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
-
 import { FaGoogle } from "react-icons/fa";
 import {
   FaAngleLeft,
@@ -11,7 +10,6 @@ import {
   FaTwitter,
 } from "react-icons/fa6";
 import ReviewModal from "./ReviewModal";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import useAuth from "../../Provider/useAuth";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
@@ -32,7 +30,7 @@ const ProductDetails: React.FC = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:3000/${id}`);
+        const { data } = await axiosPublic.get(`/${id}`);
         setGift(data.data);
         setCurrentImg(data.data.giftImage[0]);
       } catch (error) {
