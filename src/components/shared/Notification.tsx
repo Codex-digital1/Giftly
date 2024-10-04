@@ -48,9 +48,12 @@ const Notifications = ({ email }) => {
   }
 console.log(newNotification);
   return (
-    <div className='relative flex gap-5'>
-        <button onClick={handle}>add</button>
-      <IoNotifications className='text-2xl ' onClick={()=>setIsOpen(!isOpen)} />
+    <div className='relative '>
+      <button 
+      onClick={()=>setIsOpen(!isOpen)}
+      className='p-1 cursor-pointer'>
+      <IoNotifications className='text-2xl '  />
+      </button>
       {isOpen && (
               <div className="absolute z-10 transition-all rounded shadow-md w-[40vw] md:w-[25vw]  lg:w-[20vw] h10 bg-white overflow-hidden -right-2  top-12 text-sm">
                 {notifications?.map((note, index) => (

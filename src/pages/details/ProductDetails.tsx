@@ -18,13 +18,32 @@ import useAuth from "../../Provider/useAuth";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
  
 
+// Define the types for the gift object
+interface Gift {
+  _id: string;
+  giftName: string;
+  store: string;
+  brand: string;
+  discount: number;
+  price: number;
+  rating: number;
+  giftImage: string[];
+  productAddBy: string;
+  description: string;
+  size: string;
+  color: string;
+  type: string;
+  category: string;
+  availability: string;
+  quantity: number;
+}
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams();
   const {user} = useAuth() ?? {};
   const axiosPublic = useAxiosPublic()
   
-  const [gift, setGift] = useState({});
+  const [gift, setGift] = useState<Gift | null>(null);
   const [count, setCount] = useState(1);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentImg, setCurrentImg] = useState("");
@@ -45,20 +64,12 @@ const ProductDetails: React.FC = () => {
   const {
     _id,
     giftName,
-    store,
-    brand,
     discount,
     price,
     rating,
     giftImage,
-    productAddBy,
     description,
-    size,
-    color,
-    type,
-    category,
     availability,
-    quantity,
   } = gift || {};
 
   const scrollElement = useRef<HTMLDivElement>(null);
