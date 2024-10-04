@@ -4,7 +4,6 @@ import Home from "../pages/home/Home";
 import Error from "../pages/error/Error";
 import Allgift from "../pages/allGift/Allgift";
 import AboutUs from "../pages/aboutUs/AboutUs";
-import Account from "../pages/acount/Account";
 import WishList from "../pages/wishList/WishList";
 import Cart from "../pages/cart/Cart";
 import ProductDetails from "../pages/details/ProductDetails";
@@ -19,10 +18,10 @@ import OrderHistory from "../pages/Dashboard/Admin/OrderHistory/OrderHistory";
 import ManageOrders from "../pages/Dashboard/User/ManageOrders/ManageOrders";
 import Login from "../pages/authentication/Login";
 import Register from "../pages/authentication/Register";
-import Profile from "../pages/Dashboard/Common/Profile/Profile";
 import Statistics from "../pages/Dashboard/Admin/Statistics/Statistics";
 import Success from "../pages/success/Success";
 import OrderTracking from "../pages/Dashboard/User/OrderTracking/OrderTracking";
+import ChatContainer from "../pages/chatFeature/ChatContainer";
 
 const router = createBrowserRouter([
   {
@@ -68,9 +67,13 @@ const router = createBrowserRouter([
         element: <Register></Register>,
       },
       {
-        path: "/productDetails/:id",
-        element: <ProductDetails></ProductDetails>,
+        path:'/productDetails/:id',
+        element:<ProductDetails></ProductDetails>
       },
+      {
+        path:'/chatInbox',
+        element:<ChatContainer/>
+      }
     ],
   },
   // dash board for user and admin

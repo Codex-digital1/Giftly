@@ -8,17 +8,16 @@ import useAuth from "../../Provider/useAuth";
 // Define props type for GiftCard component
 interface GiftCardProps {
   gift: Gift;
+  drawerToggle?: () => void ;
 }
 
-const GiftCard: React.FC<GiftCardProps> = ({ gift }) => {
-  const { addToCart } = useAuth();
+const GiftCard: React.FC<GiftCardProps> = ({ gift, drawerToggle }) => {
+  const { addToCart } = useAuth() ?? {};
 
   // Destructure gift properties with optional chaining
   const {
     _id,
     giftName,
-    store,
-    brand,
     discount,
     price,
     rating,
@@ -26,6 +25,13 @@ const GiftCard: React.FC<GiftCardProps> = ({ gift }) => {
     category,
   } = gift || {};
 
+const handleAdd = () => {
+  addToCart?.(gift)
+   
+    drawerToggle?.()
+
+  
+}
   return (
     <>
       {gift && (
@@ -61,7 +67,9 @@ const GiftCard: React.FC<GiftCardProps> = ({ gift }) => {
               </div>
             </Link>
             <div className="flex mb-5 text-white gap-3 justify-center items-center">
-              <div onClick={() => addToCart(gift)} className="btn-primary">
+              <div 
+              
+              onClick={handleAdd} className="btn-primary">
                 <span><FaCartPlus /></span>
                 <span>Add to cart</span>
               </div>

@@ -20,20 +20,12 @@ const megaMenu = [
 
 const Navbar: React.FC = () => {
   const navigate=useNavigate()
-  const {user,logOut,handleFilterChange}=useAuth();
+  const {user,logOut,handleFilterChange}=useAuth()?? {};
   const [isOpen, setIsOpen] = useState(false);
 
- const handleSearch=e=>{
-//   e.preventDefault();
-// console.log(e.target.value);
-
-//   handleFilterChange(e)
-//   return <a href="#all-gift-container" ></a>
-
- }
-//  console.log(user);
+ 
   return (
-    <div className="fixed w-full bg-secondary z-50 top-0">
+    <div className="fixed w-full bg-secondary z-50 top-0 shadow-2xl">
       <div className=" container mx-auto bg-secondary h-20 flex justify-between items-center  px-2">
         {/* Logo */}
         <div className="flex justify-center bg-white items-center cursor-pointer text-primary">
@@ -49,7 +41,7 @@ const Navbar: React.FC = () => {
               type="text"
               name="search"
               onChange={(e)=>{
-                handleFilterChange(e)
+                handleFilterChange?.(e)
                 navigate('/allGift')
               }}
               className="border border-primary border-opacity-45 md:w-full rounded-lg  md:p-3 p-2  text-black   focus:outline-none focus:border-primary hover:border-primary"
@@ -163,7 +155,9 @@ const Navbar: React.FC = () => {
                           Dashboard
                         </div>
                       </Link>
-                    
+                      <div onClick={()=> logOut?.()} className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
+                          Logout
+                        </div>
                     </>
                   ) : (
                     <>

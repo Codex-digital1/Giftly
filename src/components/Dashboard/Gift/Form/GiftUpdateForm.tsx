@@ -4,15 +4,22 @@ import { MdCancel } from "react-icons/md";
 const GiftUpdateForm = () => {
     const [images, setImages] = useState<string[]>([]);
 
-    // Handle Change Input File
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files);
-    const imageUrls = files.map(file => URL.createObjectURL(file));
-    setImages(prevImages => prevImages.concat(imageUrls));
-  };
-  const handleRemoveImage = (index: number) => {
-    setImages(prevImages => prevImages.filter((_, i) => i !== index));
-  };
+       // Handle Change Input File
+       const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+        // Check if files is not null
+        const files = e.target.files;
+        if (files) {
+            const fileArray = Array.from(files); // Convert FileList to an array
+            const imageUrls = fileArray.map(file => URL.createObjectURL(file)); // Create object URLs
+            setImages(prevImages => prevImages.concat(imageUrls)); // Update state with new URLs
+        }
+    };
+  
+    const handleRemoveImage = (index: number) => {
+        setImages(prevImages => prevImages.filter((_, i) => i !== index)); // Remove image by index
+    };
+
+    
   return (
     <div>
       <div className="w-full p-5 space-y-3 rounded-xl  text-gray-800">
