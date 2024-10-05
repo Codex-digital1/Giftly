@@ -5,9 +5,9 @@ import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import RatingGiftCard from '../../components/Rating/RatingGiftCard';
 
 const MyRating = () => {
-  const { allGifts, loading } = useAuth() ?? {} ;
+  const { allGifts, loading,myReviewItem } = useAuth() ?? {} ;
 
-  console.log(allGifts)
+  console.log(myReviewItem)
   return (
     <div className="p-5 border-t-4 border-primary bg-white shadow-lg rounded-lg">
       <h2 className="text-2xl font-semibold mb-4">My Rating & Reviews</h2>

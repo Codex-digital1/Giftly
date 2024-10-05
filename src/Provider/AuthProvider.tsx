@@ -79,8 +79,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const provider = new GoogleAuthProvider();
   // get all user
   const [allUser, setAllUsers] = useState<any[]>([]);
+
   const [gifts, setGifts] = useState<GiftType[]>([]);
   const [allGifts, setAllGifts] = useState<GiftType[]>([]);
+
+  // get review item from order collection using user email
+  const [myReviewItem, setMyReviewItem] = useState([]);
 
   const [cart, setCart] = useState<GiftType[]>(() => {
     const savedCart = localStorage.getItem("cart");
@@ -259,6 +263,24 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     })();
   }, [filters]);
 
+  // get review from order collection using user email
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true);
+        const { data } = await axiosPublic.get(`/user/getReviewer/${user?.email}`);
+        setMyReviewItem(data);
+        console.log("hdjshf",data)
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [user?.email]);
+
+  // console.log(myReviewItem, "user review")
+
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     e.preventDefault();
     setFilters({ ...filters, [e.target.name]: e.target.value });
@@ -325,7 +347,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     handleFilterChange,
     filters,
     allUser,
-    getData
+    getData,
+    myReviewItem
   };
 
   return (
