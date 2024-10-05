@@ -1,8 +1,24 @@
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import TableTd from "../../../shared/TableTd";
 import { OrderTypesProps } from "../../../../types/Types";
+import React from "react";
+import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
+import toast from "react-hot-toast";
 
 const ManageOrdersItem = ({ order }: OrderTypesProps) => {
+  const axiosPublic = useAxiosPublic();
+  // Update Order Status
+  const handleUpdateOrderStatus = async (
+    e: React.ChangeEvent<HTMLSelectElement>,
+    id: string
+  ) => {
+    const { data } = await axiosPublic.patch(`/order-status-update/${id}`, {
+      status: e.target.value,
+    });
+    // Show Alert Message
+    if (data.success) return toast.success(data.message);
+    if (!data.success) return toast.error(data.message);
+  };
   return (
     <tr className="odd:bg-gray-50">
       <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
@@ -25,7 +41,8 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
       <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
         <div className="space-y-1 text-sm">
           <select
-            name="size"
+            name="status"
+            onChange={(e) => handleUpdateOrderStatus(e, order?._id)}
             id=""
             className=" px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
           >
