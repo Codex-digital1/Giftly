@@ -109,7 +109,7 @@ const productId = _id;
 
 // Sending the POST request using Axios
 axiosPublic
-  .post('/payment', paymentDetails)
+  .post('/order', paymentDetails)
   .then((response) => {
     window.location.replace(response?.data?.url)
     // Handle successful response
@@ -140,6 +140,7 @@ axiosPublic
                       width: 1000,
                       height: 1000,
                       isHintEnabled: true,
+                      
                     },
                     enlargedImageContainerStyle: { background: "#fff" },
                     enlargedImagePosition: "beside",
@@ -147,6 +148,7 @@ axiosPublic
                   style={{
                     width: "auto",
                     // height: "100%",
+                    zIndex: 1,
                     maxWidth: "500px",
                     maxHeight: "500px",
                     objectFit: "cover",

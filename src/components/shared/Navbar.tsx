@@ -8,6 +8,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import avatarImg from "../../assets/placeholder.jpg";
 import { RiMenuUnfold4Line2 } from "react-icons/ri";
 import useAuth from "../../Provider/useAuth";
+import { log } from "console";
 
 const megaMenu = [
   { name: "Home", path: "/" },
@@ -23,17 +24,9 @@ const Navbar: React.FC = () => {
   const {user,logOut,handleFilterChange}=useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
- const handleSearch=e=>{
-//   e.preventDefault();
-// console.log(e.target.value);
-
-//   handleFilterChange(e)
-//   return <a href="#all-gift-container" ></a>
-
- }
-//  console.log(user);
+ 
   return (
-    <div className="fixed w-full bg-secondary z-50 top-0">
+    <div className="fixed w-full bg-secondary z-50 top-0 shadow-2xl">
       <div className=" container mx-auto bg-secondary h-20 flex justify-between items-center  px-2">
         {/* Logo */}
         <div className="flex justify-center bg-white items-center cursor-pointer text-primary">
@@ -163,7 +156,9 @@ const Navbar: React.FC = () => {
                           Dashboard
                         </div>
                       </Link>
-                    
+                      <div onClick={()=> logOut()} className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
+                          Logout
+                        </div>
                     </>
                   ) : (
                     <>

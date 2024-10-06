@@ -20,6 +20,7 @@ import Login from "../pages/authentication/Login";
 import Register from "../pages/authentication/Register";
 import Statistics from "../pages/Dashboard/Admin/Statistics/Statistics";
 import Success from "../pages/success/Success";
+import ChatContainer from "../pages/chatFeature/ChatContainer";
 
 const router = createBrowserRouter([
   {
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
       {
         path:'/productDetails/:id',
         element:<ProductDetails></ProductDetails>
+      },
+      {
+        path:'/chatInbox',
+        element:<ChatContainer/>
       }
     ],
   },
@@ -76,7 +81,7 @@ const router = createBrowserRouter([
     element: <Dashboard/>,
     children:[
       {
-        path:'statistics',
+        path : 'statistics',
         element:<Statistics/>
       },
       {
