@@ -53,6 +53,45 @@ export interface GiftType {
   quantity?: number;
 }
 
+export type OrderTypes = {
+  _id: string;
+  createdAt: string;
+  order_status: string;
+  payment_status: string;
+  productId: string;
+  product_brand: string;
+  product_image: any;
+  product_name: string;
+  total_amount: number;
+  tran_id: string;
+  updatedAt: string;
+  userEmail: string;
+  userName: string;
+  userPhone: string;
+};
+
+export type OrderTypesProps = {
+  order: {
+    _id: string;
+    createdAt: string;
+    order_status: string;
+    payment_status: string;
+    productId: string;
+    product_brand: string;
+    product_image: any;
+    product_name: string;
+    total_amount: number;
+    tran_id: string;
+    updatedAt: string;
+    userEmail: string;
+    userName: string;
+    userPhone: string;
+  };
+};
+
+
+
+
 
 
 
