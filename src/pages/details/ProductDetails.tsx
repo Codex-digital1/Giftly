@@ -9,25 +9,21 @@ import {
   FaFacebook,
   FaTwitter,
 } from "react-icons/fa6";
-import ReviewModal from "./ReviewModal";
-import { useParams } from "react-router-dom";
+import {useParams } from "react-router-dom";
 import useAuth from "../../Provider/useAuth";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
-import toast from "react-hot-toast";
-
-
+import { Link } from "react-router-dom";
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams();
-  const { user, myReviewItem } = useAuth() ?? {};
+  const { user} = useAuth() ?? {};
   const axiosPublic = useAxiosPublic()
 
   const [gift, setGift] = useState<any>({});
   const [count, setCount] = useState(1);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+
   const [currentImg, setCurrentImg] = useState("");
   const { addToCart, addToWishlist } = useAuth() ?? {};
-  const [giftOrderCheck, setGiftOrderCheck] = useState({});
 
   // for getting single gift data
   useEffect(() => {
@@ -117,59 +113,9 @@ const ProductDetails: React.FC = () => {
         console.log('Payment details sent successfully:', response.data);
       })
       .catch((error) => {
-        // Handle any errors that occur during the POST request
         console.error('Error in sending payment details:', error);
       });
   };
-
-  // submit a review
-  const handleReview = async (rating, comment) => {
-
-    if (parseInt(rating) > 5 || parseInt(rating) < 1) {
-      console.error("Rating must be between 1 and 5");
-      return;
-    }
-
-    const review = {
-      rating,
-      comment,
-      tran_id: giftOrderCheck?.tran_id
-    };
-
-    console.log(review);
-
-    try {
-      const { data } = await axiosPublic.put(`/order/submitReview/${user?.email}`, review);
-      console.log(data);
-    } catch (error) {
-      console.error('Error in submitting review:', error);
-    }
-  };
-  // order check before review
-  const orderCheck = async () => {
-    try {
-      const { data } = await axiosPublic.get(`/${id}/${user?.email}`);
-      console.log('got it bro', data);
-
-      // Check if the data exists and has tran_id
-      if (data?.data?.tran_id) {
-        setGiftOrderCheck(data?.data);
-        setIsModalVisible?.(true);
-      } else {
-        toast.error("No order found with this product ID and email");
-      }
-    } catch (error) {
-      // If error response is 404, show custom error message
-      if (error?.response?.status === 404) {
-        toast.error(error?.response?.data?.message || "No order found");
-      } else {
-        // For other errors
-        toast.error("Something went wrong. Please try again later.");
-      }
-      console.log(error);
-    }
-  };
-
 
   return (
     <>
@@ -482,25 +428,15 @@ const ProductDetails: React.FC = () => {
               <div>
                 <div className="flex flex-wrap gap-4">
                   <button className="btn-secondary">Description</button>
-                  <button
-                    className="btn-secondary"
-                    onClick={() => {
-
-                      orderCheck()
-                    }}
-                  >
-                    Write a review
-                  </button>
+                  <Link to="/dashboard/my-rating">
+                    <button
+                      className="btn-secondary"
+                    >
+                      Write a review
+                    </button>
+                  </Link>
                 </div>
               </div>
-
-              {/* Render the Modal and pass the state */}
-              <ReviewModal
-                isVisible={isModalVisible}
-                onClose={setIsModalVisible}
-                handleReview={handleReview} // Pass the function here
-              />
-
             </div>
           </div>
         </div>

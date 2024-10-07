@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
 interface ReviewModalProps {
-  isVisible: boolean;
+  isVisible: boolean | undefined;
   onClose: (visible: boolean) => void;
   handleReview: (rating: number, comment: string) => void;
 }
