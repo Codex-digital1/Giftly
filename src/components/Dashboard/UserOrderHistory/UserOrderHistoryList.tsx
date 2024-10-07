@@ -11,7 +11,6 @@ const UserOrderHistoryList = () => {
   const deleverdList = data?.filter(
     (dList: OrderTypes) => dList.order_status === "Delivered"
   );
-  console.log(deleverdList);
   return (
     <div>
       <div className="overflow-x-auto">
