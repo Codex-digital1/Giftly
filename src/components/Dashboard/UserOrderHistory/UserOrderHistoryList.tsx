@@ -2,6 +2,7 @@ import useGetSpecificOrders from "../../../Hooks/useGetSpecificOrders";
 import { OrderTypes } from "../../../types/Types";
 import TableTh from "../../shared/TableTh";
 import UserOrderHistoryListItem from "./UserOrderHistoryListItem";
+import { BsEmojiFrownFill } from "react-icons/bs";
 
 const UserOrderHistoryList = () => {
   const [data] = useGetSpecificOrders();
@@ -25,9 +26,20 @@ const UserOrderHistoryList = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-200 text-center">
-            {deleverdList?.map((order: OrderTypes) => (
-              <UserOrderHistoryListItem key={order._id} order={order} />
-            ))}
+            {deleverdList?.length > 0 ? (
+              deleverdList?.map((order: OrderTypes) => (
+                <UserOrderHistoryListItem key={order._id} order={order} />
+              ))
+            ) : (
+              <tr>
+                <td colSpan={4} className="text-center">
+                  <p className="flex justify-center items-center py-3 gap-2 font-semibold">
+                    No Data Found
+                    <BsEmojiFrownFill className="text-primary text-2xl" />
+                  </p>
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
