@@ -151,7 +151,7 @@ const Sidebar = () => {
                       }`
                     }
                   >
-                   <FaHistory />
+                    <FaHistory />
 
                     <span className="mx-4 font-medium">Order History</span>
                   </NavLink>
@@ -180,8 +180,20 @@ const Sidebar = () => {
                       }`
                     }
                   >
-                 <MdOutlineShoppingCartCheckout className="w-5 h-5" />
+                    <MdOutlineShoppingCartCheckout className="w-5 h-5" />
                     <span className="mx-4 font-medium">My Order</span>
+                  </NavLink>
+                  {/* Order History */}
+                  <NavLink
+                    to="user/order-history"
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-primary   hover:text-white ${
+                        isActive ? "bg-primary  text-white" : "text-gray-600"
+                      }`
+                    }
+                  >
+                    <FaHistory />
+                    <span className="mx-4 font-medium">Order History</span>
                   </NavLink>
                   {/* my wishlist */}
                   <NavLink
@@ -192,7 +204,7 @@ const Sidebar = () => {
                       }`
                     }
                   >
-              <GiSelfLove />
+                    <GiSelfLove />
 
                     <span className="mx-4 font-medium">My Wishlist</span>
                   </NavLink>
@@ -205,7 +217,7 @@ const Sidebar = () => {
                       }`
                     }
                   >
-                    <BsStars/>
+                    <BsStars />
 
                     <span className="mx-4 font-medium">My rating</span>
                   </NavLink>

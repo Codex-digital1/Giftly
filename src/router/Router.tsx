@@ -22,6 +22,7 @@ import Statistics from "../pages/Dashboard/Admin/Statistics/Statistics";
 import Success from "../pages/success/Success";
 import OrderTracking from "../pages/Dashboard/User/OrderTracking/OrderTracking";
 import ChatContainer from "../pages/chatFeature/ChatContainer";
+import UserOrderHistory from "../pages/Dashboard/User/UserOrderHistory/UserOrderHistory";
 
 const router = createBrowserRouter([
   {
@@ -67,13 +68,13 @@ const router = createBrowserRouter([
         element: <Register></Register>,
       },
       {
-        path:'/productDetails/:id',
-        element:<ProductDetails></ProductDetails>
+        path: "/productDetails/:id",
+        element: <ProductDetails></ProductDetails>,
       },
       {
-        path:'/chatInbox',
-        element:<ChatContainer/>
-      }
+        path: "/chatInbox",
+        element: <ChatContainer />,
+      },
     ],
   },
   // dash board for user and admin
@@ -109,6 +110,10 @@ const router = createBrowserRouter([
       {
         path: "my-orders",
         element: <MyOrders></MyOrders>,
+      },
+      {
+        path: "user/order-history",
+        element: <UserOrderHistory />,
       },
       {
         path: "my-orders/order-status/:id",
