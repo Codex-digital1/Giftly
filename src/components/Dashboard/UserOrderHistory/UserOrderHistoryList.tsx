@@ -1,7 +1,16 @@
+import useGetSpecificOrders from "../../../Hooks/useGetSpecificOrders";
+import { OrderTypes } from "../../../types/Types";
 import TableTh from "../../shared/TableTh";
 import UserOrderHistoryListItem from "./UserOrderHistoryListItem";
 
 const UserOrderHistoryList = () => {
+  const [data] = useGetSpecificOrders();
+  //order_status Delivered
+  // console.log(data);
+  const deleverdList = data?.filter(
+    (dList: OrderTypes) => dList.order_status === "Delivered"
+  );
+  console.log(deleverdList);
   return (
     <div>
       <div className="overflow-x-auto">
@@ -16,8 +25,9 @@ const UserOrderHistoryList = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-200 text-center">
-            {/* <HistoryListItem /> */}
-            <UserOrderHistoryListItem />
+            {deleverdList?.map((order: OrderTypes) => (
+              <UserOrderHistoryListItem key={order._id} order={order} />
+            ))}
           </tbody>
         </table>
       </div>
