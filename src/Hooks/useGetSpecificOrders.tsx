@@ -3,7 +3,7 @@ import axios from "axios";
 import useAuth from "../Provider/useAuth";
 const useGetSpecificOrders = () => {
   const { user } = useAuth() ?? {};
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["specificOrders", user?.email],
     queryFn: async () => {
       const res = await axios.get(
@@ -12,7 +12,7 @@ const useGetSpecificOrders = () => {
       return res.data;
     },
   });
-  return [data, isLoading];
+  return [data, isLoading, refetch];
 };
 
 export default useGetSpecificOrders;
