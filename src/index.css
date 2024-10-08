@@ -45,5 +45,10 @@ code {
 .inter {
   font-family: "Inter", system-ui;
 }
+.steps .step-primary+.step-primary:before,
+.steps .step-primary:after {
+  background-color: #ff4d6d;
+  color: white
+}
 
 /*  */

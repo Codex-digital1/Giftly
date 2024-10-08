@@ -8,7 +8,6 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import avatarImg from "../../assets/placeholder.jpg";
 import { RiMenuUnfold4Line2 } from "react-icons/ri";
 import useAuth from "../../Provider/useAuth";
-import { log } from "console";
 
 const megaMenu = [
   { name: "Home", path: "/" },
@@ -21,10 +20,10 @@ const megaMenu = [
 
 const Navbar: React.FC = () => {
   const navigate=useNavigate()
-  const {user,logOut,handleFilterChange}=useAuth();
+  const {user,logOut,handleFilterChange}=useAuth()?? {};
   const [isOpen, setIsOpen] = useState(false);
 
- 
+
   return (
     <div className="fixed w-full bg-secondary z-50 top-0 shadow-2xl">
       <div className=" container mx-auto bg-secondary h-20 flex justify-between items-center  px-2">
@@ -42,7 +41,7 @@ const Navbar: React.FC = () => {
               type="text"
               name="search"
               onChange={(e)=>{
-                handleFilterChange(e)
+                handleFilterChange?.(e)
                 navigate('/allGift')
               }}
               className="border border-primary border-opacity-45 md:w-full rounded-lg  md:p-3 p-2  text-black   focus:outline-none focus:border-primary hover:border-primary"
@@ -156,7 +155,7 @@ const Navbar: React.FC = () => {
                           Dashboard
                         </div>
                       </Link>
-                      <div onClick={()=> logOut()} className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
+                      <div onClick={()=> logOut?.()} className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
                           Logout
                         </div>
                     </>

@@ -3,7 +3,6 @@ import './style.css';
 
 interface Chat {
     message: string;
-    receiverUsername: string;
     senderUsername: string;
     profileImage: string | undefined;
     image?: string | null;
