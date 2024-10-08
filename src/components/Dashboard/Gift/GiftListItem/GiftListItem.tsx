@@ -5,6 +5,7 @@ import { FaRegPenToSquare } from "react-icons/fa6";
 import useAuth from "../../../../Provider/useAuth";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import LoadingSpinner from "../../../shared/LoadingSpinner";
+import toast from "react-hot-toast";
 
 const GiftListItem = ({
   setUpdateGiftAddModal,
@@ -23,7 +24,9 @@ const GiftListItem = ({
     try {
       // Perform the delete request
       const response = await axiosPublic.delete(`/${id}`);
-      console.log(response);
+      if(response.data.success){
+        toast.success('Delete successfully')
+      }
     } catch (error) {
       console.error("Error deleting gift:", error);
     }
