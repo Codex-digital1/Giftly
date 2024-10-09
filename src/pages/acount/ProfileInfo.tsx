@@ -64,7 +64,7 @@ const ProfileInfo = () => {
                     className={`mx-auto flex justify-center w-[141px] h-[141px]  rounded-full  bg-cover bg-center bg-no-repeat`}>
                     <img src={user?.photoURL || imgD} className="flex justify-center rounded-full items-center border border-2" alt="" />
                     <div className="bg-white/90 rounded-full -ml-4 w-6 h-6 text-center  mt-4">
-                      <input required
+                      <input 
                         type="file"
                         name="image"
                         accept="image/*" id="upload_profile" hidden />
