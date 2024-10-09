@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { IoNotifications } from "react-icons/io5";
 import { Link } from "react-router-dom";
@@ -54,14 +53,14 @@ const Notifications: React.FC<NotificationsProps> = ({ email }) => {
         className="p-1 cursor-pointer tooltip"
         data-tip="Notifications"
       >
-        <div className="absolute text-white top-0 right-0 rounded-full h-[14px] w-[14px] text-xs bg-red-500">
+        {unread?.length !== 0&&<div className="absolute text-white top-0 right-0 rounded-full h-[14px] w-[14px] text-xs bg-red-500">
           {unread?.length !== 0 && unread?.length}
-        </div>
+        </div>}
         <IoNotifications className="text-2xl " />
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 transition-all rounded shadow-md w-[40vw] md:w-[25vw] lg:w-[30vw] bg-white overflow-hidden -right-2 top-12 text-sm">
+        <div className="absolute z-10 h-[400px] overflow-scroll transition-all rounded shadow-md w-[40vw] md:w-[25vw] lg:w-[30vw] bg-white  -right-2 top-12 text-sm">
           <div className="flex flex-col ">
             <div className="px-4 py-3 border-b-2 font-bold text-lg">
               Notifications
@@ -74,7 +73,7 @@ const Notifications: React.FC<NotificationsProps> = ({ email }) => {
                 <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold">
                   <p>{note?.title}</p>
                   <p>{note?.message}</p>
-                  <a href="#">more</a>
+                  
                 </div>
               </div>
             ))}
@@ -85,9 +84,9 @@ const Notifications: React.FC<NotificationsProps> = ({ email }) => {
                 <p>{note?.title}</p>
                 <p className="relative">
                   {note?.message}
-                  <Link to={`/productDetails/${note?.giftId}`} className="absolute right-0">
+                  {note?.giftId&&<Link to={`/productDetails/${note?.giftId}`} className="absolute right-0">
                     more
-                  </Link>
+                  </Link>}
                 </p>
               </div>
             </div>
