@@ -1,10 +1,9 @@
-import { useState } from "react";
 import useAuth from "../../Provider/useAuth";
 import GiftCard from "../../components/shared/GiftCard";
 import LoadingSpinner from "../../components/shared/LoadingSpinner";
 
 const Allgift = () => {
-  const { handleFilterChange, allGifts, gifts, filters, loading } = useAuth();
+  const { handleFilterChange, allGifts, gifts, loading } = useAuth() ?? {} ;
   // console.log(allGifts.map(i=>i.category));
   const giftCategory: string[] = [
     ...new Set(gifts?.map((gift) => gift?.category)),
@@ -126,8 +125,8 @@ const Allgift = () => {
           {loading && <LoadingSpinner large={true} card={false} smallHeight={false}  />}
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {allGifts?.length > 0 &&
-              allGifts?.map((gift) => <GiftCard key={gift?._id} gift={gift} />)}
+            {allGifts && allGifts?.length > 0 &&
+              allGifts?.map((gift:any) => <GiftCard key={gift?._id} gift={gift} />)}
           </div>
         </div>
       </div>

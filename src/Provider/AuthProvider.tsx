@@ -10,8 +10,9 @@ import {
 import { createContext, useEffect, useState, ReactNode } from "react";
 import toast from "react-hot-toast";
 import auth from "../Firebase/Firebase.config";
-import axios from "axios";
-
+import _ from 'lodash';
+import useAxiosPublic from "../Hooks/useAxiosPublic";
+ 
 // Define GiftType
 type GiftType = {
   _id: string;
@@ -35,6 +36,8 @@ type GiftType = {
 // Define AuthContextType
 interface AuthContextType {
   user: User | null;
+  allUser: any[];
+  getData: any;
   loading: boolean;
   setLoading: (loading: boolean) => void;
   login: (email: string, password: string) => Promise<UserCredential>;
@@ -70,9 +73,12 @@ interface AuthProviderProps {
 }
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const axiosPublic = useAxiosPublic()
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const provider = new GoogleAuthProvider();
+  // get all user
+  const [allUser, setAllUsers] = useState<any[]>([]);
   const [gifts, setGifts] = useState<GiftType[]>([]);
   const [allGifts, setAllGifts] = useState<GiftType[]>([]);
 
@@ -134,10 +140,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const updateUserProfile = async (name: string,   photoURL: string) => {
+  const updateUserProfile = async (name: string, photoURL: string) => {
     if (auth.currentUser) {
       try {
-        await updateProfile(auth.currentUser, { displayName: name,   photoURL:photoURL, });
+        await updateProfile(auth.currentUser, { displayName: name, photoURL: photoURL, });
         toast.success('Profile updated successfully!');
       } catch (error: any) {
         toast.error("Failed to update profile: " + error.message);
@@ -146,39 +152,44 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       toast.error("User not authenticated.");
     }
   };// save user
-  const saveUser = async user => {
+  const saveUser = async (user : any ) => {
+    const alternateImage = `https://picsum.photos/id/${_.random(1, 1000)}/200/300`;
     // console.log(user);
-   const currentUser = {
-     email: user?.email,
-     name: user?.displayName,
-     profileImage:user?.photoURL|| '',
-     role: 'user',
-     phoneNumber:user?.phoneNumber||'',
-     address: {
-       street:user?.street||'',
-       city:user?.city||'',
-       state:user?.state||'',
-       zipCode:user?.zipCode||'',
-       country:user?.country||'',
-     }
-   }
-   await axios.post(`http://localhost:3000/users`,currentUser)
-   .then(response => {
-  
- })
- .catch(error => {
-     console.error('There was an error!', error);
- });
-   // return data
- }
+    const currentUser = {
+      email: user?.email,
+      name: user?.displayName || "Anonymous",
+      profileImage: user?.photoURL || alternateImage, 
+      role: 'user',
+      phoneNumber: user?.phoneNumber || '',
+      address: {
+        street: user?.street || '',
+        city: user?.city || '',
+        state: user?.state || '',
+        zipCode: user?.zipCode || '',
+        country: user?.country || '',
+      },
+      chat: {
+        sender: user?.displayName || "Anonymous",
+        receiver: "Admin"
+      }
+    }
+    await axiosPublic.post('/users', currentUser)
+      .then(response => {
+        return (response.data);
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      });
+
+  }
 
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        saveUser(user)
         setUser(user)
         // getToken(currentUser.email)
-        saveUser(user)
       }
       setLoading(false);
     });
@@ -186,6 +197,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       unSubscribe();
     };
   }, []);
+
   const logOut = async () => {
     setLoading(true);
     try {
@@ -198,11 +210,32 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  // Fetch all users
+  const getData = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getUsers`, { method: 'GET' });
+      if (response.ok) {
+        const users = await response.json();
+        setAllUsers(users);
+      } else {
+        console.log('Failed to fetch users');
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+}, []);
+
+
+
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get("http://localhost:3000/getAllGift");
+        const { data } = await axiosPublic.get("/getAllGift");
         setGifts(data.data);
       } catch (error) {
         console.log(error);
@@ -216,7 +249,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     (async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get("http://localhost:3000/getAllGift", { params: filters });
+        const { data } = await axiosPublic.get("/getAllGift", { params: filters });
         setAllGifts(data.data);
       } catch (error) {
         console.log(error);
@@ -291,6 +324,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     removeToCart,
     handleFilterChange,
     filters,
+    allUser,
+    getData
   };
 
   return (

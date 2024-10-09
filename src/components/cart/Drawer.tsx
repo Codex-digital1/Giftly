@@ -21,7 +21,7 @@ const Drawer = ({drawerToggle, isOpenDrawer}:drawerPropsType) => {
             htmlFor="my-drawer-4"
             aria-label="close sidebar"
             className="drawer-overlay"
-            onClick={() => drawerToggle()}
+            onClick={() => drawerToggle?.()}
           ></label>
           <div className="menu bg-white text-base-content min-h-full w-80 p-4">
             {/* Cart Heading */}

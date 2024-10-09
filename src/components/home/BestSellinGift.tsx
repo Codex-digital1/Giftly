@@ -8,7 +8,6 @@ import LoadingSpinner from '../shared/LoadingSpinner';
 
 const BestSellinGift: React.FC<drawerPropsType> = ({ drawerToggle }) => {
   const authContext = useAuth(); 
-
 // Define the Gift interface here
 type Gift = {
   _id: string;

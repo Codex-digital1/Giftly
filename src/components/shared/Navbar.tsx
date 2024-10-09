@@ -14,14 +14,14 @@ const megaMenu = [
   { name: "Home", path: "/" },
   { name: "All Gift", path: "/allGift" },
   { name: "About Us", path: "/aboutUs" },
-  { name: <MdOutlineManageAccounts />, path: "/account" },
-  { name: <GiSelfLove />, path: "/wishList" },
-  { name: <SlBasket />, path: "/cart" },
+  { name: <MdOutlineManageAccounts />, path: "/account",title:'Account' },
+  { name: <GiSelfLove />, path: "/wishList",title:'Wishlist' },
+  { name: <SlBasket />, path: "/cart" ,title:'Cart' },
 ];
 
 const Navbar: React.FC = () => {
   const navigate=useNavigate()
-  const {user,logOut,handleFilterChange}=useAuth();
+  const {user,logOut,handleFilterChange}=useAuth()?? {};
   const [isOpen, setIsOpen] = useState(false);
 
  
@@ -42,7 +42,7 @@ const Navbar: React.FC = () => {
               type="text"
               name="search"
               onChange={(e)=>{
-                handleFilterChange(e)
+                handleFilterChange?.(e)
                 navigate('/allGift')
               }}
               className="border border-primary border-opacity-45 md:w-full rounded-lg  md:p-3 p-2  text-black   focus:outline-none focus:border-primary hover:border-primary"
@@ -73,14 +73,15 @@ const Navbar: React.FC = () => {
         {/* mega menu Icons rightSide */}
         <div className=" flex md:gap-5 gap-1">
           <div className="flex justify-center items-center gap-x-2 md:gap-x-6">
-            <Notifications email={user?.email}/>
+            <Notifications  email={user?.email}/>
             {megaMenu?.slice(4, 6).map((menu) => (
               <NavLink
+              data-tip={menu?.title}
                 key={menu.path}
                 className={({ isActive }) =>
                   isActive
                     ? "text-primary font-semibold text-lg md:text-3xl   "
-                    : "font-semibold text-black text-lg md:text-3xl "
+                    : "font-semibold text-black text-lg md:text-3xl tooltip "
                 }
                 to={menu.path}
               >
@@ -160,7 +161,7 @@ const Navbar: React.FC = () => {
                           Dashboard
                         </div>
                       </Link>
-                        <div onClick={logOut} className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
+                      <div onClick={()=> logOut?.()} className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
                           Logout
                         </div>
                     </>
