@@ -39,7 +39,7 @@ const GiftListItem = ({
         <tr className="odd:bg-gray-50">
           <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
             <img
-              src={gift?.giftImage}
+              src={gift?.giftImage[0]}
               alt=""
               className="w-20 p-1 bg-white border mx-auto"
             />
