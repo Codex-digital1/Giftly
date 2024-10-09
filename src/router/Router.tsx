@@ -18,11 +18,12 @@ import OrderHistory from "../pages/Dashboard/Admin/OrderHistory/OrderHistory";
 import ManageOrders from "../pages/Dashboard/User/ManageOrders/ManageOrders";
 import Login from "../pages/authentication/Login";
 import Register from "../pages/authentication/Register";
-import Statistics from "../pages/Dashboard/Admin/Statistics/Statistics";
+import Statistics from "../pages/Dashboard/Admin/Statistics/StatisticsPage";
 import Success from "../pages/success/Success";
 import OrderTracking from "../pages/Dashboard/User/OrderTracking/OrderTracking";
 import ChatContainer from "../pages/chatFeature/ChatContainer";
 import UserOrderHistory from "../pages/Dashboard/User/UserOrderHistory/UserOrderHistory";
+import StatisticsPage from "../pages/Dashboard/Admin/Statistics/StatisticsPage";
 
 const router = createBrowserRouter([
   {
@@ -84,7 +85,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "statistics",
-        element: <Statistics />,
+        element: <StatisticsPage />,
       },
       {
         path: "manage-users",
