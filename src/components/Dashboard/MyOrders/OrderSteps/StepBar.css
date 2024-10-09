@@ -1,0 +1,23 @@
+.step-item {
+    @apply relative flex flex-row gap-3 md:flex-col md:justify-center items-center w-36
+}
+
+.step-item:not(:first-child):before {
+    @apply content-[''] bg-slate-300 absolute md:w-full md:h-[3px] h-[112%] w-[3px] right-[85%] md:right-2/4 md:top-[44%] md:-translate-y-2/4 -translate-y-[99%]
+}
+
+.step {
+    @apply w-10 h-10 flex justify-center items-center rounded-full z-[5] relative bg-slate-500 text-white font-semibold
+}
+
+.active .step {
+    @apply bg-[#ff4d6d]
+}
+
+/* .completed .step {
+    @apply bg-green-600
+}
+
+.completed p {
+    @apply text-white
+} */
