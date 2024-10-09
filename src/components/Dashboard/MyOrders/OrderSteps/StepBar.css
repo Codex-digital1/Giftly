@@ -14,10 +14,6 @@
     @apply bg-[#ff4d6d]
 }
 
-/* .completed .step {
-    @apply bg-green-600
+.completed:not(:first-child):before {
+    @apply bg-[#ff4d6d]
 }
-
-.completed p {
-    @apply text-white
-} */

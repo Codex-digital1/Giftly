@@ -29,9 +29,9 @@ const StepBar = () => {
         {steps.map((item, idx) => (
           <div
             key={idx}
-            className={`step-item ${getStepStatus(item) ? "active" : ""} ${
-              trackOrder?.order_status === item ? "completed" : ""
-            }`}
+            className={`step-item ${
+              getStepStatus(item) ? "active completed" : ""
+            } ${trackOrder?.order_status === item ? "completed" : ""}`}
           >
             <div className="step">
               {getStepStatus(item) ? <FaCheck /> : idx + 1}
