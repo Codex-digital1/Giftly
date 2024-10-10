@@ -20,7 +20,7 @@ const ProfileInfo = () => {
     // Get the image file from the input
     const imageInput = form.elements.namedItem("image") as HTMLInputElement;
     const imageFile = imageInput.files?.[0];
-  
+  console.log(imageFile);
     if (imageFile) {
       const formData = new FormData();
       formData.append('file', imageFile);
