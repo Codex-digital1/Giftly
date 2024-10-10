@@ -42,7 +42,7 @@ const ProductDetails: React.FC = () => {
 
 
   // const [gift, setGift] = useState<any>({});
-  const [gift, setGift] = useState<Gift | null>(null);
+  const [gift, setGift] = useState<Gift | null | undefined>(null);
   const [count, setCount] = useState(1);
 
   const [currentImg, setCurrentImg] = useState("");
@@ -67,8 +67,8 @@ const ProductDetails: React.FC = () => {
   const {
     _id,
     giftName,
-    discount,
-    price,
+    discount=0,
+    price=0,
     rating,
     giftImage,
     description,

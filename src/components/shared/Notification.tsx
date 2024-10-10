@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { IoNotifications } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import io from "socket.io-client";
@@ -13,14 +13,14 @@ interface Notification {
 }
 
 // Define the type for the component props
-interface NotificationsProps {
-  email: string;
-}
+// interface NotificationsProps {
+//   email?: any;
+// }
 
 // URL of your backend server
 const socket = io("http://localhost:3000");
 
-const Notifications: React.FC<NotificationsProps> = ({ email }) => {
+const Notifications  = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [newNotification, setNewNotification] = useState<Notification[]>([]);
