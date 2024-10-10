@@ -13,6 +13,7 @@ import auth from "../Firebase/Firebase.config";
 import _ from 'lodash';
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import { AxiosError } from "axios";
+import { useQueries, useQuery } from "@tanstack/react-query";
 
 // Define GiftType
 type GiftType = {
@@ -69,6 +70,7 @@ interface AuthContextType {
   setUser: (user: User | null) => void;
   gifts?: GiftType[];
   allGifts?: GiftType[];
+  allGifts1?: GiftType[];
   cart: GiftType[];
   addToCart: (gift: GiftType) => void;
   addToWishlist: (gift: GiftType) => void;
@@ -193,7 +195,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const currentUser = {
       email: user?.email,
       name: user?.displayName || "Anonymous",
-      profileImage: user?.photoURL || alternateImage,
+      profileImage: user?.photoURL || alternateImage, 
       role: 'user',
       phoneNumber: user?.phoneNumber || '',
       address: {
@@ -266,6 +268,22 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 
 
+  const {data:allGifts1,refetch}=useQuery({
+    queryKey:['all-gift'],
+    queryFn:async()=>{
+      try {
+        setLoading(true);
+        const { data } = await axiosPublic.get("/getAllGift")
+        return data.data
+        
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  })
+  console.log(allGifts1);
   useEffect(() => {
     (async () => {
       try {
@@ -399,6 +417,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     updateUserProfile,
     gifts,
     allGifts,
+    allGifts1,
+    refetch,
     cart,
     addToCart,
     addToWishlist,

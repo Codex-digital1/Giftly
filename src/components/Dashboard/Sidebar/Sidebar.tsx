@@ -39,7 +39,7 @@ const Sidebar = () => {
       axiosPublic
         .get(`/getAUser/${user.email}`)
         .then((response) => {
-          setRole(response.data.data);
+          setRole(response?.data?.data);
           console.log(response);
         })
         .catch((error) => {

@@ -6,6 +6,10 @@ import useAuth from "../../../../Provider/useAuth";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import LoadingSpinner from "../../../shared/LoadingSpinner";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import DeleteModal from '../../../../components/shared/DeleteModal';
+import { divide } from "lodash";
+
 
 const GiftListItem = ({
   setUpdateGiftAddModal,
@@ -16,8 +20,9 @@ const GiftListItem = ({
 
 }) => {
   const axiosPublic = useAxiosPublic();
-  const { gifts, loading } = useAuth() ?? {};
-  console.log(gifts);
+  const { allGifts1, loading ,refetch} = useAuth() ?? {};
+  const [isOpen, setIsOpen] = useState(false)
+  console.log(allGifts1);
 
   // Handle delete a gift
   const handleDelete = async (id: string) => {
@@ -25,17 +30,22 @@ const GiftListItem = ({
       // Perform the delete request
       const response = await axiosPublic.delete(`/${id}`);
       if(response.data.success){
+        refetch()
         toast.success('Delete successfully')
       }
     } catch (error) {
+      toast.error(error?.message)
       console.error("Error deleting gift:", error);
     }
   };
+  const closeModal = () => {
+    setIsOpen(false)
+  }
 
   return (
     <>
-       {loading && <LoadingSpinner card={true} large={false} smallHeight={false} />}
-      {gifts?.map((gift) => (
+       
+      {allGifts1?.map((gift) => (
         <tr className="odd:bg-gray-50">
           <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
             <img
@@ -59,11 +69,20 @@ const GiftListItem = ({
           <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
             <div className="flex gap-1 justify-center">
               <button
-                onClick={() => handleDelete(gift._id)} // Pass the id correctly
+              onClick={() => setIsOpen(true)}
+                // onClick={() => handleDelete(gift._id)} // Pass the id correctly
                 className="btn-primary"
               >
                 <FaTrash />
               </button>
+              {/* Delete modal */}
+        <DeleteModal
+          isOpen={isOpen}
+          closeModal={closeModal}
+          handleDelete={handleDelete}
+          giftId={gift?._id}
+          
+        />
 
               <button
                onClick={() => {
