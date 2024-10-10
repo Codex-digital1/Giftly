@@ -30,8 +30,8 @@ const ProductDetails: React.FC = () => {
     const getData = async () => {
       try {
         const { data } = await axiosPublic.get(`/${id}`);
-        setGift(data.data);
-        setCurrentImg(data.data.giftImage[0]);
+        setGift(data?.data);
+        setCurrentImg(data?.data?.giftImage[0]);
       } catch (error) {
         console.log(error);
       }
@@ -110,7 +110,7 @@ const ProductDetails: React.FC = () => {
       .then((response) => {
         window.location.replace(response?.data?.url);
         // Handle successful response
-        console.log('Payment details sent successfully:', response.data);
+        console.log('Payment details sent successfully:', response?.data);
       })
       .catch((error) => {
         console.error('Error in sending payment details:', error);
