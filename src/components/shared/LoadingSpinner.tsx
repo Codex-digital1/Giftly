@@ -10,6 +10,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ smallHeight, card, larg
   return (
     <div
       className={`${smallHeight ? 'h-[250px]' : ''}${card ? 'h-[42vh]' : ''}${large ? 'h-[70vh]' : ''}
+      w-full
       flex 
       flex-col 
       justify-center 

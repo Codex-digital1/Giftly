@@ -4,11 +4,16 @@ import TableTh from "../../../shared/TableTh"
 import GiftListItem from "../GiftListItem/GiftListItem"
 import GiftAddForm from "../Form/GiftAddForm"
 import GiftUpdateForm from "../Form/GiftUpdateForm"
+import LoadingSpinner from "../../../shared/LoadingSpinner"
+import useAuth from "../../../../Provider/useAuth"
 
 const GiftList = () => {
+  const {loading} = useAuth() ?? {};
+ 
     const [gitAddModal, setGiftAddModal] = useState<boolean>(false)
     const [updateGitAddModal, setUpdateGiftAddModal] = useState<boolean>(false)
-
+    const [selectedGiftId, setSelectedGiftId] = useState<string | null>(null); // This state is used to store the selected gift ID
+console.log(selectedGiftId,'hahah');
     // Close Add Modal
     const closeGiftAddModal = ()=>{
         setGiftAddModal(false)
@@ -27,7 +32,7 @@ const GiftList = () => {
             </MyModal>
             {/* Update Gift Modal */}
             <MyModal isOpen={updateGitAddModal}  close={closeUpdateGiftAddModal} isLarge={true}>
-              <GiftUpdateForm/>
+              <GiftUpdateForm giftId={selectedGiftId}/>
             </MyModal>
         </div>
         <div className="overflow-x-auto">
@@ -42,11 +47,18 @@ const GiftList = () => {
             <TableTh tHeading="  Action" />
           </tr>
         </thead>
+        
 
         <tbody className="divide-y divide-gray-200 text-center">
-      <GiftListItem setUpdateGiftAddModal={setUpdateGiftAddModal}/>
+      <GiftListItem   
+      setUpdateGiftAddModal={setUpdateGiftAddModal}  
+      setSelectedGiftId={setSelectedGiftId}       
+      />
         </tbody>
       </table>
+      {loading && <div className="flex justify-center items-center ">
+        <LoadingSpinner card={true} large={false} smallHeight={false} />
+        </div>}
     </div>
     </div>
   )

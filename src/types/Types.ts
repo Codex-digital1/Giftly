@@ -23,14 +23,14 @@ export interface Gift {
   discount: number;
   price: number;
   rating: number;
-  giftImage:any;  // This is an array of strings (image URLs)
+  giftImage:any;  
   productAddBy: string;
   description: string;
   size: string;
   color: string;
   type: string;
   category: string;
-  availability: boolean;
+  availability: (boolean | string);
   quantity: number;
 }
 
@@ -52,6 +52,45 @@ export interface GiftType {
   availability: boolean; 
   quantity?: number;
 }
+
+export type OrderTypes = {
+  _id: string;
+  createdAt: string;
+  order_status: string;
+  payment_status: string;
+  productId: string;
+  product_brand: string;
+  product_image: any;
+  product_name: string;
+  total_amount: number;
+  tran_id: string;
+  updatedAt: string;
+  userEmail: string;
+  userName: string;
+  userPhone: string;
+};
+
+export type OrderTypesProps = {
+  order: {
+    _id: string;
+    createdAt: string;
+    order_status: string;
+    payment_status: string;
+    productId: string;
+    product_brand: string;
+    product_image: any;
+    product_name: string;
+    total_amount: number;
+    tran_id: string;
+    updatedAt: string;
+    userEmail: string;
+    userName: string;
+    userPhone: string;
+  };
+};
+
+
+
 
 
 

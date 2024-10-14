@@ -8,14 +8,15 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import avatarImg from "../../assets/placeholder.jpg";
 import { RiMenuUnfold4Line2 } from "react-icons/ri";
 import useAuth from "../../Provider/useAuth";
+import Notifications from "./Notification";
 
 const megaMenu = [
   { name: "Home", path: "/" },
   { name: "All Gift", path: "/allGift" },
   { name: "About Us", path: "/aboutUs" },
-  { name: <MdOutlineManageAccounts />, path: "/account" },
-  { name: <GiSelfLove />, path: "/wishList" },
-  { name: <SlBasket />, path: "/cart" },
+  { name: <MdOutlineManageAccounts />, path: "/account",title:'Account' },
+  { name: <GiSelfLove />, path: "/wishList",title:'Wishlist' },
+  { name: <SlBasket />, path: "/cart" ,title:'Cart' },
 ];
 
 const Navbar: React.FC = () => {
@@ -23,12 +24,12 @@ const Navbar: React.FC = () => {
   const {user,logOut,handleFilterChange}=useAuth()?? {};
   const [isOpen, setIsOpen] = useState(false);
 
- 
+
   return (
     <div className="fixed w-full bg-secondary z-50 top-0 shadow-2xl">
       <div className=" container mx-auto bg-secondary h-20 flex justify-between items-center  px-2">
         {/* Logo */}
-        <div className="flex justify-center bg-white items-center cursor-pointer text-primary">
+        <div className="flex justify-center items-center cursor-pointer text-primary">
           <IoMdGift className="md:text-4xl text-base font-bold" />
           <Link to="/" className="md:text-2xl text-base font-bold">
             Giftly
@@ -72,13 +73,15 @@ const Navbar: React.FC = () => {
         {/* mega menu Icons rightSide */}
         <div className=" flex md:gap-5 gap-1">
           <div className="flex justify-center items-center gap-x-2 md:gap-x-6">
+            <Notifications/>
             {megaMenu?.slice(4, 6).map((menu) => (
               <NavLink
+              data-tip={menu?.title}
                 key={menu.path}
                 className={({ isActive }) =>
                   isActive
                     ? "text-primary font-semibold text-lg md:text-3xl   "
-                    : "font-semibold text-black text-lg md:text-3xl "
+                    : "font-semibold text-black text-lg md:text-3xl tooltip "
                 }
                 to={menu.path}
               >
@@ -135,21 +138,24 @@ const Navbar: React.FC = () => {
                       // navLink for menu
                       megaMenu?.slice(0,3).map((menu) => (
                         <NavLink
-                          key={menu.path}
+                          key={menu?.path}
                           className={({ isActive }) =>
                             isActive
                               ? "text-primary  px-4 py-3 transition font-semibold cursor-pointer   "
                               : `block px-4 py-3 hover:bg-neutral-100 transition font-semibold`
                           }
-                          to={menu.path}
+                          to={menu?.path}
                         >
-                          {menu.name}
+                          {menu?.name}
                         </NavLink>
                       ))
                     }
                   </div>
                   {user ? (
                     <>
+                        <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
+                          {user?.displayName}
+                        </div>
                       <Link to={"/dashboard"}>
                         <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
                           Dashboard
