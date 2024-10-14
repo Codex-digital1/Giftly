@@ -344,16 +344,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (error: any) {
       const axiosError = error as AxiosError;
 
-      if (axiosError.response) {
-        const errorData = axiosError.response.data as { message?: string };
-  
-        if (axiosError.response.status === 404) {
+      if(axiosError?.response){
+           const errorData = axiosError?.response?.data as {message:string}
+        if (axiosError?.response?.status === 404) {
           toast.error(errorData.message || "No order found");
         } else {
           toast.error("Something went wrong. Please try again later.");
         }
-      } else {
-        toast.error("Something went wrong. Please try again later.");
       }
   
       console.log(axiosError);
