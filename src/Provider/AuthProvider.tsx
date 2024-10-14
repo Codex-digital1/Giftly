@@ -275,7 +275,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         setLoading(true);
         const { data } = await axiosPublic.get("/getAllGift")
-        return data.data
+        return data?.data
         
       } catch (error) {
         console.log(error);
@@ -285,12 +285,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   })
   console.log(allGifts1);
+
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        const { data } = await axiosPublic.get("/getAllGift");
-        setGifts(data.data);
+        const { data } = await axiosPublic.get("/getAllGift", { params: filters });
+        setGifts(data?.data);
       } catch (error) {
         console.log(error);
       } finally {
@@ -304,7 +305,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         setLoading(true);
         const { data } = await axiosPublic.get("/getAllGift", { params: filters });
-        setAllGifts(data.data);
+        setAllGifts(data?.data);
       } catch (error) {
         console.log(error);
       } finally {

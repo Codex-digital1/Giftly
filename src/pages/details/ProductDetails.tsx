@@ -163,7 +163,7 @@ const ProductDetails: React.FC = () => {
                     enlargedImagePosition: "beside",
                   }}
                   style={{
-                    width: "auto",
+                    // width: "auto",
                     zIndex: 1,
                     maxWidth: "500px",
                     maxHeight: "500px",
