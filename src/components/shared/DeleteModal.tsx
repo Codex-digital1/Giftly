@@ -7,7 +7,7 @@ import {
   } from '@headlessui/react'
   import { Fragment } from 'react'
   import PropTypes from 'prop-types'
-  const DeleteModal = ({ closeModal, isOpen, handleDelete, giftId,}) => {
+   const DeleteModal = ({ closeModal, isOpen, handleDelete, giftId,} : {closeModal:()=> void, isOpen: boolean,  handleDelete: (id: string) => Promise<void>, giftId:any}) => {
     return (
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as='div' className='relative z-10' onClose={closeModal}>
