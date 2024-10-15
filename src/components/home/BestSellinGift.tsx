@@ -74,15 +74,8 @@ import { drawerPropsType } from "../../types/Types";
 import useAuth from "../../Provider/useAuth";
 import LoadingSpinner from '../shared/LoadingSpinner';
 
-<<<<<<< HEAD
-const BestSellinGift: React.FC<drawerPropsType> = ({ drawerToggle }) => {
-  const authContext = useAuth(); 
-// Define the Gift interface here
-type Gift = {
-=======
 // Define the Gift interface outside the component for reusability
 export interface Gift {
->>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
   _id: string;
   giftName: string;
   store: string;

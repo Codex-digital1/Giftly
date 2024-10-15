@@ -12,13 +12,8 @@ import toast from "react-hot-toast";
 import auth from "../Firebase/Firebase.config";
 import _ from 'lodash';
 import useAxiosPublic from "../Hooks/useAxiosPublic";
-<<<<<<< HEAD
- 
-=======
-import { AxiosError } from "axios";
 import { QueryObserverResult, RefetchOptions, useQuery } from "@tanstack/react-query";
 
->>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
 // Define GiftType
 type GiftType = {
   _id: string;
@@ -194,11 +189,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       toast.error("User not authenticated.");
     }
   };// save user
-<<<<<<< HEAD
-  const saveUser = async (user : any ) => {
-=======
   const saveUser = async (user: any) => {
->>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
     const alternateImage = `https://picsum.photos/id/${_.random(1, 1000)}/200/300`;
     // console.log(user);
     const currentUser = {
@@ -298,13 +289,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     (async () => {
       try {
         setLoading(true);
-<<<<<<< HEAD
-        const { data } = await axiosPublic.get("/getAllGift");
-        setGifts(data.data);
-=======
         const { data } = await axiosPublic.get("/getAllGift", { params: filters });
         setGifts(data?.data);
->>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
       } catch (error) {
         console.log(error);
       } finally {
@@ -318,11 +304,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         setLoading(true);
         const { data } = await axiosPublic.get("/getAllGift", { params: filters });
-<<<<<<< HEAD
-        setAllGifts(data.data);
-=======
         setAllGifts(data?.data);
->>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
       } catch (error) {
         console.log(error);
       } finally {
@@ -362,16 +344,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (error: any) {
       const axiosError = error as AxiosError;
 
-      if (axiosError.response) {
-        const errorData = axiosError.response.data as { message?: string };
-  
-        if (axiosError.response.status === 404) {
+      if(axiosError?.response){
+           const errorData = axiosError?.response?.data as {message:string}
+        if (axiosError?.response?.status === 404) {
           toast.error(errorData.message || "No order found");
         } else {
           toast.error("Something went wrong. Please try again later.");
         }
-      } else {
-        toast.error("Something went wrong. Please try again later.");
       }
   
       console.log(axiosError);

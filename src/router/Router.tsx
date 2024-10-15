@@ -6,8 +6,6 @@ import Allgift from "../pages/allGift/Allgift";
 import AboutUs from "../pages/aboutUs/AboutUs";
 import WishList from "../pages/wishList/WishList";
 import Cart from "../pages/cart/Cart";
-import ProductDetails from "../pages/details/ProductDetails";
-import ProfileInfo from "../pages/acount/ProfileInfo";
 import MyOrders from "../pages/acount/MyOrders";
 import MyRating from "../pages/acount/MyRating";
 import MyWishlist from "../pages/acount/MyWishlist";
@@ -23,6 +21,8 @@ import OrderTracking from "../pages/Dashboard/User/OrderTracking/OrderTracking";
 import ChatContainer from "../pages/chatFeature/ChatContainer";
 import UserOrderHistory from "../pages/Dashboard/User/UserOrderHistory/UserOrderHistory";
 import StatisticsPage from "../pages/Dashboard/Admin/Statistics/StatisticsPage";
+import ProductDetails from './../pages/details/ProductDetails';
+import ProfileInfo from './../pages/acount/ProfileInfo';
 
 const router = createBrowserRouter([
   {
@@ -68,10 +68,6 @@ const router = createBrowserRouter([
         element: <Register></Register>,
       },
       {
-        path: "/productDetails/:id",
-        element: <ProductDetails></ProductDetails>,
-      },
-      {
         path: "/chatInbox",
         element: <ChatContainer />,
       },
@@ -84,11 +80,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "statistics",
-<<<<<<< HEAD
-        element: <Statistics />,
-=======
         element: <StatisticsPage />,
->>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
       },
       {
         path: "manage-users",
@@ -116,13 +108,10 @@ const router = createBrowserRouter([
         element: <MyOrders></MyOrders>,
       },
       {
-<<<<<<< HEAD
-=======
         path: "user/order-history",
         element: <UserOrderHistory />,
       },
       {
->>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
         path: "my-orders/order-status/:id",
         element: <OrderTracking />,
       },

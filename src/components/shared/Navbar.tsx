@@ -8,10 +8,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import avatarImg from "../../assets/placeholder.jpg";
 import { RiMenuUnfold4Line2 } from "react-icons/ri";
 import useAuth from "../../Provider/useAuth";
-<<<<<<< HEAD
-=======
 import Notifications from "./Notification";
->>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
 
 const megaMenu = [
   { name: "Home", path: "/" },

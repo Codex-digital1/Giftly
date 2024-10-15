@@ -9,9 +9,6 @@ import NotReviewedGiftCard from '../../components/Rating/NotReviewedGifts';
 import ReviewedGiftCard from '../../components/Rating/ReviewedGifts';
 
 const MyRating = () => {
-<<<<<<< HEAD
-  const { allGifts, loading } = useAuth() ?? {} ;
-=======
   const { user, loading, myReviewItem = [], myAllReview, isModalVisible, giftOrderCheck, setIsModalVisible, } = useAuth() ?? {};
 
   const axiosPublic = useAxiosPublic()
@@ -55,7 +52,6 @@ const MyRating = () => {
       console.error('Error in submitting review:', error);
     }
   };
->>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
 
   return (
     <div className="p-5 border-t-4 border-primary bg-white shadow-lg rounded-lg">
@@ -78,41 +74,6 @@ const MyRating = () => {
             </Tab>
           </TabList>
 
-<<<<<<< HEAD
-          {
-            loading ? <LoadingSpinner smallHeight={true} /> : <TabPanel className="grid grid-cols-1 gap-10">
-              {/* <h2 className="text-lg font-medium">Product Reviews</h2>
-            <p className="text-gray-600">You haven't reviewed any products yet.</p> */}
-              {
-                allGifts && allGifts?.filter((gift:any) => gift.rating === 0).length > 0 ? (
-                  allGifts.filter((gift) => gift.rating === 0).map((singleGift , index) => {
-                    return <RatingGiftCard key={index} singleGift={singleGift} />
-                  })
-                ) : (
-                  <p className="text-gray-600">No gifts are waiting for a review.</p>
-                )
-              }
-
-            </TabPanel>
-          }
-
-          {
-            loading ? <LoadingSpinner smallHeight={true} /> : <TabPanel className="grid grid-cols-1 gap-10">
-              {/* <h2 className="text-lg font-medium">Product Reviews</h2>
-            <p className="text-gray-600">You haven't reviewed any products yet.</p> */}
-              {
-                allGifts && allGifts?.filter((gift) => gift.rating !== 0).length > 0 ? (
-                  allGifts.filter((gift) => gift.rating !== 0).map((singleGift, index) => {
-                    return <RatingGiftCard key={index} singleGift={singleGift} />
-                  })
-                ) : (
-                  <p className="text-gray-600">You haven't reviewed any services yet.</p>
-                )
-              }
-
-            </TabPanel>
-          }
-=======
           {/* Not Reviewed */}
           <TabPanel className="grid grid-cols-1 gap-10">
             {loading ? (
@@ -138,7 +99,6 @@ const MyRating = () => {
               <p className="text-gray-600">You haven't reviewed any services yet.</p>
             )}
           </TabPanel>
->>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
         </Tabs>
 
 

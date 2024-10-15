@@ -9,13 +9,14 @@ import {
   FaFacebook,
   FaTwitter,
 } from "react-icons/fa6";
-import ReviewModal from "./ReviewModal";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import useAuth from "../../Provider/useAuth";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import { Link } from "react-router-dom";
- 
+import ShowReview from "../../components/ShowReviewChart/ShowReview";
+import ShowReviewComment from '../../components/ShowReviewChart/ShowReviewComment';
+
+
 
 // Define the types for the gift object
 interface Gift {
@@ -39,10 +40,12 @@ interface Gift {
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams();
-  const { user} = useAuth() ?? {};
+  const { user } = useAuth() ?? {};
   const axiosPublic = useAxiosPublic()
-  
-  const [gift, setGift] = useState({});
+
+
+  // const [gift, setGift] = useState<any>({});
+  const [gift, setGift] = useState<Gift | null | undefined>(null);
   const [count, setCount] = useState(1);
 
   const [currentImg, setCurrentImg] = useState("");
@@ -52,9 +55,9 @@ const ProductDetails: React.FC = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:3000/${id}`);
-        setGift(data.data);
-        setCurrentImg(data.data.giftImage[0]);
+        const { data } = await axiosPublic.get(`/${id}`);
+        setGift(data?.data);
+        setCurrentImg(data?.data?.giftImage[0]);
       } catch (error) {
         console.log(error);
       }
@@ -67,10 +70,8 @@ const ProductDetails: React.FC = () => {
   const {
     _id,
     giftName,
-    store,
-    brand,
-    discount,
-    price,
+    discount=0,
+    price=0,
     rating,
     giftImage,
     description,
@@ -104,42 +105,46 @@ const ProductDetails: React.FC = () => {
     } else {
       document.body.style.overflowY = "auto";
     }
-    return () => (document.body.style.overflow = "auto");
+    // Corrected cleanup function
+    return () => {
+      document.body.style.overflow = "auto";
+    };
   }, [openModal]);
-// handleUserData
-const handleUserData = e => {
-e.preventDefault();
-const form = e.target;
-const name = form.name.value;
-const number = form.number.value;
-const address = form.address.value;
-const email = user?.email;
-const productId = _id;
- // Prepare the data to be sent in the POST request
- const paymentDetails = {
-  name,
-  email,
-  number,
-  address,
-  productId,
-};
 
-// Sending the POST request using Axios
-axiosPublic
-  .post('/order', paymentDetails)
-  .then((response) => {
-    window.location.replace(response?.data?.url)
-    // Handle successful response
-    console.log("Payment details sent successfully:", response.data);
-  })
-  .catch((error) => {
-    // Handle any errors that occur during the POST request
-    console.error("Error in sending payment details:", error);
-  });
+  const handleUserData = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+    const number = (form.elements.namedItem('number') as HTMLInputElement).value;
+    const address = (form.elements.namedItem('address') as HTMLInputElement).value;
+    const email = user?.email;
+    const productId = _id;
+
+    // Prepare the data to be sent in the POST request
+    const paymentDetails = {
+      name,
+      email,
+      number,
+      address,
+      productId,
+    };
+    console.log(paymentDetails);
+    // Sending the POST request using Axios
+    axiosPublic
+      .post('/order', paymentDetails)
+      .then((response) => {
+        window.location.replace(response?.data?.url);
+        // Handle successful response
+        console.log('Payment details sent successfully:', response?.data);
+      })
+      .catch((error) => {
+        console.error('Error in sending payment details:', error);
+      });
+  };
 
   return (
     <>
-      {gift&& (
+      {gift && (
         <div className="container mx-auto my-10 mt-20">
           <div className="w-full flex flex-col md:flex-row gap-6">
             <div className="relative flex flex-col flex-shrink justify-between  w-full  md:w-2/5">
@@ -155,22 +160,19 @@ axiosPublic
                       src: currentImg,
                       width: 1000,
                       height: 1000,
-                      isHintEnabled: true,
-                      
                     },
                     enlargedImageContainerStyle: { background: "#fff" },
                     enlargedImagePosition: "beside",
                   }}
                   style={{
-                    width: "auto",
-                    // height: "100%",
+                    // width: "auto",
                     zIndex: 1,
                     maxWidth: "500px",
                     maxHeight: "500px",
                     objectFit: "cover",
                   }}
                 />
-              </div>
+              </div >
 
               <div
                 ref={scrollElement}
@@ -208,7 +210,7 @@ axiosPublic
                   ))}
                 </div>
               </div>
-            </div>
+            </div >
 
             <div className=" w-full md:w-3/5 p-5 space-y-6 text-[#333]">
               {/* description and title */}
@@ -443,7 +445,7 @@ axiosPublic
                 </div>
               </div>
             </div>
-          </div>
+          </div >
 
           {/* review section */}
           <div className="mt-10">
@@ -462,10 +464,15 @@ axiosPublic
               </div>
             </div>
           </div>
-        </div>
+
+          {/* reviewComponent */}
+          <ShowReview></ShowReview>
+          {/* comment component  */}
+          <ShowReviewComment></ShowReviewComment>
+        </div >
       )}
     </>
   );
-};
+}
 
 export default ProductDetails;
