@@ -18,10 +18,11 @@ import OrderHistory from "../pages/Dashboard/Admin/OrderHistory/OrderHistory";
 import ManageOrders from "../pages/Dashboard/User/ManageOrders/ManageOrders";
 import Login from "../pages/authentication/Login";
 import Register from "../pages/authentication/Register";
-import Statistics from "../pages/Dashboard/Admin/Statistics/Statistics";
 import Success from "../pages/success/Success";
 import OrderTracking from "../pages/Dashboard/User/OrderTracking/OrderTracking";
 import ChatContainer from "../pages/chatFeature/ChatContainer";
+import UserOrderHistory from "../pages/Dashboard/User/UserOrderHistory/UserOrderHistory";
+import StatisticsPage from "../pages/Dashboard/Admin/Statistics/StatisticsPage";
 
 const router = createBrowserRouter([
   {
@@ -55,7 +56,7 @@ const router = createBrowserRouter([
       },
 
       {
-        path: "/productDetails",
+        path: "/productDetails/:id",
         element: <ProductDetails></ProductDetails>,
       },
       {
@@ -67,13 +68,13 @@ const router = createBrowserRouter([
         element: <Register></Register>,
       },
       {
-        path:'/productDetails/:id',
-        element:<ProductDetails></ProductDetails>
+        path: "/productDetails/:id",
+        element: <ProductDetails></ProductDetails>,
       },
       {
-        path:'/chatInbox',
-        element:<ChatContainer/>
-      }
+        path: "/chatInbox",
+        element: <ChatContainer />,
+      },
     ],
   },
   // dash board for user and admin
@@ -83,7 +84,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "statistics",
+<<<<<<< HEAD
         element: <Statistics />,
+=======
+        element: <StatisticsPage />,
+>>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
       },
       {
         path: "manage-users",
@@ -111,6 +116,13 @@ const router = createBrowserRouter([
         element: <MyOrders></MyOrders>,
       },
       {
+<<<<<<< HEAD
+=======
+        path: "user/order-history",
+        element: <UserOrderHistory />,
+      },
+      {
+>>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
         path: "my-orders/order-status/:id",
         element: <OrderTracking />,
       },

@@ -20,7 +20,11 @@ const ProfileInfo = () => {
     // Get the image file from the input
     const imageInput = form.elements.namedItem("image") as HTMLInputElement;
     const imageFile = imageInput.files?.[0];
+<<<<<<< HEAD
 
+=======
+  console.log(imageFile);
+>>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
     if (imageFile) {
       const formData = new FormData();
       formData.append('file', imageFile);
@@ -47,6 +51,7 @@ const ProfileInfo = () => {
 
 
   return (
+<<<<<<< HEAD
     <div>
       <section className="py-10 my-auto dark:bg-gray-900 border-gray-700 shadow-black">
         <div className="lg:w-[80%] md:w-[90%] xs:w-[96%] mx-auto flex gap-4">
@@ -148,6 +153,66 @@ const ProfileInfo = () => {
         </form>
       </div> */}
 
+=======
+    <div className="p-5 shadow-lg border-t-4 border-primary">
+      <h2 className="text-2xl font-medium inter">Personal Information</h2>
+  <form onSubmit={handleUpdate}>
+  <div className="p-5 text-lg flex items-center gap-5">
+       <div>
+       <img
+          src={user?.photoURL || imgD }
+          alt="user"
+          className="w-[100px] mr-3 border rounded-lg"
+        />
+        <p>{user?.email}</p>
+        <p>{user?.phoneNumber}</p>
+       </div>
+          <div>
+                <label htmlFor="image" className="block mb-3 text-sm font-semibold">
+                  Select Image:
+                </label>
+                <input
+                  required
+                  type="file"
+                  id="image"
+                  name="image"
+                  accept="image/*"
+                />
+              </div>
+      </div>
+      <div className="flex flex-col gap-4 mt-10">
+      <input
+    type="text"
+    placeholder="Username"
+    name="name"
+    className="input input-bordered"
+    defaultValue={user?.displayName ?? ''}  
+/>
+
+<input
+    type="text"
+    placeholder="Email"
+    name="email"
+    className="input input-bordered"
+    defaultValue={user?.email ?? ''}  
+/>
+
+<input
+    type="text"
+    placeholder="Mobile Number"
+    name="phone"
+    className="input input-bordered"
+    defaultValue={user?.phoneNumber ?? ''}  
+/>
+        <button
+          type="submit"
+          className="btn px-8 bg-primary text-white hover:bg-red-500 text-xl max-w-36"
+        >
+          Update
+        </button>
+      </div>
+  </form>
+>>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
     </div>
 
   );

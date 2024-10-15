@@ -5,7 +5,11 @@ import ManageOrdersItem from "../ManageOrdersItem/ManageOrdersItem";
 
 const ManageOrdersList = () => {
   const [data] = useGetAllOrders();
+<<<<<<< HEAD
 
+=======
+  console.log(data);
+>>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
   return (
     <div>
       <div className="overflow-x-auto">

@@ -12,7 +12,13 @@ import toast from "react-hot-toast";
 import auth from "../Firebase/Firebase.config";
 import _ from 'lodash';
 import useAxiosPublic from "../Hooks/useAxiosPublic";
+<<<<<<< HEAD
  
+=======
+import { AxiosError } from "axios";
+import { QueryObserverResult, RefetchOptions, useQuery } from "@tanstack/react-query";
+
+>>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
 // Define GiftType
 type GiftType = {
   _id: string;
@@ -22,17 +28,37 @@ type GiftType = {
   discount: number;
   price: number;
   rating: number;
-  giftImage: string;
+  giftImage: any;
   productAddBy: string;
   description: string;
   size: string;
   color: string;
   type: string;
   category: string;
-  availability: boolean;
+  availability: (boolean|string);
   quantity: number;
 };
 
+// Define OrderedGiftType
+type OrderedGiftType = {
+  _id: string;
+  tran_id: string;
+  product_name: string;
+  product_brand: string;
+  product_image: string[];
+  userName: string;
+  userEmail: string;
+  userPhone: string;
+  total_amount: number;
+  order_status: string;
+  payment_status: string;
+  review: {
+    rating: number | null;
+    comment: string | null;
+    reviewedAt: Date | null;
+    _id: string | null;
+  };
+};
 // Define AuthContextType
 interface AuthContextType {
   user: User | null;
@@ -43,11 +69,13 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<UserCredential>;
   createUser: (email: string, password: string) => Promise<UserCredential>;
   googleLogin: () => Promise<UserCredential>;
+refetch: (options?: RefetchOptions) => Promise<QueryObserverResult<any, Error>>;
   logOut: () => Promise<void>;
   updateUserProfile: (name: string, photoURL: string) => Promise<void>;
   setUser: (user: User | null) => void;
   gifts?: GiftType[];
   allGifts?: GiftType[];
+  allGifts1?: GiftType[];
   cart: GiftType[];
   addToCart: (gift: GiftType) => void;
   addToWishlist: (gift: GiftType) => void;
@@ -64,6 +92,14 @@ interface AuthContextType {
     sortBy: string;
     search: string;
   };
+
+  // ordered gift and review types
+  myReviewItem: OrderedGiftType[];
+  orderCheck: (id: string, mail: string) => Promise<void>;
+  giftOrderCheck: OrderedGiftType | Record<string, never>;
+  isModalVisible: boolean;
+  setIsModalVisible: (visible: boolean) => void | undefined;
+  myAllReview: (() => Promise<void> | undefined);
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -79,8 +115,14 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const provider = new GoogleAuthProvider();
   // get all user
   const [allUser, setAllUsers] = useState<any[]>([]);
+
   const [gifts, setGifts] = useState<GiftType[]>([]);
   const [allGifts, setAllGifts] = useState<GiftType[]>([]);
+
+  // Define review and modal states
+  const [myReviewItem, setMyReviewItem] = useState<OrderedGiftType[]>([]);
+  const [giftOrderCheck, setGiftOrderCheck] = useState<OrderedGiftType | Record<string, never>>({});
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   const [cart, setCart] = useState<GiftType[]>(() => {
     const savedCart = localStorage.getItem("cart");
@@ -152,13 +194,17 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       toast.error("User not authenticated.");
     }
   };// save user
+<<<<<<< HEAD
   const saveUser = async (user : any ) => {
+=======
+  const saveUser = async (user: any) => {
+>>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
     const alternateImage = `https://picsum.photos/id/${_.random(1, 1000)}/200/300`;
     // console.log(user);
     const currentUser = {
       email: user?.email,
       name: user?.displayName || "Anonymous",
-      profileImage: user?.photoURL || alternateImage,
+      profileImage: user?.photoURL || alternateImage, 
       role: 'user',
       phoneNumber: user?.phoneNumber || '',
       address: {
@@ -227,16 +273,38 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     getData();
-}, []);
+  }, []);
 
 
+
+  const {data:allGifts1,refetch}=useQuery({
+    queryKey:['all-gift'],
+    queryFn:async()=>{
+      try {
+        setLoading(true);
+        const { data } = await axiosPublic.get("/getAllGift")
+        return data?.data
+        
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  })
+  console.log(allGifts1);
 
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
+<<<<<<< HEAD
         const { data } = await axiosPublic.get("/getAllGift");
         setGifts(data.data);
+=======
+        const { data } = await axiosPublic.get("/getAllGift", { params: filters });
+        setGifts(data?.data);
+>>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
       } catch (error) {
         console.log(error);
       } finally {
@@ -250,7 +318,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         setLoading(true);
         const { data } = await axiosPublic.get("/getAllGift", { params: filters });
+<<<<<<< HEAD
         setAllGifts(data.data);
+=======
+        setAllGifts(data?.data);
+>>>>>>> 49bcf8670de6d2692220bfde38ca3c3c9f9be2b8
       } catch (error) {
         console.log(error);
       } finally {
@@ -258,6 +330,56 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     })();
   }, [filters]);
+
+  // get review from order collection using user email
+  const myAllReview = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axiosPublic.get(`/user/getReviewer/${user?.email}`);
+      setMyReviewItem(data);
+
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    myAllReview()
+  }, [user?.email]);
+
+  // Order check before review
+  const orderCheck = async (id: string, mail: string) => {
+    try {
+      const { data } = await axiosPublic.get(`/${id}/${mail}`);
+      if (data?.data?.tran_id) {
+        setGiftOrderCheck(data.data);
+        setIsModalVisible(true);
+      } else {
+        toast.error("No order found with this product ID and email");
+      }
+    } catch (error: any) {
+      const axiosError = error as AxiosError;
+
+      if (axiosError.response) {
+        const errorData = axiosError.response.data as { message?: string };
+  
+        if (axiosError.response.status === 404) {
+          toast.error(errorData.message || "No order found");
+        } else {
+          toast.error("Something went wrong. Please try again later.");
+        }
+      } else {
+        toast.error("Something went wrong. Please try again later.");
+      }
+  
+      console.log(axiosError);
+    }
+  };
+
+
+  // console.log(309, giftOrderCheck)
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     e.preventDefault();
@@ -304,6 +426,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     toast.error(`${gift.giftName} removed from Cart successfully`);
   };
 
+  // console.log("my review", myReviewItem)
+
   const authInfo: AuthContextType = {
     user,
     loading,
@@ -316,6 +440,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     updateUserProfile,
     gifts,
     allGifts,
+    allGifts1,
+    refetch,
     cart,
     addToCart,
     addToWishlist,
@@ -325,7 +451,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     handleFilterChange,
     filters,
     allUser,
-    getData
+    getData,
+
+    // Add the ordered gift and review logic
+    myReviewItem,
+    orderCheck,
+    giftOrderCheck,
+    isModalVisible,
+    setIsModalVisible,
+    myAllReview
   };
 
   return (
