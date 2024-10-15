@@ -86,6 +86,8 @@ export type OrderTypesProps = {
     userEmail: string;
     userName: string;
     userPhone: string;
+    sheduleDate: string;
+    isShedule: string;
   };
 };
 

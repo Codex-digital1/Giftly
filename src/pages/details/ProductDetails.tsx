@@ -20,6 +20,7 @@ const ProductDetails: React.FC = () => {
   const axiosPublic = useAxiosPublic();
   // Shedule Delevery State
   const [sheduleDelevery, setSheduleDelevery] = useState<boolean>(false);
+  const [sheduleDate, setSheduleDate] = useState<string>("");
   console.log(sheduleDelevery);
 
   const handleSheduledDelevery = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,6 +110,7 @@ const ProductDetails: React.FC = () => {
       number,
       address,
       productId,
+      sheduleDate,
     };
     console.log(paymentDetails);
     // Sending the POST request using Axios
@@ -123,7 +125,6 @@ const ProductDetails: React.FC = () => {
         console.error("Error in sending payment details:", error);
       });
   };
-
   return (
     <>
       {Object.keys(gift).length > 0 && (
@@ -432,6 +433,9 @@ const ProductDetails: React.FC = () => {
                         <input
                           type="date"
                           name="date"
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setSheduleDate(e.target.value)
+                          }
                           id="date"
                           className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
                         />
