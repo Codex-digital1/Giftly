@@ -4,8 +4,11 @@ import TableTh from "../../../shared/TableTh"
 import GiftListItem from "../GiftListItem/GiftListItem"
 import GiftAddForm from "../Form/GiftAddForm"
 import GiftUpdateForm from "../Form/GiftUpdateForm"
+import LoadingSpinner from "../../../shared/LoadingSpinner"
+import useAuth from "../../../../Provider/useAuth"
 
 const GiftList = () => {
+  const {loading} = useAuth() ?? {};
  
     const [gitAddModal, setGiftAddModal] = useState<boolean>(false)
     const [updateGitAddModal, setUpdateGiftAddModal] = useState<boolean>(false)
@@ -44,6 +47,7 @@ console.log(selectedGiftId,'hahah');
             <TableTh tHeading="  Action" />
           </tr>
         </thead>
+        
 
         <tbody className="divide-y divide-gray-200 text-center">
       <GiftListItem   
@@ -52,6 +56,9 @@ console.log(selectedGiftId,'hahah');
       />
         </tbody>
       </table>
+      {loading && <div className="flex justify-center items-center ">
+        <LoadingSpinner card={true} large={false} smallHeight={false} />
+        </div>}
     </div>
     </div>
   )

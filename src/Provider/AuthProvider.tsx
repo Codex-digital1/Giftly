@@ -13,6 +13,7 @@ import auth from "../Firebase/Firebase.config";
 import _ from 'lodash';
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import { AxiosError } from "axios";
+import { QueryObserverResult, RefetchOptions, useQuery } from "@tanstack/react-query";
 
 // Define GiftType
 type GiftType = {
@@ -23,14 +24,14 @@ type GiftType = {
   discount: number;
   price: number;
   rating: number;
-  giftImage: string;
+  giftImage: any;
   productAddBy: string;
   description: string;
   size: string;
   color: string;
   type: string;
   category: string;
-  availability: boolean;
+  availability: (boolean|string);
   quantity: number;
 };
 
@@ -64,11 +65,13 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<UserCredential>;
   createUser: (email: string, password: string) => Promise<UserCredential>;
   googleLogin: () => Promise<UserCredential>;
+refetch: (options?: RefetchOptions) => Promise<QueryObserverResult<any, Error>>;
   logOut: () => Promise<void>;
   updateUserProfile: (name: string, photoURL: string) => Promise<void>;
   setUser: (user: User | null) => void;
   gifts?: GiftType[];
   allGifts?: GiftType[];
+  allGifts1?: GiftType[];
   cart: GiftType[];
   addToCart: (gift: GiftType) => void;
   addToWishlist: (gift: GiftType) => void;
@@ -193,7 +196,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const currentUser = {
       email: user?.email,
       name: user?.displayName || "Anonymous",
-      profileImage: user?.photoURL || alternateImage,
+      profileImage: user?.photoURL || alternateImage, 
       role: 'user',
       phoneNumber: user?.phoneNumber || '',
       address: {
@@ -266,6 +269,22 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 
 
+  const {data:allGifts1,refetch}=useQuery({
+    queryKey:['all-gift'],
+    queryFn:async()=>{
+      try {
+        setLoading(true);
+        const { data } = await axiosPublic.get("/getAllGift")
+        return data.data
+        
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  })
+  console.log(allGifts1);
   useEffect(() => {
     (async () => {
       try {
@@ -325,11 +344,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (error: any) {
       const axiosError = error as AxiosError;
 
-      if (axiosError?.response?.status === 404) {
-        toast.error(axiosError.response?.data?.message || "No order found");
-      } else {
-        toast.error("Something went wrong. Please try again later.");
+      if(axiosError?.response){
+           const errorData = axiosError?.response?.data as {message:string}
+        if (axiosError?.response?.status === 404) {
+          toast.error(errorData.message || "No order found");
+        } else {
+          toast.error("Something went wrong. Please try again later.");
+        }
       }
+  
       console.log(axiosError);
     }
   };
@@ -396,6 +419,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     updateUserProfile,
     gifts,
     allGifts,
+    allGifts1,
+    refetch,
     cart,
     addToCart,
     addToWishlist,

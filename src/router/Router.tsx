@@ -18,7 +18,6 @@ import OrderHistory from "../pages/Dashboard/Admin/OrderHistory/OrderHistory";
 import ManageOrders from "../pages/Dashboard/User/ManageOrders/ManageOrders";
 import Login from "../pages/authentication/Login";
 import Register from "../pages/authentication/Register";
-import Statistics from "../pages/Dashboard/Admin/Statistics/StatisticsPage";
 import Success from "../pages/success/Success";
 import OrderTracking from "../pages/Dashboard/User/OrderTracking/OrderTracking";
 import ChatContainer from "../pages/chatFeature/ChatContainer";
@@ -55,9 +54,9 @@ const router = createBrowserRouter([
         path: "/cart",
         element: <Cart></Cart>,
       },
-
+       
       {
-        path: "/productDetails",
+        path: "/productDetails/:id",
         element: <ProductDetails></ProductDetails>,
       },
       {

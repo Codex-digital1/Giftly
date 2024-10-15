@@ -13,6 +13,27 @@ import {useParams } from "react-router-dom";
 import useAuth from "../../Provider/useAuth";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import { Link } from "react-router-dom";
+ 
+
+// Define the types for the gift object
+interface Gift {
+  _id: string;
+  giftName: string;
+  store: string;
+  brand: string;
+  discount: number;
+  price: number;
+  rating: number;
+  giftImage: string[];
+  productAddBy: string;
+  description: string;
+  size: string;
+  color: string;
+  type: string;
+  category: string;
+  availability: string;
+  quantity: number;
+}
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams();
@@ -27,7 +48,9 @@ const ProductDetails: React.FC = () => {
     setSheduleDelevery(e.target.checked);
   };
 
-  const [gift, setGift] = useState<any>({});
+
+  // const [gift, setGift] = useState<any>({});
+  const [gift, setGift] = useState<Gift | null | undefined>(null);
   const [count, setCount] = useState(1);
 
   const [currentImg, setCurrentImg] = useState("");
@@ -50,8 +73,8 @@ const ProductDetails: React.FC = () => {
   const {
     _id,
     giftName,
-    discount,
-    price,
+    discount=0,
+    price=0,
     rating,
     giftImage,
     description,
@@ -127,7 +150,7 @@ const ProductDetails: React.FC = () => {
   };
   return (
     <>
-      {Object.keys(gift).length > 0 && (
+      {gift&& (
         <div className="container mx-auto my-10 mt-20">
           <div className="w-full flex flex-col md:flex-row gap-6">
             <div className="relative flex flex-col flex-shrink justify-between  w-full  md:w-2/5">
@@ -179,7 +202,7 @@ const ProductDetails: React.FC = () => {
                     <FaAngleRight />
                   </button>
 
-                  {giftImage.map((img: string, index: number) => (
+                  {giftImage?.map((img: string, index: number) => (
                     <div
                       key={index}
                       onClick={() => setCurrent(img)}

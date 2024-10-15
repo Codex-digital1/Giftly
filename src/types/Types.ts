@@ -23,14 +23,14 @@ export interface Gift {
   discount: number;
   price: number;
   rating: number;
-  giftImage:any;  // This is an array of strings (image URLs)
+  giftImage:any;  
   productAddBy: string;
   description: string;
   size: string;
   color: string;
   type: string;
   category: string;
-  availability: boolean;
+  availability: (boolean | string);
   quantity: number;
 }
 
