@@ -12,7 +12,6 @@ import toast from "react-hot-toast";
 import auth from "../Firebase/Firebase.config";
 import _ from 'lodash';
 import useAxiosPublic from "../Hooks/useAxiosPublic";
-import { AxiosError } from "axios";
 import { QueryObserverResult, RefetchOptions, useQuery } from "@tanstack/react-query";
 
 // Define GiftType
@@ -275,7 +274,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         setLoading(true);
         const { data } = await axiosPublic.get("/getAllGift")
-        return data.data
+        return data?.data
         
       } catch (error) {
         console.log(error);
@@ -285,12 +284,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   })
   console.log(allGifts1);
+
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        const { data } = await axiosPublic.get("/getAllGift");
-        setGifts(data.data);
+        const { data } = await axiosPublic.get("/getAllGift", { params: filters });
+        setGifts(data?.data);
       } catch (error) {
         console.log(error);
       } finally {
@@ -304,7 +304,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         setLoading(true);
         const { data } = await axiosPublic.get("/getAllGift", { params: filters });
-        setAllGifts(data.data);
+        setAllGifts(data?.data);
       } catch (error) {
         console.log(error);
       } finally {

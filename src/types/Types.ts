@@ -23,14 +23,14 @@ export interface Gift {
   discount: number;
   price: number;
   rating: number;
-  giftImage:any;  
+  giftImage: any; // This is an array of strings (image URLs)
   productAddBy: string;
   description: string;
   size: string;
   color: string;
   type: string;
   category: string;
-  availability: (boolean | string);
+  availability: boolean | string;
   quantity: number;
 }
 
@@ -68,6 +68,8 @@ export type OrderTypes = {
   userEmail: string;
   userName: string;
   userPhone: string;
+  sheduleDate: string;
+  isShedule: string;
 };
 
 export type OrderTypesProps = {
@@ -86,6 +88,8 @@ export type OrderTypesProps = {
     userEmail: string;
     userName: string;
     userPhone: string;
+    sheduleDate: string;
+    isShedule: string;
   };
 };
 

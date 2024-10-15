@@ -7,16 +7,16 @@ const ProfileInfo = () => {
   // Cloudinary config
   const preset_key = "fkaap0pt";
   const cloud_name = "dhmf91dsb";
-  
+
   // State to track the uploaded image URL
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | undefined>(undefined);
   console.log(uploadedImageUrl);
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     const form = e.currentTarget;
     const nameValue = (form.elements.namedItem("name") as HTMLInputElement).value;
-    
+
     // Get the image file from the input
     const imageInput = form.elements.namedItem("image") as HTMLInputElement;
     const imageFile = imageInput.files?.[0];
@@ -25,25 +25,26 @@ const ProfileInfo = () => {
       const formData = new FormData();
       formData.append('file', imageFile);
       formData.append("upload_preset", preset_key);
-  
+
       // Upload image to Cloudinary
       try {
         const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, formData);
         const imageUrl = res.data.secure_url;
         setUploadedImageUrl(imageUrl);
-  
+
         // Update user profile with both name and image URL after successful upload
-        await updateUserProfile?.(nameValue, uploadedImageUrl || "" )
-      
+        await updateUserProfile?.(nameValue, uploadedImageUrl || "")
+
       } catch (error) {
         console.error("Error uploading image:", error);
       }
     } else {
-      
+
       await updateUserProfile?.(nameValue, ""); //  
     }
   };
-  
+  console.log(user?.photoURL)
+
 
   return (
     <div className="p-5 shadow-lg border-t-4 border-primary">
@@ -105,6 +106,7 @@ const ProfileInfo = () => {
       </div>
   </form>
     </div>
+
   );
 };
 

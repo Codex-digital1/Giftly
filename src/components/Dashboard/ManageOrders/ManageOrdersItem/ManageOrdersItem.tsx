@@ -4,9 +4,11 @@ import { OrderTypesProps } from "../../../../types/Types";
 import React from "react";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import toast from "react-hot-toast";
+import Timer from "../../../shared/Timer";
 
 const ManageOrdersItem = ({ order }: OrderTypesProps) => {
   const axiosPublic = useAxiosPublic();
+  console.log(order);
   // Update Order Status
   const handleUpdateOrderStatus = async (
     e: React.ChangeEvent<HTMLSelectElement>,
@@ -36,6 +38,13 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
           <span>{order?.total_amount}</span>
           <FaBangladeshiTakaSign className="text-sm" />
         </p>
+      </td>
+      <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
+        {order?.isShedule ? (
+          <Timer targetDate={order?.sheduleDate} isUser={false} />
+        ) : (
+          "None"
+        )}
       </td>
 
       <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
