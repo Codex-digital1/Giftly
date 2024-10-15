@@ -35,9 +35,9 @@ const Sidebar = () => {
   //  Check if user exists before making the API call
   useEffect(() => {
     // Check if user is not null or undefined and email exists
-    if (user && user.email) {
+    if (user && user?.email) {
       axiosPublic
-        .get(`/getAUser/${user.email}`)
+        .get(`/getAUser/${user?.email}`)
         .then((response) => {
           setRole(response?.data?.data);
           console.log(response);
@@ -50,7 +50,7 @@ const Sidebar = () => {
     }
   }, [user, axiosPublic]);
 
-  console.log(role);
+  // console.log(role);
   return (
     <>
       {/* Small Screen Navbar */}

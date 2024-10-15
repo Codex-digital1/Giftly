@@ -20,7 +20,7 @@ interface NotificationsProps {
 // URL of your backend server
 const socket = io("http://localhost:3000");
 
-const Notifications: React.FC<NotificationsProps> = ({ email }) => {
+const Notifications: React.FC<NotificationsProps> = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [newNotification, setNewNotification] = useState<Notification[]>([]);
@@ -44,8 +44,8 @@ const Notifications: React.FC<NotificationsProps> = ({ email }) => {
     };
   }, []);
 
-  const unread = notifications.filter((notify) => notify?.read !== true);
-
+  const unread = notifications?.filter((notify) => notify?.read !== true);
+// console.log(notifications);
   return (
     <div className="relative ">
       <button

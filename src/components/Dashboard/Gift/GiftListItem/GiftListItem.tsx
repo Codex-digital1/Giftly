@@ -4,11 +4,9 @@ import { FaTrash } from "react-icons/fa";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import useAuth from "../../../../Provider/useAuth";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
-import LoadingSpinner from "../../../shared/LoadingSpinner";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import DeleteModal from '../../../../components/shared/DeleteModal';
-import { divide } from "lodash";
+import DeleteModal from '../../../shared/DeleteModal';
 
 
 const GiftListItem = ({
@@ -20,7 +18,7 @@ const GiftListItem = ({
 
 }) => {
   const axiosPublic = useAxiosPublic();
-  const { allGifts1, loading ,refetch} = useAuth() ?? {};
+  const { allGifts1,refetch} = useAuth() ?? {};
   const [isOpen, setIsOpen] = useState(false)
   console.log(allGifts1);
 

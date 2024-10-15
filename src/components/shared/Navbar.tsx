@@ -73,7 +73,7 @@ const Navbar: React.FC = () => {
         {/* mega menu Icons rightSide */}
         <div className=" flex md:gap-5 gap-1">
           <div className="flex justify-center items-center gap-x-2 md:gap-x-6">
-            <Notifications  email={user?.email}/>
+            <Notifications />
             {megaMenu?.slice(4, 6).map((menu) => (
               <NavLink
               data-tip={menu?.title}

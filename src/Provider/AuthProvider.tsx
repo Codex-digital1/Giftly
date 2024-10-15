@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, UserCredential, User } from "firebase/auth";
+import { GoogleAuthProvider, UserCredential, User, sendPasswordResetEmail } from "firebase/auth";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -13,7 +13,7 @@ import auth from "../Firebase/Firebase.config";
 import _ from 'lodash';
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import { AxiosError } from "axios";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 // Define GiftType
 type GiftType = {
@@ -66,11 +66,13 @@ interface AuthContextType {
   createUser: (email: string, password: string) => Promise<UserCredential>;
   googleLogin: () => Promise<UserCredential>;
   logOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
   updateUserProfile: (name: string, photoURL: string) => Promise<void>;
   setUser: (user: User | null) => void;
   gifts?: GiftType[];
   allGifts?: GiftType[];
   allGifts1?: GiftType[];
+  refetch:()=>void;
   cart: GiftType[];
   addToCart: (gift: GiftType) => void;
   addToWishlist: (gift: GiftType) => void;
@@ -224,8 +226,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        saveUser(user)
         setUser(user)
+        setTimeout(() => {
+          saveUser(user);
+          getAUser(user?.email)
+        }, 2000);
         // getToken(currentUser.email)
       }
       setLoading(false);
@@ -234,6 +239,24 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       unSubscribe();
     };
   }, []);
+
+
+    const getAUser=async(email:string)=>{
+      setLoading(true);
+    
+      await axiosPublic.get(`/getAUser/${email}`)
+      .then(response => {
+        // console.log(response.data.data);
+        setUser(prev => ({ ...prev, ...response?.data?.data })); 
+    setLoading(false);
+
+// console.log(user);
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      });
+    }
+  
 
   const logOut = async () => {
     setLoading(true);
@@ -246,6 +269,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(false);
     }
   };
+  const resetPassword = (email:string) => {
+    return sendPasswordResetEmail(auth, email)
+  }
 
   // Fetch all users
   const getData = async () => {
@@ -283,7 +309,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     }
   })
-  console.log(allGifts1);
+  // console.log(allGifts1);
   useEffect(() => {
     (async () => {
       try {
@@ -329,6 +355,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     myAllReview()
   }, [user?.email]);
+
 
   // Order check before review
   const orderCheck = async (id: string, mail: string) => {
@@ -426,6 +453,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     filters,
     allUser,
     getData,
+    resetPassword,
 
     // Add the ordered gift and review logic
     myReviewItem,
