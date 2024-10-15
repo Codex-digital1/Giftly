@@ -41,7 +41,6 @@ interface Gift {
 const ProductDetails: React.FC = () => {
   const { id } = useParams();
   const { user } = useAuth() ?? {};
-<<<<<<< HEAD
   const axiosPublic = useAxiosPublic();
   // Shedule Delevery State
   const [sheduleDelevery, setSheduleDelevery] = useState<boolean>(false);
@@ -51,9 +50,6 @@ const ProductDetails: React.FC = () => {
   const handleSheduledDelevery = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSheduleDelevery(e.target.checked);
   };
-=======
-  const axiosPublic = useAxiosPublic()
->>>>>>> 93ca9e1a5d7d3337c7b72f5687bef1409daa90c6
 
 
   // const [gift, setGift] = useState<any>({});
@@ -148,11 +144,7 @@ const ProductDetails: React.FC = () => {
       .then((response) => {
         window.location.replace(response?.data?.url);
         // Handle successful response
-<<<<<<< HEAD
-        console.log("Payment details sent successfully:", response.data);
-=======
-        console.log('Payment details sent successfully:', response?.data);
->>>>>>> 93ca9e1a5d7d3337c7b72f5687bef1409daa90c6
+        console.log("Payment details sent successfully:", response?.data);
       })
       .catch((error) => {
         console.error("Error in sending payment details:", error);
