@@ -6,9 +6,8 @@ import useAuth from "../../../../Provider/useAuth";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import DeleteModal from '../../../shared/DeleteModal';
-
-
+import axios from "axios";
+import DeleteModal from "../../../shared/DeleteModal";
 const GiftListItem = ({
   setUpdateGiftAddModal,
   setSelectedGiftId,
@@ -24,18 +23,24 @@ const GiftListItem = ({
 
   // Handle delete a gift
   const handleDelete = async (id: string) => {
-    try {
-      // Perform the delete request
-      const response = await axiosPublic.delete(`/${id}`);
-      if(response.data.success){
-        refetch()
-        toast.success('Delete successfully')
-      }
-    } catch (error) {
-      toast.error(error?.message)
-      console.error("Error deleting gift:", error);
+  try {
+    // Perform the delete request
+    const response = await axiosPublic.delete(`/${id}`);
+    if (response.data.success) {
+      refetch?.();
+      toast.success('Deleted successfully');
     }
-  };
+  } catch (error) {
+    // Type the error as AxiosError
+    if (axios.isAxiosError(error)) {
+      toast.error(error.message); // Now TypeScript recognizes `message`
+    } else {
+      toast.error('An unexpected error occurred');
+    }
+    console.error("Error deleting gift:", error);
+  }
+};
+
   const closeModal = () => {
     setIsOpen(false)
   }

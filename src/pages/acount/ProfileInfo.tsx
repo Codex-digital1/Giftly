@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import useAuth from "../../Provider/useAuth";
 import axios from "axios";
 import imgD from "../../assets/placeholder.jpg";
@@ -13,59 +13,20 @@ const ProfileInfo = () => {
   const { user, loading, updateUserProfile, resetPassword } = useAuth() || {};
   // console.log(user?.email);
   // console.log(email);
-  const [name, setName] = useState(user?.displayName);
-  const [image, setImage] = useState(user?.photoURL);
+
   const [imagePreview, setImagePreview] = useState(user?.photoURL);
   const [imageText, setImageText] = useState("Upload Image");
-  const [imageFile, setImageFile] = useState();
+// Define state for the image file
+const [imageFile, setImageFile] = React.useState<File | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const axiosPublic = useAxiosPublic();
   // Cloudinary config
   const preset_key = "fkaap0pt";
   const cloud_name = "dhmf91dsb";
-  // console.log(user);
-  // State to track the uploaded image URL
-  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | undefined>(
-    undefined
-  );
-  // console.log(uploadedImageUrl);
-  // const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   const form = e.currentTarget;
-  //   const nameValue = (form.elements.namedItem("name") as HTMLInputElement)
-  //     .value;
-
-  //   // Get the image file from the input
-  //   const imageInput = form.elements.namedItem("image") as HTMLInputElement;
-  //   const imageFile = imageInput.files?.[0];
-  //   console.log(imageFile);
-  //   if (imageFile) {
-  //     const formData = new FormData();
-  //     formData.append("file", imageFile);
-  //     formData.append("upload_preset", preset_key);
-
-  //     // Upload image to Cloudinary
-  //     try {
-  //       const res = await axios.post(
-  //         `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
-  //         formData
-  //       );
-  //       const imageUrl = res.data.secure_url;
-  //       setUploadedImageUrl(imageUrl);
-
-  //       // Update user profile with both name and image URL after successful upload
-  //       await updateUserProfile?.(nameValue, uploadedImageUrl || "");
-  //     } catch (error) {
-  //       console.error("Error uploading image:", error);
-  //     }
-  //   } else {
-  //     await updateUserProfile?.(nameValue, ""); //
-  //   }
-  // };
+  
 
   //   Form handler
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
     const form = e.target;
 
@@ -79,13 +40,18 @@ const ProfileInfo = () => {
 
     try {
       if (imageFile) {
-        // const image_url = await imageUpload(imageFile);
+        
+        const formData = new FormData();
+        formData.append("file", imageFile);
+        formData.append("upload_preset", preset_key);
         const resImg = await axios.post(
           `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
-          imageFile
+          formData
         );
         const imageUrl = resImg?.data?.secure_url;
-        await updateUserProfile(name, imageUrl);
+        await updateUserProfile?.(name, user?.photoURL||"")
+        .then(() => console.log("Profile updated successfully"))
+        .catch((error) => console.error("Failed to update profile", error));
         const updateData = {
           name,
           phoneNumber,
@@ -103,11 +69,14 @@ const ProfileInfo = () => {
           window.location.reload();
         }
       } else {
-        await updateUserProfile(name, image);
+        await updateUserProfile?.(name, user?.photoURL||"")
+  .then(() => console.log("Profile updated successfully"))
+  .catch((error) => console.error("Failed to update profile", error));
+
         const updateData = {
           name,
           phoneNumber,
-          profileImage: image,
+          profileImage: user?.photoURL,
           address: {
             street,
             city,
@@ -128,18 +97,21 @@ const ProfileInfo = () => {
       toast.error(err.message);
     }
   };
-  const handleImage = (image) => {
+  const handleImage = (image:any) => {
     setImageFile(image);
     setImagePreview(URL.createObjectURL(image));
     setImageText(image.name);
   };
-  const handleResetPassword = async (e) => {
+  const handleResetPassword = async (e:any) => {
     e.preventDefault();
     const email = e.target.email.value;
     // console.log(e.target.email.value);
     if (!email) return toast.error("please give your email first");
     try {
-      await resetPassword(email);
+      await resetPassword?.(email)
+      .then(() => console.log("Password reset email sent"))
+      .catch((error) => console.error("Failed to send password reset email", error));
+    
       toast.success("Checked your Email");
     } catch (err: any) {
       toast.error(err.message);

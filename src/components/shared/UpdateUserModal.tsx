@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import {
   Dialog,
   Transition,
@@ -8,23 +8,17 @@ import {
 } from "@headlessui/react";
 import useAuth from "../../Provider/useAuth";
 
-interface User {
-  role: string;
-}
+import { Dispatch, SetStateAction } from "react";
 
 interface UpdateUserModalProps {
-  setIsOpen: (isOpen: boolean) => void;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
   isOpen: boolean;
-  modalHandler: () => void; // Adjust this if more parameters are needed
-  user: User;
-  handleSubmit: () => void;
-  setImagePreview: (image: string) => void; // Adjust type as needed
-  imagePreview: string | null;
-  imageText: string;
-  handleImage: (file: File) => void;
-  setImageFile: (file: File | null) => void; // Adjust type as needed
-  name: string;
-  setName: (name: string) => void;
+  handleSubmit: (e: React.FormEvent) => Promise<void>;
+  imagePreview: string | undefined; 
+  imageText: string;               
+  handleImage: (file: File | null) => void; 
+  setImageFile: Dispatch<SetStateAction<File | null>>; 
+  setImagePreview: Dispatch<SetStateAction<string | undefined>>;
 }
 
 const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
@@ -34,7 +28,6 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
   imagePreview,
   imageText,
   handleImage,
-  setName,
 }) => {
   const { user } = useAuth() || {};
 

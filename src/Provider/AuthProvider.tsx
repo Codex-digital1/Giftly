@@ -13,7 +13,7 @@ import auth from "../Firebase/Firebase.config";
 import _ from 'lodash';
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import { AxiosError } from "axios";
-import { useQuery } from "@tanstack/react-query";
+import { QueryObserverResult, RefetchOptions, useQuery } from "@tanstack/react-query";
 
 // Define GiftType
 type GiftType = {
@@ -24,14 +24,14 @@ type GiftType = {
   discount: number;
   price: number;
   rating: number;
-  giftImage: string;
+  giftImage: any;
   productAddBy: string;
   description: string;
   size: string;
   color: string;
   type: string;
   category: string;
-  availability: boolean;
+  availability: (boolean|string);
   quantity: number;
 };
 
@@ -65,6 +65,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<UserCredential>;
   createUser: (email: string, password: string) => Promise<UserCredential>;
   googleLogin: () => Promise<UserCredential>;
+refetch: (options?: RefetchOptions) => Promise<QueryObserverResult<any, Error>>;
   logOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   updateUserProfile: (name: string, photoURL: string) => Promise<void>;
@@ -72,7 +73,6 @@ interface AuthContextType {
   gifts?: GiftType[];
   allGifts?: GiftType[];
   allGifts1?: GiftType[];
-  refetch:()=>void;
   cart: GiftType[];
   addToCart: (gift: GiftType) => void;
   addToWishlist: (gift: GiftType) => void;
@@ -370,11 +370,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (error: any) {
       const axiosError = error as AxiosError;
 
-      if (axiosError?.response?.status === 404) {
-        toast.error(axiosError.response?.data?.message || "No order found");
-      } else {
-        toast.error("Something went wrong. Please try again later.");
+      if(axiosError?.response){
+           const errorData = axiosError?.response?.data as {message:string}
+        if (axiosError?.response?.status === 404) {
+          toast.error(errorData.message || "No order found");
+        } else {
+          toast.error("Something went wrong. Please try again later.");
+        }
       }
+  
       console.log(axiosError);
     }
   };
