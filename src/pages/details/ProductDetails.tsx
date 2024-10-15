@@ -41,7 +41,15 @@ interface Gift {
 const ProductDetails: React.FC = () => {
   const { id } = useParams();
   const { user } = useAuth() ?? {};
-  const axiosPublic = useAxiosPublic()
+  const axiosPublic = useAxiosPublic();
+  // Shedule Delevery State
+  const [sheduleDelevery, setSheduleDelevery] = useState<boolean>(false);
+  const [sheduleDate, setSheduleDate] = useState<string>("");
+  console.log(sheduleDelevery);
+
+  const handleSheduledDelevery = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSheduleDelevery(e.target.checked);
+  };
 
 
   // const [gift, setGift] = useState<any>({});
@@ -64,8 +72,6 @@ const ProductDetails: React.FC = () => {
     };
     getData();
   }, [id]);
-
-
 
   const {
     _id,
@@ -114,9 +120,11 @@ const ProductDetails: React.FC = () => {
   const handleUserData = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const name = (form.elements.namedItem('name') as HTMLInputElement).value;
-    const number = (form.elements.namedItem('number') as HTMLInputElement).value;
-    const address = (form.elements.namedItem('address') as HTMLInputElement).value;
+    const name = (form.elements.namedItem("name") as HTMLInputElement).value;
+    const number = (form.elements.namedItem("number") as HTMLInputElement)
+      .value;
+    const address = (form.elements.namedItem("address") as HTMLInputElement)
+      .value;
     const email = user?.email;
     const productId = _id;
 
@@ -127,21 +135,21 @@ const ProductDetails: React.FC = () => {
       number,
       address,
       productId,
+      sheduleDate,
     };
     console.log(paymentDetails);
     // Sending the POST request using Axios
     axiosPublic
-      .post('/order', paymentDetails)
+      .post("/order", paymentDetails)
       .then((response) => {
         window.location.replace(response?.data?.url);
         // Handle successful response
-        console.log('Payment details sent successfully:', response?.data);
+        console.log("Payment details sent successfully:", response?.data);
       })
       .catch((error) => {
-        console.error('Error in sending payment details:', error);
+        console.error("Error in sending payment details:", error);
       });
   };
-
   return (
     <>
       {gift && (
@@ -219,7 +227,7 @@ const ProductDetails: React.FC = () => {
                 <div className="flex gap-1 items-center">
                   <Rating style={{ maxWidth: 150 }} value={rating || 0} readOnly />
                   <span className="ml-3 font-medium text-blue-500 text-sm hover:underline cursor-pointer">
-                    { }27 Reviews
+                    {}27 Reviews
                   </span>
                 </div>
 
@@ -308,10 +316,8 @@ const ProductDetails: React.FC = () => {
                       </button>
                     </div>
 
-
                     {/* Pay Button */}
-                    <div
-                    >
+                    <div>
                       <button
                         onClick={() => setOpenModal(true)}
                         className="bg-primary text-white btn-secondary m-2"
@@ -319,24 +325,20 @@ const ProductDetails: React.FC = () => {
                         Pay Now
                       </button>
                       <div
-
-
-                        className={`fixed flex justify-center items-center z-[100] ${openModal
-                          ? "visible opacity-1"
-                          : "invisible opacity-0"
-                          } duration-300 inset-0 w-full h-full`}
+                        className={`fixed flex justify-center items-center z-[100] ${
+                          openModal
+                            ? "visible opacity-1"
+                            : "invisible opacity-0"
+                        } duration-300 inset-0 w-full h-full`}
                       >
                         <div
-
-
-                          className={`absolute overflow-x-hidden overflow-y-scroll w-full h-full flex justify-center bg-white drop-shadow-2xl rounded-lg ${openModal
-                            ? "translate-y-0 opacity-1 duration-300"
-                            : "translate-y-32 opacity-0 duration-100"
-                            }`}
+                          className={`absolute overflow-x-hidden overflow-y-scroll w-full h-full flex justify-center bg-white drop-shadow-2xl rounded-lg ${
+                            openModal
+                              ? "translate-y-0 opacity-1 duration-300"
+                              : "translate-y-32 opacity-0 duration-100"
+                          }`}
                         >
-                          <div
-
-                            className="px-4 sm:px-6 lg:px-8 py-8">
+                          <div className="px-4 sm:px-6 lg:px-8 py-8">
                             <button
                               onClick={() => {
                                 setOpenModal(false);
@@ -346,22 +348,19 @@ const ProductDetails: React.FC = () => {
                               Close
                             </button>
 
-                            <div
-
-                              className="space-y-1 lg:mb-6">
-                              <div
-
-                                className="rounded-lg border bg-card text-card-foreground shadow-sm">
+                            <div className="space-y-1 lg:mb-6">
+                              <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
                                 <div className="flex flex-col space-y-1.5 lg:p-6 p-2">
                                   <h3 className="text-2xl font-semibold whitespace-nowrap">
                                     Enter your info
                                   </h3>
                                 </div>
-                                <div
-
-                                  className="lg:p-6 p-2">
+                                <div className="lg:p-6 p-2">
                                   {/* Shipping Details form */}
-                                  <form onSubmit={handleUserData} className="space-y-4 ">
+                                  <form
+                                    onSubmit={handleUserData}
+                                    className="space-y-4 "
+                                  >
                                     <div className="space-y-2">
                                       <label className="text-sm font-medium">
                                         Name
@@ -392,15 +391,15 @@ const ProductDetails: React.FC = () => {
                                         placeholder="Enter you phoe number"
                                       />
                                     </div>
-                                    <button className="border min-w-full rounded-md p-1 btn-secondary">Go for Purchase</button>
+                                    <button className="border min-w-full rounded-md p-1 btn-secondary">
+                                      Go for Purchase
+                                    </button>
                                   </form>
                                 </div>
                               </div>
                             </div>
-
                           </div>
                         </div>
-
                       </div>
 
                       <button className="btn-secondary">Buy it now</button>
@@ -412,7 +411,63 @@ const ProductDetails: React.FC = () => {
                       Add To Wishlist
                     </button>
                   </div>
-
+                  {/* Sheduled Features */}
+                  <div className="max-w-[300px] space-y-2">
+                    <div className="inline-flex items-center">
+                      <label
+                        className="flex items-center cursor-pointer relative"
+                        htmlFor="check-2"
+                      >
+                        <input
+                          type="checkbox"
+                          // checked
+                          onChange={handleSheduledDelevery}
+                          className="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-primary"
+                          id="check-2"
+                        />
+                        <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-3.5 w-3.5"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            stroke="currentColor"
+                            stroke-width="1"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clip-rule="evenodd"
+                            ></path>
+                          </svg>
+                        </span>
+                      </label>
+                      <label
+                        className="cursor-pointer ml-2 text-black text-sm md:text-base"
+                        htmlFor="check-2"
+                      >
+                        Make Sheduled Delevery
+                      </label>
+                    </div>
+                    {/* DAte INput */}
+                    {sheduleDelevery && (
+                      <div className="space-y-1 text-sm">
+                        <label htmlFor="date" className="block text-black">
+                          Select Shedule Date
+                        </label>
+                        <input
+                          type="date"
+                          name="date"
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setSheduleDate(e.target.value)
+                          }
+                          id="date"
+                          className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
+                        />
+                      </div>
+                    )}
+                  </div>
+                  {/* End Shedule Features */}
                   <div
                     className="text-xl flex gap-3 items-center 
                    "
@@ -454,11 +509,7 @@ const ProductDetails: React.FC = () => {
                 <div className="flex flex-wrap gap-4">
                   <button className="btn-secondary">Description</button>
                   <Link to="/dashboard/my-rating">
-                    <button
-                      className="btn-secondary"
-                    >
-                      Write a review
-                    </button>
+                    <button className="btn-secondary">Write a review</button>
                   </Link>
                 </div>
               </div>
