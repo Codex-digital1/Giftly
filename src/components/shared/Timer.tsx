@@ -9,10 +9,11 @@ interface TimeRemaining {
 }
 
 interface TimerProps {
-  targetDate: string; // Expecting targetDate to be a string
+  targetDate: string;
+  isUser: boolean;
 }
 
-const Timer: React.FC<TimerProps> = ({ targetDate }) => {
+const Timer: React.FC<TimerProps> = ({ targetDate, isUser }) => {
   const [timeRemaining, setTimeRemaining] = useState<TimeRemaining | null>(
     null
   );
@@ -22,7 +23,7 @@ const Timer: React.FC<TimerProps> = ({ targetDate }) => {
 
     const interval = setInterval(() => {
       const now = new Date();
-      const difference = targetDateObj.getTime() - now.getTime(); // Use targetDateObj
+      const difference = targetDateObj.getTime() - now.getTime();
 
       if (difference <= 0) {
         clearInterval(interval);
@@ -48,24 +49,48 @@ const Timer: React.FC<TimerProps> = ({ targetDate }) => {
     <div className="flex flex-col items-center justify-center bg-[#fff3f5] w-full">
       <div className="text-base">
         {timeRemaining ? (
-          <div className="flex flex-row justify-between gap-3 w-full">
-            <p className="flex flex-col items-center">
-              <span className="text-xl font-bold">{timeRemaining.days}</span>
-              <span>Day</span>
-            </p>
-            <p className="flex flex-col items-center">
-              <span className="text-xl font-bold">{timeRemaining.hours}</span>
-              <span>Hours</span>
-            </p>
-            <p className="flex flex-col items-center">
-              <span className="text-xl font-bold">{timeRemaining.minutes}</span>
-              <span>Minutes</span>
-            </p>
-            <p className="flex flex-col items-center">
-              <span className="text-xl font-bold">{timeRemaining.seconds}</span>
-              <span>Sec</span>
-            </p>
-          </div>
+          isUser ? (
+            <div className="flex flex-row justify-between gap-3 w-full">
+              <p className="flex flex-col items-center">
+                <span className="text-xl font-bold">{timeRemaining.days}</span>
+                <span>Day</span>
+              </p>
+              <p className="flex flex-col items-center">
+                <span className="text-xl font-bold">{timeRemaining.hours}</span>
+                <span>Hours</span>
+              </p>
+              <p className="flex flex-col items-center">
+                <span className="text-xl font-bold">
+                  {timeRemaining.minutes}
+                </span>
+                <span>Minutes</span>
+              </p>
+              <p className="flex flex-col items-center">
+                <span className="text-xl font-bold">
+                  {timeRemaining.seconds}
+                </span>
+                <span>Sec</span>
+              </p>
+            </div>
+          ) : (
+            <div className="flex flex-row justify-between w-full">
+              <p className="flex items-center">
+                <span className="text-base">{timeRemaining.days}</span>
+                <span className="mx-[2px]">:</span>
+              </p>
+              <p className="flex items-center">
+                <span className="text-base">{timeRemaining.hours}</span>
+                <span className="mx-[2px]">:</span>
+              </p>
+              <p className="flex items-center">
+                <span className="text-base">{timeRemaining.minutes}</span>
+                <span className="mx-[2px]">:</span>
+              </p>
+              <p className="flex items-center">
+                <span className="text-base">{timeRemaining.seconds}</span>
+              </p>
+            </div>
+          )
         ) : (
           <p>Delevery Sheduled....</p>
         )}
