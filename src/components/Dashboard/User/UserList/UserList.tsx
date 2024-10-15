@@ -1,7 +1,38 @@
+import LoadingSpinner from "../../../shared/LoadingSpinner";
 import TableTh from "../../../shared/TableTh";
 import UserLisItem from "../UserLisItem/UserLisItem";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+
+interface User {
+  _id: string;
+  image: string;
+  name: string;
+  email: string;
+}
+
+interface UserResponse {
+  data: User[];
+  error: boolean;
+  success: boolean;
+  message: string;
+}
 
 const UserList = () => {
+  const { data, isLoading } = useQuery<UserResponse>({
+    queryKey: ["allUsers"],
+    queryFn: async (): Promise<UserResponse> => {
+      const res = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}/allUsers`
+      );
+      return res.data;
+    },
+  });
+
+  // console.log(data?.data);
+
+  if (isLoading) return <LoadingSpinner></LoadingSpinner>
+
   return (
     <div>
       <div className="overflow-x-auto">
@@ -16,7 +47,9 @@ const UserList = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-200 text-center">
-            <UserLisItem />
+            {data?.data?.map((val: User, index: number) => {
+              return <UserLisItem key={val._id} userData={val} />;
+            })}
           </tbody>
         </table>
       </div>

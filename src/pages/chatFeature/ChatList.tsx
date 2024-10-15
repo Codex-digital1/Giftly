@@ -13,14 +13,22 @@ interface ChatListsProps {
     sender: string | null;
 }
 
-const ChatLists: React.FC<ChatListsProps> = ({ chats, sender}) => {
+const ChatLists: React.FC<ChatListsProps> = ({ chats, sender }) => {
     const endOfMessages = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         endOfMessages.current?.scrollIntoView({ behavior: 'smooth' });
     }, [chats]);
 
+    const truncateWords = (message: string) => {
+        return message.split(' ').map(word => {
+            return word.length > 15 ? `${word.slice(0, 20)}...` : word;
+        }).join(' ');
+    };
+
     const SenderChat: React.FC<Chat> = ({ message, senderUsername, profileImage, image }) => {
+        const truncatedMessage = truncateWords(message);
+
         return (
             <div className="flex justify-end m-4">
                 <div className="bg-primary text-white p-3 rounded-lg max-w-sm shadow-lg flex flex-col">
@@ -32,7 +40,7 @@ const ChatLists: React.FC<ChatListsProps> = ({ chats, sender}) => {
                         />
                     )}
                     <p className='font-medium text-end overflow-wrap-break-word word-break-break-word whitespace-normal my-3'>
-                        {message}
+                        {truncatedMessage}
                     </p>
                     <div className='flex justify-start gap-4 flex-row-reverse'>
                         <img
@@ -48,6 +56,8 @@ const ChatLists: React.FC<ChatListsProps> = ({ chats, sender}) => {
     };
 
     const ReceiverChat: React.FC<Chat> = ({ message, senderUsername, profileImage, image }) => {
+        const truncatedMessage = truncateWords(message); // Apply truncation logic
+
         return (
             <div className="flex justify-start m-4">
                 <div className="bg-gray-300 text-black p-3 rounded-lg max-w-xs shadow-lg flex flex-col">
@@ -67,7 +77,7 @@ const ChatLists: React.FC<ChatListsProps> = ({ chats, sender}) => {
                         />
                     )}
                     <p className='font-medium overflow-wrap-break-word word-break-break-word whitespace-normal'>
-                        {message}
+                        {truncatedMessage}
                     </p>
                 </div>
             </div>
