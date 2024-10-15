@@ -6,8 +6,6 @@ import Allgift from "../pages/allGift/Allgift";
 import AboutUs from "../pages/aboutUs/AboutUs";
 import WishList from "../pages/wishList/WishList";
 import Cart from "../pages/cart/Cart";
-import ProductDetails from "../pages/details/ProductDetails";
-import ProfileInfo from "../pages/acount/ProfileInfo";
 import MyOrders from "../pages/acount/MyOrders";
 import MyRating from "../pages/acount/MyRating";
 import MyWishlist from "../pages/acount/MyWishlist";
@@ -23,6 +21,8 @@ import OrderTracking from "../pages/Dashboard/User/OrderTracking/OrderTracking";
 import ChatContainer from "../pages/chatFeature/ChatContainer";
 import UserOrderHistory from "../pages/Dashboard/User/UserOrderHistory/UserOrderHistory";
 import StatisticsPage from "../pages/Dashboard/Admin/Statistics/StatisticsPage";
+import ProductDetails from './../pages/details/ProductDetails';
+import ProfileInfo from './../pages/acount/ProfileInfo';
 
 const router = createBrowserRouter([
   {
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
         path: "/cart",
         element: <Cart></Cart>,
       },
-       
+
       {
         path: "/productDetails/:id",
         element: <ProductDetails></ProductDetails>,
@@ -66,10 +66,6 @@ const router = createBrowserRouter([
       {
         path: "/signUp",
         element: <Register></Register>,
-      },
-      {
-        path: "/productDetails/:id",
-        element: <ProductDetails></ProductDetails>,
       },
       {
         path: "/chatInbox",

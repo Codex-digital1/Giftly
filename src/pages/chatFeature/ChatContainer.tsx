@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import adminLogo from "/admin.gif";
 import bg from "/wallpaper.jpeg";
-import { RxCross2 } from "react-icons/rx";
 import socketIOClient from "socket.io-client";
 import ChatLists from './ChatList';
 import './style.css';
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
+import { CgMenuGridR } from "react-icons/cg";
+import { ImExit } from "react-icons/im";
+import { RxCross1 } from "react-icons/rx";
 
 interface User {
     _id: string;
@@ -40,6 +42,8 @@ const ChatContainer: React.FC = () => {
     const [text, setText] = useState<string>('');
     const [chats, setChats] = useState<Chat[]>([]);
     const [isOpenChat, setIsOpenChat] = useState<boolean>(false);
+
+    const [isActive, setActive] = useState(false);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -138,7 +142,7 @@ const ChatContainer: React.FC = () => {
             const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getReceiver/${receiverName}`, { method: 'GET', });
 
 
-            if (res.ok) {
+            if (res?.ok) {
                 const getCurrentReceiver = await res.json();
                 setReceiverInfo(getCurrentReceiver);
             } else {
@@ -174,7 +178,7 @@ const ChatContainer: React.FC = () => {
             }
         });
 
-        
+
 
         return () => {
             socket.off("chat");
@@ -222,16 +226,21 @@ const ChatContainer: React.FC = () => {
         navigate(from);
     };
 
+    // mobile device responsive 
+    const handleToggle = () => {
+        setActive(!isActive);
+    };
+
     return (
         <div style={{
             backgroundImage: `url("${bg}")`,
             backgroundPosition: 'center',
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat'
-        }} className="my-[100px] flex flex-col justify-between w-full bg-gray-100 shadow-xl md:container lg:mx-auto border-2 border-primary z-50 rounded-lg md:h-[400px] lg:h-[550px]">
+        }} className=" my-[100px] flex flex-col justify-between w-full bg-gray-100 shadow-xl container mx-auto border-2 border-primary z-50 rounded-lg h-[600px]  md:h-[600px]">
 
             {/* Chat Header */}
-            <div className="bg-primary border-primary border rounded-lg text-white p-4 flex  justify-between items-center">
+            <div className="bg-primary border-primary border rounded-b-none rounded-lg text-white p-4 flex  justify-between items-center">
                 <div className="relative flex items-center gap-3">
                     <img
                         src={receiverInfo?.profileImage || adminLogo}
@@ -241,16 +250,92 @@ const ChatContainer: React.FC = () => {
                     {/* <h4>Sender: {sender}</h4>
                     <h4>Receiver: {receiver}</h4> */}
                 </div>
-                <button className="bg-white hover:text-white hover:bg-black text-primary text-2xl p-2 rounded-full z-30 transition-all duration-300 ease-in-out cursor-pointer"
-                    onClick={() => {
-                        setIsOpenChat(!isOpenChat);
-                        Logout();
-                    }}>
-                    <RxCross2 />
-                </button>
+                <div className="flex gap-6">
+                    <button
+                        onClick={handleToggle}
+                        className="md:hidden hover:text-white hover:bg-black text-white text-2xl p-3 rounded-full z-30 transition-all duration-300 ease-in-out cursor-pointer"
+                    >
+                        {
+                            isActive ? <CgMenuGridR
+                            className="h-5 w-5 md:h-8 md:w-8" /> : <RxCross1 className="h-5 w-5 md:h-8 md:w-8" />
+                        }
+                    </button>
+
+                    {/*  */}
+                    <button className=" hover:text-white hover:bg-black text-white text-2xl p-3 rounded-full z-30 transition-all duration-300 ease-in-out cursor-pointer"
+                        onClick={() => {
+                            setIsOpenChat(!isOpenChat);
+                            Logout();
+                        }}>
+                        <ImExit className="h-5 w-5 md:h-8 md:w-8"/>
+                    </button>
+                </div>
             </div>
 
-            <div className="flex h-full overflow-y-scroll scrollbar-none">
+            <div className="flex h-full overflow-y-scroll scrollbar-none relative">
+
+                <div className={`sidebar w-[300px] lg:w-[250px]  h-full flex flex-col justify-between overflow-x-hidden absolute md:relative inset-y-0 left-0 transform ${isActive && "-translate-x-full"
+                    }  md:translate-x-0  transition duration-200 ease-in-out`}>
+
+                    <div className=" overflow-y-scroll  scrollbar-none  bg-white p-4  border-b border-gray-300 border-r-2">
+
+                        <h2 className="bg-secondary flex items-center justify-center p-2 rounded-lg shadow-md mb-3 font-bold text-primary">Chat with Admin</h2>
+                        {
+                            allUser
+                                ?.filter((presentUser: any) => (presentUser?.name !== currentUser?.name && presentUser?.role !== 'user'))
+                                .map((presentUser: any, index: number) => {
+                                    return (
+                                        <div
+                                            className="cursor-pointer hover:bg-secondary flex items-center space-x-4 p-2 rounded-lg"
+                                            key={index}
+                                            onClick={() => {
+                                                updateReceiverName(presentUser?.name);
+                                                getReceiverData(presentUser?.name)
+                                                // Update receiver through PUT route
+                                            }}
+                                        >
+                                            <img src={presentUser?.profileImage} alt={presentUser?.name} className="w-10 h-10 rounded-full object-cover" />
+                                            <p className="font-medium text-gray-700">{presentUser?.name}</p>
+                                        </div>
+                                    );
+                                })
+                        }
+                    </div>
+
+                    <div className="flex-1 overflow-y-scroll  scrollbar-none  bg-white p-4 border-r-2 border-gray-300 ">
+
+                        <h2 className="bg-secondary flex items-center justify-center p-2 rounded-lg shadow-md mb-3 font-bold text-primary">Chat with user</h2>
+                        {
+                            allUser
+                                ?.filter((presentUser: any) => (presentUser?.name !== currentUser?.name && presentUser?.role !== 'admin'))
+                                .map((presentUser: any, index: number) => {
+                                    return (
+                                        <div
+                                            className="cursor-pointer hover:bg-secondary flex items-center space-x-4 p-2 rounded-lg"
+                                            key={index}
+                                            onClick={() => {
+                                                updateReceiverName(presentUser?.name);
+                                                getReceiverData(presentUser?.name)
+                                                // Update receiver through PUT route
+                                            }}
+                                        >
+                                            <img src={presentUser?.profileImage} alt={presentUser?.name} className="w-10 h-10 rounded-full object-cover" />
+                                            <p className="font-medium text-gray-700">{presentUser?.name}</p>
+                                        </div>
+                                    );
+                                })
+                        }
+                    </div>
+
+                </div>
+
+
+
+                <div className="flex-1 h-full">
+                    <ChatLists chats={chats} sender={sender} />
+                </div>
+            </div>
+            {/* <div className="flex h-full overflow-y-scroll scrollbar-none">
                 {currentUser?.role === "admin" ? (
                     <div className="sidebar w-[150px] lg:w-[250px] h-full border-r-2 border-gray-300 scrollbar-none overflow-y-scroll bg-white p-4">
                         {
@@ -300,11 +385,11 @@ const ChatContainer: React.FC = () => {
                 )
                 }
 
-                {/* Chat list section */}
+                
                 <div className="flex-1 h-full">
                     <ChatLists chats={chats} sender={sender}/>
                 </div>
-            </div>
+            </div> */}
 
             {/* Chat Input */}
             <div className="bg-white rounded-lg p-4 flex space-x-4 border-t border-gray-300">

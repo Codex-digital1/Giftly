@@ -9,11 +9,14 @@ import {
   FaFacebook,
   FaTwitter,
 } from "react-icons/fa6";
-import {useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useAuth from "../../Provider/useAuth";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import { Link } from "react-router-dom";
- 
+import ShowReview from "../../components/ShowReviewChart/ShowReview";
+import ShowReviewComment from '../../components/ShowReviewChart/ShowReviewComment';
+
+
 
 // Define the types for the gift object
 interface Gift {
@@ -37,7 +40,7 @@ interface Gift {
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams();
-  const { user} = useAuth() ?? {};
+  const { user } = useAuth() ?? {};
   const axiosPublic = useAxiosPublic()
 
 
@@ -53,8 +56,8 @@ const ProductDetails: React.FC = () => {
     const getData = async () => {
       try {
         const { data } = await axiosPublic.get(`/${id}`);
-        setGift(data.data);
-        setCurrentImg(data.data.giftImage[0]);
+        setGift(data?.data);
+        setCurrentImg(data?.data?.giftImage[0]);
       } catch (error) {
         console.log(error);
       }
@@ -102,7 +105,6 @@ const ProductDetails: React.FC = () => {
     } else {
       document.body.style.overflowY = "auto";
     }
-
     // Corrected cleanup function
     return () => {
       document.body.style.overflow = "auto";
@@ -133,7 +135,7 @@ const ProductDetails: React.FC = () => {
       .then((response) => {
         window.location.replace(response?.data?.url);
         // Handle successful response
-        console.log('Payment details sent successfully:', response.data);
+        console.log('Payment details sent successfully:', response?.data);
       })
       .catch((error) => {
         console.error('Error in sending payment details:', error);
@@ -142,7 +144,7 @@ const ProductDetails: React.FC = () => {
 
   return (
     <>
-      {gift&& (
+      {gift && (
         <div className="container mx-auto my-10 mt-20">
           <div className="w-full flex flex-col md:flex-row gap-6">
             <div className="relative flex flex-col flex-shrink justify-between  w-full  md:w-2/5">
@@ -163,14 +165,14 @@ const ProductDetails: React.FC = () => {
                     enlargedImagePosition: "beside",
                   }}
                   style={{
-                    width: "auto",
+                    // width: "auto",
                     zIndex: 1,
                     maxWidth: "500px",
                     maxHeight: "500px",
                     objectFit: "cover",
                   }}
                 />
-              </div>
+              </div >
 
               <div
                 ref={scrollElement}
@@ -208,14 +210,14 @@ const ProductDetails: React.FC = () => {
                   ))}
                 </div>
               </div>
-            </div>
+            </div >
 
             <div className=" w-full md:w-3/5 p-5 space-y-6 text-[#333]">
               {/* description and title */}
               <div className="space-y-3">
                 <h1 className="text-3xl font-bold">{giftName}</h1>
                 <div className="flex gap-1 items-center">
-                  <Rating style={{ maxWidth: 150 }} value={rating} readOnly />
+                  <Rating style={{ maxWidth: 150 }} value={rating || 0} readOnly />
                   <span className="ml-3 font-medium text-blue-500 text-sm hover:underline cursor-pointer">
                     { }27 Reviews
                   </span>
@@ -443,7 +445,7 @@ const ProductDetails: React.FC = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div >
 
           {/* review section */}
           <div className="mt-10">
@@ -462,10 +464,15 @@ const ProductDetails: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+
+          {/* reviewComponent */}
+          <ShowReview></ShowReview>
+          {/* comment component  */}
+          <ShowReviewComment></ShowReviewComment>
+        </div >
       )}
     </>
   );
-};
+}
 
 export default ProductDetails;
