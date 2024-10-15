@@ -11,7 +11,7 @@ const Cart = () => {
          {/* Cart Item */}
              <CartItem/>
              {/* Price Details */}
-             <PriceDetails/>
+             {/* <PriceDetails/> */}
          </MyContainer> 
      </div>
     );
