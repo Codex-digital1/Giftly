@@ -50,7 +50,7 @@ const Sidebar = () => {
     }
   }, [user, axiosPublic]);
 
-  console.log(role);
+  // console.log(role);
   return (
     <>
       {/* Small Screen Navbar */}
