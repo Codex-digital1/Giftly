@@ -23,6 +23,7 @@ import UserOrderHistory from "../pages/Dashboard/User/UserOrderHistory/UserOrder
 import StatisticsPage from "../pages/Dashboard/Admin/Statistics/StatisticsPage";
 import ProductDetails from './../pages/details/ProductDetails';
 import ProfileInfo from './../pages/acount/ProfileInfo';
+import DiscountUpForm from "../components/Dashboard/Gift/Form/DiscountUpForm";
 
 const router = createBrowserRouter([
   {
@@ -89,6 +90,10 @@ const router = createBrowserRouter([
       {
         path: "manage-gift",
         element: <Gift />,
+      },
+      {
+        path: "discount",
+        element: <DiscountUpForm></DiscountUpForm> ,
       },
       {
         path: "manage-users",

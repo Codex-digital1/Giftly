@@ -47,7 +47,7 @@ const UserList = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-200 text-center">
-            {data?.data?.map((val: User, index: number) => {
+            {data?.data?.map((val: User) => {
               return <UserLisItem key={val._id} userData={val} />;
             })}
           </tbody>
