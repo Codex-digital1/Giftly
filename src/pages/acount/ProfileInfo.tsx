@@ -49,7 +49,7 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
           formData
         );
         const imageUrl = resImg?.data?.secure_url;
-        await updateUserProfile?.(name, user?.photoURL||"")
+        await updateUserProfile?.(name, imageUrl||"")
         .then(() => console.log("Profile updated successfully"))
         .catch((error) => console.error("Failed to update profile", error));
         const updateData = {
@@ -85,7 +85,7 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
             country,
           },
         };
-        console.log(updateData);
+        // console.log(updateData);
         const res = await axiosPublic.put(`/users/${user?._id}`, updateData);
         console.log(res);
         if (res?.data) {

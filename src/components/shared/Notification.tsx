@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { IoNotifications } from "react-icons/io5";
+import { useEffect, useRef, useState } from "react";
+import { RiNotification2Fill, RiNotification3Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import io from "socket.io-client";
 
@@ -12,18 +12,14 @@ interface Notification {
   read?: boolean;
 }
 
-// Define the type for the component props
-// interface NotificationsProps {
-//   email?: any;
-// }
-
 // URL of your backend server
 const socket = io("http://localhost:3000");
 
-const Notifications  = () => {
+const Notifications = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [newNotification, setNewNotification] = useState<Notification[]>([]);
+  const modalRef = useRef<HTMLDivElement>(null); // Create a ref for the modal
 
   useEffect(() => {
     // Listen for initial notifications when the client connects
@@ -44,49 +40,75 @@ const Notifications  = () => {
     };
   }, []);
 
-  const unread = notifications?.filter((notify) => notify?.read !== true);
-// console.log(notifications);
+  // Close the modal if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
+  const unread = notifications.filter((notify) => !notify.read);
+
   return (
-    <div className="relative ">
+    <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="p-1 cursor-pointer tooltip"
         data-tip="Notifications"
       >
-        {unread?.length !== 0&&<div className="absolute text-white top-0 right-0 rounded-full h-[14px] w-[14px] text-xs bg-red-500">
-          {unread?.length !== 0 && unread?.length}
-        </div>}
-        <IoNotifications className="text-2xl " />
+        {unread?.length !== 0 && (
+          <div className="absolute text-white top-0 right-0 rounded-full h-[14px] w-[14px] text-xs bg-red-500">
+            {unread?.length}
+          </div>
+        )}
+        {isOpen?<RiNotification2Fill className="text-2xl transition" />:< RiNotification3Line className="text-2xl"/>}
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 h-[400px] overflow-scroll transition-all rounded shadow-md w-[40vw] md:w-[25vw] lg:w-[30vw] bg-white  -right-2 top-12 text-sm">
-          <div className="flex flex-col ">
+        <div
+          ref={modalRef}
+          className="absolute z-10 h-[400px] overflow-auto transition-all rounded-md shadow-md w-[40vw] md:w-[25vw] lg:w-[30vw] bg-white -right-2 top-12 text-sm"
+        >
+          <div className="flex flex-col">
             <div className="px-4 py-3 border-b-2 font-bold text-lg">
               Notifications
             </div>
           </div>
 
-          {newNotification?.length !== 0 &&
-            newNotification?.map((note, index) => (
-              <div key={index} className="flex flex-col ">
+          {newNotification.length !== 0 &&
+            newNotification.map((note, index) => (
+              <div key={index} className="flex flex-col">
                 <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold">
-                  <p>{note?.title}</p>
-                  <p>{note?.message}</p>
-                  
+                  <p>{note.title}</p>
+                  <p>{note.message}</p>
                 </div>
               </div>
             ))}
 
-          {notifications?.map((note, index) => (
-            <div key={index} className="flex flex-col ">
+          {notifications.map((note, index) => (
+            <div key={index} className="flex flex-col">
               <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold">
-                <p>{note?.title}</p>
+                <p>{note.title}</p>
                 <p className="relative">
-                  {note?.message}
-                  {note?.giftId&&<Link to={`/productDetails/${note?.giftId}`} className="absolute right-0">
-                    more
-                  </Link>}
+                  {note.message}
+                  {note.giftId && (
+                    <Link
+                      to={`/productDetails/${note.giftId}`}
+                      className="absolute right-0"
+                    >
+                      more
+                    </Link>
+                  )}
                 </p>
               </div>
             </div>
