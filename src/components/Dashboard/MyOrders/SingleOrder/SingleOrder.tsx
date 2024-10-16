@@ -24,20 +24,21 @@ const SingleOrder = ({ order }: OrderTypesProps) => {
           {order?.product_name}
         </h2>
         <h4 className="text-xl font-bold">{order?.total_amount} ৳</h4>
-        {order.order_status === "Delivered" ? (
-          <button className="border border-primary text-primary py-1 px-2 rounded">
-            Completed
-          </button>
-        ) : (
+        <div className="flex flex-col gap-2 items-center">
+          {order.order_status === "Delivered" && (
+            <button className="border border-primary text-primary py-1 px-2 rounded text-sm">
+              Completed
+            </button>
+          )}
           <Link
             to={`/dashboard/my-orders/order-status/${order?._id}`}
             className="inline-block"
           >
-            <button className="btn-primary">
-              Track My Order <FaArrowRightLong />
+            <button className="btn-primary text-sm">
+              Track My Order <FaArrowRightLong className="text-sm" />
             </button>
           </Link>
-        )}
+        </div>
       </div>
     </div>
   );

@@ -184,7 +184,7 @@ console.log(uploadNewGift);
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div className="space-y-1 text-sm">
               <label htmlFor="giftType" className="block text-gray-600">
-              Gift Category
+                Gift Category
               </label>
               <input
                 type="text"
