@@ -13,6 +13,7 @@ import auth from "../Firebase/Firebase.config";
 import _ from 'lodash';
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import { QueryObserverResult, RefetchOptions, useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 // Define GiftType
 type GiftType = {

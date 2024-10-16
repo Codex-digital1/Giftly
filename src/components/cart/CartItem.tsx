@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import TableTd from "../shared/TableTd";
 import TableTh from "../shared/TableTh";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
@@ -6,16 +6,21 @@ import useAuth from "../../Provider/useAuth";
 import PriceDetailsIteItem from "./PriceDetailsIteItem";
 import { LuMoveRight } from "react-icons/lu";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import toast from "react-hot-toast";
 const CartItem = () => {
   const axiosPublic = useAxiosPublic();
   const { cart, removeToCart,user } = useAuth() ?? {};
-  console.log(cart,'cart');
+  console.log(cart?.[0]?._id,'cart');
   // State for cart totals
   const [subTotal, setSubTotal] = useState(0);
-  const [shipping, setShipping] = useState(70);  
+  const shipping = 70; 
+ const discountCode = 'dis';
+ const productId = cart?.[0]?._id;
   const [total, setTotal] = useState(0);
-  const [discount, setDiscount] = useState(0);  
-  
+  const [discount, setDiscount] = useState(0);
+    // Shedule Delevery State  
+  const [sheduleDate, setSheduleDate] = useState<string>("");
+  const [sheduleDelevery, setSheduleDelevery] = useState<boolean>(false);
   // Calculate subtotal dynamically based on cart items
   useEffect(() => {
     const calculatedSubtotal = cart?.reduce((sum, item) => sum + (item.price * item.quantity), 0) || 0;
@@ -26,10 +31,20 @@ const CartItem = () => {
   useEffect(() => {
     setTotal(subTotal + shipping - discount);
   }, [subTotal, shipping, discount]);
+  const couponRef = useRef<HTMLInputElement>(null);
 
   const handleApplyCoupon = () => {
-    // Apply coupon logic here (example: flat 10% discount)
-    setDiscount(subTotal - 100 ); 
+    const couponValue = couponRef.current?.value; 
+    if (couponValue === discountCode) {
+toast.success('Coupon applied')
+      setDiscount(subTotal - 100)
+    } else {
+      toast.error('Coupon code invalid')
+      console.log('Coupon code invalid');
+    }
+  };
+  const handleSheduledDelevery = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSheduleDelevery(e.target.checked);
   };
 
   const handleUserData = (e: React.FormEvent<HTMLFormElement>) => {
@@ -39,19 +54,19 @@ const CartItem = () => {
     // Accessing the correct fields based on the 'name' attribute
     const firstName = (form.elements.namedItem('first_name') as HTMLInputElement)?.value;
     const lastName = (form.elements.namedItem('last_name') as HTMLInputElement)?.value;
-    const phone = (form.elements.namedItem('phone') as HTMLInputElement)?.value;
+    const number = (form.elements.namedItem('phone') as HTMLInputElement)?.value;
     const address = (form.elements.namedItem('address') as HTMLInputElement)?.value;
     const email = user?.email;
-  
-    // Concatenate first name and last name if required
     const name = `${firstName} ${lastName}`;
   
     // Prepare the data to be sent in the POST request
     const paymentDetails = {
       name,
       email,
-      phone,
+      number,
       address,
+      productId,
+      sheduleDate,
     };
     console.log(paymentDetails);
   
@@ -199,15 +214,72 @@ const CartItem = () => {
 
               {/* Coupon input */}
               <div className="flex gap-[1px] items-center md:col-span-2 mt-2">
-                <input
-                  type="text"
-                  placeholder="Enter your code here "
-                  className="border w-full p-2 outline-none focus:border-primary rounded"
-                />
-                <button type="button" className="btn-primary py-3 px-6" onClick={handleApplyCoupon}>
-                  Apply
-                </button>
+              <input
+          type="text"
+          placeholder="Enter your code here"
+          className="border w-full p-2 outline-none focus:border-primary rounded"
+          ref={couponRef} 
+        />
+        <button type="button" className="btn-primary py-3 px-6" onClick={handleApplyCoupon}>
+          Apply
+        </button>
               </div>
+              {/* Sheadule delevary feature */}
+              <div className="max-w-[300px] space-y-2">
+                    <div className="inline-flex items-center">
+                      <label
+                        className="flex items-center cursor-pointer relative"
+                        htmlFor="check-2"
+                      >
+                        <input
+                          type="checkbox"
+                          // checked
+                          onChange={handleSheduledDelevery}
+                          className="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-primary checked:border-primary"
+                          id="check-2"
+                        />
+                        <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-3.5 w-3.5"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            stroke="currentColor"
+                            stroke-width="1"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clip-rule="evenodd"
+                            ></path>
+                          </svg>
+                        </span>
+                      </label>
+                      <label
+                        className="cursor-pointer ml-2 text-black text-sm md:text-base"
+                        htmlFor="check-2"
+                      >
+                        Make Sheduled Delevery
+                      </label>
+                    </div>
+                    {/* DAte INput */}
+                    {sheduleDelevery && (
+                      <div className="space-y-1 text-sm">
+                        <label htmlFor="date" className="block text-black">
+                          Select Shedule Date
+                        </label>
+                        <input
+                          type="date"
+                          name="date"
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setSheduleDate(e.target.value)
+                          }
+                          id="date"
+                          className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
+                        />
+                      </div>
+                    )}
+                  </div>
 
               {/* Checkout button */}
               <button className="w-full border p-2 flex justify-center items-center gap-x-4 bg-primary text-white">
