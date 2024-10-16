@@ -18,8 +18,25 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null); // Create a ref for the modal
  // Close the modal if clicked outside
- const cartLength=JSON.parse(localStorage.getItem('cart')?? "")?.length
- const wishlistLength=JSON.parse(localStorage.getItem('wishlist')?? "")?.length
+ const cartLength = (() => {
+  try {
+    const cart = localStorage.getItem('cart');
+    return cart ? JSON.parse(cart).length : 0;
+  } catch (error) {
+    // console.error("Error parsing cart:", error);
+    return 0;
+  }
+})();
+
+const wishlistLength = (() => {
+  try {
+    const wishlist = localStorage.getItem('wishlist');
+    return wishlist ? JSON.parse(wishlist).length : 0;
+  } catch (error) {
+    // console.error("Error parsing wishlist:", error);
+    return 0;
+  }
+})();
  const megaMenu = [
   { name: "Home", path: "/" },
   { name: "All Gift", path: "/allGift"},
