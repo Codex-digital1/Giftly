@@ -6,7 +6,8 @@ import { AuthContext } from "../../Provider/AuthProvider";
 const ShowReviewComment: React.FC = ({ reviewByProductId }) => {
     // console.log("all review", reviewByProductId);
 
-    const { updateReceiverName, getReceiverData } = useContext(AuthContext) ?? {};
+    const { updateReceiverName, getReceiverData, currentUser } = useContext(AuthContext) ?? {};
+    console.log(10, currentUser)
 
     return (
         <div className='mt-5 relative'>
@@ -21,27 +22,33 @@ const ShowReviewComment: React.FC = ({ reviewByProductId }) => {
 
             {reviewByProductId && reviewByProductId.map((product, index) => (
                 product?.review?.ReviewerProfileImage && (
-                    <div key={index} className="flex items-center gap-4 border-t-2 p-3">
+                    <div key={index} className="flex items-center gap-4 border-t-2 py-8">
                         <img className="w-14 h-14 rounded-full" src={product?.review?.ReviewerProfileImage} alt="Reviewer" />
                         <div className="font-medium dark:text-white">
-                            <h2 className='text-xl font-bold'>{product?.review?.ReviewerName}</h2>
+                            <div className="flex gap-2 items-center justify-center">
+                                <h2 className='text-xl font-bold'>{product?.review?.ReviewerName}</h2>
+                                <p className="text-gray-500">{new Date(product?.review?.reviewedAt).toLocaleDateString()}</p>
+                            </div>
+
                             <div className="flex items-center">
                                 <Rating style={{ maxWidth: 120 }} value={product?.review?.rating ?? 0} readOnly />
                             </div>
 
                             <div className="mt-6">
                                 <p className='font-normal'>{product?.review?.comment}!</p>
-                                <Link to="/chatInbox">
-                                    <button onClick={() => {
-                                        
-                                        updateReceiverName(product?.review?.ReviewerName);
-                                        getReceiverData(product?.review?.ReviewerName);
+                                {
+                                    currentUser?.email !== product?.userEmail && <Link to="/chatInbox">
+                                        <button onClick={() => {
 
-                                        console.log("0000000000",product?.review?.ReviewerName)
-                                    }} className="mt-3 btn btn-sm whitespace-nowrap text-xs btn-outline btn-error text-primary border-primary hover:text-white">
-                                        send message
-                                    </button>
-                                </Link>
+                                            updateReceiverName(product?.review?.ReviewerName);
+                                            getReceiverData(product?.review?.ReviewerName);
+
+                                            console.log("0000000000", product?.review?.ReviewerName)
+                                        }} className="mt-3 btn btn-sm whitespace-nowrap text-xs btn-outline btn-error text-primary border-primary hover:text-white">
+                                            send message
+                                        </button>
+                                    </Link>
+                                }
 
                             </div>
                         </div>

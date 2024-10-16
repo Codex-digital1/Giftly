@@ -179,7 +179,7 @@ const ProductDetails: React.FC = () => {
   return (
     <>
       {gift && (
-        <div className="container mx-auto my-10 mt-20">
+        <div className="container mx-auto my-10 mt-28">
           <div className="w-full flex flex-col md:flex-row gap-6">
             <div className="relative flex flex-col flex-shrink justify-between  w-full  md:w-2/5">
               <div className="max-h-[500px] w-full">
