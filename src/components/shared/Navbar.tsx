@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IoMdGift } from "react-icons/io";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { GiSelfLove } from "react-icons/gi";
@@ -10,19 +10,39 @@ import { RiMenuUnfold4Line2 } from "react-icons/ri";
 import useAuth from "../../Provider/useAuth";
 import Notifications from "./Notification";
 
-const megaMenu = [
-  { name: "Home", path: "/" },
-  { name: "All Gift", path: "/allGift" },
-  { name: "About Us", path: "/aboutUs" },
-  { name: <MdOutlineManageAccounts />, path: "/account",title:'Account' },
-  { name: <GiSelfLove />, path: "/wishList",title:'Wishlist' },
-  { name: <SlBasket />, path: "/cart" ,title:'Cart' },
-];
+
 
 const Navbar: React.FC = () => {
   const navigate=useNavigate()
   const {user,logOut,handleFilterChange}=useAuth()?? {};
   const [isOpen, setIsOpen] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null); // Create a ref for the modal
+ // Close the modal if clicked outside
+ const cartLength=JSON.parse(localStorage.getItem('cart')?? "")?.length
+ const wishlistLength=JSON.parse(localStorage.getItem('wishlist')?? "")?.length
+ const megaMenu = [
+  { name: "Home", path: "/" },
+  { name: "All Gift", path: "/allGift"},
+  { name: "About Us", path: "/aboutUs"},
+  { name: <MdOutlineManageAccounts />, path: "/account",title:'Account' },
+  { name: <GiSelfLove />, path: "/wishList",title:'Wishlist',count:wishlistLength },
+  { name: <SlBasket />, path: "/cart" ,title:'Cart',count:cartLength },
+];
+ useEffect(() => {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      setIsOpen(false);
+    }
+  };
+
+  if (isOpen) {
+    document.addEventListener("mousedown", handleClickOutside);
+  }
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [isOpen]);
 
 
   return (
@@ -80,12 +100,17 @@ const Navbar: React.FC = () => {
                 key={menu.path}
                 className={({ isActive }) =>
                   isActive
-                    ? "text-primary font-semibold text-lg md:text-3xl   "
-                    : "font-semibold text-black text-lg md:text-3xl tooltip "
+                    ? "text-primary font-semibold text-lg md:text-3xl  relative "
+                    : "font-semibold text-black text-lg md:text-3xl tooltip relative "
                 }
-                to={menu.path}
+                to={menu?.path}
               >
-                {menu.name}
+                {menu?.name}
+                
+          <div className="absolute text-white -top-1 -right-2 rounded-full h-[15px] w-[15px] text-center text-xs bg-red-500">
+            {menu?.count}
+          </div>
+      
               </NavLink>
             ))}
           </div>
@@ -131,7 +156,7 @@ const Navbar: React.FC = () => {
             </div>
             {/* Login Logout functionality */}
             {isOpen && (
-              <div className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-[25vw]  lg:w-[20vw] bg-white overflow-hidden -right-2  top-12 text-sm">
+              <div ref={modalRef}  className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-[25vw]  lg:w-[20vw] bg-white overflow-hidden -right-2  top-12 text-sm">
                 <div className="flex flex-col cursor-pointer ">
                   <div className="lg:hidden">
                     {
@@ -192,3 +217,5 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
+
+

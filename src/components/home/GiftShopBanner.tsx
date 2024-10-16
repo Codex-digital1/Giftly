@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 // import React from 'react';
 const GiftShopBanner = () => {
     return (
@@ -11,9 +13,9 @@ const GiftShopBanner = () => {
                     </div>
 
                     <div className="pt-7 flex justify-center md:justify-start">
-                        <button className="btn-secondary">
-                            Buy Now
-                        </button>
+                    <Link to={'/allGift'} className="btn-secondary">
+                    shop now
+                  </Link>
                     </div>
                 </div>
 

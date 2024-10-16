@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Category: React.FC = () => {
   return (
     <div className="flex items-center justify-center flex-col h-[520px] w-full md:flex-row">
@@ -17,9 +19,9 @@ const Category: React.FC = () => {
               Happy gift for you
             </h2>
 
-            <button className="btn-secondary z-0  mt-8 md:mt-12">
+            <Link to={'/allGift'} className="btn-secondary z-0  mt-8 md:mt-12">
               Buy Now
-            </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -39,9 +41,9 @@ const Category: React.FC = () => {
               Virtual Experiences
             </h2>
 
-            <button className="btn-secondary  mt-8 md:mt-12">
+            <Link to={'/allGift'} className="btn-secondary  mt-8 md:mt-12">
               Buy Now
-            </button>
+            </Link>
           </div>
         </div>
       </div>

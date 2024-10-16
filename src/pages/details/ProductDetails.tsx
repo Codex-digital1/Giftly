@@ -225,7 +225,9 @@ const ProductDetails: React.FC = () => {
               <div className="space-y-3">
                 <h1 className="text-3xl font-bold">{giftName}</h1>
                 <div className="flex gap-1 items-center">
+ 
                   <Rating style={{ maxWidth: 150 }} value={rating || 0} readOnly />
+ 
                   <span className="ml-3 font-medium text-blue-500 text-sm hover:underline cursor-pointer">
                     {}27 Reviews
                   </span>
