@@ -16,6 +16,13 @@ import { Link } from "react-router-dom";
 import ShowReview from "../../components/ShowReviewChart/ShowReview";
 import ShowReviewComment from '../../components/ShowReviewChart/ShowReviewComment';
 
+// প্রয়োজনীয় টাইপস ডিফাইন করা হচ্ছে
+interface Review {
+  review: {
+    rating: number | null;
+    // অন্যান্য প্রয়োজনীয় প্রপার্টি এখানে যোগ করুন
+  };
+}
 
 
 // Define the types for the gift object
@@ -58,6 +65,8 @@ const ProductDetails: React.FC = () => {
 
   const [currentImg, setCurrentImg] = useState("");
   const { addToCart, addToWishlist } = useAuth() ?? {};
+
+  const[reviewByProductId,setAllReviewByProductId] = useState([])
 
   // for getting single gift data
   useEffect(() => {
@@ -150,10 +159,34 @@ const ProductDetails: React.FC = () => {
         console.error("Error in sending payment details:", error);
       });
   };
+
+
+  // get all review for specific product
+
+  const getData = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/getAllReviews/${id}`, { method: 'GET' });
+      if (response?.ok) {
+        const reviews = await response.json();
+        const filterReview = reviews?.filter((singleReview: Review) => singleReview?.review.rating !== null)
+        setAllReviewByProductId(filterReview)
+        
+      } else {
+        console.log('Failed to fetch reviews');
+      }
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, [id]);
+
   return (
     <>
       {gift && (
-        <div className="container mx-auto my-10 mt-20">
+        <div className="container mx-auto my-10 mt-28">
           <div className="w-full flex flex-col md:flex-row gap-6">
             <div className="relative flex flex-col flex-shrink justify-between  w-full  md:w-2/5">
               <div className="max-h-[500px] w-full">
@@ -472,7 +505,7 @@ const ProductDetails: React.FC = () => {
                   {/* End Shedule Features */}
                   <div
                     className="text-xl flex gap-3 items-center 
-                   "
+                   mt-3"
                   >
                     <p className="text-4xl font-great-vibes">Share with us: </p>
                     <div className="flex gap-2">
@@ -519,9 +552,9 @@ const ProductDetails: React.FC = () => {
           </div>
 
           {/* reviewComponent */}
-          <ShowReview></ShowReview>
+          <ShowReview reviewByProductId={reviewByProductId}></ShowReview>
           {/* comment component  */}
-          <ShowReviewComment></ShowReviewComment>
+          <ShowReviewComment reviewByProductId={reviewByProductId}></ShowReviewComment>
         </div >
       )}
     </>
