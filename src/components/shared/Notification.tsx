@@ -18,13 +18,14 @@ interface Notification {
 // }
 
 // URL of your backend server
-const socket = io("http://localhost:3000");
+const socket = io(import.meta.env.VITE_SERVER_URL);
 
 const Notifications  = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [newNotification, setNewNotification] = useState<Notification[]>([]);
-
+// console.log(notifications,'hahah');
+// console.log(socket);
   useEffect(() => {
     // Listen for initial notifications when the client connects
     socket.on("initialNotifications", (data: Notification[]) => {

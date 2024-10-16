@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { IoMdGift } from "react-icons/io";
 import { ImUsers } from "react-icons/im";
  import useAuth from "../../../Provider/useAuth";
-import { MdOutlineShoppingCartCheckout } from "react-icons/md";
+import { MdDiscount, MdOutlineShoppingCartCheckout } from "react-icons/md";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import { FaHistory } from "react-icons/fa";
 import { GiSelfLove } from "react-icons/gi";
@@ -128,6 +128,22 @@ const Sidebar = () => {
                     <IoMdGift className="w-5 h-5" />
                     <span className="mx-4 font-medium">
                       Gift Upload & Manage
+                    </span>
+                  </NavLink>
+                  {/* upload discount offer */}
+                  <NavLink
+                    to="discount"
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-primary   hover:text-white ${
+                        isActive ? "bg-primary  text-white" : "text-gray-600"
+                      }`
+                    }
+                  >
+                  
+                    <MdDiscount className="w-5 h-5" />
+
+                    <span className="mx-4 font-medium">
+                      Up Discount & offers 
                     </span>
                   </NavLink>
                   {/* Manage Users */}
