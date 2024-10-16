@@ -13,7 +13,7 @@ interface Notification {
 }
 
 // URL of your backend server
-const socket = io("http://localhost:3000");
+const socket = io(import.meta.env.VITE_SERVER_URL);
 
 const Notifications = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);

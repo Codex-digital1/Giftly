@@ -53,27 +53,27 @@ const GiftAddForm = () => {
     const formData = new FormData(e.currentTarget as HTMLFormElement);
     const giftName = formData.get('giftName');
     const price = formData.get('price');
-    const brandName = formData.get('brandName');
-    const availability = formData.get('availability');
+    const brand = formData.get('brandName');
+    const quantity = formData.get('quantity');
     const size = formData.get('size');
     const color = formData.get('color');
     const category = formData.get('category');
-    const giftType = formData.get('giftType');
+    const type = formData.get('giftType');
     const description = formData.get('description');
     
     const uploadNewGift = {
       giftName,
       price,
-      brandName,
-      availability,
+      brand,
+      quantity,
       category,
       size,
       color,
-      giftType,
+      type,
       description,
       giftImage, 
     };
-
+console.log(uploadNewGift);
     try {
       // Perform the update request
       const response = await axiosPublic.post('/uploadGift', uploadNewGift);
@@ -105,6 +105,7 @@ const GiftAddForm = () => {
                 type="text"
                 name="giftName"
                 id="giftName"
+                required
                 placeholder="Gift Name"
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               />
@@ -117,6 +118,7 @@ const GiftAddForm = () => {
                 type="number"
                 name="price"
                 id="price"
+                required
                 placeholder="Price"
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               />
@@ -130,17 +132,19 @@ const GiftAddForm = () => {
               <input
                 type="text"
                 name="brandName"
+                required
                 placeholder="Gift Name"
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               />
             </div>
             <div className="space-y-1 text-sm">
               <label htmlFor="price" className="block text-gray-600">
-                Availability
+                Quantity
               </label>
               <input
-                type="text"
-                name="availability"
+                type="number"
+                name="quantity"
+                required
                  placeholder="availability"
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               />
@@ -153,12 +157,14 @@ const GiftAddForm = () => {
               </label>
               <select
                 name="size"
+                required
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               >
                 <option value="">Select Size</option>
-                <option value="s">S</option>
-                <option value="m">M</option>
-                <option value="l">L</option>
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
               </select>
             </div>
             <div className="space-y-1 text-sm">
@@ -168,6 +174,7 @@ const GiftAddForm = () => {
               <input
                 type="color"
                 name="color"
+                required
                 defaultValue="#f6b73c"
                 className="h-10"
               />
@@ -177,12 +184,13 @@ const GiftAddForm = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div className="space-y-1 text-sm">
               <label htmlFor="giftType" className="block text-gray-600">
-              Gift Category
+                Gift Category
               </label>
               <input
                 type="text"
                 name="category"
                 placeholder="category"
+                required
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               />
             </div>
@@ -193,6 +201,7 @@ const GiftAddForm = () => {
               <input
                 type="text"
                 name="giftType"
+                required
                 placeholder="Stock Quantity"
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               />
@@ -206,6 +215,7 @@ const GiftAddForm = () => {
               </label>
               <textarea
                 name="description"
+                required
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               ></textarea>
             </div>
@@ -218,6 +228,7 @@ const GiftAddForm = () => {
                 onChange={handleImageChange}
                 name="photo"
                 id="photo"
+                required
                 multiple
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               />

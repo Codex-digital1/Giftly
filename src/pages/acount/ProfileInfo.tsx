@@ -23,7 +23,6 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
   // Cloudinary config
   const preset_key = "fkaap0pt";
   const cloud_name = "dhmf91dsb";
-  
 
   //   Form handler
   const handleSubmit = async (e:any) => {
@@ -117,6 +116,7 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
       toast.error(err.message);
     }
   };
+
 
   if (loading)
     return <LoadingSpinner large={true} smallHeight={false} card={false} />;
@@ -232,7 +232,9 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
           </div>
         </div>
       </div>
+
     </>
+ 
   );
 };
 
