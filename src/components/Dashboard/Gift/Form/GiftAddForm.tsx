@@ -141,7 +141,7 @@ const GiftAddForm = () => {
               <input
                 type="text"
                 name="availability"
-                 placeholder="availability"
+                placeholder="availability"
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               />
             </div>
@@ -156,9 +156,9 @@ const GiftAddForm = () => {
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               >
                 <option value="">Select Size</option>
-                <option value="s">S</option>
-                <option value="m">M</option>
-                <option value="l">L</option>
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
               </select>
             </div>
             <div className="space-y-1 text-sm">
@@ -177,7 +177,7 @@ const GiftAddForm = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div className="space-y-1 text-sm">
               <label htmlFor="giftType" className="block text-gray-600">
-              Gift Category
+                Gift Category
               </label>
               <input
                 type="text"
