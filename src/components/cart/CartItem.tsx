@@ -7,20 +7,31 @@ import PriceDetailsIteItem from "./PriceDetailsIteItem";
 import { LuMoveRight } from "react-icons/lu";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import toast from "react-hot-toast";
+type DiscountData = {
+  title: string;
+  description: string;
+  coupon: string;
+  discount:number;
+  dis:number;
+  
+};
 const CartItem = () => {
   const axiosPublic = useAxiosPublic();
   const { cart, removeToCart,user } = useAuth() ?? {};
-  console.log(cart?.[0]?._id,'cart');
+  // console.log(cart?.[0]?._id,'cart');
   // State for cart totals
   const [subTotal, setSubTotal] = useState(0);
   const shipping = 70; 
- const discountCode = 'dis';
  const productId = cart?.[0]?._id;
   const [total, setTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
     // Shedule Delevery State  
   const [sheduleDate, setSheduleDate] = useState<string>("");
   const [sheduleDelevery, setSheduleDelevery] = useState<boolean>(false);
+  const [discountData, setDiscountData] = useState<DiscountData | null>(null);
+ 
+  const discountCode = discountData?.coupon;
+ const dis = discountData?.discount ?? 0 ;
   // Calculate subtotal dynamically based on cart items
   useEffect(() => {
     const calculatedSubtotal = cart?.reduce((sum, item) => sum + (item.price * item.quantity), 0) || 0;
@@ -33,13 +44,29 @@ const CartItem = () => {
   }, [subTotal, shipping, discount]);
   const couponRef = useRef<HTMLInputElement>(null);
 
+
+  // Coupon
+  useEffect(() => {
+
+    // Fetch discount data
+    axiosPublic.get("/getDiscountData")
+      .then(res => {
+        setDiscountData(res.data.data?.[0]);
+      })
+      .catch(error => {
+        console.log(error);  
+      });
+  }, []);
+
   const handleApplyCoupon = () => {
     const couponValue = couponRef.current?.value; 
     if (couponValue === discountCode) {
-toast.success('Coupon applied')
-      setDiscount(subTotal - 100)
+      const discountAmount = (subTotal * dis) / 100; 
+      const newTotal = subTotal - discountAmount;  
+      toast.success('Coupon applied');
+      setDiscount(newTotal); // Update the discount state with the new total
     } else {
-      toast.error('Coupon code invalid')
+      toast.error('Coupon code invalid');
       console.log('Coupon code invalid');
     }
   };

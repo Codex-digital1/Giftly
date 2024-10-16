@@ -1,4 +1,8 @@
+import toast from "react-hot-toast";
+import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
+
 const DiscountUpForm = () => {
+  const axiosPublic = useAxiosPublic();
   // Handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the default form submission
@@ -11,13 +15,30 @@ const DiscountUpForm = () => {
     const description = formData.get('description') as string;
 
     // Log form data or send it to the server
-    console.log('Form Data Submitted:', {
+   const desCountInfo = {
       coupon,
       discount,
       title,
       description,
+    };
+    console.log(desCountInfo);
+     
+    axiosPublic.post('/discount', desCountInfo)
+    .then((response) => {
+      console.log('Response:', response.data);
+      toast.success('Upload successfully')
+    })
+    .catch((error) => {
+      console.error('Error:', error.response ? error.response.data : error.message);
+      toast.success('Upload successfully')
+
     });
+  
+    
+
+
   };
+
 
   return (
     <div className="min-h-screen w-full flex justify-center items-center">
