@@ -13,6 +13,7 @@ import auth from "../Firebase/Firebase.config";
 import _ from 'lodash';
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import { QueryObserverResult, RefetchOptions, useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 // Define GiftType
 type GiftType = {
@@ -314,7 +315,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     }
   })
-  console.log(allGifts1);
+  // console.log(allGifts1);
 
   useEffect(() => {
     (async () => {
