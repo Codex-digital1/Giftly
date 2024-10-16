@@ -59,6 +59,8 @@ const ProductDetails: React.FC = () => {
   const [currentImg, setCurrentImg] = useState("");
   const { addToCart, addToWishlist } = useAuth() ?? {};
 
+  const[reviewByProductId,setAllReviewByProductId] = useState([])
+
   // for getting single gift data
   useEffect(() => {
     const getData = async () => {
@@ -150,6 +152,30 @@ const ProductDetails: React.FC = () => {
         console.error("Error in sending payment details:", error);
       });
   };
+
+
+  // get all review for specific product
+
+  const getData = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/getAllReviews/${id}`, { method: 'GET' });
+      if (response?.ok) {
+        const reviews = await response.json();
+        const filterReview = reviews?.filter((singleReview) => singleReview?.review.rating !== null)
+        setAllReviewByProductId(filterReview)
+        
+      } else {
+        console.log('Failed to fetch reviews');
+      }
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, [id]);
+
   return (
     <>
       {gift && (
@@ -470,7 +496,7 @@ const ProductDetails: React.FC = () => {
                   {/* End Shedule Features */}
                   <div
                     className="text-xl flex gap-3 items-center 
-                   "
+                   mt-3"
                   >
                     <p className="text-4xl font-great-vibes">Share with us: </p>
                     <div className="flex gap-2">
@@ -517,9 +543,9 @@ const ProductDetails: React.FC = () => {
           </div>
 
           {/* reviewComponent */}
-          <ShowReview></ShowReview>
+          <ShowReview reviewByProductId={reviewByProductId}></ShowReview>
           {/* comment component  */}
-          <ShowReviewComment></ShowReviewComment>
+          <ShowReviewComment reviewByProductId={reviewByProductId}></ShowReviewComment>
         </div >
       )}
     </>

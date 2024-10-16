@@ -11,32 +11,36 @@ import { CgMenuGridR } from "react-icons/cg";
 import { ImExit } from "react-icons/im";
 import { RxCross1 } from "react-icons/rx";
 
-interface User {
-    _id: string;
-    email: string;
-    name: string;
-    profileImage: string;
-    role: string;
-    chat: { sender: string; receiver: string };
-}
+// interface User {
+//     _id: string;
+//     email: string;
+//     name: string;
+//     profileImage: string;
+//     role: string;
+//     chat: { sender: string; receiver: string };
+// }
 
 interface Chat {
     message: string;
     receiverUsername: string;
     senderUsername: string;
-    profileImage: string | undefined; // Allowing undefined here
-    image?: string | null; // This already handles null or undefined
+    profileImage: string | undefined;
+    image?: string | null;
 }
 // Singleton socket instance
 const socket = socketIOClient(import.meta.env.VITE_SERVER_URL, { autoConnect: false });
 
 const ChatContainer: React.FC = () => {
-    const { user, allUser, getData, setLoading } = useContext(AuthContext) ?? {};
+    const { user, allUser, getData, setLoading,
+        sender, receiver, currentUser, updateReceiverName,
+        receiverInfo, getReceiverData, setSender,
+        setReceiver, setCurrentUser
+    } = useContext(AuthContext) ?? {};
 
-    const [currentUser, setCurrentUsers] = useState<User | null>(null);
-    const [sender, setSender] = useState<string | null>(null);
-    const [receiver, setReceiver] = useState<string | null>(null);
-    const [receiverInfo, setReceiverInfo] = useState<User | null>(null)
+    // const [currentUser, setCurrentUsers] = useState<User | null>(null);
+    // const [sender, setSender] = useState<string | null>(null);
+    // const [receiver, setReceiver] = useState<string | null>(null);
+    // const [receiverInfo, setReceiverInfo] = useState<User | null>(null)
 
 
     const [text, setText] = useState<string>('');
@@ -71,7 +75,7 @@ const ChatContainer: React.FC = () => {
             const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getUser/${user?.email}`, { method: 'GET' });
             if (response.ok) {
                 const currentGetUser = await response.json();
-                setCurrentUsers(currentGetUser);
+                setCurrentUser(currentGetUser);
                 setSender(currentGetUser?.chat?.sender || "");
                 setReceiver(currentGetUser?.chat?.receiver || "");
                 setLoading?.(false);
@@ -111,47 +115,47 @@ const ChatContainer: React.FC = () => {
     };
 
     // Function to update the current user's receiver
-    const updateReceiverName = async (receiverName: string) => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/updateReceiver/${currentUser?._id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ receiver: receiverName }),
-            });
+    // const updateReceiverName = async (receiverName: string) => {
+    //     try {
+    //         const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/updateReceiver/${currentUser?._id}`, {
+    //             method: 'PUT',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ receiver: receiverName }),
+    //         });
 
-            if (response.ok) {
-                const updatedUser = await response.json();
-                console.log(updatedUser)
-                setCurrentUsers(updatedUser); // Update the current user with the new receiver
-                setSender(updatedUser?.chat.sender)
-                setReceiver(updatedUser?.chat.receiver)
-            } else {
-                console.log('Failed to update receiver');
-            }
-        } catch (error) {
-            console.error('Error updating receiver:', error);
-        }
-    };
+    //         if (response.ok) {
+    //             const updatedUser = await response.json();
+    //             console.log(updatedUser)
+    //             setCurrentUsers(updatedUser); // Update the current user with the new receiver
+    //             setSender(updatedUser?.chat.sender)
+    //             setReceiver(updatedUser?.chat.receiver)
+    //         } else {
+    //             console.log('Failed to update receiver');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error updating receiver:', error);
+    //     }
+    // };
 
-    // Function to update the current user's receiver
-    const getReceiverData = async (receiverName: string) => {
-        try {
+    // //chat feature >>>>> Function to get the current  receiver data
+    // const getReceiverData = async (receiverName: string) => {
+    //     try {
 
-            const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getReceiver/${receiverName}`, { method: 'GET', });
+    //         const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getReceiver/${receiverName}`, { method: 'GET', });
 
 
-            if (res?.ok) {
-                const getCurrentReceiver = await res.json();
-                setReceiverInfo(getCurrentReceiver);
-            } else {
-                console.log('Failed to get current receiver');
-            }
-        } catch (error) {
-            console.error('Error updating receiver:', error);
-        }
-    };
+    //         if (res?.ok) {
+    //             const getCurrentReceiver = await res.json();
+    //             setReceiverInfo(getCurrentReceiver);
+    //         } else {
+    //             console.log('Failed to get current receiver');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error updating receiver:', error);
+    //     }
+    // };
 
 
     // Initialize Socket and Chat
@@ -193,7 +197,7 @@ const ChatContainer: React.FC = () => {
         if (sender && receiver) {
             fetchPreviousChats(sender, receiver);
         }
-    }, [receiver]);
+    }, [receiver,sender]);
 
 
     const addMessage = (text: string) => {
@@ -257,7 +261,7 @@ const ChatContainer: React.FC = () => {
                     >
                         {
                             isActive ? <CgMenuGridR
-                            className="h-5 w-5 md:h-8 md:w-8" /> : <RxCross1 className="h-5 w-5 md:h-8 md:w-8" />
+                                className="h-5 w-5 md:h-8 md:w-8" /> : <RxCross1 className="h-5 w-5 md:h-8 md:w-8" />
                         }
                     </button>
 
@@ -267,7 +271,7 @@ const ChatContainer: React.FC = () => {
                             setIsOpenChat(!isOpenChat);
                             Logout();
                         }}>
-                        <ImExit className="h-5 w-5 md:h-8 md:w-8"/>
+                        <ImExit className="h-5 w-5 md:h-8 md:w-8" />
                     </button>
                 </div>
             </div>
@@ -291,7 +295,6 @@ const ChatContainer: React.FC = () => {
                                             onClick={() => {
                                                 updateReceiverName(presentUser?.name);
                                                 getReceiverData(presentUser?.name)
-                                                // Update receiver through PUT route
                                             }}
                                         >
                                             <img src={presentUser?.profileImage} alt={presentUser?.name} className="w-10 h-10 rounded-full object-cover" />
@@ -316,7 +319,6 @@ const ChatContainer: React.FC = () => {
                                             onClick={() => {
                                                 updateReceiverName(presentUser?.name);
                                                 getReceiverData(presentUser?.name)
-                                                // Update receiver through PUT route
                                             }}
                                         >
                                             <img src={presentUser?.profileImage} alt={presentUser?.name} className="w-10 h-10 rounded-full object-cover" />
