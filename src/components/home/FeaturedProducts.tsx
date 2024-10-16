@@ -5,7 +5,7 @@ import LoadingSpinner from "../shared/LoadingSpinner";
 
 const FeaturedProducts: React.FC = () => {
   const { gifts, loading } = useAuth()?? {};
-  console.log(gifts);
+  // console.log(gifts);
 
 
   return (

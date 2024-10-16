@@ -284,7 +284,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     }
   })
-  console.log(allGifts1);
+  // console.log(allGifts1);
 
   useEffect(() => {
     (async () => {
