@@ -16,6 +16,13 @@ import { Link } from "react-router-dom";
 import ShowReview from "../../components/ShowReviewChart/ShowReview";
 import ShowReviewComment from '../../components/ShowReviewChart/ShowReviewComment';
 
+// প্রয়োজনীয় টাইপস ডিফাইন করা হচ্ছে
+interface Review {
+  review: {
+    rating: number | null;
+    // অন্যান্য প্রয়োজনীয় প্রপার্টি এখানে যোগ করুন
+  };
+}
 
 
 // Define the types for the gift object
@@ -161,7 +168,7 @@ const ProductDetails: React.FC = () => {
       const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/getAllReviews/${id}`, { method: 'GET' });
       if (response?.ok) {
         const reviews = await response.json();
-        const filterReview = reviews?.filter((singleReview) => singleReview?.review.rating !== null)
+        const filterReview = reviews?.filter((singleReview: Review) => singleReview?.review.rating !== null)
         setAllReviewByProductId(filterReview)
         
       } else {

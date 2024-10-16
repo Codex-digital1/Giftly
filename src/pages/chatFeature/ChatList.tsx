@@ -10,7 +10,7 @@ interface Chat {
 
 interface ChatListsProps {
     chats: Chat[];
-    sender: string | null;
+    sender: string | null | undefined;
 }
 
 const ChatLists: React.FC<ChatListsProps> = ({ chats, sender }) => {

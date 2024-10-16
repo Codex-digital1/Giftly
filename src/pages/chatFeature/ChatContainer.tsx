@@ -11,14 +11,6 @@ import { CgMenuGridR } from "react-icons/cg";
 import { ImExit } from "react-icons/im";
 import { RxCross1 } from "react-icons/rx";
 
-// interface User {
-//     _id: string;
-//     email: string;
-//     name: string;
-//     profileImage: string;
-//     role: string;
-//     chat: { sender: string; receiver: string };
-// }
 
 interface Chat {
     message: string;
@@ -75,9 +67,11 @@ const ChatContainer: React.FC = () => {
             const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getUser/${user?.email}`, { method: 'GET' });
             if (response.ok) {
                 const currentGetUser = await response.json();
-                setCurrentUser(currentGetUser);
-                setSender(currentGetUser?.chat?.sender || "");
-                setReceiver(currentGetUser?.chat?.receiver || "");
+                if (setCurrentUser && setSender && setReceiver) {
+                    setCurrentUser(currentGetUser);
+                    setSender(currentGetUser?.chat?.sender || "");
+                    setReceiver(currentGetUser?.chat?.receiver || "");
+                }
                 setLoading?.(false);
             } else {
                 console.log('Failed to fetch user data');
@@ -197,7 +191,7 @@ const ChatContainer: React.FC = () => {
         if (sender && receiver) {
             fetchPreviousChats(sender, receiver);
         }
-    }, [receiver,sender]);
+    }, [receiver, sender]);
 
 
     const addMessage = (text: string) => {
@@ -293,8 +287,10 @@ const ChatContainer: React.FC = () => {
                                             className="cursor-pointer hover:bg-secondary flex items-center space-x-4 p-2 rounded-lg"
                                             key={index}
                                             onClick={() => {
-                                                updateReceiverName(presentUser?.name);
-                                                getReceiverData(presentUser?.name)
+                                                if (updateReceiverName && getReceiverData) {
+                                                    updateReceiverName(presentUser?.name);
+                                                    getReceiverData(presentUser?.name)
+                                                }
                                             }}
                                         >
                                             <img src={presentUser?.profileImage} alt={presentUser?.name} className="w-10 h-10 rounded-full object-cover" />
@@ -317,8 +313,10 @@ const ChatContainer: React.FC = () => {
                                             className="cursor-pointer hover:bg-secondary flex items-center space-x-4 p-2 rounded-lg"
                                             key={index}
                                             onClick={() => {
-                                                updateReceiverName(presentUser?.name);
-                                                getReceiverData(presentUser?.name)
+                                                if (updateReceiverName && getReceiverData) {
+                                                    updateReceiverName(presentUser?.name);
+                                                    getReceiverData(presentUser?.name)
+                                                }
                                             }}
                                         >
                                             <img src={presentUser?.profileImage} alt={presentUser?.name} className="w-10 h-10 rounded-full object-cover" />

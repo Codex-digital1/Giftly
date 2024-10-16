@@ -9,7 +9,7 @@ import NotReviewedGiftCard from '../../components/Rating/NotReviewedGifts';
 import ReviewedGiftCard from '../../components/Rating/ReviewedGifts';
 
 const MyRating = () => {
-  const { user, currentUser, loading, myReviewItem = [], myAllReview, isModalVisible, giftOrderCheck, setIsModalVisible, } = useAuth() ?? {};
+  const { currentUser, loading, myReviewItem = [], myAllReview, isModalVisible, giftOrderCheck, setIsModalVisible, } = useAuth() ?? {};
 
   const axiosPublic = useAxiosPublic()
   // console.log(currentUser)

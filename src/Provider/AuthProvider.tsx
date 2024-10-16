@@ -58,9 +58,33 @@ type OrderedGiftType = {
     _id: string | null;
   };
 };
+
+interface CurrentUser {
+  _id: string;
+  email: string;
+  name: string;
+  profileImage?: string;
+  role?: string;
+  phoneNumber?: string;
+  address?: {
+    street?: string;
+    city?: string;
+    state?: string;
+    zipCode?: string;
+    country?: string;
+  };
+  chat: {
+    sender: string;
+    receiver: string;
+  };
+
+}
+
+
 // Define AuthContextType
 interface AuthContextType {
   user: User | null;
+
   allUser: any[];
   getData: any;
   loading: boolean;
@@ -99,6 +123,17 @@ interface AuthContextType {
   isModalVisible: boolean;
   setIsModalVisible: (visible: boolean) => void | undefined;
   myAllReview: (() => Promise<void> | undefined);
+
+  // chat feature >>>
+  getReceiverData: ((receiverName: string) => Promise<void>) | undefined
+  currentUser: CurrentUser | null;
+  setCurrentUser: (user: CurrentUser | null) => void;
+  receiverInfo: CurrentUser | null
+  sender: string | null
+  receiver: string | null
+  setSender: React.Dispatch<React.SetStateAction<string | null>>
+  setReceiver: React.Dispatch<React.SetStateAction<string | null>>
+  updateReceiverName: ((receiverName: string) => Promise<void>) | undefined
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -116,11 +151,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [allUser, setAllUsers] = useState<any[]>([]);
   // const [currentUser, setCurrentUser] = useState(null);
   // chat feature >>>
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [sender, setSender] = useState<string | null>(null);
   const [receiver, setReceiver] = useState<string | null>(null);
-  const [receiverInfo, setReceiverInfo] = useState<User | null>(null)
-
+  const [receiverInfo, setReceiverInfo] = useState<CurrentUser | null>(null)
+  console.log(137, currentUser)
 
   const [gifts, setGifts] = useState<GiftType[]>([]);
   const [allGifts, setAllGifts] = useState<GiftType[]>([]);
@@ -395,7 +430,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Function to get the current  receiver data
   const getReceiverData = async (receiverName: string) => {
 
-    console.log(397,receiverName)
+    console.log(397, receiverName)
     try {
 
       const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getReceiver/${receiverName}`, { method: 'GET', });
@@ -403,9 +438,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       if (res?.ok) {
         const getCurrentReceiver = await res.json();
-        console.log(100,getCurrentReceiver)
+        console.log(100, getCurrentReceiver)
         setReceiverInfo(getCurrentReceiver);
-        
+
       } else {
         console.log('Failed to get current receiver');
       }
@@ -414,7 +449,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const updateReceiverName = async (receiverName: string) => {
+  const updateReceiverName = async (receiverName: string): Promise<void> => {
     try {
       const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/updateReceiver/${currentUser?._id}`, {
         method: 'PUT',
@@ -426,8 +461,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       if (response.ok) {
         const updatedUser = await response.json();
-        console.log("update receiver name",updatedUser)
-        setCurrentUser(updatedUser); // Update the current user with the new receiver
+        console.log("update receiver name", updatedUser)
+        setCurrentUser(updatedUser);
         setSender(updatedUser?.chat.sender)
         setReceiver(updatedUser?.chat.receiver)
       } else {
