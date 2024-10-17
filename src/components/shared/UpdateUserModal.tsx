@@ -18,7 +18,6 @@ interface UpdateUserModalProps {
   imageText: string;               
   handleImage: (file: File | null) => void; 
   setImageFile: Dispatch<SetStateAction<File | null>>; 
-  setImagePreview: Dispatch<SetStateAction<string | undefined>>;
 }
 
 const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
@@ -84,7 +83,7 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
                           type="text"
                           name="UserName"
                           id="name"
-                          defaultValue={user?.displayName}
+                          defaultValue={user?.displayName?? ""}
                           className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-[#dd8c89] bg-gray-200 text-gray-900"
                         />
                       </div>
@@ -128,7 +127,7 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
                           type="text"
                           name="phoneNumber"
                           id="name"
-                          defaultValue={user?.phoneNumber}
+                          defaultValue={user?.phoneNumber ??""}
                           placeholder="Your Number: startWith (+880)"
                           className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-[#dd8c89] bg-gray-200 text-gray-900"
                         />
@@ -142,7 +141,7 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
                           type="text"
                           name="street"
                           id="street"
-                          defaultValue={user?.address?.street}
+                          defaultValue={user?.address?.street ??""}
                           placeholder="Your street"
                           className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-[#dd8c89] bg-gray-200 text-gray-900"
                         />
@@ -150,7 +149,7 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
                           type="text"
                           name="city"
                           id="city"
-                          defaultValue={user?.address?.city}
+                          defaultValue={user?.address?.city ??""}
                           placeholder="Your city"
                           className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-[#dd8c89] bg-gray-200 text-gray-900"
                         />
@@ -158,7 +157,7 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
                           type="text"
                           name="state"
                           id="state"
-                          defaultValue={user?.address?.state}
+                          defaultValue={user?.address?.state ??""}
                           placeholder="Your state"
                           className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-[#dd8c89] bg-gray-200 text-gray-900"
                         />
@@ -166,7 +165,7 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
                           type="text"
                           name="zipCode"
                           id="zipCode"
-                          defaultValue={user?.address?.zipCode}
+                          defaultValue={user?.address?.zipCode ??""}
                           placeholder="Your zipCode"
                           className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-[#dd8c89] bg-gray-200 text-gray-900"
                         />
@@ -174,7 +173,7 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
                           type="text"
                           name="country"
                           id="country"
-                          defaultValue={user?.address?.country}
+                          defaultValue={user?.address?.country ??""}
                           placeholder="Your Country"
                           className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-[#dd8c89] bg-gray-200 text-gray-900"
                         />
