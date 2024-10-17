@@ -1,4 +1,5 @@
-import { GoogleAuthProvider, UserCredential, User, sendPasswordResetEmail } from "firebase/auth";
+import { GoogleAuthProvider, UserCredential, sendPasswordResetEmail } from "firebase/auth";
+import {User} from '../../src/types/Types'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -271,10 +272,19 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUser(user)
+        setUser((prevUser) => {
+          if (!prevUser) return null; // Handle case where there is no previous user
+        
+          return {
+            ...prevUser,
+            phoneNumber: prevUser.phoneNumber ?? undefined, // Convert null to undefined
+            emailVerified: true,
+            isAnonymous: false,
+          };
+        });
         setTimeout(() => {
           saveUser(user);
-          getAUser(user?.email)
+          getAUser(user?.email ?? "")
         }, 2000);
         // getToken(currentUser.email)
       }

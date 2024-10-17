@@ -14,7 +14,7 @@ const ProfileInfo = () => {
   // console.log(user?.email);
   // console.log(email);
 
-  const [imagePreview, setImagePreview] = useState(user?.photoURL);
+  const [imagePreview, setImagePreview] = useState(user?.photoURL?? "");
   const [imageText, setImageText] = useState("Upload Image");
 // Define state for the image file
 const [imageFile, setImageFile] = React.useState<File | null>(null);
@@ -142,7 +142,7 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
             </div>
 
             <p className="p-2 px-4 text-xs  bg-rose-200 rounded-full">
-              {user?.role}
+              {user?.role ??""}
             </p>
 
             <p className="mt-2 text-xl font-medium text-gray-800 ">
@@ -207,8 +207,7 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
                   <UpdateUserModal
                     setImageFile={setImageFile}
                     handleSubmit={handleSubmit}
-                    setImagePreview={setImagePreview}
-                    imagePreview={imagePreview}
+                    imagePreview={imagePreview?? ""}
                     handleImage={handleImage}
                     imageText={imageText}
                     isOpen={isOpen}

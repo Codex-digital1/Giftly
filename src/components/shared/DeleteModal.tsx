@@ -6,7 +6,6 @@ import {
     DialogTitle,
   } from '@headlessui/react'
   import { Fragment } from 'react'
-  import PropTypes from 'prop-types'
    const DeleteModal = ({ closeModal, isOpen, handleDelete, giftId,} : {closeModal:()=> void, isOpen: boolean,  handleDelete: (id: string) => Promise<void>, giftId:any}) => {
     return (
       <Transition appear show={isOpen} as={Fragment}>
@@ -74,12 +73,6 @@ import {
       </Transition>
     )
   }
-  
-  DeleteModal.propTypes = {
-    closeModal: PropTypes.func,
-    isOpen: PropTypes.bool,
-    handleDelete: PropTypes.func,
-    id: PropTypes.string,
-  }
+ 
   
   export default DeleteModal
