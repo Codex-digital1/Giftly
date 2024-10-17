@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
 
-// টাইপ ডেফিনিশন
+// type defination
 interface Review {
     ReviewerProfileImage: string;
     ReviewerName: string;
@@ -11,22 +11,20 @@ interface Review {
     rating: number;
     comment: string;
 }
-
 interface ReviewByProductId {
     review: Review;
     userEmail: string;
 }
-
 interface ShowReviewCommentProps {
     reviewByProductId: ReviewByProductId[];
+    refProp: React.MutableRefObject<HTMLDivElement | null>;
 }
-
-const ShowReviewComment: React.FC<ShowReviewCommentProps> = ({ reviewByProductId }) => {
+const ShowReviewComment: React.FC<ShowReviewCommentProps> = ({ reviewByProductId,refProp }) => {
     const { updateReceiverName, getReceiverData, currentUser } = useContext(AuthContext) ?? {};
     console.log(10, currentUser);
 
     return (
-        <div className="mt-5 relative">
+        <div ref={refProp} className="mt-5 relative">
             <div className="absolute right-0 top-0 m-2">
                 <select className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     <option value="newest">Default</option>
@@ -35,7 +33,6 @@ const ShowReviewComment: React.FC<ShowReviewCommentProps> = ({ reviewByProductId
                     <option value="most-popular">Most Popular</option>
                 </select>
             </div>
-
             {reviewByProductId && reviewByProductId.map((product: ReviewByProductId, index: number) => (
                 product?.review?.ReviewerProfileImage && (
                     <div key={index} className="flex items-center gap-4 border-t-2 py-8">

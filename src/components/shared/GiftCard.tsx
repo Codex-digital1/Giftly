@@ -27,10 +27,7 @@ const GiftCard: React.FC<GiftCardProps> = ({ gift, drawerToggle }) => {
 
 const handleAdd = () => {
   addToCart?.(gift)
-   
     drawerToggle?.()
-
-  
 }
   return (
     <>
@@ -74,7 +71,10 @@ const handleAdd = () => {
                 <span>Add to cart</span>
               </div>
               <div className="btn-primary">
-                <span>Buy Now</span>
+                <Link to={`/productDetails/${_id}`}>
+                
+                <span>Buy Now</span></Link>
+              
               </div>
             </div>
           </div>

@@ -7,6 +7,7 @@ import PriceDetailsIteItem from "./PriceDetailsIteItem";
 import { LuMoveRight } from "react-icons/lu";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 type DiscountData = {
   title: string;
   description: string;
@@ -17,9 +18,8 @@ type DiscountData = {
 };
 const CartItem = () => {
   const axiosPublic = useAxiosPublic();
+  const navigate =  useNavigate();
   const { cart, removeToCart,user } = useAuth() ?? {};
-  // console.log(cart?.[0]?._id,'cart');
-  // State for cart totals
   const [subTotal, setSubTotal] = useState(0);
   const shipping = 70; 
  const productId = cart?.[0]?._id;
@@ -44,10 +44,8 @@ const CartItem = () => {
   }, [subTotal, shipping, discount]);
   const couponRef = useRef<HTMLInputElement>(null);
 
-
-  // Coupon
+  // get discount data from database for coupon code 
   useEffect(() => {
-
     // Fetch discount data
     axiosPublic.get("/getDiscountData")
       .then(res => {
@@ -98,7 +96,8 @@ const CartItem = () => {
     console.log(paymentDetails);
   
     // Sending the POST request using Axios
-    axiosPublic
+    if(user){
+      axiosPublic
       .post('/order', paymentDetails)
       .then((response) => {
         window.location.replace(response?.data?.url);
@@ -107,6 +106,11 @@ const CartItem = () => {
       .catch((error) => {
         console.error('Error in sending payment details:', error);
       });
+    }
+    else{
+navigate('/login')
+    }
+   
   };
   
 
@@ -140,14 +144,12 @@ const CartItem = () => {
                     <button className="hover:bg-primary border hover:border-primary text-gray-800 transition-all duration-200 hover:text-white w-8 h-8 flex justify-center items-center ">
                       <span className="text-lg -mt-[6px]">+</span>
                     </button>
-
                     <input
                       type="text"
                       defaultValue={item?.quantity || 1}
                       className="w-7 h-[33px] bg-slate-100 pl-2 outline-none"
                       readOnly
                     />
-
                     <button className="hover:bg-primary border transition-all duration-200 hover:border-primary text-gray-800 hover:text-white w-8 h-8 flex justify-center items-center ">
                       <span className="text-lg -mt-[6px]">-</span>
                     </button>
@@ -191,6 +193,7 @@ const CartItem = () => {
                            <input
                                 className="flex h-10 w-full rounded-md border px-3 py-2  focus-visible:outline-none dark:border-zinc-700"
                                 id="first_name"
+                                required
                                 placeholder="Enter first name"
                                 name="first_name"
                                 type="text"
@@ -203,6 +206,7 @@ const CartItem = () => {
                             <input
                                 className="flex h-10 w-full rounded-md border px-3 py-2  focus-visible:outline-none dark:border-zinc-700"
                                 id="last_name"
+                                required
                                 placeholder="Enter last name"
                                 name="last_name"
                                 type="text"
@@ -215,6 +219,7 @@ const CartItem = () => {
                         </label>
                         <input
                             className="flex h-10 w-full rounded-md border px-3 py-2  focus-visible:outline-none dark:border-zinc-700"
+                            required
                             placeholder="Enter your phone"
                             name="phone"
                             type="text"
@@ -226,6 +231,7 @@ const CartItem = () => {
                         </label>
                         <input
                             className="flex h-10 w-full rounded-md border px-3 py-2  focus-visible:outline-none dark:border-zinc-700"
+                            required
                             placeholder="Enter your Address"
                             name="address"
                             type="text"
