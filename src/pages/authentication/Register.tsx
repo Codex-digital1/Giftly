@@ -13,7 +13,7 @@ const Register: React.FC = () => {
   const [passwordShow,setPasswordShow]=useState(false)
   const [passwordShow1,setPasswordShow1]=useState(false)
 
-  const { createUser, updateUserProfile, googleLogin,loading } = useAuth() ?? {};
+  const { createUser, updateUserProfile, googleLogin,loading} = useAuth() ?? {};
 
   // handle Register form data
   const handelform = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -38,8 +38,8 @@ const Register: React.FC = () => {
       .then((result) => {
         toast.success("Successfully created account!");
         console.log(result.user);
-
         updateUserProfile?.(nameValue, "");
+        navigate(from);
       })
       .catch((error) => {
         console.log(error);
