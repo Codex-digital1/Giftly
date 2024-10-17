@@ -157,7 +157,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [sender, setSender] = useState<string | null>(null);
   const [receiver, setReceiver] = useState<string | null>(null);
   const [receiverInfo, setReceiverInfo] = useState<CurrentUser | null>(null)
-  console.log(137, currentUser)
+  // console.log(137, currentUser)
 
   const [gifts, setGifts] = useState<GiftType[]>([]);
   const [allGifts, setAllGifts] = useState<GiftType[]>([]);
@@ -466,7 +466,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Function to get the current  receiver data
   const getReceiverData = async (receiverName: string) => {
 
-    console.log(397, receiverName)
+    // console.log(397, receiverName)
     try {
 
       const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getReceiver/${receiverName}`, { method: 'GET', });
@@ -474,7 +474,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       if (res?.ok) {
         const getCurrentReceiver = await res.json();
-        console.log(100, getCurrentReceiver)
+        // console.log(100, getCurrentReceiver)
         setReceiverInfo(getCurrentReceiver);
 
       } else {
@@ -497,7 +497,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       if (response.ok) {
         const updatedUser = await response.json();
-        console.log("update receiver name", updatedUser)
+        // console.log("update receiver name", updatedUser)
         setCurrentUser(updatedUser);
         setSender(updatedUser?.chat.sender)
         setReceiver(updatedUser?.chat.receiver)
