@@ -9,10 +9,12 @@ import {
 import useAuth from "../../Provider/useAuth";
 
 import { Dispatch, SetStateAction } from "react";
+import { ImSpinner10 } from 'react-icons/im';
 
 interface UpdateUserModalProps {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   isOpen: boolean;
+  isLoading: boolean;
   handleSubmit: (e: React.FormEvent) => Promise<void>;
   imagePreview: string | undefined; 
   imageText: string;               
@@ -23,12 +25,13 @@ interface UpdateUserModalProps {
 const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
   setIsOpen,
   isOpen,
+  isLoading,
   handleSubmit,
   imagePreview,
   imageText,
   handleImage,
 }) => {
-  const { user } = useAuth() || {};
+  const { user} = useAuth() || {};
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -83,7 +86,7 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
                           type="text"
                           name="UserName"
                           id="name"
-                          defaultValue={user?.displayName?? ""}
+                          defaultValue={user?.name||''}
                           className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-[#dd8c89] bg-gray-200 text-gray-900"
                         />
                       </div>
@@ -186,7 +189,9 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({
                       type="submit"
                       className="inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
                     >
-                      Update
+                      {isLoading ? (
+                <ImSpinner10 className="animate-spin mx-auto text-xl" />
+              ) : ('Update')}
                     </button>
                     <button
                       type="button"
