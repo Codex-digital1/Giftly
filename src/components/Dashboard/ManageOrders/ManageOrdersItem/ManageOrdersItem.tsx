@@ -5,10 +5,12 @@ import React from "react";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import Timer from "../../../shared/Timer";
+import useGetAllOrders from "../../../../Hooks/useGetAllOrders";
 
 const ManageOrdersItem = ({ order }: OrderTypesProps) => {
+  const [, , refetch] = useGetAllOrders();
+
   const axiosPublic = useAxiosPublic();
-  console.log(order);
   // Update Order Status
   const handleUpdateOrderStatus = async (
     e: React.ChangeEvent<HTMLSelectElement>,
@@ -18,7 +20,11 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
       status: e.target.value,
     });
     // Show Alert Message
-    if (data.success) return toast.success(data.message);
+    if (data.success) {
+      refetch();
+      return toast.success(data.message);
+    }
+
     if (!data.success) return toast.error(data.message);
   };
   return (
