@@ -92,23 +92,6 @@ const ProductDetails: React.FC = () => {
         descriptionRef.current.scrollIntoView({ behavior: 'smooth' });
       }
     };
-
-  // get all review for specific product
-  const getData = async () => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/getAllReviews/${id}`, { method: 'GET' });
-      if (response?.ok) {
-        const reviews = await response.json();
-        const filterReview = reviews?.filter((singleReview: Review) => singleReview?.review.rating !== null)
-        setAllReviewByProductId(filterReview)
-        
-      } else {
-        console.log('Failed to fetch reviews');
-      }
-    } catch (error) {
-      console.error('Error fetching reviews:', error);
-    }
-  };
   // get all review for specific product
 
   const getData = async () => {
