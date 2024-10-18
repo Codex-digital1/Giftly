@@ -3,7 +3,9 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
 
+ 
 // type defination
+ 
 interface Review {
     ReviewerProfileImage: string;
     ReviewerName: string;
@@ -15,11 +17,13 @@ interface ReviewByProductId {
     review: Review;
     userEmail: string;
 }
+ 
 interface ShowReviewCommentProps {
     reviewByProductId: ReviewByProductId[];
     refProp: React.MutableRefObject<HTMLDivElement | null>;
 }
 const ShowReviewComment: React.FC<ShowReviewCommentProps> = ({ reviewByProductId,refProp }) => {
+ 
     const { updateReceiverName, getReceiverData, currentUser } = useContext(AuthContext) ?? {};
     console.log(10, currentUser);
 
@@ -42,7 +46,6 @@ const ShowReviewComment: React.FC<ShowReviewCommentProps> = ({ reviewByProductId
                                 <h2 className="text-xl font-bold">{product?.review?.ReviewerName}</h2>
                                 <p className="text-gray-500">{new Date(product?.review?.reviewedAt).toLocaleDateString()}</p>
                             </div>
-
                             <div className="flex items-center">
                                 <Rating style={{ maxWidth: 120 }} value={product?.review?.rating ?? 0} readOnly />
                             </div>
