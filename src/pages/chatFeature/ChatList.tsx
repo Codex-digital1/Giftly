@@ -10,7 +10,7 @@ interface Chat {
 
 interface ChatListsProps {
     chats: Chat[];
-    sender: string | null;
+    sender: string | null | undefined;
 }
 
 const ChatLists: React.FC<ChatListsProps> = ({ chats, sender }) => {
@@ -31,25 +31,31 @@ const ChatLists: React.FC<ChatListsProps> = ({ chats, sender }) => {
 
         return (
             <div className="flex justify-end m-4">
-                <div className="bg-primary text-white p-3 rounded-lg max-w-sm shadow-lg flex flex-col">
-                    {image && (
-                        <img
-                            src={image}
-                            alt="Received"
-                            className="h-[100px] w-full object-cover rounded-sm my-3"
-                        />
-                    )}
-                    <p className='font-medium text-end overflow-wrap-break-word word-break-break-word whitespace-normal my-3'>
-                        {truncatedMessage}
-                    </p>
-                    <div className='flex justify-start gap-4 flex-row-reverse'>
-                        <img
-                            src={profileImage}
-                            alt=""
-                            className="w-[30px] h-[30px] rounded-full object-cover"
-                        />
-                        <strong>{senderUsername}</strong> <br />
+                
+                <div className="chat chat-end max-w-xs  text-slate-800">
+                    <div className="chat-image avatar">
+                        <div className="w-10 rounded-full">
+                            <img
+                                alt="sender Image"
+                                src={profileImage} />
+                        </div>
                     </div>
+                    <div className="chat-header font-bold text-slate-800">
+                        {senderUsername}
+                    </div>
+                    <div className="chat-bubble chat-bubble-error bg-gradient-to-t from-[#ff4d6d]  to-[#E4003A] shadow-lg">
+                        {image && (
+                            <img
+                                src={image}
+                                alt="Received"
+                                className="max-h-[150px] max-w-xs w-full object-cover rounded-sm my-3"
+                            />
+                        )}
+                        <p className="text-white whitespace-normal">
+                            {truncatedMessage}
+                        </p>
+                    </div>
+
                 </div>
             </div>
         );
@@ -59,26 +65,31 @@ const ChatLists: React.FC<ChatListsProps> = ({ chats, sender }) => {
         const truncatedMessage = truncateWords(message); // Apply truncation logic
 
         return (
-            <div className="flex justify-start m-4">
-                <div className="bg-gray-300 text-black p-3 rounded-lg max-w-xs shadow-lg flex flex-col">
-                    <div className='flex gap-4'>
-                        <img
-                            src={profileImage}
-                            alt=""
-                            className="w-[30px] h-[30px] rounded-full object-cover bg-center mb-2"
-                        />
-                        <strong className='mt-1'>{senderUsername}</strong> <br />
+            <div className="flex justify-start m-4 ">
+                
+                <div className="chat chat-start max-w-xs text-slate-800 ">
+                    <div className="chat-image avatar">
+                        <div className="w-10 rounded-full">
+                            <img
+                                alt="receiver Image"
+                                src={profileImage} />
+                        </div>
                     </div>
-                    {image && (
-                        <img
-                            src={image}
-                            alt="Received"
-                            className="h-[100px] w-full object-cover rounded-sm my-3"
-                        />
-                    )}
-                    <p className='font-medium overflow-wrap-break-word word-break-break-word whitespace-normal'>
-                        {truncatedMessage}
-                    </p>
+                    <div className="chat-header font-bold text-slate-800">
+                        {senderUsername}
+                    </div>
+                    <div className="chat-bubble bg-gray-200 shadow-lg">
+                        {image && (
+                            <img
+                                src={image}
+                                alt="Received"
+                                className="max-h-[150px]  max-w-xs w-full object-cover rounded-sm my-3"
+                            />
+                        )}
+                        <p className=' text-slate-800 whitespace-normal'>
+                            {truncatedMessage}
+                        </p>
+                    </div>
                 </div>
             </div>
         );

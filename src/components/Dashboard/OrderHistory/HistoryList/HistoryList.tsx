@@ -3,14 +3,12 @@ import TableTh from "../../../shared/TableTh";
 import TableTd from "../../../shared/TableTd";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import LoadingSpinner from "../../../shared/LoadingSpinner";
-
 interface Product {
   product_image: string[];
   product_name: string;
   total_amount: number;
   status?: string; // Add other fields as needed
 }
-
 const HistoryList: React.FC = () => {
   const [data,isLoading] = useGetAllOrders();
   if(isLoading) return <LoadingSpinner></LoadingSpinner>
@@ -26,7 +24,6 @@ const HistoryList: React.FC = () => {
               <TableTh tHeading="Status" />
             </tr>
           </thead>
-
           <tbody className="divide-y divide-gray-200 text-center">
             {data?.map((val: Product, index: number) => (
               <tr className="odd:bg-gray-50" key={index}>
@@ -44,7 +41,6 @@ const HistoryList: React.FC = () => {
                     <FaBangladeshiTakaSign className="text-sm" />
                   </p>
                 </td>
-
                 <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
                   <div className="flex gap-1 justify-center">
                     <button className="bg-primary text-white text-sm py-1 px-2 rounded">
@@ -60,5 +56,4 @@ const HistoryList: React.FC = () => {
     </div>
   );
 };
-
 export default HistoryList;

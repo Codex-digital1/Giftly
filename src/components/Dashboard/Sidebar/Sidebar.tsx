@@ -11,7 +11,6 @@ import { ImUsers } from "react-icons/im";
 import { MdDiscount, MdOutlineShoppingCartCheckout } from "react-icons/md";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import { FaHistory } from "react-icons/fa";
-import { GiSelfLove } from "react-icons/gi";
 
 interface UserRole {
   role: string; // Define role structure
@@ -211,19 +210,6 @@ const Sidebar = () => {
                   >
                     <FaHistory />
                     <span className="mx-4 font-medium">Order History</span>
-                  </NavLink>
-                  {/* my wishlist */}
-                  <NavLink
-                    to="my-wishlist"
-                    className={({ isActive }) =>
-                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-primary   hover:text-white ${
-                        isActive ? "bg-primary  text-white" : "text-gray-600"
-                      }`
-                    }
-                  >
-                    <GiSelfLove />
-
-                    <span className="mx-4 font-medium">My Wishlist</span>
                   </NavLink>
                   {/* my rating */}
                   <NavLink

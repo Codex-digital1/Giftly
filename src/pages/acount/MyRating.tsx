@@ -9,10 +9,10 @@ import NotReviewedGiftCard from '../../components/Rating/NotReviewedGifts';
 import ReviewedGiftCard from '../../components/Rating/ReviewedGifts';
 
 const MyRating = () => {
-  const { user, loading, myReviewItem = [], myAllReview, isModalVisible, giftOrderCheck, setIsModalVisible, } = useAuth() ?? {};
+  const { currentUser, loading, myReviewItem = [], myAllReview, isModalVisible, giftOrderCheck, setIsModalVisible, } = useAuth() ?? {};
 
   const axiosPublic = useAxiosPublic()
-
+  // console.log(currentUser)
   const notReviewedGifts = myReviewItem.filter(
     (gift) => gift?.review && gift?.review?.comment === null
   );
@@ -32,13 +32,15 @@ const MyRating = () => {
     const review = {
       rating,
       comment,
-      tran_id: giftOrderCheck?.tran_id
+      tran_id: giftOrderCheck?.tran_id,
+      ReviewerProfileImage: currentUser?.profileImage,
+      ReviewerName: currentUser?.name
     };
 
-    console.log(review);
+    console.log("current user and review",currentUser,review);
 
     try {
-      const { data } = await axiosPublic.put(`/order/submitReview/${user?.email}`, review);
+      const { data } = await axiosPublic.put(`/order/submitReview/${currentUser?.email}`, review);
       console.log(data);
       if (data) {
         toast.success("Review submitted successfully");

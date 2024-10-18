@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import adminLogo from "/admin.gif";
-import bg from "/wallpaper.jpeg";
+// import bg from "/wallpaper.jpeg";
 import socketIOClient from "socket.io-client";
 import ChatLists from './ChatList';
 import './style.css';
@@ -10,33 +10,30 @@ import { AuthContext } from "../../Provider/AuthProvider";
 import { CgMenuGridR } from "react-icons/cg";
 import { ImExit } from "react-icons/im";
 import { RxCross1 } from "react-icons/rx";
+import { VscSend } from "react-icons/vsc";
 
-interface User {
-    _id: string;
-    email: string;
-    name: string;
-    profileImage: string;
-    role: string;
-    chat: { sender: string; receiver: string };
-}
 
 interface Chat {
     message: string;
     receiverUsername: string;
     senderUsername: string;
-    profileImage: string | undefined; // Allowing undefined here
-    image?: string | null; // This already handles null or undefined
+    profileImage: string | undefined;
+    image?: string | null;
 }
 // Singleton socket instance
 const socket = socketIOClient(import.meta.env.VITE_SERVER_URL, { autoConnect: false });
 
 const ChatContainer: React.FC = () => {
-    const { user, allUser, getData, setLoading } = useContext(AuthContext) ?? {};
+    const { user, allUser, getData, setLoading,
+        sender, receiver, currentUser, updateReceiverName,
+        receiverInfo, getReceiverData, setSender,
+        setReceiver, setCurrentUser
+    } = useContext(AuthContext) ?? {};
 
-    const [currentUser, setCurrentUsers] = useState<User | null>(null);
-    const [sender, setSender] = useState<string | null>(null);
-    const [receiver, setReceiver] = useState<string | null>(null);
-    const [receiverInfo, setReceiverInfo] = useState<User | null>(null)
+    // const [currentUser, setCurrentUsers] = useState<User | null>(null);
+    // const [sender, setSender] = useState<string | null>(null);
+    // const [receiver, setReceiver] = useState<string | null>(null);
+    // const [receiverInfo, setReceiverInfo] = useState<User | null>(null)
 
 
     const [text, setText] = useState<string>('');
@@ -71,9 +68,11 @@ const ChatContainer: React.FC = () => {
             const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getUser/${user?.email}`, { method: 'GET' });
             if (response.ok) {
                 const currentGetUser = await response.json();
-                setCurrentUsers(currentGetUser);
-                setSender(currentGetUser?.chat?.sender || "");
-                setReceiver(currentGetUser?.chat?.receiver || "");
+                if (setCurrentUser && setSender && setReceiver) {
+                    setCurrentUser(currentGetUser);
+                    setSender(currentGetUser?.chat?.sender || "");
+                    setReceiver(currentGetUser?.chat?.receiver || "");
+                }
                 setLoading?.(false);
             } else {
                 console.log('Failed to fetch user data');
@@ -111,47 +110,47 @@ const ChatContainer: React.FC = () => {
     };
 
     // Function to update the current user's receiver
-    const updateReceiverName = async (receiverName: string) => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/updateReceiver/${currentUser?._id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ receiver: receiverName }),
-            });
+    // const updateReceiverName = async (receiverName: string) => {
+    //     try {
+    //         const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/updateReceiver/${currentUser?._id}`, {
+    //             method: 'PUT',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ receiver: receiverName }),
+    //         });
 
-            if (response.ok) {
-                const updatedUser = await response.json();
-                console.log(updatedUser)
-                setCurrentUsers(updatedUser); // Update the current user with the new receiver
-                setSender(updatedUser?.chat.sender)
-                setReceiver(updatedUser?.chat.receiver)
-            } else {
-                console.log('Failed to update receiver');
-            }
-        } catch (error) {
-            console.error('Error updating receiver:', error);
-        }
-    };
+    //         if (response.ok) {
+    //             const updatedUser = await response.json();
+    //             console.log(updatedUser)
+    //             setCurrentUsers(updatedUser); // Update the current user with the new receiver
+    //             setSender(updatedUser?.chat.sender)
+    //             setReceiver(updatedUser?.chat.receiver)
+    //         } else {
+    //             console.log('Failed to update receiver');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error updating receiver:', error);
+    //     }
+    // };
 
-    // Function to update the current user's receiver
-    const getReceiverData = async (receiverName: string) => {
-        try {
+    // //chat feature >>>>> Function to get the current  receiver data
+    // const getReceiverData = async (receiverName: string) => {
+    //     try {
 
-            const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getReceiver/${receiverName}`, { method: 'GET', });
+    //         const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getReceiver/${receiverName}`, { method: 'GET', });
 
 
-            if (res?.ok) {
-                const getCurrentReceiver = await res.json();
-                setReceiverInfo(getCurrentReceiver);
-            } else {
-                console.log('Failed to get current receiver');
-            }
-        } catch (error) {
-            console.error('Error updating receiver:', error);
-        }
-    };
+    //         if (res?.ok) {
+    //             const getCurrentReceiver = await res.json();
+    //             setReceiverInfo(getCurrentReceiver);
+    //         } else {
+    //             console.log('Failed to get current receiver');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error updating receiver:', error);
+    //     }
+    // };
 
 
     // Initialize Socket and Chat
@@ -193,7 +192,7 @@ const ChatContainer: React.FC = () => {
         if (sender && receiver) {
             fetchPreviousChats(sender, receiver);
         }
-    }, [receiver]);
+    }, [receiver, sender]);
 
 
     const addMessage = (text: string) => {
@@ -232,15 +231,18 @@ const ChatContainer: React.FC = () => {
     };
 
     return (
-        <div style={{
-            backgroundImage: `url("${bg}")`,
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat'
-        }} className=" my-[100px] flex flex-col justify-between w-full bg-gray-100 shadow-xl container mx-auto border-2 border-primary z-50 rounded-lg h-[600px]  md:h-[600px]">
+        // style={{
+        //     backgroundImage: `url("${bg}")`,
+        //     backgroundPosition: 'center',
+        //     backgroundSize: 'cover',
+        //     backgroundRepeat: 'no-repeat'
+        // }}
+        <div className="mt-[100px] mb-[50px] md:my-[100px] flex flex-col justify-between w-full bg-white shadow-xl container mx-auto  z-50 rounded-lg h-[600px]  md:h-[600px] ">
 
             {/* Chat Header */}
-            <div className="bg-primary border-primary border rounded-b-none rounded-lg text-white p-4 flex  justify-between items-center">
+            <div className="bg-gradient-to-t from-primary  to-[#E4003A]
+             border-primary border rounded-b-none rounded-lg text-white
+              p-4 flex  justify-between items-center">
                 <div className="relative flex items-center gap-3">
                     <img
                         src={receiverInfo?.profileImage || adminLogo}
@@ -257,7 +259,7 @@ const ChatContainer: React.FC = () => {
                     >
                         {
                             isActive ? <CgMenuGridR
-                            className="h-5 w-5 md:h-8 md:w-8" /> : <RxCross1 className="h-5 w-5 md:h-8 md:w-8" />
+                                className="h-5 w-5 md:h-8 md:w-8" /> : <RxCross1 className="h-5 w-5 md:h-8 md:w-8" />
                         }
                     </button>
 
@@ -267,19 +269,19 @@ const ChatContainer: React.FC = () => {
                             setIsOpenChat(!isOpenChat);
                             Logout();
                         }}>
-                        <ImExit className="h-5 w-5 md:h-8 md:w-8"/>
+                        <ImExit className="h-5 w-5 md:h-8 md:w-8" />
                     </button>
                 </div>
             </div>
 
-            <div className="flex h-full overflow-y-scroll scrollbar-none relative">
+            <div className="flex h-full overflow-y-scroll scrollbar-none relative ">
 
                 <div className={`sidebar w-[300px] lg:w-[250px]  h-full flex flex-col justify-between overflow-x-hidden absolute md:relative inset-y-0 left-0 transform ${isActive && "-translate-x-full"
                     }  md:translate-x-0  transition duration-200 ease-in-out`}>
 
-                    <div className=" overflow-y-scroll  scrollbar-none  bg-white p-4  border-b border-gray-300 border-r-2">
+                    <div className="h-2/6 overflow-y-scroll  scrollbar-none  bg-white p-4 border-r">
 
-                        <h2 className="bg-secondary flex items-center justify-center p-2 rounded-lg shadow-md mb-3 font-bold text-primary">Chat with Admin</h2>
+                        <h2 className="sticky -top-5 p-2 bg-secondary flex items-center justify-center w-full rounded-lg shadow-md mb-3 font-bold text-primary">Chat with Admin</h2>
                         {
                             allUser
                                 ?.filter((presentUser: any) => (presentUser?.name !== currentUser?.name && presentUser?.role !== 'user'))
@@ -289,9 +291,10 @@ const ChatContainer: React.FC = () => {
                                             className="cursor-pointer hover:bg-secondary flex items-center space-x-4 p-2 rounded-lg"
                                             key={index}
                                             onClick={() => {
-                                                updateReceiverName(presentUser?.name);
-                                                getReceiverData(presentUser?.name)
-                                                // Update receiver through PUT route
+                                                if (updateReceiverName && getReceiverData) {
+                                                    updateReceiverName(presentUser?.name);
+                                                    getReceiverData(presentUser?.name)
+                                                }
                                             }}
                                         >
                                             <img src={presentUser?.profileImage} alt={presentUser?.name} className="w-10 h-10 rounded-full object-cover" />
@@ -302,9 +305,9 @@ const ChatContainer: React.FC = () => {
                         }
                     </div>
 
-                    <div className="flex-1 overflow-y-scroll  scrollbar-none  bg-white p-4 border-r-2 border-gray-300 ">
+                    <div className="h-4/6 overflow-y-scroll  scrollbar-none  bg-white p-4  border-r">
 
-                        <h2 className="bg-secondary flex items-center justify-center p-2 rounded-lg shadow-md mb-3 font-bold text-primary">Chat with user</h2>
+                        <h2 className="sticky -top-5 p-2 bg-secondary flex items-center justify-center w-full rounded-lg shadow-md mb-3 font-bold text-primary">Chat with user</h2>
                         {
                             allUser
                                 ?.filter((presentUser: any) => (presentUser?.name !== currentUser?.name && presentUser?.role !== 'admin'))
@@ -314,9 +317,10 @@ const ChatContainer: React.FC = () => {
                                             className="cursor-pointer hover:bg-secondary flex items-center space-x-4 p-2 rounded-lg"
                                             key={index}
                                             onClick={() => {
-                                                updateReceiverName(presentUser?.name);
-                                                getReceiverData(presentUser?.name)
-                                                // Update receiver through PUT route
+                                                if (updateReceiverName && getReceiverData) {
+                                                    updateReceiverName(presentUser?.name);
+                                                    getReceiverData(presentUser?.name)
+                                                }
                                             }}
                                         >
                                             <img src={presentUser?.profileImage} alt={presentUser?.name} className="w-10 h-10 rounded-full object-cover" />
@@ -392,36 +396,38 @@ const ChatContainer: React.FC = () => {
             </div> */}
 
             {/* Chat Input */}
-            <div className="bg-white rounded-lg p-4 flex space-x-4 border-t border-gray-300">
-                <div className="grid place-content-center">
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                        className="hidden"
-                        id="imageInput"
-                    />
-                    <label htmlFor="imageInput" className="cursor-pointer text-primary bg-secondary p-2 rounded-full hover:bg-primary transition-all duration-300 text-2xl">📷</label>
-                </div>
+            <div className=" bg-white rounded-lg p-4  border-t border-gray-300">
+                <div className="flex space-x-4 max-w-3xl mx-auto">
+                    <div className="grid place-content-center">
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            className="hidden"
+                            id="imageInput"
+                        />
+                        <label htmlFor="imageInput" className="cursor-pointer text-primary bg-primary p-2 rounded-full hover:bg-[#BF2718] transition-all duration-300 text-2xl">📷</label>
+                    </div>
 
-                <form className="flex flex-1 gap-5">
-                    <input
-                        id="chatInput"
-                        type="text"
-                        className="w-full p-2 border rounded-lg 
+                    <form className="flex flex-1 gap-5">
+                        <input
+                            id="chatInput"
+                            type="text"
+                            className="w-full p-2  rounded-lg  border border-primary
 
                         focus:outline outline-offset-2 outline-2 outline-primary
                         "
-                        placeholder="Type your message..."
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                    />
-                    <button
-                        type="button"
-                        onClick={handleSend}
-                        className="bg-primary text-white rounded-lg px-4">Send</button>
-                </form>
+                            placeholder="Type your message..."
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                            onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                        />
+                        <button
+                            type="button"
+                            onClick={handleSend}
+                            className="bg-primary text-white rounded-lg px-4 cursor-pointer hover:bg-[#BF2718] transition-all duration-300 text-2xl"><VscSend /></button>
+                    </form>
+                </div>
             </div>
         </div>
     );
