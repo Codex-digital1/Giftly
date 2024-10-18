@@ -9,10 +9,10 @@ export type sectionHeadingProps = {
   subTitle?: string;
 };
 
-export type drawerPropsType = {
-  drawerToggle: () => void,
-  isOpenDrawer?: boolean
-}
+// export type drawerPropsType = {
+//   drawerToggle: () => void,
+//   isOpenDrawer?: boolean
+// }
 
 // interfaces/Gift.ts
 export interface Gift {
