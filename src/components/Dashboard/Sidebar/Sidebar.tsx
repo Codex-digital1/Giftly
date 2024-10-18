@@ -21,7 +21,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const [role, setRole] = useState<UserRole | undefined>(undefined);
  
-  const { logOut, user } = useAuth() ?? {};
+  const { logOut, user,setUser } = useAuth() ?? {};
   const axiosPublic = useAxiosPublic();
   // Sidebar Responsive Handler
   const handleToggle = () => {
@@ -29,6 +29,7 @@ const Sidebar = () => {
   };
   const handleLogOut = () => {
     logOut?.();
+    setUser?.(null)
     navigate('/')
   };
 

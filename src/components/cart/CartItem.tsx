@@ -95,12 +95,13 @@ const CartItem = () => {
       productId,
       sheduleDate,
     };
-    console.log(paymentDetails);
+    // console.log(paymentDetails);
   
     // Sending the POST request using Axios
     axiosPublic
       .post('/order', paymentDetails)
       .then((response) => {
+        console.log(response?.data?.url);
         window.location.replace(response?.data?.url);
         console.log('Payment details sent successfully:', response.data);
       })
