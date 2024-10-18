@@ -14,7 +14,7 @@ import Notifications from "./Notification";
 
 const Navbar: React.FC = () => {
   const navigate=useNavigate()
-  const {user,logOut,handleFilterChange}=useAuth()?? {};
+  const {user,logOut,handleFilterChange,setUser}=useAuth()?? {};
   const [isOpen, setIsOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null); // Create a ref for the modal
  // Close the modal if clicked outside
@@ -164,7 +164,7 @@ const wishlistLength = (() => {
                 <img
                   className="rounded-full w-7"
                   referrerPolicy="no-referrer"
-                  src={user && user.photoURL ? user.photoURL : avatarImg}
+                  src={user && user.profileImage ? user.profileImage : avatarImg}
                   alt="profile"
                   height="30"
                   width="30"
@@ -196,14 +196,19 @@ const wishlistLength = (() => {
                   {user ? (
                     <>
                         <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
-                          {user?.displayName}
+                          {user?.name}
                         </div>
                       <Link to={"/dashboard"}>
                         <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
                           Dashboard
                         </div>
                       </Link>
-                      <div onClick={()=> logOut?.()} className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
+                      <div 
+                      onClick={()=>{
+                         logOut?.()
+                         setUser?.(null)
+                        }}
+                       className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
                           Logout
                         </div>
                     </>

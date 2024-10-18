@@ -9,12 +9,13 @@ import LoadingSpinner from "../../components/shared/LoadingSpinner";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 const ProfileInfo = () => {
   const [isOpenPass, setIsOpenPass] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { user, loading, updateUserProfile, resetPassword } = useAuth() || {};
   // console.log(user?.email);
   // console.log(email);
 
-  const [imagePreview, setImagePreview] = useState(user?.photoURL?? "");
+  const [imagePreview, setImagePreview] = useState(user?.profileImage?? "");
   const [imageText, setImageText] = useState("Upload Image");
 // Define state for the image file
 const [imageFile, setImageFile] = React.useState<File | null>(null);
@@ -27,6 +28,7 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
   //   Form handler
   const handleSubmit = async (e:any) => {
     e.preventDefault();
+    setIsLoading?.(true)
     const form = e.target;
 
     const name = form.UserName.value;
@@ -49,7 +51,7 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
         );
         const imageUrl = resImg?.data?.secure_url;
         await updateUserProfile?.(name, imageUrl||"")
-        .then(() => console.log("Profile updated successfully"))
+        .then(() => console.log("Profile updated successfully 52"))
         .catch((error) => console.error("Failed to update profile", error));
         const updateData = {
           name,
@@ -63,19 +65,22 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
             country,
           },
         };
+        // return console.log(updateData);
         const res = await axiosPublic.put(`/users/${user?._id}`, updateData);
+        console.log(res);
         if (res?.data) {
           window.location.reload();
         }
+        setIsLoading?.(false)
       } else {
-        await updateUserProfile?.(name, user?.photoURL||"")
+        await updateUserProfile?.(name, user?.profileImage||"")
   .then(() => console.log("Profile updated successfully"))
   .catch((error) => console.error("Failed to update profile", error));
 
         const updateData = {
           name,
           phoneNumber,
-          profileImage: user?.photoURL,
+          profileImage: user?.profileImage,
           address: {
             street,
             city,
@@ -84,6 +89,7 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
             country,
           },
         };
+        // return console.log(updateData);
         // console.log(updateData);
         const res = await axiosPublic.put(`/users/${user?._id}`, updateData);
         console.log(res);
@@ -92,7 +98,9 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
         }
       }
       setIsOpen(false);
+      setIsLoading?.(false)
     } catch (err: any) {
+      setIsLoading?.(false)
       toast.error(err.message);
     }
   };
@@ -118,8 +126,8 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
   };
 
 
-  if (loading)
-    return <LoadingSpinner large={true} smallHeight={false} card={false} />;
+  // if (loading)
+  //   return <LoadingSpinner large={true} smallHeight={false} card={false} />;
   return (
     <>
       <div className="flex justify-center items-center h-80vh">
@@ -132,11 +140,12 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
             src="https://wallpapercave.com/wp/wp2060750.jpg"
             className="w-full mb-4 object-cover border-2 rounded-t-lg h-96"
           />
-          <div className="flex flex-col items-center justify-center p-4 -mt-16">
+          {loading&&<LoadingSpinner large={false} smallHeight={true} card={false} />}
+          <div className={`${loading&&'hidden'} flex flex-col items-center justify-center p-4 -mt-16`}>
             <div className="relative block">
               <img
                 alt="profile"
-                src={user?.photoURL || imgD}
+                src={user?.profileImage || imgD}
                 className="mx-auto object-cover rounded-full h-24 w-24  border-2 border-white "
               />
             </div>
@@ -146,7 +155,7 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
             </p>
 
             <p className="mt-2 text-xl font-medium text-gray-800 ">
-              User Id: {user?.uid}
+              User Id: {user?._id}
             </p>
 
             <div className="w-full p-2 mt-4 rounded-lg">
@@ -155,7 +164,7 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
                   <p className="flex flex-col">
                     Name
                     <span className="font-bold text-black ">
-                      {user?.displayName}
+                      {user?.name}
                     </span>
                   </p>
                   <br />
@@ -211,6 +220,7 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
                     handleImage={handleImage}
                     imageText={imageText}
                     isOpen={isOpen}
+                    isLoading={isLoading}
                     setIsOpen={setIsOpen}
                   ></UpdateUserModal>
                   <button
