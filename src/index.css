@@ -20,11 +20,11 @@ code {
 
 @layer components {
   .btn-primary {
-    @apply flex items-center gap-2 bg-primary whitespace-nowrap
-    py-1 px-2  text-white text-sm font-normal cursor-pointer rounded hover:bg-[#BF2718] transition-all duration-300 ease-linear capitalize;
+    @apply flex items-center gap-2 bg-primary whitespace-nowrap py-1 px-2 text-white text-sm font-normal cursor-pointer rounded hover:bg-[#BF2718] transition-all duration-300 ease-linear capitalize;
   }
+
   .btn-secondary {
-    @apply py-3 px-6  text-sm   bg-primary text-white  font-semibold cursor-pointer  hover:bg-[#BF2718] transition-all duration-300 ease-linear border-none capitalize;
+    @apply py-3 px-6 text-sm bg-primary text-white font-semibold cursor-pointer hover:bg-[#BF2718] transition-all duration-300 ease-linear border-none capitalize;
   }
 }
 
@@ -32,19 +32,23 @@ code {
   .section-to-section-margin {
     @apply mt-8 mb-8 md:mt-16 md:mb-16 lg:mt-24 lg:mb-24;
   }
+
   .scrollbar-none::-webkit-scrollbar {
     display: none;
   }
 
   .scrollbar-none {
-    -ms-overflow-style: none; /* Internet Explorer and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* Internet Explorer and Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
 }
 
 .inter {
   font-family: "Inter", system-ui;
 }
+
 .steps .step-primary+.step-primary:before,
 .steps .step-primary:after {
   background-color: #ff4d6d;
@@ -52,3 +56,34 @@ code {
 }
 
 /*  */
+
+.goog-te-gadget {
+  border: none !important;
+
+}
+
+.goog-te-gadget-simple {
+  display: flex !important;
+  height: 30px !important;
+  border: none !important;
+  padding: 5px 10px !important;
+  background-color: #fff !important;
+  border-radius: 10px;
+
+}
+
+
+.goog-te-gadget-simple span a {
+  color: #ff4d6d !important;
+}
+
+.iconColor {
+  color: blue !important;
+}
+
+.goog-te-gadget-simple span a span:last-of-type,
+span:nth-of-type(2) {
+  display: none !important;
+
+
+}
