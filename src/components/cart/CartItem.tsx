@@ -79,7 +79,7 @@ const CartItem = () => {
   // Calculate subtotal dynamically based on cart items
   useEffect(() => {
     const calculatedSubtotal =
-      cart?.reduce((sum, item) => sum + item.price * item.quantity, 0) || 0;
+      cart?.reduce((sum, item) => sum + item.price , 0) || 0;
     setSubTotal(calculatedSubtotal);
   }, [cart]);
 
@@ -148,16 +148,16 @@ const CartItem = () => {
       wrap: selectedWrap,
       message: personalMessage,
     };
-    console.log(paymentDetails);
+    // console.log(paymentDetails);
 
     // Sending the POST request using Axios
     if (user) {
       axiosPublic
         .post("/order", paymentDetails)
         .then((response) => {
-          console.log(response?.data?.url);
+          // console.log(response?.data?.url);
           window.location.replace(response?.data?.url);
-          console.log("Payment details sent successfully:", response.data);
+          // console.log("Payment details sent successfully:", response.data);
         })
         .catch((error) => {
           console.error("Error in sending payment details:", error);
@@ -166,7 +166,9 @@ const CartItem = () => {
       navigate("/login");
     }
   };
-
+  const today = new Date();
+  const minSelectableDate = new Date(today);
+  minSelectableDate.setDate(today.getDate() + 4);
   return (
     <div className=" gap-x-5">
       <div className="overflow-x-auto col-span-8 flex-1">
@@ -295,7 +297,11 @@ const CartItem = () => {
                   placeholder="Enter your Address"
                   name="address"
                   type="text"
-                  defaultValue={`${user?.address!== 'undefined' &&`${user?.address?.street||''} ${user?.address?.city ||''}${user?.address?.state ||''} ${user?.address?.country ||''} ${user?.address?.zipCode ||''}`}`}
+                  defaultValue={
+                    user?.address
+                      ? `${user.address.street || ''} ${user.address.city || ''} ${user.address.state || ''} ${user.address.country || ''} ${user.address.zipCode || ''}`
+                      : ''
+                  }
                 />
               </div>
               <GiftWrapOptions onSelect={handleWrapSelect} />
@@ -361,6 +367,7 @@ const CartItem = () => {
                   >
                     Make Scheduled Gifting
                   </label>
+                  
                 </div>
                 {/* DAte INput */}
                 {sheduleDelevery && (
@@ -369,7 +376,8 @@ const CartItem = () => {
                     className="cursor-pointer ml-2 text-black text-sm md:text-lg"
                     
                   >
-                    Select Scheduled Date
+                    Select Scheduled Date <br />
+                    <small>Please select a date that is at least 3 days from today.</small>
                   </center>
                     
                     <div className="flex justify-center">
@@ -379,7 +387,7 @@ const CartItem = () => {
                         onChange={handleSelect}
                         moveRangeOnFirstSelection={false}
                         ranges={adjustedState}
-                        minDate={new Date()}
+                        minDate={minSelectableDate}
                       />
                     </div>
                   </div>
