@@ -25,6 +25,8 @@ interface DateRangeState {
 import { DateRange, RangeKeyDict } from "react-date-range";
 import "react-date-range/dist/styles.css"; // Main style file
 import "react-date-range/dist/theme/default.css"; // Theme CSS file
+import GiftWrapOptions from "./GiftWrapOptions";
+import MessageInput from "./MessageInput";
 const CartItem = () => {
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
@@ -34,6 +36,8 @@ const CartItem = () => {
   const productId = cart?.[0]?._id;
   const [total, setTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
+  const [selectedWrap, setSelectedWrap] = useState<string | null>(null);
+  const [personalMessage, setPersonalMessage] = useState<string>('');
   // Shedule Delevery State
   const [sheduleDelevery, setSheduleDelevery] = useState<boolean>(false);
   const [discountData, setDiscountData] = useState<DiscountData | null>(null);
@@ -49,7 +53,7 @@ const CartItem = () => {
   const handleSelect = (ranges: RangeKeyDict) => {
     const { selection } = ranges;
 
-    console.log("Selected date:", selection.startDate);
+    // console.log("Selected date:", selection.startDate);
 
     // Update state to store only the selected startDate
     setState([
@@ -65,6 +69,9 @@ const CartItem = () => {
     startDate: range.startDate ?? undefined,
     endDate: range.endDate ?? undefined,
   }));
+
+  const handleWrapSelect = (option: string) => setSelectedWrap(option);
+  const handleMessageChange = (message: string) => setPersonalMessage(message);
   
 
   const discountCode = discountData?.coupon;
@@ -125,6 +132,7 @@ const CartItem = () => {
       ?.value;
     const email = user?.email;
     const name = `${firstName}`;
+    const today = new Date().toDateString();
 
     // Prepare the data to be sent in the POST request
     const paymentDetails = {
@@ -133,9 +141,14 @@ const CartItem = () => {
       number,
       address,
       productId,
-      scheduleDate:state[0]?.startDate,
+      scheduleDate: 
+  state[0]?.startDate?.toDateString() === today 
+    ? '' 
+    : state[0]?.startDate,
+      wrap: selectedWrap,
+      message: personalMessage,
     };
-    // console.log(paymentDetails);
+    console.log(paymentDetails);
 
     // Sending the POST request using Axios
     if (user) {
@@ -282,9 +295,11 @@ const CartItem = () => {
                   placeholder="Enter your Address"
                   name="address"
                   type="text"
-                  defaultValue={`${user?.address?.street} ,${user?.address?.city},${user?.address?.state} ,${user?.address?.country} ,${user?.address?.zipCode}`}
+                  defaultValue={`${user?.address!== 'undefined' &&`${user?.address?.street||''} ${user?.address?.city ||''}${user?.address?.state ||''} ${user?.address?.country ||''} ${user?.address?.zipCode ||''}`}`}
                 />
               </div>
+              <GiftWrapOptions onSelect={handleWrapSelect} />
+      <MessageInput onMessageChange={handleMessageChange} />
               <hr className="mt-4 mb-4" />
 
               {/* Dynamic price details */}
