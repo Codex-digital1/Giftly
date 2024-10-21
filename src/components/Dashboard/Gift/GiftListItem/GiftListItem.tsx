@@ -30,6 +30,7 @@ const GiftListItem = ({
       refetch?.();
       toast.success('Deleted successfully');
     }
+    closeModal()
   } catch (error) {
     // Type the error as AxiosError
     if (axios.isAxiosError(error)) {
@@ -38,6 +39,7 @@ const GiftListItem = ({
       toast.error('An unexpected error occurred');
     }
     console.error("Error deleting gift:", error);
+    closeModal()
   }
 };
 

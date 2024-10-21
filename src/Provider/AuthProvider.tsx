@@ -180,7 +180,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [filters, setFilters] = useState({
     category: '',
     priceMin: 0,
-    priceMax: 5000,
+    priceMax: 5000000,
     rating: 0,
     availability: 'all',
     sortBy: '',
@@ -406,6 +406,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         setLoading(true);
         const { data } = await axiosPublic.get("/getAllGift", { params: filters });
+        console.log(data?.data);
         setAllGifts(data?.data);
       } catch (error) {
         console.log(error);

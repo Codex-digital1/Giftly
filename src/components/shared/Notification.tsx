@@ -62,7 +62,7 @@ const Notifications = () => {
       socket.off("receiveNotification");
     };
   }, []);
-  console.log(notifications);
+  // console.log(notifications);
 
   // Close the modal if clicked outside
   useEffect(() => {

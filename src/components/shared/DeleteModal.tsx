@@ -19,7 +19,7 @@ import {
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           >
-            <div className='fixed inset-0 bg-black bg-opacity-10' />
+            <div className='fixed inset-0 bg-black bg-opacity-60' />
           </TransitionChild>
   
           <div className='fixed inset-0 overflow-y-auto'>
@@ -48,10 +48,8 @@ import {
                   <hr className='mt-8 ' />
                   <div className='flex mt-2 justify-around'>
                     <button
-                      onClick={() => {
-                        handleDelete(giftId)
-                        closeModal()
-                      }}
+                      onClick={() =>handleDelete(giftId)
+                      }
                       type='button'
                       className='inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2'
                     >
