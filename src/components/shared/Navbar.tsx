@@ -9,10 +9,12 @@ import avatarImg from "../../assets/placeholder.jpg";
 import { RiMenuUnfold4Line2 } from "react-icons/ri";
 import useAuth from "../../Provider/useAuth";
 import Notifications from "./Notification";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 
 
 const Navbar: React.FC = () => {
+  const axiosPublic=useAxiosPublic()
   const navigate=useNavigate()
   const {user,logOut,handleFilterChange,setUser}=useAuth()?? {};
   const [isOpen, setIsOpen] = useState(false);
@@ -60,7 +62,36 @@ const wishlistLength = (() => {
     document.removeEventListener("mousedown", handleClickOutside);
   };
 }, [isOpen]);
+const [query, setQuery] = useState('');
+    const [suggestions, setSuggestions] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
+    // Fetch suggestions from the backend
+    const fetchSuggestions = async (searchQuery: string) => {
+        try {
+            setIsLoading(true);
+            const response = await axiosPublic.get(
+                `/api/gifts/suggestions?query=${searchQuery}`
+            );
+            console.log(response);
+            setSuggestions(response.data.data); // Update suggestions list
+        } catch (error) {
+            console.error('Error fetching suggestions:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // Debounce function to limit the API calls
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (query) fetchSuggestions(query);
+        }, 300); // Delay of 300ms
+
+        return () => clearTimeout(timeoutId); // Cleanup on component unmount
+    }, [query]);
+
+// console.log(suggestions);
 
   return (
     <div className="fixed w-full bg-secondary z-50 top-0 shadow-2xl">
@@ -73,13 +104,16 @@ const wishlistLength = (() => {
           </Link>
         </div>
         {/* Input */}
-        <form  className="md:w-1/3">
+        <div className="relative md:w-1/3 flex justify-center items-center">
+        <form  className="w-full">
           <label className="relative group flex justify-center items-center">
             <input
               type="text"
               name="search"
+              value={query}
               onChange={(e)=>{
                 handleFilterChange?.(e)
+                setQuery(e.target.value)
                 navigate('/allGift')
               }}
               className="border border-primary border-opacity-45 md:w-full rounded-lg  md:p-3 p-2  text-black   focus:outline-none focus:border-primary hover:border-primary"
@@ -91,6 +125,20 @@ const wishlistLength = (() => {
             </button>
           </label>
         </form>
+        {isLoading && <p className="absolute top-12 text-sm">Loading...</p>}
+            {suggestions.length > 0 && (
+                <ul className="absolute top-14  w-full  border bg-white shadow-lg">
+                    {suggestions.map((item) => (
+                        <li
+                            key={item._id}
+                            className="p-2 hover:bg-gray-200 cursor-pointer"
+                        >
+                            {item.giftName}
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
           {/* Mega menu leftSide */}
           <nav className="space-x-4 lg:flex hidden">
           {megaMenu?.slice(0, 3).map((menu) => (

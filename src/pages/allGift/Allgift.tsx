@@ -5,9 +5,18 @@ import LoadingSpinner from "../../components/shared/LoadingSpinner";
 const Allgift = () => {
   const { handleFilterChange, allGifts, gifts, loading } = useAuth() ?? {} ;
   // console.log(allGifts.map(i=>i.category));
-  const giftCategory: string[] = [
-    ...new Set(gifts?.map((gift) => gift?.category)),
-  ];
+ // Setting the gift categories in localStorage
+const giftCategory: string[] = [
+  ...new Set(gifts?.map((gift) => gift?.category)),
+];
+localStorage.setItem('giftCategory', JSON.stringify(giftCategory));
+
+// Getting the gift categories from localStorage
+const storedCategories = localStorage.getItem('giftCategory');
+const giftCategoryFromStorage: string[] = storedCategories ? JSON.parse(storedCategories) : [];
+
+
+
   return (
     <>
       <div className="container mx-auto mt-20 p-4 min-h-[calc(100vh-530px)]">
@@ -33,7 +42,7 @@ const Allgift = () => {
                 onChange={handleFilterChange}
               >
                 <option value="">All Products</option>
-                {giftCategory?.map((category: string, i: number) => (
+                {giftCategoryFromStorage?.map((category: string, i: number) => (
                   <option key={i} value={category}>
                     {category}
                   </option>
