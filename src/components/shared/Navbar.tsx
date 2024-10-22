@@ -11,15 +11,20 @@ import useAuth from "../../Provider/useAuth";
 import Notifications from "./Notification";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
+type Suggestion = {
+  _id: string;
+  giftName: string;
+};
+
 
 
 const Navbar: React.FC = () => {
   const axiosPublic=useAxiosPublic()
   const navigate=useNavigate()
-  const {user,logOut,handleFilterChange,setUser}=useAuth()?? {};
+  const {user,logOut,handleSearchChange,setUser}=useAuth()?? {};
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] = useState<Suggestion[] | []>([]);
   const [isLoading, setIsLoading] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null); // Create a ref for the modal
  // Close the modal if clicked outside
@@ -97,21 +102,21 @@ const handleSearch=(e: React.FormEvent<HTMLFormElement>)=>{
   e.preventDefault();
   const form = e.target as HTMLFormElement;
   const searchValue = (form.elements.namedItem('search') as HTMLInputElement)?.value || '';
-  if(searchValue==='')return
-  handleFilterChange?.(searchValue)
-  setQuery(searchValue)
-  setShowSuggestions(true);
+  // if(searchValue==='')return
+  handleSearchChange?.(query)
+  // setQuery(searchValue)
+  // setShowSuggestions(true);
   if (currentPath !== '/allGift') {
     navigate('/allGift');
   }  
 }
 const [showSuggestions, setShowSuggestions] = useState(false);
 
-const searchRef = useRef(null); // Create a ref for the search component
+const searchRef = useRef<HTMLUListElement | null>(null); // Create a ref for the search component
 
   // Function to handle outside click
-  const handleClickOutside = (event) => {
-    if (searchRef.current && !searchRef.current.contains(event.target)) {
+  const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
       setShowSuggestions(false); // Hide suggestions if clicked outside
     }
   };
@@ -123,6 +128,14 @@ const searchRef = useRef(null); // Create a ref for the search component
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+  const handleSuggestionClick=(giftName:string)=>{
+    console.log(giftName,'132');
+    setQuery(giftName)
+    handleSearchChange?.(giftName)
+    setShowSuggestions(false);
+  }
+  console.log(query);
+  console.log(suggestions);
 
   return (
     <div className="fixed w-full bg-secondary pb-2  z-50 top-0 shadow-2xl">
@@ -136,13 +149,16 @@ const searchRef = useRef(null); // Create a ref for the search component
         </div>
         {/* Input */}
         <div className="relative hidden md:w-1/3 md:flex justify-center items-center">
-        <form  className="w-full">
+        <form  onSubmit={handleSearch} className="w-full">
           <label className="relative group flex justify-center items-center">
             <input
               type="text"
               name="search"
               value={query}
-              onChange={handleSearch}
+              onChange={(e)=>{
+                setQuery(e.target.value)
+                setShowSuggestions(true);
+              }}
               className="border border-primary border-opacity-45 md:w-full rounded-lg  md:p-3 p-2  text-black   focus:outline-none focus:border-primary hover:border-primary"
 
               placeholder="find your Gift..."
@@ -153,20 +169,21 @@ const searchRef = useRef(null); // Create a ref for the search component
           </label>
         </form>
         {isLoading && <p className="absolute top-14 text-sm">Loading...</p>}
-            {showSuggestions && suggestions.length > 0 && (
-                <ul ref={searchRef} className="absolute top-14  w-full  border bg-white shadow-lg">
-                    {suggestions.map((item) => (
-                        <li
-                            key={item._id}
-                            className="p-2 hover:bg-gray-200 cursor-pointer"
-                            onClick={()=>{
-                              setQuery(item.giftName)
-                              handleFilterChange?.(item.giftName)
-                              setShowSuggestions(false);
+        {showSuggestions && suggestions?.length > 0 && (
+                <ul ref={searchRef} className=" flex flex-col absolute top-10  w-3/4  border bg-white shadow-lg">
+                    {suggestions?.map((item) => (
+                        <button
+                            key={item?._id}
+                            className="p-2 text-left hover:bg-gray-200 cursor-pointer"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              console.log('Button clicked:', item?.giftName);
+                              handleSuggestionClick(item?.giftName);
                             }}
+                            
                         >
-                            {item.giftName}
-                        </li>
+                            {item?.giftName}
+                        </button>
                     ))}
                 </ul>
             )}
@@ -314,16 +331,16 @@ const searchRef = useRef(null); // Create a ref for the search component
           </div>
         </div>
       </div>
-      <div className="relative md:hidden md:w-1/3 flex justify-center items-center">
+      {/* <div className="relative md:hidden md:w-1/3 flex justify-center items-center">
         <form onSubmit={handleSearch} className="w-full">
           <label className="relative group flex justify-center items-center">
             <input
               type="text"
               name="search"
-              defaultValue={query}
+              value={query}
               onChange={(e)=>{
                 setQuery(e.target.value)
-  setShowSuggestions(true);
+                setShowSuggestions(true);
               }}
               // onChange={handleSearch}
               className="border border-primary border-opacity-45 w-3/4 rounded-lg  md:p-3 p-2  text-black   focus:outline-none focus:border-primary hover:border-primary"
@@ -338,22 +355,18 @@ const searchRef = useRef(null); // Create a ref for the search component
         {isLoading && <p className="absolute top-10 text-sm">Loading...</p>}
             {showSuggestions && suggestions.length > 0 && (
                 <ul ref={searchRef} className="absolute top-10  w-3/4  border bg-white shadow-lg">
-                    {suggestions.map((item) => (
+                    {suggestions?.map((item) => (
                         <li
-                            key={item._id}
+                            key={item?._id}
                             className="p-2 hover:bg-gray-200 cursor-pointer"
-                            onClick={()=>{
-                              setQuery(item.giftName)
-                              handleFilterChange?.(item.giftName)
-                              setShowSuggestions(false);
-                            }}
+                            onClick={()=>handleSuggestionClick(item?.giftName)}
                         >
-                            {item.giftName}
+                            {item?.giftName}
                         </li>
                     ))}
                 </ul>
             )}
-        </div>
+        </div> */}
     </div>
   );
 };
