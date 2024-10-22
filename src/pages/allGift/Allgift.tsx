@@ -6,7 +6,7 @@ import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const Allgift = () => {
   const axiosPublic=useAxiosPublic()
-  const { handleFilterChange, allGifts, gifts, loading } = useAuth() ?? {} ;
+  const { handleFilterChange, allGifts, loading } = useAuth() ?? {} ;
   const [categories, setCategories] = useState<string[]>([]);
  const fetchCategories = async () => {
   try {

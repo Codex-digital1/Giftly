@@ -107,7 +107,7 @@ interface AuthContextType {
   wishlist: GiftType[];
   removeToWishlist: (gift: GiftType) => void;
   removeToCart: (gift: GiftType) => void;
-  handleFilterChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  handleFilterChange: (searchValue:string) => void;
   filters: {
     category: string;
     priceMin: number;
@@ -513,9 +513,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // console.log(309, giftOrderCheck)
 
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    e.preventDefault();
-    setFilters({ ...filters, [e.target.name]: e.target.value });
+  const handleFilterChange = (searchValue:string) => {
+    setFilters({ ...filters, search: searchValue });
   };
 
   const addToCart = (gift: GiftType) => {

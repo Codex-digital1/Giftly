@@ -18,6 +18,9 @@ const Navbar: React.FC = () => {
   const navigate=useNavigate()
   const {user,logOut,handleFilterChange,setUser}=useAuth()?? {};
   const [isOpen, setIsOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null); // Create a ref for the modal
  // Close the modal if clicked outside
  const cartLength = (() => {
@@ -62,9 +65,6 @@ const wishlistLength = (() => {
     document.removeEventListener("mousedown", handleClickOutside);
   };
 }, [isOpen]);
-const [query, setQuery] = useState('');
-    const [suggestions, setSuggestions] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
 
     // Fetch suggestions from the backend
     const fetchSuggestions = async (searchQuery: string) => {
@@ -90,8 +90,37 @@ const [query, setQuery] = useState('');
 
         return () => clearTimeout(timeoutId); // Cleanup on component unmount
     }, [query]);
+    const currentPath = window.location.pathname;
 
 // console.log(suggestions);
+const handleSearch=(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>)=>{
+  e.preventDefault();
+  const searchValue=e.target.value||''
+  handleFilterChange?.(searchValue)
+  setQuery(searchValue)
+  setShowSuggestions(true);
+  if (currentPath !== '/allGift') {
+    navigate('/allGift');
+  }  
+}
+const [showSuggestions, setShowSuggestions] = useState(false);
+
+const searchRef = useRef(null); // Create a ref for the search component
+
+  // Function to handle outside click
+  const handleClickOutside = (event) => {
+    if (searchRef.current && !searchRef.current.contains(event.target)) {
+      setShowSuggestions(false); // Hide suggestions if clicked outside
+    }
+  };
+
+  // Set up event listener
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="fixed w-full bg-secondary z-50 top-0 shadow-2xl">
@@ -111,11 +140,7 @@ const [query, setQuery] = useState('');
               type="text"
               name="search"
               value={query}
-              onChange={(e)=>{
-                handleFilterChange?.(e)
-                setQuery(e.target.value)
-                navigate('/allGift')
-              }}
+              onChange={handleSearch}
               className="border border-primary border-opacity-45 md:w-full rounded-lg  md:p-3 p-2  text-black   focus:outline-none focus:border-primary hover:border-primary"
 
               placeholder="find your Gift..."
@@ -125,13 +150,18 @@ const [query, setQuery] = useState('');
             </button>
           </label>
         </form>
-        {isLoading && <p className="absolute top-12 text-sm">Loading...</p>}
-            {suggestions.length > 0 && (
-                <ul className="absolute top-14  w-full  border bg-white shadow-lg">
+        {isLoading && <p className="absolute top-14 text-sm">Loading...</p>}
+            {showSuggestions && suggestions.length > 0 && (
+                <ul ref={searchRef} className="absolute top-14  w-full  border bg-white shadow-lg">
                     {suggestions.map((item) => (
                         <li
                             key={item._id}
                             className="p-2 hover:bg-gray-200 cursor-pointer"
+                            onClick={()=>{
+                              setQuery(item.giftName)
+                              handleFilterChange?.(item.giftName)
+                              setShowSuggestions(false);
+                            }}
                         >
                             {item.giftName}
                         </li>
