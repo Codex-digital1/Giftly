@@ -1,19 +1,25 @@
+import { useEffect, useState } from "react";
 import useAuth from "../../Provider/useAuth";
 import GiftCard from "../../components/shared/GiftCard";
 import LoadingSpinner from "../../components/shared/LoadingSpinner";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const Allgift = () => {
+  const axiosPublic=useAxiosPublic()
   const { handleFilterChange, allGifts, gifts, loading } = useAuth() ?? {} ;
-  // console.log(allGifts.map(i=>i.category));
- // Setting the gift categories in localStorage
-const giftCategory: string[] = [
-  ...new Set(gifts?.map((gift) => gift?.category)),
-];
-localStorage.setItem('giftCategory', JSON.stringify(giftCategory));
+  const [categories, setCategories] = useState<string[]>([]);
+ const fetchCategories = async () => {
+  try {
+      const response = await axiosPublic.get('/api/gifts/categories');
+      setCategories(response.data.data);
+  } catch (error) {
+      console.error('Error fetching categories:', error);
+  } 
+};
 
-// Getting the gift categories from localStorage
-const storedCategories = localStorage.getItem('giftCategory');
-const giftCategoryFromStorage: string[] = storedCategories ? JSON.parse(storedCategories) : [];
+useEffect(() => {
+  fetchCategories();
+}, []);
 
 
 
@@ -42,7 +48,7 @@ const giftCategoryFromStorage: string[] = storedCategories ? JSON.parse(storedCa
                 onChange={handleFilterChange}
               >
                 <option value="">All Products</option>
-                {giftCategoryFromStorage?.map((category: string, i: number) => (
+                {categories?.map((category: string, i: number) => (
                   <option key={i} value={category}>
                     {category}
                   </option>
