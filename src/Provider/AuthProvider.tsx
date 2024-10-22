@@ -180,7 +180,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [filters, setFilters] = useState({
     category: '',
     priceMin: 0,
-    priceMax: 5000,
+    priceMax: 500000,
     rating: 0,
     availability: 'all',
     sortBy: '',
@@ -385,7 +385,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     }
   })
-  // console.log(allGifts1);
+  // console.log(allGifts1);p
  
   useEffect(() => {
     (async () => {
