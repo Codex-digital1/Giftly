@@ -44,6 +44,7 @@ const Navbar: React.FC = () => {
     { name: <MdOutlineManageAccounts />, path: "/account", title: 'Account' },
     { name: <GiSelfLove />, path: "/wishList", title: 'Wishlist', count: wishlistLength },
     { name: <SlBasket />, path: "/cart", title: 'Cart', count: cartLength },
+    { name: <TranslateComponent />, path: "/", title: 'Language',},
   ];
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -63,7 +64,7 @@ const Navbar: React.FC = () => {
 
 
   return (
-    <div className="fixed w-full bg-secondary z-50 top-0 shadow-2xl py-[50px]">
+    <div className="fixed w-full bg-secondary z-50 top-0 shadow-2xl py-[10px]">
       <div className=" container mx-auto bg-secondary h-20 flex justify-between items-center  px-2">
         {/* Logo */}
         <div className="flex justify-center items-center cursor-pointer text-primary">
@@ -114,9 +115,9 @@ const Navbar: React.FC = () => {
         </nav>
         {/* mega menu Icons rightSide */}
         <div className=" flex md:gap-5 gap-1">
-          <div className="flex justify-center items-center gap-x-2 md:gap-x-6">
+          <div id="rightSideMenu" className="flex justify-center items-center gap-x-2 md:gap-x-6">
             <Notifications />
-            {megaMenu?.slice(4, 6).map((menu) => (
+            {megaMenu?.slice(4, 7).map((menu) => (
               <NavLink
                 data-tip={menu?.title}
                 key={menu.path}
@@ -129,7 +130,7 @@ const Navbar: React.FC = () => {
               >
                 {menu?.name}
 
-                <div className="absolute text-white -top-1 -right-2 rounded-full h-[15px] w-[15px] text-center text-xs bg-red-500">
+                <div className={`${menu?.count ? "block" : 'hidden'} absolute text-white -top-1 -right-2 rounded-full h-[15px] w-[15px] text-center text-xs bg-red-500`}>
                   {menu?.count}
                 </div>
 

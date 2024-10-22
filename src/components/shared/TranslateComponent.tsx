@@ -30,26 +30,27 @@ const TranslateComponent: React.FC = () => {
                 const intervalId = setInterval(() => {
                     const imgElement = document.querySelector<HTMLImageElement>('.goog-te-gadget-simple > img');
                     if (imgElement) {
-                        // Create a new language-related image
+                        // Create a new image
                         const newImage = document.createElement('img');
-                        newImage.src = '/english1.png'; // Your image path
-                        newImage.style.height = '20px'; // Set height to 20px
-                        newImage.alt = 'Language Icon'; // Set alt text for the image
+                        newImage.src = '/language.png'; 
+                        // newImage.style.height = '20px'; 
+                        // newImage.style.width = '20px'; 
+                        newImage.alt = 'Language Icon'; 
                         newImage.className = 'iconColor';
 
-                        // Replace the existing image
+                        
                         imgElement.parentNode?.replaceChild(newImage, imgElement);
-                        clearInterval(intervalId); // Stop the interval after replacement
+                        clearInterval(intervalId); 
                     }
-                }, 100); // Check every 100ms
+                }, 100);
 
-                return () => clearInterval(intervalId); // Clear interval on component unmount
+                return () => clearInterval(intervalId);
             }
         };
 
         const script = document.createElement("script");
         script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-        window.googleTranslateElementInit = googleTranslateElementInit; // No error now
+        window.googleTranslateElementInit = googleTranslateElementInit;
         document.body.appendChild(script);
 
         return () => {
