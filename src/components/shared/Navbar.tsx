@@ -93,9 +93,11 @@ const wishlistLength = (() => {
     const currentPath = window.location.pathname;
 
 // console.log(suggestions);
-const handleSearch=(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>)=>{
+const handleSearch=(e: React.FormEvent<HTMLFormElement>)=>{
   e.preventDefault();
-  const searchValue=e.target.value||''
+  const form = e.target as HTMLFormElement;
+  const searchValue = (form.elements.namedItem('search') as HTMLInputElement)?.value || '';
+  if(searchValue==='')return
   handleFilterChange?.(searchValue)
   setQuery(searchValue)
   setShowSuggestions(true);
@@ -123,8 +125,8 @@ const searchRef = useRef(null); // Create a ref for the search component
   }, []);
 
   return (
-    <div className="fixed w-full bg-secondary z-50 top-0 shadow-2xl">
-      <div className=" container mx-auto bg-secondary h-20 flex justify-between items-center  px-2">
+    <div className="fixed w-full bg-secondary pb-2  z-50 top-0 shadow-2xl">
+      <div className=" container mx-auto bg-secondary md:h-20 flex justify-between items-center  px-2 ">
         {/* Logo */}
         <div className="flex justify-center items-center cursor-pointer text-primary">
           <IoMdGift className="md:text-4xl text-base font-bold" />
@@ -133,7 +135,7 @@ const searchRef = useRef(null); // Create a ref for the search component
           </Link>
         </div>
         {/* Input */}
-        <div className="relative md:w-1/3 flex justify-center items-center">
+        <div className="relative hidden md:w-1/3 md:flex justify-center items-center">
         <form  className="w-full">
           <label className="relative group flex justify-center items-center">
             <input
@@ -186,8 +188,8 @@ const searchRef = useRef(null); // Create a ref for the search component
           ))}
         </nav>
         {/* mega menu Icons rightSide */}
-        <div className=" flex md:gap-5 gap-1">
-          <div className="flex justify-center items-center gap-x-2 md:gap-x-6">
+        <div className=" flex md:gap-5 gap-4">
+          <div className="flex justify-center items-center gap-x-3">
             <Notifications/>
             {megaMenu?.slice(4, 6).map((menu) => (
               <NavLink
@@ -195,8 +197,8 @@ const searchRef = useRef(null); // Create a ref for the search component
                 key={menu.path}
                 className={({ isActive }) =>
                   isActive
-                    ? "text-primary font-semibold text-lg md:text-3xl  relative "
-                    : "font-semibold text-black text-lg md:text-3xl tooltip relative "
+                    ? "text-primary font-semibold text-xl md:text-3xl  relative "
+                    : "font-semibold text-black text-xl md:text-3xl tooltip relative "
                 }
                 to={menu?.path}
               >
@@ -312,6 +314,46 @@ const searchRef = useRef(null); // Create a ref for the search component
           </div>
         </div>
       </div>
+      <div className="relative md:hidden md:w-1/3 flex justify-center items-center">
+        <form onSubmit={handleSearch} className="w-full">
+          <label className="relative group flex justify-center items-center">
+            <input
+              type="text"
+              name="search"
+              defaultValue={query}
+              onChange={(e)=>{
+                setQuery(e.target.value)
+  setShowSuggestions(true);
+              }}
+              // onChange={handleSearch}
+              className="border border-primary border-opacity-45 w-3/4 rounded-lg  md:p-3 p-2  text-black   focus:outline-none focus:border-primary hover:border-primary"
+
+              placeholder="find your Gift..."
+            />
+            <button type="submit" className="absolute  right-16  mt-0 ">
+            <IoSearch type="" className="group-hover:text-primary text-xl  cursor-pointer" />
+            </button>
+          </label>
+        </form>
+        {isLoading && <p className="absolute top-10 text-sm">Loading...</p>}
+            {showSuggestions && suggestions.length > 0 && (
+                <ul ref={searchRef} className="absolute top-10  w-3/4  border bg-white shadow-lg">
+                    {suggestions.map((item) => (
+                        <li
+                            key={item._id}
+                            className="p-2 hover:bg-gray-200 cursor-pointer"
+                            onClick={()=>{
+                              setQuery(item.giftName)
+                              handleFilterChange?.(item.giftName)
+                              setShowSuggestions(false);
+                            }}
+                        >
+                            {item.giftName}
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
     </div>
   );
 };
