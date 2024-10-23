@@ -68,7 +68,7 @@ export type OrderTypes = {
   userEmail: string;
   userName: string;
   userPhone: string;
-  sheduleDate: string;
+  scheduleDate: string;
   isShedule: string;
 };
 
@@ -88,7 +88,7 @@ export type OrderTypesProps = {
     userEmail: string;
     userName: string;
     userPhone: string;
-    sheduleDate: string;
+    scheduleDate: string;
     isShedule: string;
   };
 };
