@@ -27,7 +27,7 @@ const Timer: React.FC<TimerProps> = ({ targetDate, isUser }) => {
 
       if (difference <= 0) {
         clearInterval(interval);
-        alert("Countdown Complete!");
+        // alert("Countdown Complete!");
         setTimeRemaining(null);
       } else {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));

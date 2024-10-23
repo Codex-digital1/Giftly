@@ -15,7 +15,7 @@ const SingleOrder = ({ order }: OrderTypesProps) => {
         />
         {order?.isShedule && (
           <div className="absolute bottom-2 w-full">
-            <Timer targetDate={order?.sheduleDate} isUser={true} />
+            <Timer targetDate={order?.scheduleDate} isUser={true} />
           </div>
         )}
       </div>

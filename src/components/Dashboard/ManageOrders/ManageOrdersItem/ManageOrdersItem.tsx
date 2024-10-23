@@ -27,6 +27,7 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
 
     if (!data.success) return toast.error(data.message);
   };
+  console.log(order.scheduleDate);
   return (
     <tr className="odd:bg-gray-50">
       <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
@@ -47,7 +48,7 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
       </td>
       <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
         {order?.isShedule ? (
-          <Timer targetDate={order?.sheduleDate} isUser={false} />
+          <Timer targetDate={order?.scheduleDate} isUser={true} />
         ) : (
           "None"
         )}

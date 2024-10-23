@@ -132,7 +132,6 @@ const CartItem = () => {
       ?.value;
     const email = user?.email;
     const name = `${firstName}`;
-    const today = new Date().toDateString();
 
     // Prepare the data to be sent in the POST request
     const paymentDetails = {
@@ -141,14 +140,12 @@ const CartItem = () => {
       number,
       address,
       productId,
-      scheduleDate: 
-  state[0]?.startDate?.toDateString() === today 
-    ? '' 
-    : state[0]?.startDate,
+      scheduleDate:state[0]?.startDate,
       wrap: selectedWrap,
       message: personalMessage,
     };
-    // console.log(paymentDetails);
+    console.log(paymentDetails);
+  
 
     // Sending the POST request using Axios
     if (user) {
