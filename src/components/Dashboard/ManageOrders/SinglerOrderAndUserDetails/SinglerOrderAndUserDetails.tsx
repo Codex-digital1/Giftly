@@ -1,7 +1,11 @@
+import { OrderTypesProps } from "../../../../types/Types"
 
-const SinglerOrderAndUserDetails = () => {
+const SinglerOrderAndUserDetails = ({order}:OrderTypesProps) => {
+    console.log(order?.product_image)
   return (
-    <div>SinglerOrderAndUserDetails</div>
+    <div>
+        {/* Product Image */}
+    </div>
   )
 }
 

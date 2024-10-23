@@ -11,14 +11,14 @@ import SinglerOrderAndUserDetails from "../SinglerOrderAndUserDetails/SinglerOrd
 
 const ManageOrdersItem = ({ order }: OrderTypesProps) => {
   const [, , refetch] = useGetAllOrders();
-  const [isOpen, setIsOpen] = useState<boolean>(false)
-console.log(order)
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  console.log(order);
   const axiosPublic = useAxiosPublic();
 
   // Modal Functionality
-  const closeModal = ()=>{
-    setIsOpen(false)
-  }
+  const closeModal = () => {
+    setIsOpen(false);
+  };
   // Update Order Status
   const handleUpdateOrderStatus = async (
     e: React.ChangeEvent<HTMLSelectElement>,
@@ -61,9 +61,9 @@ console.log(order)
         )}
       </td>
       {/* Order Details Modal */}
-<MyModal isOpen={isOpen} close={closeModal}>
-  <SinglerOrderAndUserDetails/>
-</MyModal>
+      <MyModal isOpen={isOpen} close={closeModal} isLarge={true}>
+        <SinglerOrderAndUserDetails  order={order}/>
+      </MyModal>
       <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800 ">
         <div className="space-y-1 space-x-2 text-sm">
           <select
@@ -97,7 +97,12 @@ console.log(order)
               Delivered
             </option>
           </select>
-        <button className=" py-3 px-2 bg-primary rounded-md text-white" onClick={()=> setIsOpen(!isOpen)}>View Details</button>
+          <button
+            className=" py-3 px-2 bg-primary rounded-md text-white"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            View Details
+          </button>
         </div>
       </td>
     </tr>
