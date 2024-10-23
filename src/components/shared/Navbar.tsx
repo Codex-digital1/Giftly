@@ -293,12 +293,12 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
             </div>
             {/* Login Logout functionality */}
             {isOpen && (
-              <div ref={modalRef} className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-[25vw]  lg:w-[20vw] bg-white overflow-hidden -right-2  top-12 text-sm">
+              <div ref={modalRef} className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-[25vw]  lg:w-[250px] bg-white overflow-hidden -right-2  top-12 text-sm">
                 <div className="flex flex-col cursor-pointer ">
                   <div className="lg:hidden">
                     {
                       // navLink for menu
-                      megaMenu?.slice(0, 3).map((menu) => (
+                      megaMenu?.slice(0, 3)?.map((menu) => (
                         <NavLink
                           key={menu?.path}
                           className={({ isActive }) =>

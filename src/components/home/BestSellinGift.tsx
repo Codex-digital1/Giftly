@@ -37,8 +37,8 @@ const BestSellinGift = () => {
     <div>
       <MyContainer>
         <SectionHeading title="New Arrivals" subTitle="Best Selling Gifts" />
-        {loading && <LoadingSpinner card={true} large={false} smallHeight={false} />}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {loading ? <LoadingSpinner card={true} large={false} smallHeight={false} />:<>
+        <div className={` ${loading&&'hidden'} grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4`}>
           {gifts?.slice(12,24)?.map((gift) => (
             // drawerToggle={drawerToggle}
             <GiftCard key={gift?._id} gift={gift}  />
@@ -52,6 +52,8 @@ const BestSellinGift = () => {
             View More Products
           </Link>
         </div>
+        </>}
+        
       </MyContainer>
     </div>
   );
