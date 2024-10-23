@@ -1,16 +1,15 @@
 import Swal from "sweetalert2";
 import TableTd from "../../../shared/TableTd";
-import { MdBlock } from "react-icons/md";
 import { useMutation } from "@tanstack/react-query";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import useAuth from "../../../../Provider/useAuth";
 
-type UserResponse = {
-  id: string;
-  email: string;
-  role: string
-  // Add any other properties your API response returns for a user
-}[];
+// type UserResponse = {
+//   id: string;
+//   email: string;
+//   role: string
+//   // Add any other properties your API response returns for a user
+// }[];
 
 const UserLisItem = ({ userData, refetch }: { userData: any, refetch: any }) => {
   const { user } = useAuth() || {};
