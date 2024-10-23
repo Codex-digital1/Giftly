@@ -66,9 +66,8 @@ code {
 }
 .goog-te-gadget-simple {
   display: flex !important;
-  height: 50px !important; /* Default height for larger screens */
+  height: 40px !important;
   border: none !important;
-  padding: 5px 10px !important;
   background-color: #FFF3F5 !important;
   border-radius: 10px;
 }
@@ -90,7 +89,7 @@ code {
 /* Large screens (lg): 1024px and below */
 @media (max-width: 1024px) {
   .goog-te-gadget-simple {
-    height: 40px !important;
+    height: 35px !important;
   }
 }
 

@@ -44,7 +44,7 @@ const Navbar: React.FC = () => {
     { name: <MdOutlineManageAccounts />, path: "/account", title: 'Account' },
     { name: <GiSelfLove />, path: "/wishList", title: 'Wishlist', count: wishlistLength },
     { name: <SlBasket />, path: "/cart", title: 'Cart', count: cartLength },
-    { name: <TranslateComponent />, path: "/", title: 'Language',},
+    { name: <TranslateComponent />,path:"/", title: 'Language'},
   ];
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -72,10 +72,6 @@ const Navbar: React.FC = () => {
           <Link to="/" className="md:text-2xl text-base font-bold">
             Giftly
           </Link>
-        </div>
-
-        <div className="flex justify-center items-center  z-50">
-          <TranslateComponent />
         </div>
 
         {/* Input */}
@@ -107,7 +103,7 @@ const Navbar: React.FC = () => {
                   ? "font-bold md:text-lg text-primary  "
                   : "font-bold text-lg  "
               }
-              to={menu.path}
+              to={menu?.path}
             >
               {menu.name}
             </NavLink>
