@@ -53,8 +53,8 @@ console.log(order)
         )}
       </td>
 
-      <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800 flex justify-center items-center gap-2">
-        <div className="space-y-1 text-sm">
+      <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800 ">
+        <div className="space-y-1 space-x-2 text-sm">
           <select
             name="status"
             onChange={(e) => handleUpdateOrderStatus(e, order?._id)}
@@ -86,8 +86,8 @@ console.log(order)
               Delivered
             </option>
           </select>
+        <button className=" py-3 px-2 bg-primary rounded-md text-white">View Details</button>
         </div>
-        {/* <button className=" py-3">View Details</button> */}
       </td>
     </tr>
   );
