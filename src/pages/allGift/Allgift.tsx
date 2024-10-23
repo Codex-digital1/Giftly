@@ -25,7 +25,7 @@ useEffect(() => {
 
   return (
     <>
-      <div className="container mx-auto mt-20 p-4 min-h-[calc(100vh-530px)]">
+      <div className="container mx-auto custom-margin p-4 min-h-[calc(100vh-530px)]">
         <div className="my-4">
           <h3 className="text-2xl font-bold mb-2">Pick Your Gift!</h3>
           <img
@@ -35,7 +35,7 @@ useEffect(() => {
           />
         </div>
         {/* Filters Section */}
-        <div id="all-gift-container" className="my-8">
+        <div id="all-gift-container" className="my-5">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-8">
             {/* Category Filter */}
             <div>

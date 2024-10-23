@@ -52,7 +52,6 @@ const CartItem = () => {
   // Handle date selection (only update startDate)
   const handleSelect = (ranges: RangeKeyDict) => {
     const { selection } = ranges;
-
     // console.log("Selected date:", selection.startDate);
 
     // Update state to store only the selected startDate

@@ -1,16 +1,26 @@
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import TableTd from "../../../shared/TableTd";
 import { OrderTypesProps } from "../../../../types/Types";
-import React from "react";
+import React, { useState } from "react";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import Timer from "../../../shared/Timer";
 import useGetAllOrders from "../../../../Hooks/useGetAllOrders";
+import MyModal from "../../../shared/MyModal";
+import SinglerOrderAndUserDetails from "../SinglerOrderAndUserDetails/SinglerOrderAndUserDetails";
+import useAuth from "../../../../Provider/useAuth";
 
 const ManageOrdersItem = ({ order }: OrderTypesProps) => {
+  const {user} = useAuth() ?? {}
   const [, , refetch] = useGetAllOrders();
-
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  console.log(order);
   const axiosPublic = useAxiosPublic();
+
+  // Modal Functionality
+  const closeModal = () => {
+    setIsOpen(false);
+  };
   // Update Order Status
   const handleUpdateOrderStatus = async (
     e: React.ChangeEvent<HTMLSelectElement>,
@@ -27,7 +37,7 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
 
     if (!data.success) return toast.error(data.message);
   };
-  console.log(order.scheduleDate);
+  // console.log(order.scheduleDate);
   return (
     <tr className="odd:bg-gray-50">
       <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
@@ -38,7 +48,7 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
         />
       </td>
       <TableTd tdHeading={order?.product_name} />
-      <TableTd tdHeading={order?.product_brand} />
+      {/* <TableTd tdHeading={order?.product_brand} /> */}
 
       <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
         <p className="flex justify-center items-center">
@@ -48,14 +58,17 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
       </td>
       <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
         {order?.isShedule ? (
-          <Timer targetDate={order?.scheduleDate} isUser={true} />
+          <Timer targetDate={order?.scheduleDate} user={user} isOrderPage={false}/>
         ) : (
           "None"
         )}
       </td>
-
-      <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
-        <div className="space-y-1 text-sm">
+      {/* Order Details Modal */}
+      <MyModal isOpen={isOpen} close={closeModal} isLarge={true}>
+        <SinglerOrderAndUserDetails  order={order}/>
+      </MyModal>
+      <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800 ">
+        <div className="space-y-1 space-x-2 text-sm">
           <select
             name="status"
             onChange={(e) => handleUpdateOrderStatus(e, order?._id)}
@@ -87,6 +100,12 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
               Delivered
             </option>
           </select>
+          <button
+            className=" py-3 px-2 bg-primary rounded-md text-white"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            View Details
+          </button>
         </div>
       </td>
     </tr>

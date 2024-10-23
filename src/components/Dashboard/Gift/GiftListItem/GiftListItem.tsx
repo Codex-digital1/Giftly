@@ -69,7 +69,7 @@ const GiftListItem = ({
 
   return (
     <>
-       
+
       {allGifts1?.map((gift) => (
         <tr className="odd:bg-gray-50">
           <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
@@ -83,7 +83,17 @@ const GiftListItem = ({
           <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
             {gift?.category}
           </td>
-          <TableTd tdHeading={gift?.availability} />
+          <td className="whitespace-nowrap  px-4 py-2 text-base font-medium text-gray-800">
+            <span className={`rounded-3xl px-3 py-1 ${gift?.availability === 'In Stock'
+              ? 'bg-green-300'
+              : gift?.availability === 'Out of Stock'
+                ? 'bg-red-300'
+                : 'bg-gray-300'
+              }`}>{gift?.availability}</span>
+
+
+          </td>
+          {/* <TableTd tdHeading={gift?.availability} /> */}
           <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
             <p className="flex justify-center items-center">
               <span>{gift?.price}</span>

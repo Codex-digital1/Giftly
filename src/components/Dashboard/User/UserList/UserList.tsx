@@ -4,6 +4,7 @@ import UserLisItem from "../UserLisItem/UserLisItem";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
+// User interface
 interface User {
   _id: string;
   image: string;
@@ -11,27 +12,22 @@ interface User {
   email: string;
 }
 
-interface UserResponse {
-  data: User[];
-  error: boolean;
-  success: boolean;
-  message: string;
-}
+
 
 const UserList = () => {
-  const { data, isLoading } = useQuery<UserResponse>({
-    queryKey: ["allUsers"],
-    queryFn: async (): Promise<UserResponse> => {
-      const res = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/allUsers`
+  const { data, isLoading,refetch } = useQuery<any>({
+    queryKey: ["getUsers"],
+    queryFn: async (): Promise<any> => {
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}/user/getUsers`
       );
-      return res.data;
+      return response;
     },
   });
 
-  // console.log(data?.data);
+  console.log("user data", data);
 
-  if (isLoading) return <LoadingSpinner></LoadingSpinner>
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <div>
@@ -47,9 +43,9 @@ const UserList = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-200 text-center">
-            {data?.data?.map((val: User) => {
-              return <UserLisItem key={val._id} userData={val} />;
-            })}
+            {data?.data?.map((val: User) => (
+              <UserLisItem key={val._id} userData={val} refetch={refetch}/>
+            ))}
           </tbody>
         </table>
       </div>

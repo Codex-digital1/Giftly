@@ -25,6 +25,11 @@ code {
 
   .btn-secondary {
     @apply py-3 px-6 text-sm bg-primary text-white font-semibold cursor-pointer hover:bg-[#BF2718] transition-all duration-300 ease-linear border-none capitalize;
+ 
+  }
+  .btn-admin {
+    @apply flex items-center gap-2 bg-[#41e49b] whitespace-nowrap py-1 px-2 text-white text-sm font-normal cursor-pointer rounded hover:bg-[#41e49b] transition-all duration-300 ease-linear capitalize;
+ 
   }
 
   
@@ -34,6 +39,10 @@ code {
 @layer utilities {
   .section-to-section-margin {
     @apply mt-8 mb-8 md:mt-16 md:mb-16 lg:mt-24 lg:mb-24;
+  }
+
+  .custom-margin {
+    @apply mt-[110px] mb-5 md:mt-[150px] md:mb-12;
   }
 
   .scrollbar-none::-webkit-scrollbar {
@@ -66,9 +75,8 @@ code {
 }
 .goog-te-gadget-simple {
   display: flex !important;
-  height: 50px !important; /* Default height for larger screens */
+  height: 40px !important;
   border: none !important;
-  padding: 5px 10px !important;
   background-color: #FFF3F5 !important;
   border-radius: 10px;
 }
@@ -90,7 +98,7 @@ code {
 /* Large screens (lg): 1024px and below */
 @media (max-width: 1024px) {
   .goog-te-gadget-simple {
-    height: 40px !important;
+    height: 35px !important;
   }
 }
 
@@ -108,3 +116,4 @@ span:nth-of-type(2) {
 .goog-te-gadget-icon {
   display: none !important;
 }
+ 
