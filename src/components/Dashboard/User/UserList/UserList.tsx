@@ -19,7 +19,7 @@ interface UserResponse {
 }
 
 const UserList = () => {
-  const { data, isLoading } = useQuery<UserResponse>({
+  const { data, isLoading,refetch } = useQuery<UserResponse>({
     queryKey: ["allUsers"],
     queryFn: async (): Promise<UserResponse> => {
       const res = await axios.get(
@@ -29,10 +29,10 @@ const UserList = () => {
     },
   });
 
-  // console.log(data?.data);
-
+  
   if (isLoading) return <LoadingSpinner></LoadingSpinner>
-
+  
+  // console.log(data?.data);
   return (
     <div>
       <div className="overflow-x-auto">
@@ -48,7 +48,7 @@ const UserList = () => {
 
           <tbody className="divide-y divide-gray-200 text-center">
             {data?.data?.map((val: User) => {
-              return <UserLisItem key={val._id} userData={val} />;
+              return <UserLisItem key={val._id} userData={val} refetch={refetch} />;
             })}
           </tbody>
         </table>
