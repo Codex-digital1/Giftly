@@ -213,10 +213,25 @@ const ChatContainer: React.FC = () => {
         setSelectedImage(null); // Reset the image after sending
     };
 
+    const playSound = () => {
+        const audio = new Audio('/Notification.mp3');
+        audio.volume = 0.9;
+        audio.play();
+    };
+
     const handleSend = () => {
         if (text.trim() || selectedImage) {
             addMessage(text);
+            playSound()
             setText('');
+        }
+    };
+
+    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); 
+            handleSend();
+            playSound()
         }
     };
 
@@ -420,7 +435,8 @@ const ChatContainer: React.FC = () => {
                             placeholder="Type your message..."
                             value={text}
                             onChange={(e) => setText(e.target.value)}
-                            onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                            onKeyPress={handleKeyPress}
+                        // onKeyDown={(e) => e.key === "Enter" && handleSend()}
                         />
                         <button
                             type="button"
