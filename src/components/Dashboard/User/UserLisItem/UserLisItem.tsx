@@ -23,7 +23,7 @@ const UserLisItem = ({ userData, refetch }: { userData: any, refetch: any }) => 
       const res = await axiosPublic.patch(`/manage-users/${email}`, role);
       return res.data;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       Swal.fire({
         title: "Success!",
         text: "Role has been changed.",
