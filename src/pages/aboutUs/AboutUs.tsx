@@ -39,6 +39,7 @@ const servicesData = [
     describe:
       "Get immediate updates on your gift's delivery status. preferences, ensuring a memorable . You'll receive real-time notifications to ensure you're always in the loop from the moment your gift is sent to its final delivery.",
   },
+  
 ];
 
 const goalData = [
@@ -149,9 +150,9 @@ form.reset();
         <h1 className="text-xl font-bold text-primary mt-3">Services</h1>
         <hr className="w-40 border border-primary mb-3" />
         <div className="flex justify-center">
-          <div className="grid lg:grid-cols-4 md:grid-cols-3 justify-center gap-x-2 items-center gap-y-2">
+          <div className="grid lg:grid-cols-4 md:grid-cols-2 justify-center gap-x-2 items-center gap-y-2">
             {servicesData?.map((cartData) => (
-              <div className="w-[373px] h-[182px] border rounded-xl p-4 space-y-3 bg-white  cursor-pointer  hover:border-primary duration-500">
+              <div className=" md:h-[200px] border rounded-xl p-4 space-y-3 bg-white  cursor-pointer  hover:border-primary duration-500">
                 <h1 className="flex gap-x-2 items-center text-xl font-semibold">
                   <span className="text-primary text-3xl">
                     {cartData?.icon}
@@ -178,14 +179,14 @@ form.reset();
       </div>
       {/* Our Goal */}
       <section className="flex flex-col-reverse md:flex-row border-l-4 border-primary rounded-3xl mt-10">
-        <div className=" flex-1 flex items-center p-4">
+        <div className=" flex-1 flex items-center p-4 ">
           <div className="space-y-4">
             {goalData?.map((data) => (
               <div className="flex gap-x-2">
                 <FaArrowRightLong className="w-24 text-2xl text-primary " />
                 <h1 className="text-justify">
                   <span className="font-semibold">{data?.title}</span>
-                  <span>{data?.description}</span>
+                  <p>{data?.description}</p>
                 </h1>
               </div>
             ))}
@@ -195,6 +196,9 @@ form.reset();
           <img src={goal} className=" h-[500px]" alt="goal" />
         </div>
       </section>
+
+ 
+
 
       {/* Get in touch ! */}
       <section className="md:flex justify-center items-center md:h-[500px] border-r-4 border-primary rounded-3xl">
@@ -227,6 +231,7 @@ form.reset();
                 placeholder="Your Name"
                 name="name"
                 type="text"
+                required
               />
             </div>
             <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
@@ -239,6 +244,7 @@ form.reset();
                 placeholder="Your Email"
                 name="email"
                 type="email"
+                required
               />
             </div>
             <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
@@ -250,6 +256,8 @@ form.reset();
                 id="_message"
                 placeholder="what's in your mind"
                 name="message"
+                required
+
               />
             </div>
             <button className="btn-primary h-10 w-28">Send Message</button>
