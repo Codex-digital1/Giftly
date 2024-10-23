@@ -25,6 +25,11 @@ code {
 
   .btn-secondary {
     @apply py-3 px-6 text-sm bg-primary text-white font-semibold cursor-pointer hover:bg-[#BF2718] transition-all duration-300 ease-linear border-none capitalize;
+ 
+  }
+  .btn-admin {
+    @apply flex items-center gap-2 bg-[#41e49b] whitespace-nowrap py-1 px-2 text-white text-sm font-normal cursor-pointer rounded hover:bg-[#41e49b] transition-all duration-300 ease-linear capitalize;
+ 
   }
 
   
@@ -111,4 +116,4 @@ span:nth-of-type(2) {
 .goog-te-gadget-icon {
   display: none !important;
 }
-
+ 

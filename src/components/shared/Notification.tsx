@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { RiNotification2Fill, RiNotification3Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import io from "socket.io-client";
+import useAuth from "../../Provider/useAuth";
 
 // Define the type for a notification
 interface Notification {
@@ -15,9 +16,11 @@ interface Notification {
 
 
 // URL of your backend server
-const socket = io(import.meta.env.VITE_SERVER_URL);
+const socket = io(import.meta.env.VITE_SERVER_URL,{ autoConnect: false });
+
 
 const Notifications = () => {
+  const {user}=useAuth()?? {};
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<Notification[]>(() => {
     const getNotifi = localStorage.getItem("notifications");
@@ -27,6 +30,9 @@ const Notifications = () => {
   const modalRef = useRef<HTMLDivElement>(null); // Create a ref for the modal
 
   useEffect(() => {
+    if (user) {
+      socket.emit('registerUser', user?._id);
+    }
     // Listen for initial notifications when the client connects
     socket.on("initialNotifications", (data: Notification[]) => {
       setNotifications(() => {
@@ -61,8 +67,9 @@ const Notifications = () => {
       socket.off("newNotification");
       socket.off("receiveNotification");
     };
+    
   }, []);
-  console.log(notifications);
+  // console.log(notifications);
 
   // Close the modal if clicked outside
   useEffect(() => {
@@ -99,16 +106,16 @@ const Notifications = () => {
           </div>
         )}
         {isOpen ? (
-          <RiNotification2Fill className="text-2xl transition" />
+          <RiNotification2Fill className="text-xl md:text-3xl transition" />
         ) : (
-          <RiNotification3Line className="text-2xl" />
+          <RiNotification3Line className="text-xl md:text-3xl" />
         )}
       </button>
 
       {isOpen && (
         <div
           ref={modalRef}
-          className="absolute z-10 h-[400px] overflow-auto transition-all rounded-md shadow-md w-[40vw] md:w-[25vw] lg:w-[30vw] bg-white -right-2 top-12 text-sm"
+          className="absolute z-10 h-[400px] overflow-auto transition-all rounded-md shadow-md w-[55vw] md:w-[25vw] lg:w-[30vw] bg-white -right-2 top-12 text-sm"
         >
           <div className="flex flex-col">
             <div className="px-4 py-3 border-b-2 font-bold text-lg">

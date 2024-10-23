@@ -15,7 +15,7 @@ interface User {
 
 
 const UserList = () => {
-  const { data, isLoading } = useQuery<any>({
+  const { data, isLoading,refetch } = useQuery<any>({
     queryKey: ["getUsers"],
     queryFn: async (): Promise<any> => {
       const response = await axios.get(
@@ -44,7 +44,7 @@ const UserList = () => {
 
           <tbody className="divide-y divide-gray-200 text-center">
             {data?.data?.map((val: User) => (
-              <UserLisItem key={val._id} userData={val} />
+              <UserLisItem key={val._id} userData={val} refetch={refetch}/>
             ))}
           </tbody>
         </table>

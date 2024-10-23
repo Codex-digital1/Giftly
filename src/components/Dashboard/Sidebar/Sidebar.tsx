@@ -40,7 +40,7 @@ const Sidebar = () => {
         .get(`/getAUser/${user?.email}`)
         .then((response) => {
           setRole(response?.data?.data);
-          console.log(response);
+          // console.log(response);
         })
         .catch((error) => {
           console.error("Error fetching user data:", error);
