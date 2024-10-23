@@ -49,7 +49,7 @@ export interface GiftType {
   color?: string;
   type?: string;
   category?: string;
-  availability: boolean; 
+  availability: string | boolean; 
   quantity?: number;
 }
 

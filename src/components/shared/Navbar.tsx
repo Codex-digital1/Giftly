@@ -9,13 +9,27 @@ import avatarImg from "../../assets/placeholder.jpg";
 import { RiMenuUnfold4Line2 } from "react-icons/ri";
 import useAuth from "../../Provider/useAuth";
 import Notifications from "./Notification";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
+
+type Suggestion = {
+  _id: string;
+  giftName: string;
+};
+
 import TranslateComponent from "./TranslateComponent";
 
 
 const Navbar: React.FC = () => {
+  const axiosPublic=useAxiosPublic()
+  const {user,logOut,handleSearchChange,setUser}=useAuth()?? {};
+
+
+
   const navigate = useNavigate()
-  const { user, logOut, handleFilterChange, setUser } = useAuth() ?? {};
   const [isOpen, setIsOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState<Suggestion[] | []>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null); // Create a ref for the modal
   // Close the modal if clicked outside
   const cartLength = (() => {
@@ -62,10 +76,88 @@ const Navbar: React.FC = () => {
     };
   }, [isOpen]);
 
+    // Fetch suggestions from the backend
+    const fetchSuggestions = async (searchQuery: string) => {
+        try {
+            setIsLoading(true);
+            const response = await axiosPublic.get(
+                `/api/gifts/suggestions?query=${searchQuery}`
+            );
+            console.log(response);
+            setSuggestions(response.data.data); // Update suggestions list
+        } catch (error) {
+            console.error('Error fetching suggestions:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // Debounce function to limit the API calls
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (query) fetchSuggestions(query);
+        }, 300); // Delay of 300ms
+
+        return () => clearTimeout(timeoutId); // Cleanup on component unmount
+    }, [query]);
+    const currentPath = window.location.pathname;
+
+// console.log(suggestions);
+const handleSearch=(e: React.FormEvent<HTMLFormElement>)=>{
+  e.preventDefault();
+  // const form = e.target as HTMLFormElement;
+  // const searchValue = (form.elements.namedItem('search') as HTMLInputElement)?.value || '';
+  // if(searchValue==='')return
+  handleSearchChange?.(query)
+  // setQuery(searchValue)
+  // setShowSuggestions(true);
+  if (currentPath !== '/allGift') {
+    navigate('/allGift');
+  }  
+}
+const [showSuggestions, setShowSuggestions] = useState(false);
+const [showSuggestionsMinScreen, setShowSuggestionsMinScreen] = useState(false);
+
+const searchRef = useRef<HTMLUListElement | null>(null); // Create a ref for the search component
+const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a ref for the search component
+
+  // Function to handle outside click
+  const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      setShowSuggestions(false); // Hide suggestions if clicked outside
+    }
+  };
+  // Function to handle outside click
+  const handleClickOutsideMinScreen = (event: MouseEvent) => {
+      if (searchRefMinScreen.current && !searchRefMinScreen.current.contains(event.target as Node)) {
+        setShowSuggestionsMinScreen(false); // Hide suggestions if clicked outside
+    }
+  };
+
+  // Set up event listener
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutsideMinScreen);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutsideMinScreen);
+    };
+  }, []);
+  const handleSuggestionClick=(giftName:string)=>{
+    console.log(giftName,'132');
+    setQuery(giftName)
+    handleSearchChange?.(giftName)
+    setTimeout(() =>{ 
+      setShowSuggestions(false)
+      setShowSuggestionsMinScreen(false)
+    }, 100);
+  }
+  console.log(query);
+  console.log(suggestions);
 
   return (
-    <div className="fixed w-full bg-secondary z-50 top-0 shadow-2xl py-[10px]">
-      <div className=" container mx-auto bg-secondary h-20 flex justify-between items-center  px-2">
+    <div className="fixed w-full bg-secondary pb-2  z-50 top-0 shadow-2xl">
+      <div className=" container mx-auto bg-secondary md:h-20 flex justify-between items-center  px-2 ">
         {/* Logo */}
         <div className="flex justify-center items-center cursor-pointer text-primary">
           <IoMdGift className="md:text-4xl text-base font-bold" />
@@ -74,19 +166,19 @@ const Navbar: React.FC = () => {
           </Link>
         </div>
 
-        <div className="flex justify-center items-center  z-50">
-          <TranslateComponent />
-        </div>
+        
 
         {/* Input */}
-        <form className="md:w-1/5">
+        <div className="relative hidden md:w-1/3 md:flex justify-center items-center">
+        <form  onSubmit={handleSearch} className="w-full">
           <label className="relative group flex justify-center items-center">
             <input
               type="text"
               name="search"
-              onChange={(e) => {
-                handleFilterChange?.(e)
-                navigate('/allGift')
+              value={query}
+              onChange={(e)=>{
+                setQuery(e.target.value)
+                setShowSuggestions(true);
               }}
               className="border border-primary border-opacity-45 md:w-full rounded-lg  md:p-3 p-2  text-black   focus:outline-none focus:border-primary hover:border-primary"
 
@@ -97,8 +189,29 @@ const Navbar: React.FC = () => {
             </button>
           </label>
         </form>
-        {/* Mega menu leftSide */}
-        <nav className="space-x-4 lg:flex hidden">
+        {isLoading && <p className="absolute top-14 text-sm">Loading...</p>}
+        {showSuggestions && suggestions?.length > 0 && (
+                <ul ref={searchRef} className=" flex flex-col absolute top-12  w-3/4  border bg-white shadow-lg">
+                    {suggestions?.map((item) => (
+                        <button
+                        type="button"
+                            key={item?._id}
+                            className="p-2 text-left hover:bg-gray-200 cursor-pointer"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              console.log('Button clicked:', item?.giftName);
+                              handleSuggestionClick(item?.giftName);
+                            }}
+                            
+                        >
+                            {item?.giftName}
+                        </button>
+                    ))}
+                </ul>
+            )}
+        </div>
+          {/* Mega menu leftSide */}
+          <nav className="space-x-4 lg:flex hidden">
           {megaMenu?.slice(0, 3).map((menu) => (
             <NavLink
               key={menu.path}
@@ -113,18 +226,19 @@ const Navbar: React.FC = () => {
             </NavLink>
           ))}
         </nav>
+        
         {/* mega menu Icons rightSide */}
-        <div className=" flex md:gap-5 gap-1">
-          <div id="rightSideMenu" className="flex justify-center items-center gap-x-2 md:gap-x-6">
-            <Notifications />
+        <div className=" flex md:gap-5 gap-4">
+          <div className="flex justify-center items-center gap-x-3">
+            <Notifications/>
             {megaMenu?.slice(4, 7).map((menu) => (
               <NavLink
                 data-tip={menu?.title}
                 key={menu.path}
                 className={({ isActive }) =>
                   isActive
-                    ? "text-primary font-semibold text-lg md:text-3xl  relative "
-                    : "font-semibold text-black text-lg md:text-3xl tooltip relative "
+                    ? "text-primary font-semibold text-xl md:text-3xl  relative "
+                    : "font-semibold text-black text-xl md:text-3xl tooltip relative "
                 }
                 to={menu?.path}
               >
@@ -179,12 +293,12 @@ const Navbar: React.FC = () => {
             </div>
             {/* Login Logout functionality */}
             {isOpen && (
-              <div ref={modalRef} className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-[25vw]  lg:w-[20vw] bg-white overflow-hidden -right-2  top-12 text-sm">
+              <div ref={modalRef} className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-[25vw]  lg:w-[250px] bg-white overflow-hidden -right-2  top-12 text-sm">
                 <div className="flex flex-col cursor-pointer ">
                   <div className="lg:hidden">
                     {
                       // navLink for menu
-                      megaMenu?.slice(0, 3).map((menu) => (
+                      megaMenu?.slice(0, 3)?.map((menu) => (
                         <NavLink
                           key={menu?.path}
                           className={({ isActive }) =>
@@ -240,6 +354,42 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </div>
+      <div className="relative md:hidden md:w-1/3 flex justify-center items-center">
+        <form onSubmit={handleSearch} className="w-full">
+          <label className="relative group flex justify-center items-center">
+            <input
+              type="text"
+              name="search"
+              value={query}
+              onChange={(e)=>{
+                setQuery(e.target.value)
+                setShowSuggestionsMinScreen(true);
+              }}
+              // onChange={handleSearch}
+              className="border border-primary border-opacity-45 w-3/4 rounded-lg  md:p-3 p-2  text-black   focus:outline-none focus:border-primary hover:border-primary"
+
+              placeholder="find your Gift..."
+            />
+            <button type="submit" className="absolute  right-16  mt-0 ">
+            <IoSearch type="" className="group-hover:text-primary text-xl  cursor-pointer" />
+            </button>
+          </label>
+        </form>
+        {isLoading && <p className="absolute top-10 text-sm">Loading...</p>}
+            {showSuggestionsMinScreen && suggestions.length > 0 && (
+                <ul ref={searchRefMinScreen} className="absolute top-10  w-3/4  border bg-white shadow-lg">
+                    {suggestions?.map((item) => (
+                        <li
+                            key={item?._id}
+                            className="p-2 hover:bg-gray-200 cursor-pointer"
+                            onClick={()=>handleSuggestionClick(item?.giftName)}
+                        >
+                            {item?.giftName}
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
     </div>
   );
 };

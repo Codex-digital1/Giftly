@@ -3,17 +3,26 @@ import { MdCancel } from 'react-icons/md';
 import useAxiosPublic from '../../../../Hooks/useAxiosPublic';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { GiftType } from '../../../../types/Types';
+import { ImSpinner10 } from 'react-icons/im';
+// Define the type for the props
+interface GiftUpdateFormProps {
+  closeUpdateGiftAddModal: () => void;
+  gift: GiftType | null
+}
 
-const GiftUpdateForm: React.FC<{ giftId: string | null }> = ({ giftId }) => {
+const GiftUpdateForm: React.FC<GiftUpdateFormProps> = ({ gift,closeUpdateGiftAddModal }) => {
   const axiosPublic = useAxiosPublic();
+  const [isLoading, setIsLoading] = useState(false);
+
   // Cloudinary configuration
   const preset_key = "fkaap0pt";
   const cloud_name = "dhmf91dsb";
   // State to track the uploaded images URLs
-  const [giftImage, setImages] = useState<string[]>([]);
+  const [giftImage, setImages] = useState<string[]>(gift?.giftImage||[]);
   const [isUploading, setIsUploading] = useState(false); // Track upload status
 console.log(isUploading);
-  console.log(giftId, 'inside the form');
+  // console.log(giftId, 'inside the form');
 
   // Handle image selection and upload to Cloudinary
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -49,6 +58,7 @@ console.log(isUploading);
 
   // Handle form submission and update the gift
   const handleForm = async (e: React.FormEvent) => {
+    setIsLoading(true)
     e.preventDefault(); 
     const formData = new FormData(e.currentTarget as HTMLFormElement);
     const giftName = formData.get('giftName');
@@ -76,18 +86,20 @@ console.log(isUploading);
 
     try {
       // Perform the update request
-      const response = await axiosPublic.put(`/${giftId}`, updateGiftData);
+      const response = await axiosPublic.put(`/${gift?._id}`, updateGiftData);
       console.log(response.data.success);
       if (response.data.success) {
         toast.success('Gift updated successfully');
       } else {
         toast.error('Something went wrong');
       }
+      setIsLoading(false)
     } catch (error) {
+      setIsLoading(false)
       console.error("Error updating gift:", error);
       toast.error('Error updating gift');
     }
-
+    closeUpdateGiftAddModal()
     console.log('Images:', updateGiftData);
   };
 
@@ -107,6 +119,7 @@ console.log(isUploading);
                 name="giftName"
                 id="giftName"
                 placeholder="Gift Name"
+                defaultValue={gift?.giftName}
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               />
             </div>
@@ -117,6 +130,7 @@ console.log(isUploading);
               <input
                 type="number"
                 name="price"
+                defaultValue={gift?.price}
                 id="price"
                 placeholder="Price"
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
@@ -131,6 +145,7 @@ console.log(isUploading);
               <input
                 type="text"
                 name="brandName"
+                defaultValue={gift?.brand}
                 placeholder="Gift Name"
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               />
@@ -142,6 +157,7 @@ console.log(isUploading);
               <input
                 type="text"
                 name="availability"
+                defaultValue={gift?.availability ? `${gift?.availability}` : ""}
                  placeholder="availability"
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               />
@@ -156,7 +172,7 @@ console.log(isUploading);
                 name="size"
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               >
-                <option value="">Select Size</option>
+                <option value={gift?.size}>{gift?.size}</option>
                 <option value="s">S</option>
                 <option value="m">M</option>
                 <option value="l">L</option>
@@ -169,7 +185,7 @@ console.log(isUploading);
               <input
                 type="color"
                 name="color"
-                defaultValue="#f6b73c"
+                defaultValue={gift?.color}
                 className="h-10"
               />
             </div>
@@ -183,6 +199,7 @@ console.log(isUploading);
               <input
                 type="text"
                 name="category"
+                defaultValue={gift?.category}
                 placeholder="category"
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               />
@@ -194,19 +211,22 @@ console.log(isUploading);
               <input
                 type="text"
                 name="giftType"
+                defaultValue={gift?.type}
                 placeholder="Stock Quantity"
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div className="grid grid-cols-1  gap-2">
             <div className="space-y-1 text-sm">
               <label htmlFor="description" className="block text-gray-600">
                 Description
               </label>
               <textarea
+              rows={4}
                 name="description"
+                defaultValue={gift?.description}
                 className="w-full px-4 py-3 rounded-md focus:border-primary border outline-none text-gray-800 transition-all duration-200"
               ></textarea>
             </div>
@@ -225,7 +245,7 @@ console.log(isUploading);
             </div>
           </div>
           {/* Preview Images */}
-          <div className="flex justify-center items-center gap-1 flex-wrap">
+          <div className="flex justify-center items-center gap-3 flex-wrap">
             {giftImage?.map((item, idx) => (
               <div className="relative group" key={idx}>
                 <img src={item} alt="" className="w-20 h-20 object-cover" />
@@ -237,7 +257,10 @@ console.log(isUploading);
             ))}
           </div>
           <button className="block w-full p-3 text-center btn-primary">
-            Update
+          {isLoading ? (
+                <ImSpinner10 className="animate-spin mx-auto text-xl" />
+              ) : ('Update')
+              }
           </button>
         </form>
       </div>
