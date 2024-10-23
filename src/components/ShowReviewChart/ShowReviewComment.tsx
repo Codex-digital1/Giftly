@@ -29,14 +29,14 @@ const ShowReviewComment: React.FC<ShowReviewCommentProps> = ({ reviewByProductId
 
     return (
         <div ref={refProp} className="mt-5 relative">
-            <div className="absolute right-0 top-0 m-2">
+            {/* <div className="absolute right-0 top-0 m-2">
                 <select className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     <option value="newest">Default</option>
                     <option value="newest">Newest</option>
                     <option value="oldest">Oldest</option>
                     <option value="most-popular">Most Popular</option>
                 </select>
-            </div>
+            </div> */}
             {reviewByProductId && reviewByProductId.map((product: ReviewByProductId, index: number) => (
                 product?.review?.ReviewerProfileImage && (
                     <div key={index} className="flex items-center gap-4 border-t-2 py-8">
