@@ -4,11 +4,8 @@ import Home from "../pages/home/Home";
 import Error from "../pages/error/Error";
 import Allgift from "../pages/allGift/Allgift";
 import AboutUs from "../pages/aboutUs/AboutUs";
-import Account from "../pages/acount/Account";
 import WishList from "../pages/wishList/WishList";
 import Cart from "../pages/cart/Cart";
-import ProductDetails from "../pages/details/ProductDetails";
-import ProfileInfo from "../pages/acount/ProfileInfo";
 import MyOrders from "../pages/acount/MyOrders";
 import MyRating from "../pages/acount/MyRating";
 import MyWishlist from "../pages/acount/MyWishlist";
@@ -19,9 +16,14 @@ import OrderHistory from "../pages/Dashboard/Admin/OrderHistory/OrderHistory";
 import ManageOrders from "../pages/Dashboard/User/ManageOrders/ManageOrders";
 import Login from "../pages/authentication/Login";
 import Register from "../pages/authentication/Register";
-import Profile from "../pages/Dashboard/Common/Profile/Profile";
-import Statistics from "../pages/Dashboard/Admin/Statistics/Statistics";
 import Success from "../pages/success/Success";
+import OrderTracking from "../pages/Dashboard/User/OrderTracking/OrderTracking";
+import ChatContainer from "../pages/chatFeature/ChatContainer";
+import UserOrderHistory from "../pages/Dashboard/User/UserOrderHistory/UserOrderHistory";
+import StatisticsPage from "../pages/Dashboard/Admin/Statistics/StatisticsPage";
+import ProductDetails from './../pages/details/ProductDetails';
+import ProfileInfo from './../pages/acount/ProfileInfo';
+import DiscountUpForm from "../components/Dashboard/Gift/Form/DiscountUpForm";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +37,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/payment/success/:tranId",
-        element:<Success></Success>
+        element: <Success></Success>,
       },
       {
         path: "/allGift",
@@ -53,9 +55,9 @@ const router = createBrowserRouter([
         path: "/cart",
         element: <Cart></Cart>,
       },
-       
+
       {
-        path: "/productDetails",
+        path: "/productDetails/:id",
         element: <ProductDetails></ProductDetails>,
       },
       {
@@ -67,62 +69,73 @@ const router = createBrowserRouter([
         element: <Register></Register>,
       },
       {
-        path:'/productDetails/:id',
-        element:<ProductDetails></ProductDetails>
-      }
+        path: "/chatInbox",
+        element: <ChatContainer />,
+      },
     ],
   },
   // dash board for user and admin
   {
-    path:'/dashboard',
-    element: <Dashboard/>,
-    children:[
+    path: "/dashboard",
+    element: <Dashboard />,
+    children: [
       {
-        path:'statistics',
-        element:<Statistics/>
+        path: "statistics",
+        element: <StatisticsPage />,
       },
       {
-        path:'manage-users',
-        element:<Users/>
+        path: "manage-users",
+        element: <Users />,
       },
       {
-        path:'manage-gift',
-        element:<Gift/>
+        path: "manage-gift",
+        element: <Gift />,
       },
       {
-        path:'manage-users',
-        element:<Users/>
+        path: "discount",
+        element: <DiscountUpForm></DiscountUpForm> ,
       },
       {
-        path:'order-history',
-        element:<OrderHistory/>
+        path: "manage-users",
+        element: <Users />,
       },
       {
-        path:'manage-orders',
-        element:<ManageOrders/>
+        path: "order-history",
+        element: <OrderHistory />,
+      },
+      {
+        path: "manage-orders",
+        element: <ManageOrders />,
       },
       // user
       {
-        path:'my-orders',
-        element:<MyOrders></MyOrders>
+        path: "my-orders",
+        element: <MyOrders></MyOrders>,
+      },
+      {
+        path: "user/order-history",
+        element: <UserOrderHistory />,
+      },
+      {
+        path: "my-orders/order-status/:id",
+        element: <OrderTracking />,
       },
 
       {
-        path:'my-wishlist',
-        element:<MyWishlist></MyWishlist>
+        path: "my-wishlist",
+        element: <MyWishlist></MyWishlist>,
       },
       {
-        path:'my-rating',
-        element:<MyRating></MyRating>
+        path: "my-rating",
+        element: <MyRating></MyRating>,
       },
       // shared
       {
-        path:'profile',
-        element:<ProfileInfo></ProfileInfo>
+        path: "profile",
+        element: <ProfileInfo></ProfileInfo>,
       },
-      
-    ]
-  }
+    ],
+  },
 ]);
 
 export default router;

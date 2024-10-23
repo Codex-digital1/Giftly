@@ -6,6 +6,7 @@ import { Swiper as SwiperInstance } from "swiper";
 
 import "swiper/css";
 import "swiper/css/effect-fade";
+import { Link } from "react-router-dom";
 
 interface BannerItem {
   image: string;
@@ -70,9 +71,9 @@ const Banner: React.FC = () => {
                     {item.description}
                   </p>
 
-                  <button className="btn-secondary  z-30">
+                  <Link to={'/allGift'} className="btn-secondary  z-30">
                     shop now
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

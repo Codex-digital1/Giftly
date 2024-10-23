@@ -1,50 +1,56 @@
-# React + TypeScript + Vite
+# 🎁 Giftly  Your Personalized Virtual Gift Store
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
+**Giftly** is a user-friendly e-commerce platform designed to help users personalize and schedule virtual gifts for loved ones. We aim to make gift-giving easy and memorable.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Key Features
+- 🔔 **Real-Time Notifications:** Get notified immediately when your gift reaches the recipient.
+- 💬 **Live Chat Support:** Receive instant assistance for your shopping queries in real-time.
+- 📦 **Track Gift Delivery Status:** Easily track your gift's journey and receive updates on delivery status.
+- 🔒 **Secure Payment Gateway:** Enjoy a safe checkout experience with multiple payment options.
+- 📝 **Wishlist & Cart Functionality:** Save gift ideas in a wishlist and manage your cart for easy checkout.
+- ⭐ **Review and Rating Feature:** Leave reviews and ratings to help others find the perfect gift.
+- 📅 **Scheduled Delivery:** Plan gift deliveries for special occasions, ensuring they arrive on time.
+- 💰 **Discount Codes and Promotions:** Use special discounts during checkout for great savings on your gifts.
 
-## Expanding the ESLint configuration
+## 🛠 Technologies Used
+- **Frontend:** React, TypeScript, Tailwind CSS
+- **Backend:** Node.js, Express.js, Mongoose, MongoDB
+- **Third-party Services:** Cloudinary (image uploads), Firebase (authentication), SSLCommerz (payment processing), Socket.io (real-time communication)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## ⚙️ Installation Guide
+To set up **Giftly** on your local machine, follow these steps:
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Step 1: Clone the Client Repository
+```bash
+git clone https://github.com/Codex-digital1/Giftly.git
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+### Step 2: Navigate to the Project Directory
+```bash
+cd giftly
 ```
+
+### Step 3: Install Dependencies
+```bash
+npm install
+```
+
+### Step 4: Start the Client-Side Development Server
+```bash
+npm run dev
+```
+
+For server setup and instructions, please refer to the : 👉 [Giftly Server repository](https://github.com/Codex-digital1/Giftly-Server)
+
+
+
+
+
+
+
+ 
+
+
+

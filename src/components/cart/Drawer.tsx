@@ -1,11 +1,11 @@
 
 import { Link } from 'react-router-dom';
-import { drawerPropsType } from '../../types/Types';
+// import { drawerPropsType } from '../../types/Types';
 import DrawerCartItem from './DrawerCartItem';
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
-const Drawer = ({drawerToggle, isOpenDrawer}:drawerPropsType) => {
-  
+const Drawer = () => {
+  // {drawerToggle, isOpenDrawer}:drawerPropsType
   return (
     <div>
       <div className="drawer drawer-end z-50">
@@ -13,7 +13,7 @@ const Drawer = ({drawerToggle, isOpenDrawer}:drawerPropsType) => {
           id="my-drawer-4"
           type="checkbox"
           className="drawer-toggle"
-          checked={isOpenDrawer}
+          // checked={isOpenDrawer}
         />
         <div className="drawer-content"></div>
         <div className="drawer-side">
@@ -21,7 +21,7 @@ const Drawer = ({drawerToggle, isOpenDrawer}:drawerPropsType) => {
             htmlFor="my-drawer-4"
             aria-label="close sidebar"
             className="drawer-overlay"
-            onClick={() => drawerToggle()}
+            // onClick={() => drawerToggle?.()}
           ></label>
           <div className="menu bg-white text-base-content min-h-full w-80 p-4">
             {/* Cart Heading */}

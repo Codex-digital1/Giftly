@@ -1,0 +1,196 @@
+
+[
+      {
+        "giftName": "Smartwatch",
+        "store": "Giftly",
+        "brand": "TechWear",
+        "discount": 30,
+        "price": 99.99,
+        "rating": 4.9,
+        "giftImage": [
+          "https://i.ibb.co.com/Ykh7HTV/71h-Fld-TZC-L-AC-SL1500.jpg",
+          "https://i.ibb.co.com/pyTgVG8/71-GOODDDKBL-AC-SL1500.jpg",
+          "https://i.ibb.co.com/BrXwxD4/71co-DYls-HJL-AC-SL1500.jpg",
+          "https://i.ibb.co.com/Tr6ZVsK/817c-X7my0-VL-AC-SL1500.jpg",
+          "https://i.ibb.co.com/qkvms0n/71iw-EEZIEp-L-AC-SL1500.jpg",
+          "https://i.ibb.co.com/vDP0j7W/71txut-HIkg-L-AC-SL1500.jpg",
+          "https://i.ibb.co.com/sqvZcMY/71hei-ZOkp-FL-AC-SL1500.jpg",
+          "https://i.ibb.co.com/0fPNR22/71npii-M-3-LL-AC-SL1500.jpg"
+        ],
+        "productAddBy": "techadmin",
+        "description": "A modern smartwatch with fitness tracking and notifications.",
+        "size": "L",
+        "color": "Silver",
+        "type": "Tech Gift",
+        "category": "Tech Gift",
+        "availability": "In Stock",
+        "quantity": 60
+      },
+      {
+        "giftName": "Leather Wallet",
+        "store": "Giftly",
+        "brand": "LeatherCraft",
+        "discount": 10,
+        "price": 29.99,
+        "rating": 4.3,
+        "giftImage": [
+          "https://i.ibb.co.com/b6my0tM/71upfp-EMUt-L-AC-SX679.jpg",
+          "https://i.ibb.co.com/syDmtjJ/81ur-CQAcg-VL-AC-SX679.jpg",
+          "https://i.ibb.co.com/kQhY4RL/71yw-WF15a-XL-AC-SX679.jpg",
+          "https://i.ibb.co.com/m0X2QY9/81b-JERQOW4-L-AC-SX679.jpg",
+          "https://i.ibb.co.com/pZq7Zsc/81-MFh-New-Ub-L-AC-SX679.jpg",
+          "https://i.ibb.co.com/r52sbhF/71b-Cdpwr9k-L-AC-SX679.jpg"
+        ],
+        "productAddBy": "admin",
+        "description": "A stylish leather wallet, perfect for everyday use.",
+        "size": "L",
+        "color": "Brown",
+        "type": "Accessory Gift",
+        "category": "Gift for Him",
+        "availability": "In Stock",
+        "quantity": 120
+      },
+      {
+        "giftName": "Flower Bouquet",
+        "store": "Giftly",
+        "brand": "FloraGifts",
+        "discount": 15,
+        "price": 25.5,
+        "rating": 4.9,
+        "giftImage": [
+          "https://i.ibb.co.com/Z8sHf53/top-view-beautiful-roses-bouquet-with-pink-ribbon-23-2148822309.jpg",
+          "https://i.ibb.co.com/SNy8CQ2/red-white-ribbons-twine-bouquet-red-yellow-roses-1304-3377.jpg",
+          "https://i.ibb.co.com/Jm9fLrj/colorful-flower-bouquet-tied-with-pink-ribbon-wooden-desk-23-2148187494.jpg",
+          "https://i.ibb.co.com/9YZQ6Q8/roses-bouquet-with-orange-yellow-roses-mimosa-dark-background-140725-4131.jpg"
+        ],
+        "productAddBy": "admin",
+        "description": "A beautiful bouquet of fresh flowers, perfect for any occasion.",
+        "size": "L",
+        "color": "#f6b73c",
+        "type": "Floral Gift",
+        "category": "Gift for Her",
+        "availability": "In Stock",
+        "quantity": 80,
+        "updatedAt": "2024-10-08T06:24:20.770Z"
+      },
+      {
+        "giftName": "Wireless Earbuds",
+        "store": "Giftly",
+        "brand": "TechSound",
+        "discount": 25,
+        "price": 49.99,
+        "rating": 4.6,
+        "giftImage": [
+          "https://i.ibb.co.com/j4XXCwm/71c-ZZUo-Fn-WL-AC-SL1500.jpg",
+          "https://i.ibb.co.com/zsvCYmr/71j-WIajk-QML-AC-SL1500.jpg",
+          "https://i.ibb.co.com/kMwwdfB/71-Wm-UJYB49-L-AC-SL1500.jpg",
+          "https://i.ibb.co.com/5928nNG/71d-PNDt-E6-L-AC-SL1500.jpg",
+          "https://i.ibb.co.com/M6HcYZb/71-XOTSl-WJLL-AC-SL1500.jpg",
+          "https://i.ibb.co.com/XpDcGN3/61d-G9-AIKWCL-AC-SL1500.jpg"
+        ],
+        "productAddBy": "techadmin",
+        "description": "High-quality wireless earbuds with noise cancellation.",
+        "size": "M",
+        "color": "Black",
+        "type": "Tech Gift",
+        "category": "Tech Gift",
+        "availability": "In Stock",
+        "quantity": 50
+      },
+      {
+        "giftName": "Photo Frame",
+        "store": "Giftly",
+        "brand": "FrameWorks",
+        "discount": 15,
+        "price": 14.99,
+        "rating": 4.4,
+        "giftImage": [
+          "https://i.ibb.co.com/QK5hbwC/71nqkt1g-WKL-AC-SL1200.jpg",
+          "https://i.ibb.co.com/KLjtn6T/71xrqus-T8l-L-AC-SL1500.jpg",
+          "https://i.ibb.co.com/1n79jDg/81-YSUf-M9-ZL-AC-SL1500.jpg",
+          "https://i.ibb.co.com/LnMMKQR/81m-Tpe-Of-IEL-AC-SL1500.jpg",
+          "https://i.ibb.co.com/MfB7JHx/51-Lt3452f-YL-AC-SL1200.jpg"
+        ],
+        "productAddBy": "admin",
+        "description": "A stylish photo frame to display cherished memories.",
+        "size": "M",
+        "color": "White",
+        "type": "Home Decor",
+        "category": "All",
+        "availability": "In Stock",
+        "quantity": 90
+      },
+      {
+        "giftName": "Custom Necklace",
+        "store": "Giftly",
+        "brand": "JewelCraft",
+        "discount": 20,
+        "price": 35.99,
+        "rating": 0,
+        "giftImage": [
+          "https://i.ibb.co.com/Rg6HdVs/71-Im-Ar-R-w-PL-AC-SX679.jpg",
+          "https://i.ibb.co.com/0XLWhvg/81-FEb29-Y1v-L-AC-SX679.jpg",
+          "https://i.ibb.co.com/WWJffZ4/31-I9-XMsv-Yo-L-AC.jpg",
+          "https://i.ibb.co.com/XZPHDmW/41havdg0r3-L-AC-SY679.jpg",
+          "https://i.ibb.co.com/nQQrLp2/71qp-NUn7-DJL-AC-SX679.jpg",
+          "https://i.ibb.co.com/NjR8dZn/81-NTfv-Sl-AVL-AC-SX679.jpg"
+        ],
+        "productAddBy": "admin",
+        "description": "A personalized necklace with engraved initials, perfect for special occasions.",
+        "size": "M",
+        "color": "Gold",
+        "type": "Jewelry Gift",
+        "category": "Gift for Her",
+        "availability": "In Stock",
+        "quantity": 75
+      },
+      {
+        "giftName": "Custom T-shirt",
+        "store": "Giftly",
+        "brand": "TeeMaster",
+        "discount": 20,
+        "price": 19.99,
+        "rating": 0,
+        "giftImage": [
+          "https://i.ibb.co.com/y0tfnTf/pretty-woman-wearing-tshirt-1303-14606.jpg",
+          "https://i.ibb.co.com/3dsHS3T/triatlon-winner-fitness-resistance-exercise-1303-540.jpg",
+          "https://i.ibb.co.com/QmyHSG8/woman-chosing-white-shirt-1303-14671.jpg",
+          "https://i.ibb.co.com/9YZQ6Q8/roses-bouquet-with-orange-yellow-roses-mimosa-dark-background-140725-4131.jpghttps://i.ibb.co.com/h15crhr/people-working-computer-laptop-53876-26373.jpg"
+        ],
+        "productAddBy": "admin",
+        "description": "A personalized t-shirt with your own design, available in various colors.",
+        "size": "XL",
+        "color": "Black",
+        "type": "Clothing Gift",
+        "category": "All",
+        "availability": "Out of Stock",
+        "quantity": 0
+      },
+      {
+        "giftName": "Altra gift",
+        "store": "Giftly",
+        "brand": "MugMaster",
+        "discount": 10,
+        "price": 200,
+        "rating": 4.7,
+        "giftImage": [
+          "https://res.cloudinary.com/dhmf91dsb/image/upload/v1728566664/j1nkefnlmaf0rlsry5pb.png",
+          "https://res.cloudinary.com/dhmf91dsb/image/upload/v1728566665/rjzkh5h6iwlxkkax8twj.jpg",
+          "https://res.cloudinary.com/dhmf91dsb/image/upload/v1728566666/wpyabqsqrtbpouunjy2y.jpg"
+        ],
+        "productAddBy": "admin",
+        "description": "slkelksl",
+        "size": "s",
+        "color": "#f6b73c",
+        "type": "Personalized Gift",
+        "category": "Gift ",
+        "availability": "naiga",
+        "quantity": 150,
+        "createdAt": "2024-10-07T16:24:45.278Z",
+        "updatedAt": "2024-10-08T07:02:04.499Z",
+        "__v": 0,
+        "giftType": "type"
+      }
+ 
+
+    ]

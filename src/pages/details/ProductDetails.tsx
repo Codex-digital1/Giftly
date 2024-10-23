@@ -1,41 +1,69 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FaStar } from "react-icons/fa";
 import ReactImageMagnify from "react-image-magnify";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
+// import { FaGoogle } from "react-icons/fa";
 
-import { FaGoogle } from "react-icons/fa";
+import { FacebookShareButton, LinkedinIcon, LinkedinShareButton, TwitterShareButton, WhatsappShareButton } from 'react-share';
+import { FacebookIcon, TwitterIcon, WhatsappIcon } from 'react-share';
+
 import {
   FaAngleLeft,
   FaAngleRight,
-  FaFacebook,
-  FaTwitter,
+  // FaFacebook,
+  // FaTwitter,
 } from "react-icons/fa6";
-import ReviewModal from "./ReviewModal";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import useAuth from "../../Provider/useAuth";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
- 
-
-
+import { Link } from "react-router-dom";
+import ShowReview from "../../components/ShowReviewChart/ShowReview";
+import ShowReviewComment from '../../components/ShowReviewChart/ShowReviewComment';
+import LoadingSpinner from "../../components/shared/LoadingSpinner";
+interface Review {
+  review: {
+    rating: number | null;
+  };
+}
+// Define the types for the gift object
+interface Gift {
+  _id: string;
+  giftName: string;
+  store: string;
+  brand: string;
+  discount: number;
+  price: number;
+  rating: number;
+  giftImage: string[];
+  productAddBy: string;
+  description: string;
+  size: string;
+  color: string;
+  type: string;
+  category: string;
+  availability: string;
+  quantity: number;
+}
 const ProductDetails: React.FC = () => {
   const { id } = useParams();
-  const {user} = useAuth();
-  const axiosPublic = useAxiosPublic()
-  
-  const [gift, setGift] = useState({});
+  const descriptionRef = useRef<HTMLDivElement | null>(null);
+  const axiosPublic = useAxiosPublic();
+  const [gift, setGift] = useState<Gift | null | undefined>(null);
   const [count, setCount] = useState(1);
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentImg, setCurrentImg] = useState("");
-  const { addToCart, addToWishlist } = useAuth();
+  const { addToCart, addToWishlist } = useAuth() ?? {};
+  const [reviewByProductId, setAllReviewByProductId] = useState([])
 
+  const shareUrl = window.location.href || `https://giftly-ba979.web.app/productDetails/${id}`;
+  // const title = `Check out this amazing gift: ${product.giftName}!`;
+
+  // for getting single gift data
   useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:3000/${id}`);
-        setGift(data.data);
-        setCurrentImg(data.data.giftImage[0]);
+        const { data } = await axiosPublic.get(`/${id}`);
+        setGift(data?.data);
+        setCurrentImg(data?.data?.giftImage[0]);
       } catch (error) {
         console.log(error);
       }
@@ -43,88 +71,66 @@ const ProductDetails: React.FC = () => {
     getData();
   }, [id]);
   const {
-    _id,
     giftName,
-    store,
-    brand,
-    discount,
-    price,
+    discount = 0,
+    price = 0,
     rating,
     giftImage,
-    productAddBy,
     description,
-    size,
-    color,
     type,
-    category,
     availability,
-    quantity,
   } = gift || {};
 
-  const scrollElement = useRef<HTMLDivElement>(null);
+  const title = `Check out this amazing gift: ${giftName}!`;
 
+  const scrollElement = useRef<HTMLDivElement>(null);
   const scrollRight = () => {
     if (scrollElement.current) {
       scrollElement.current.scrollLeft += 300;
     }
   };
-
   const scrollLeft = () => {
     if (scrollElement.current) {
       scrollElement.current.scrollLeft -= 300;
     }
   };
-
   const setCurrent = (img: string) => {
     setCurrentImg(img);
   };
 
-  // btn modal for get user info
-  const [openModal, setOpenModal] = useState(false);
-  useEffect(() => {
-    if (openModal) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflowY = "auto";
+  // added scroll behavior
+  const handleScrollToDescription = () => {
+    if (descriptionRef.current) {
+      descriptionRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-    return () => (document.body.style.overflow = "auto");
-  }, [openModal]);
-// handleUserData
-const handleUserData = e => {
-e.preventDefault();
-const form = e.target;
-const name = form.name.value;
-const number = form.number.value;
-const address = form.address.value;
-const email = user?.email;
-const productId = _id;
- // Prepare the data to be sent in the POST request
- const paymentDetails = {
-  name,
-  email,
-  number,
-  address,
-  productId,
-};
+  };
+  // get all review for specific product
 
-// Sending the POST request using Axios
-axiosPublic
-  .post('/payment', paymentDetails)
-  .then((response) => {
-    window.location.replace(response?.data?.url)
-    // Handle successful response
-    console.log("Payment details sent successfully:", response.data);
-  })
-  .catch((error) => {
-    // Handle any errors that occur during the POST request
-    console.error("Error in sending payment details:", error);
-  });
+  const getData = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/getAllReviews/${id}`, { method: 'GET' });
+      if (response?.ok) {
+        const reviews = await response.json();
+        const filterReview = reviews?.filter((singleReview: Review) => singleReview?.review.rating !== null)
+        setAllReviewByProductId(filterReview)
 
-}
+      } else {
+        console.log('Failed to fetch reviews');
+      }
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, [id]);
+
+
   return (
     <>
-      {Object.keys(gift).length > 0 && (
-        <div className="container mx-auto my-10 mt-20">
+      {gift ? (
+        <div className="container mx-auto my-10 mt-28">
           <div className="w-full flex flex-col md:flex-row gap-6">
             <div className="relative flex flex-col flex-shrink justify-between  w-full  md:w-2/5">
               <div className="max-h-[500px] w-full">
@@ -139,20 +145,19 @@ axiosPublic
                       src: currentImg,
                       width: 1000,
                       height: 1000,
-                      isHintEnabled: true,
                     },
                     enlargedImageContainerStyle: { background: "#fff" },
                     enlargedImagePosition: "beside",
                   }}
                   style={{
-                    width: "auto",
-                    // height: "100%",
+                    // width: "auto",
+                    zIndex: 1,
                     maxWidth: "500px",
                     maxHeight: "500px",
                     objectFit: "cover",
                   }}
                 />
-              </div>
+              </div >
 
               <div
                 ref={scrollElement}
@@ -168,7 +173,6 @@ axiosPublic
                   >
                     <FaAngleLeft />
                   </button>
-
                   <button
                     className="bg-white shadow-md z-20 rounded-full p-1 absolute right-[-20px] text-lg hidden md:block"
                     onClick={scrollRight}
@@ -176,7 +180,7 @@ axiosPublic
                     <FaAngleRight />
                   </button>
 
-                  {giftImage.map((img: string, index: number) => (
+                  {giftImage?.map((img: string, index: number) => (
                     <div
                       key={index}
                       onClick={() => setCurrent(img)}
@@ -190,19 +194,17 @@ axiosPublic
                   ))}
                 </div>
               </div>
-            </div>
-
+            </div >
             <div className=" w-full md:w-3/5 p-5 space-y-6 text-[#333]">
               {/* description and title */}
               <div className="space-y-3">
                 <h1 className="text-3xl font-bold">{giftName}</h1>
                 <div className="flex gap-1 items-center">
-                  <Rating style={{ maxWidth: 150 }} value={rating} readOnly />
+                  <Rating style={{ maxWidth: 150 }} value={rating || 0} readOnly />
                   <span className="ml-3 font-medium text-blue-500 text-sm hover:underline cursor-pointer">
-                    {}27 Reviews
+                    { }27 Reviews
                   </span>
                 </div>
-
                 <p className="">{description}</p>
               </div>
               {/* price */}
@@ -217,7 +219,6 @@ axiosPublic
                   </small>
                 </p>
               </div>
-
               {/* buttons */}
               <div>
                 <div className="flex flex-col gap-4">
@@ -235,7 +236,6 @@ axiosPublic
                       </a>
                     </span>
                   </div>
-
                   <div className="flex gap-4 items-center">
                     <span className="font-bold w-24">Color:</span>
                     <span className="uppercase flex gap-5 ml-1">
@@ -244,25 +244,22 @@ axiosPublic
                       <a className="h-6 w-6 border outline outline-2 outline-offset-4 outline-[#333] bg-green-500"></a>
                     </span>
                   </div>
-
                   <div className="flex gap-4 items-center">
                     <span className="font-bold w-24">Type:</span>
                     <span>{type}</span>
                   </div>
-
                   <div className="flex gap-4 items-center">
                     <span className="font-bold w-24">Availability:</span>
                     <span className="bg-[#a6f6a6] py-1 px-2 rounded-2xl">
                       {availability}
                     </span>
                   </div>
-
                   <div className="flex gap-4 items-center">
                     <span className="font-bold w-24">Quantity:</span>
                     <span className="uppercase flex gap-2">
                       <span
                         onClick={() => count > 1 && setCount((p) => (p -= 1))}
-                        className="h-8 w-8 border border-[#333] grid place-content-center"
+                        className="h-8 w-8 border border-[#333] grid place-content-center cursor-pointer"
                       >
                         -
                       </span>
@@ -271,135 +268,32 @@ axiosPublic
                       </span>
                       <span
                         onClick={() => setCount((p) => (p += 1))}
-                        className="h-8 w-8 border border-[#333] grid place-content-center"
+                        className="h-8 w-8 border border-[#333] grid place-content-center cursor-pointer"
                       >
                         +
                       </span>
                     </span>
                   </div>
-
-                  <div className="my-4">
-                    <div className="flex flex-wrap gap-4">
-                      <button
-                        onClick={() => addToCart(gift)}
-                        className="btn-secondary"
-                      >
-                        Add To Cart
-                      </button>
-                    </div>
-
-                   
-                    {/* Pay Button */}
-                      <div
-                      >
-                        <button
-                          onClick={() => setOpenModal(true)}
-                          className="bg-primary text-white btn-secondary m-2"
-                        >
-                          Pay Now
-                        </button>
-                        <div
-
-
-                          className={`fixed flex justify-center items-center z-[100] ${
-                            openModal
-                              ? "visible opacity-1"
-                              : "invisible opacity-0"
-                          } duration-300 inset-0 w-full h-full`}
-                        >
-                          <div
-                          
-                            
-                            className={`absolute overflow-x-hidden overflow-y-scroll w-full h-full flex justify-center bg-white drop-shadow-2xl rounded-lg ${
-                              openModal
-                                ? "translate-y-0 opacity-1 duration-300"
-                                : "translate-y-32 opacity-0 duration-100"
-                            }`}
-                          >
-                            <div
-
-                            className="px-4 sm:px-6 lg:px-8 py-8">
-                              <button
-                            onClick={() => {
-                              setOpenModal(false);
-                            }}
-                                className="mr-0 mx-auto flex btn-secondary text-white px-3 py-2 rounded-lg mb-6"
-                              >
-                                Close
-                              </button>
-                            
-                                <div
-                               
-                                className="space-y-1 lg:mb-6">
-                                  <div
-                                 
-                                  className="rounded-lg border bg-card text-card-foreground shadow-sm">
-                                    <div className="flex flex-col space-y-1.5 lg:p-6 p-2">
-                                      <h3 className="text-2xl font-semibold whitespace-nowrap">
-                                        Enter your info
-                                      </h3>
-                                    </div>
-                                    <div
-                                    
-                                    className="lg:p-6 p-2">
-                                      {/* Shipping Details form */}
-                                      <form onSubmit={handleUserData} className="space-y-4 ">
-                                        <div className="space-y-2">
-                                          <label className="text-sm font-medium">
-                                            Name
-                                          </label>
-                                          <input
-                                            className="bg-transparent flex h-10 w-full rounded-md border px-3"
-                                            name="name"
-                                            placeholder="Enter your name"
-                                          />
-                                        </div>
-                                        <div className="space-y-2">
-                                          <label className="text-sm font-medium">
-                                            Full Address
-                                          </label>
-                                          <input
-                                            className="bg-transparent flex h-10 w-full rounded-md border px-3"
-                                            name="address"
-                                            placeholder="Enter your address"
-                                          />
-                                        </div>
-                                        <div className="space-y-2">
-                                          <label className="text-sm font-medium">
-                                            Phone number
-                                          </label>
-                                          <input
-                                            className="bg-transparent flex h-10 w-full rounded-md border px-3"
-                                            name="number"
-                                            placeholder="Enter you phoe number"
-                                          />
-                                        </div>
-                                     <button className="border min-w-full rounded-md p-1 btn-secondary">Go for Purchase</button>
-                                      </form>
-                                    </div>
-                                  </div>
-                                </div>
-                             
-                            </div>
-                          </div>
-                       
-                      </div>
-
-                      <button className="btn-secondary">Buy it now</button>
-                    </div>
+                  <div className="flex  gap-4">
                     <button
-                      onClick={() => addToWishlist(gift)}
-                      className="btn-secondary mt-4"
+                      onClick={() => addToCart?.(gift)}
+                      className="btn-secondary"
+                    >
+                      Add To Cart
+                    </button>
+                    <button
+                      onClick={() => addToWishlist?.(gift)}
+                      className="btn-secondary"
                     >
                       Add To Wishlist
                     </button>
                   </div>
-
+                  {/* End Shedule Features */}
                   <div
                     className="text-xl flex gap-3 items-center 
-                   "
+                   mt-3"
                   >
-                    <p className="text-4xl font-great-vibes">Share with us: </p>
+                    {/* <p className="text-4xl font-great-vibes">Share with us: </p>
                     <div className="flex gap-2">
                       <span
                         className="hover:text-primary 
@@ -422,39 +316,57 @@ axiosPublic
                       >
                         <FaGoogle />
                       </span>
+                    </div> */}
+
+
+                    {/*  */}
+                    <div className="mt-6">
+                      <h3 className="text-4xl font-great-vibes">Share this gift:</h3>
+                      <div className="flex gap-3 mt-2">
+                        <FacebookShareButton url={shareUrl} title={title}>
+                          <FacebookIcon size={32} round />
+                        </FacebookShareButton>
+
+                        <TwitterShareButton url={shareUrl} title={title}>
+                          <TwitterIcon size={32} round />
+                        </TwitterShareButton>
+
+                        <WhatsappShareButton url={shareUrl} title={title}>
+                          <WhatsappIcon size={32} round />
+                        </WhatsappShareButton>
+
+                        <LinkedinShareButton url={shareUrl} title={title}>
+                          <LinkedinIcon size={32} round />
+                        </LinkedinShareButton>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-
+          </div >
           {/* review section */}
           <div className="mt-10">
             <div className="flex flex-col gap-4">
               <div>
                 <div className="flex flex-wrap gap-4">
-                  <button className="btn-secondary">Description</button>
-                  <button
-                    className="btn-secondary"
-                    onClick={() => setIsModalVisible(true)}
-                  >
-                    Write a review
-                  </button>
+                  <button onClick={handleScrollToDescription} className="btn-secondary">user fedback</button>
+                  <Link to="/dashboard/my-rating">
+                    <button className="btn-secondary">Write a review</button>
+                  </Link>
                 </div>
               </div>
-
-              {/* Render the Modal and pass the state */}
-              <ReviewModal
-                isVisible={isModalVisible}
-                onClose={setIsModalVisible}
-              />
             </div>
           </div>
-        </div>
-      )}
+          {/* reviewComponent */}
+          <ShowReview reviewByProductId={reviewByProductId}></ShowReview>
+          {/* comment component  */}
+          <ShowReviewComment refProp={descriptionRef} reviewByProductId={reviewByProductId}></ShowReviewComment>
+        </div >
+      ) : <LoadingSpinner large={true}/>
+      }
     </>
   );
-};
+}
 
 export default ProductDetails;
