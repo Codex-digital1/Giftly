@@ -1,5 +1,6 @@
 import toast from "react-hot-toast";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
+import { Helmet } from "react-helmet-async";
 
 const DiscountUpForm = () => {
   const axiosPublic = useAxiosPublic();
@@ -42,6 +43,9 @@ const DiscountUpForm = () => {
 
   return (
     <div className="min-h-screen w-full flex justify-center items-center">
+       <Helmet>
+        <title>Giftly | Discount</title>
+      </Helmet>
       <div className="w-1/2 border p-5 space-y-3 rounded-xl text-gray-800">
         <h1 className="text-2xl font-bold text-center">Upload a New Discount Offer</h1>
         <form onSubmit={handleSubmit} className="space-y-6">

@@ -1,16 +1,10 @@
 import Swal from "sweetalert2";
 import TableTd from "../../../shared/TableTd";
-import { MdBlock } from "react-icons/md";
 import { useMutation } from "@tanstack/react-query";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import useAuth from "../../../../Provider/useAuth";
 
-type UserResponse = {
-  id: string;
-  email: string;
-  role: string
-  // Add any other properties your API response returns for a user
-}[];
+
 
 const UserLisItem = ({ userData, refetch }: { userData: any, refetch: any }) => {
   const { user } = useAuth() || {};
@@ -24,7 +18,7 @@ const UserLisItem = ({ userData, refetch }: { userData: any, refetch: any }) => 
       const res = await axiosPublic.patch(`/manage-users/${email}`, role);
       return res.data;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       Swal.fire({
         title: "Success!",
         text: "Role has been changed.",
@@ -90,24 +84,6 @@ const UserLisItem = ({ userData, refetch }: { userData: any, refetch: any }) => 
       </td>
       <TableTd tdHeading={name} />
       <TableTd tdHeading={email} />
-
-      {/* <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
-        <div className="flex gap-1 justify-center">
-          {role === "user" && (
-            <button
-              onClick={() => sweetAlert(userData?.email)} // Pass the email directly
-              className="btn-primary"
-            >
-              <MdBlock /> User
-            </button>
-          )}
-          {role === "admin" && (
-            <button className="btn-admin">
-              <MdBlock /> Admin
-            </button>
-          )}
-        </div>
-      </td> */}
 
       <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
         <div className="space-y-1 text-sm">

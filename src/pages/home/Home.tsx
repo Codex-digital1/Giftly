@@ -9,11 +9,13 @@ import { useEffect, useState } from "react";
 import Drawer from "../../components/cart/Drawer";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import OfferModal from "./OfferModal";
+import { Helmet } from "react-helmet-async";
 type DiscountData = {
   title: string;
   description: string;
 };
 const Home = () => {
+
   const axiosPublic = useAxiosPublic();
   // const [isOpenDrawer, setIsOpenDrawer] = useState<boolean>(false);
   const [discountData, setDiscountData] = useState<DiscountData | null>(null);
@@ -37,7 +39,7 @@ const Home = () => {
         }
       })
       .catch(error => {
-        console.log(error);  
+        console.log(error);
       });
   }, []);
   const closeModal = () => {
@@ -45,6 +47,9 @@ const Home = () => {
   };
   return (
     <div className="relative">
+      <Helmet>
+        <title>Giftly</title>
+      </Helmet>
       {/* Show the offer modal if data is available and modal is open */}
       {isModalOpen && discountData && (
         <OfferModal
@@ -62,7 +67,7 @@ const Home = () => {
       <PromotionalBanner />
       <Feedback />
       {/* drawerToggle={drawerToggle} isOpenDrawer={isOpenDrawer}  */}
-      <Drawer/>
+      <Drawer />
     </div>
   );
 };

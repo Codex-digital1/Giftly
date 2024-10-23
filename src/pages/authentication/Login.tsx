@@ -4,6 +4,7 @@ import useAuth from "../../Provider/useAuth";
 import { ImSpinner10 } from "react-icons/im";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -48,6 +49,9 @@ const Login: React.FC = () => {
 
   return (
     <div className="md:flex justify-center px-5 md:px-0 py-10 items-center mt-24 border hover:border-primary duration-700 rounded-xl container mx-auto ">
+       <Helmet>
+        <title>Giftly | Login</title>
+      </Helmet>
       <div className="hidden md:flex justify-center items-center md:w-1/2">
         <img
           src={getInTouch}

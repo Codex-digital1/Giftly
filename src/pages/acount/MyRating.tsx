@@ -7,6 +7,7 @@ import useAxiosPublic from '../../Hooks/useAxiosPublic';
 import toast from 'react-hot-toast';
 import NotReviewedGiftCard from '../../components/Rating/NotReviewedGifts';
 import ReviewedGiftCard from '../../components/Rating/ReviewedGifts';
+import { Helmet } from 'react-helmet-async';
 
 const MyRating = () => {
   const { currentUser, loading, myReviewItem = [], myAllReview, isModalVisible, giftOrderCheck, setIsModalVisible, } = useAuth() ?? {};
@@ -57,9 +58,13 @@ const MyRating = () => {
 
   return (
     <div className="p-5 border-t-4 border-primary bg-white shadow-lg rounded-lg">
+      <Helmet>
+        <title>Giftly | MyRating</title>
+      </Helmet>
       <h2 className="text-2xl font-semibold mb-4">My Rating & Reviews</h2>
 
       <div className="">
+      
         <Tabs>
           <TabList className="flex gap-8 border-b-2 mb-4 items-center justify-center">
             <Tab

@@ -15,6 +15,7 @@ import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import { Link } from "react-router-dom";
 import ShowReview from "../../components/ShowReviewChart/ShowReview";
 import ShowReviewComment from '../../components/ShowReviewChart/ShowReviewComment';
+import { Helmet } from "react-helmet-async";
 interface Review {
   review: {
     rating: number | null;
@@ -117,6 +118,9 @@ const ProductDetails: React.FC = () => {
  
   return (
     <>
+     <Helmet>
+        <title>Giftly | ProductDetails</title>
+      </Helmet>
       {gift && (
         <div className="container mx-auto my-10 mt-28">
           <div className="w-full flex flex-col md:flex-row gap-6">

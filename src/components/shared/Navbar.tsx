@@ -12,54 +12,56 @@ import Notifications from "./Notification";
 
 
 
+
 const Navbar: React.FC = () => {
-  const navigate=useNavigate()
-  const {user,logOut,handleFilterChange,setUser}=useAuth()?? {};
+ 
+  const navigate = useNavigate()
+  const { user, logOut, handleFilterChange, setUser } = useAuth() ?? {};
   const [isOpen, setIsOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null); // Create a ref for the modal
- // Close the modal if clicked outside
- const cartLength = (() => {
-  try {
-    const cart = localStorage.getItem('cart');
-    return cart ? JSON.parse(cart).length : 0;
-  } catch (error) {
-    // console.error("Error parsing cart:", error);
-    return 0;
-  }
-})();
-
-const wishlistLength = (() => {
-  try {
-    const wishlist = localStorage.getItem('wishlist');
-    return wishlist ? JSON.parse(wishlist).length : 0;
-  } catch (error) {
-    // console.error("Error parsing wishlist:", error);
-    return 0;
-  }
-})();
- const megaMenu = [
-  { name: "Home", path: "/" },
-  { name: "All Gift", path: "/allGift"},
-  { name: "About Us", path: "/aboutUs"},
-  { name: <MdOutlineManageAccounts />, path: "/account",title:'Account' },
-  { name: <GiSelfLove />, path: "/wishList",title:'Wishlist',count:wishlistLength },
-  { name: <SlBasket />, path: "/cart" ,title:'Cart',count:cartLength },
-];
- useEffect(() => {
-  const handleClickOutside = (event: MouseEvent) => {
-    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-      setIsOpen(false);
+  // Close the modal if clicked outside
+  const cartLength = (() => {
+    try {
+      const cart = localStorage.getItem('cart');
+      return cart ? JSON.parse(cart).length : 0;
+    } catch (error) {
+      // console.error("Error parsing cart:", error);
+      return 0;
     }
-  };
+  })();
 
-  if (isOpen) {
-    document.addEventListener("mousedown", handleClickOutside);
-  }
+  const wishlistLength = (() => {
+    try {
+      const wishlist = localStorage.getItem('wishlist');
+      return wishlist ? JSON.parse(wishlist).length : 0;
+    } catch (error) {
+      // console.error("Error parsing wishlist:", error);
+      return 0;
+    }
+  })();
+  const megaMenu = [
+    { name: "Home", path: "/" },
+    { name: "All Gift", path: "/allGift" },
+    { name: "About Us", path: "/aboutUs" },
+    { name: <MdOutlineManageAccounts />, path: "/account", title: 'Account' },
+    { name: <GiSelfLove />, path: "/wishList", title: 'Wishlist', count: wishlistLength },
+    { name: <SlBasket />, path: "/cart", title: 'Cart', count: cartLength },
+  ];
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
 
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, [isOpen]);
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
 
   return (
@@ -73,12 +75,12 @@ const wishlistLength = (() => {
           </Link>
         </div>
         {/* Input */}
-        <form  className="md:w-1/3">
+        <form className="md:w-1/3">
           <label className="relative group flex justify-center items-center">
             <input
               type="text"
               name="search"
-              onChange={(e)=>{
+              onChange={(e) => {
                 handleFilterChange?.(e)
                 navigate('/allGift')
               }}
@@ -87,12 +89,12 @@ const wishlistLength = (() => {
               placeholder="find your Gift..."
             />
             <button type="submit" className="absolute right-2 md:right-6  mt-0 ">
-            <IoSearch type="" className="group-hover:text-primary text-xl  cursor-pointer" />
+              <IoSearch type="" className="group-hover:text-primary text-xl  cursor-pointer" />
             </button>
           </label>
         </form>
-          {/* Mega menu leftSide */}
-          <nav className="space-x-4 lg:flex hidden">
+        {/* Mega menu leftSide */}
+        <nav className="space-x-4 lg:flex hidden">
           {megaMenu?.slice(0, 3).map((menu) => (
             <NavLink
               key={menu.path}
@@ -110,10 +112,10 @@ const wishlistLength = (() => {
         {/* mega menu Icons rightSide */}
         <div className=" flex md:gap-5 gap-1">
           <div className="flex justify-center items-center gap-x-2 md:gap-x-6">
-            <Notifications/>
+            <Notifications />
             {megaMenu?.slice(4, 6).map((menu) => (
               <NavLink
-              data-tip={menu?.title}
+                data-tip={menu?.title}
                 key={menu.path}
                 className={({ isActive }) =>
                   isActive
@@ -123,11 +125,11 @@ const wishlistLength = (() => {
                 to={menu?.path}
               >
                 {menu?.name}
-                
-          <div className="absolute text-white -top-1 -right-2 rounded-full h-[15px] w-[15px] text-center text-xs bg-red-500">
-            {menu?.count}
-          </div>
-      
+
+                <div className="absolute text-white -top-1 -right-2 rounded-full h-[15px] w-[15px] text-center text-xs bg-red-500">
+                  {menu?.count}
+                </div>
+
               </NavLink>
             ))}
           </div>
@@ -173,12 +175,12 @@ const wishlistLength = (() => {
             </div>
             {/* Login Logout functionality */}
             {isOpen && (
-              <div ref={modalRef}  className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-[25vw]  lg:w-[20vw] bg-white overflow-hidden -right-2  top-12 text-sm">
+              <div ref={modalRef} className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-[25vw]  lg:w-[20vw] bg-white overflow-hidden -right-2  top-12 text-sm">
                 <div className="flex flex-col cursor-pointer ">
                   <div className="lg:hidden">
                     {
                       // navLink for menu
-                      megaMenu?.slice(0,3).map((menu) => (
+                      megaMenu?.slice(0, 3).map((menu) => (
                         <NavLink
                           key={menu?.path}
                           className={({ isActive }) =>
@@ -195,22 +197,22 @@ const wishlistLength = (() => {
                   </div>
                   {user ? (
                     <>
-                        <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
-                          {user?.name}
-                        </div>
+                      <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
+                        {user?.name}
+                      </div>
                       <Link to={"/dashboard"}>
                         <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
                           Dashboard
                         </div>
                       </Link>
-                      <div 
-                      onClick={()=>{
-                         logOut?.()
-                         setUser?.(null)
+                      <div
+                        onClick={() => {
+                          logOut?.()
+                          setUser?.(null)
                         }}
-                       className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
-                          Logout
-                        </div>
+                        className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
+                        Logout
+                      </div>
                     </>
                   ) : (
                     <>
