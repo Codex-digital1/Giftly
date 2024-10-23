@@ -65,7 +65,7 @@ const goalData = [
 
 const AboutUs = () => {
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto custom-margin">
       {/* About us section */}
       <section className=" border-red-400  mt-20 bg-secondary rounded-t-xl p-2">
         <div className="md:flex items-center ">

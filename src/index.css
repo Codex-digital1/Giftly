@@ -36,6 +36,10 @@ code {
     @apply mt-8 mb-8 md:mt-16 md:mb-16 lg:mt-24 lg:mb-24;
   }
 
+  .custom-margin {
+    @apply mt-[110px] mb-5 md:mt-[150px] md:mb-12;
+  }
+
   .scrollbar-none::-webkit-scrollbar {
     display: none;
   }

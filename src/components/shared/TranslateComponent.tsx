@@ -16,7 +16,7 @@ const TranslateComponent: React.FC = () => {
                 new window.google.translate.TranslateElement(
                     {
                         pageLanguage: "en",
-                        includedLanguages: "en,bn,es,fr,de,hi,it,ja,ko,zh-CN,ru",
+                        includedLanguages: "bn,en,es,fr,de,hi,it,ja,ko,zh-CN,ru",
                         layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
                     },
                     googleTranslateRef.current

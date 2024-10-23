@@ -7,7 +7,7 @@ const MyOrders = () => {
   const [data] = useGetSpecificOrders();
   console.log(data);
   return (
-    <div className="p-5 shadow-lg border-t-4 border-primary">
+    <div className=" p-5 shadow-lg border-t-4 border-primary">
       <h2 className="text-2xl font-medium inter my-3 text-center">
         My Orders
       </h2>
