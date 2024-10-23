@@ -6,8 +6,10 @@ import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import Timer from "../../../shared/Timer";
 import useGetAllOrders from "../../../../Hooks/useGetAllOrders";
+import useAuth from "../../../../Provider/useAuth";
 
 const ManageOrdersItem = ({ order }: OrderTypesProps) => {
+  const {user} = useAuth() ?? {}
   const [, , refetch] = useGetAllOrders();
 
   const axiosPublic = useAxiosPublic();
@@ -47,7 +49,7 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
       </td>
       <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
         {order?.isShedule ? (
-          <Timer targetDate={order?.sheduleDate} isUser={false} />
+          <Timer targetDate={order?.sheduleDate} user={user} isOrderPage={false}/>
         ) : (
           "None"
         )}

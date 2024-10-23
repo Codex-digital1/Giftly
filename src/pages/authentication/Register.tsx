@@ -59,7 +59,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="md:flex justify-center p-5 rounded-xl items-center mt-24  container mx-auto border hover:border-primary duration-700 ">
+    <div className="custom-margin md:flex justify-center p-5 rounded-xl items-center container mx-auto border hover:border-primary duration-700 ">
       <div className="md:flex hidden justify-center items-center md:w-1/2  ">
         <img
           src={register}

@@ -58,7 +58,7 @@ const Navbar: React.FC = () => {
     { name: <MdOutlineManageAccounts />, path: "/account", title: 'Account' },
     { name: <GiSelfLove />, path: "/wishList", title: 'Wishlist', count: wishlistLength },
     { name: <SlBasket />, path: "/cart", title: 'Cart', count: cartLength },
-    { name: <TranslateComponent />, path: "/", title: 'Language',},
+    { name: <TranslateComponent />,path:"/", title: 'Language'},
   ];
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -166,8 +166,7 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
           </Link>
         </div>
 
-        
-
+      
         {/* Input */}
         <div className="relative hidden md:w-1/3 md:flex justify-center items-center">
         <form  onSubmit={handleSearch} className="w-full">
@@ -220,7 +219,7 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
                   ? "font-bold md:text-lg text-primary  "
                   : "font-bold text-lg  "
               }
-              to={menu.path}
+              to={menu?.path}
             >
               {menu.name}
             </NavLink>

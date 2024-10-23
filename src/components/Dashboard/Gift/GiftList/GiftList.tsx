@@ -65,7 +65,7 @@ const GiftList = () => {
       {loading && <div className="flex justify-center items-center ">
         <LoadingSpinner card={true} large={false} smallHeight={false} />
         </div>}
-    </div>
+      </div>
     </div>
   )
 }
