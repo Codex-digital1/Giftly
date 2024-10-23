@@ -23,7 +23,7 @@ const Layouts: React.FC = () => {
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat',
-                               
+
                             }}
                             className="btn-secondary bg-primary text-2xl lg:text-3xl p-2 md:p-3 lg:p-4 rounded-full fixed bottom-20 lg:bottom-5 left-3 z-30 lg:z-50 w-12 h-12 md:w-18 md:h-18 lg:w-20 lg:h-20"
                         >

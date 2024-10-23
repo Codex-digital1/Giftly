@@ -386,13 +386,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     }
   })
-  // console.log(allGifts1);
+  // console.log(allGifts1);p
  
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        const { data } = await axiosPublic.get("/getAllGift", { params: filters });
+        const { data } = await axiosPublic.get("/getAllGiftForHome", { params: filters });
         setGifts(data?.data);
       } catch (error) {
         console.log(error);
