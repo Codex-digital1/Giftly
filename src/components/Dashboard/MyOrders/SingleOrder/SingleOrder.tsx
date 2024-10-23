@@ -4,7 +4,6 @@ import { OrderTypesProps } from "../../../../types/Types";
 import Timer from "../../../shared/Timer";
 
 const SingleOrder = ({ order }: OrderTypesProps) => {
-  console.log(order);
   return (
     <div className="border rounded">
       <div className="w-full h-52 relative">
