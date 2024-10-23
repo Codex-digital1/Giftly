@@ -8,11 +8,11 @@ import BottomStatistic from "./BottomStatistic";
 const StatisticsPage = () => {
    
   return (
-    <>
+    <div className="">
      <TopStatistic></TopStatistic>
       <MidStatistic></MidStatistic>
       <BottomStatistic></BottomStatistic>
-    </>
+    </div>
   );
 };
 

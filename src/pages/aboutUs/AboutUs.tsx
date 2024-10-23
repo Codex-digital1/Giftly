@@ -12,6 +12,7 @@ import { FiGift } from "react-icons/fi";
 import { MdNotificationsActive } from "react-icons/md";
 import getInTouch from "../../../src/img/getintouch2.svg";
 import goal from "../../../src/img/goal.svg";
+import toast from "react-hot-toast";
 // Services Data
 const servicesData = [
   {
@@ -64,6 +65,31 @@ const goalData = [
 ];
 
 const AboutUs = () => {
+  async function handleSubmit(event:any) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const form = event.target;
+
+    formData.append("access_key", "a40712a6-d583-429d-95dd-5978dd370f40");
+
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: json
+    });
+    const result = await response.json();
+    if (result.success) {
+      toast.success('Successfully send ')
+form.reset();
+        console.log(result);
+    }
+  }
   return (
     <div className="container mx-auto">
       {/* About us section */}
@@ -190,7 +216,7 @@ const AboutUs = () => {
               assistance, or want to give feedback, reach out to us at:
             </p>
           </div>
-          <form className="w-full  space-y-2">
+          <form onSubmit={handleSubmit} className="w-full  space-y-2">
             <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
               <label className="block font-medium" htmlFor="name">
                 Name
