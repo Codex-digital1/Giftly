@@ -219,7 +219,7 @@ console.log(uploadNewGift);
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div className="grid grid-cols-1  gap-2">
             <div className="space-y-1 text-sm">
               <label htmlFor="description" className="block text-gray-600">
                 Description

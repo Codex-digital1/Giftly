@@ -298,7 +298,7 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
                   <div className="lg:hidden">
                     {
                       // navLink for menu
-                      megaMenu?.slice(0, 3).map((menu) => (
+                      megaMenu?.slice(0, 3)?.map((menu) => (
                         <NavLink
                           key={menu?.path}
                           className={({ isActive }) =>
