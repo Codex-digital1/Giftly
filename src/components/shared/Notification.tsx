@@ -62,7 +62,7 @@ const Notifications = () => {
       socket.off("receiveNotification");
     };
   }, []);
-  console.log(notifications);
+  // console.log(notifications);
 
   // Close the modal if clicked outside
   useEffect(() => {
@@ -99,16 +99,16 @@ const Notifications = () => {
           </div>
         )}
         {isOpen ? (
-          <RiNotification2Fill className="text-2xl transition" />
+          <RiNotification2Fill className="text-xl transition" />
         ) : (
-          <RiNotification3Line className="text-2xl" />
+          <RiNotification3Line className="text-xl" />
         )}
       </button>
 
       {isOpen && (
         <div
           ref={modalRef}
-          className="absolute z-10 h-[400px] overflow-auto transition-all rounded-md shadow-md w-[40vw] md:w-[25vw] lg:w-[30vw] bg-white -right-2 top-12 text-sm"
+          className="absolute z-10 h-[400px] overflow-auto transition-all rounded-md shadow-md w-[55vw] md:w-[25vw] lg:w-[30vw] bg-white -right-2 top-12 text-sm"
         >
           <div className="flex flex-col">
             <div className="px-4 py-3 border-b-2 font-bold text-lg">

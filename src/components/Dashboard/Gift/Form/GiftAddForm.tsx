@@ -3,8 +3,12 @@ import toast from 'react-hot-toast';
 import { MdCancel } from "react-icons/md";
 import useAxiosPublic from '../../../../Hooks/useAxiosPublic';
 import axios from 'axios';
-
-const GiftAddForm = () => {
+import { ImSpinner10 } from 'react-icons/im';
+// Define the type for the props
+interface GiftAddFormProps {
+  closeGiftAddModal: () => void;
+}
+const GiftAddForm: React.FC<GiftAddFormProps> = ({ closeGiftAddModal }) => {
   const axiosPublic = useAxiosPublic();
   // Cloudinary configuration
   const preset_key = "fkaap0pt";
@@ -12,6 +16,8 @@ const GiftAddForm = () => {
   // State to track the uploaded images URLs
   const [giftImage, setImages] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
+
  console.log(isUploading);
  
 
@@ -50,6 +56,7 @@ const GiftAddForm = () => {
   // Handle form submission and update the gift
   const handleForm = async (e: React.FormEvent) => {
     e.preventDefault(); 
+    setIsLoading(true)
     const formData = new FormData(e.currentTarget as HTMLFormElement);
     const giftName = formData.get('giftName');
     const price = formData.get('price');
@@ -83,12 +90,16 @@ console.log(uploadNewGift);
       } else {
         toast.error('Something went wrong');
       }
+      setIsLoading(false)
     } catch (error) {
+      setIsLoading(false)
       console.error("Error updating gift:", error);
       toast.error('Error upload gift');
     }
-
+    
     console.log('Images:', uploadNewGift);
+    setIsLoading(false)
+    closeGiftAddModal()
   };
 
   return (
@@ -247,7 +258,9 @@ console.log(uploadNewGift);
             ))}
           </div>
           <button className="block w-full p-3 text-center btn-primary">
-            Update
+          {isLoading ? (
+                <ImSpinner10 className="animate-spin mx-auto text-xl" />
+              ) : ('Upload')}
           </button>
         </form>
       </div>
