@@ -15,7 +15,7 @@ interface Notification {
 
 
 // URL of your backend server
-const socket = io(import.meta.env.VITE_SERVER_URL);
+const socket = io(import.meta.env.VITE_SERVER_URL,{ autoConnect: false });
 
 const Notifications = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -99,9 +99,9 @@ const Notifications = () => {
           </div>
         )}
         {isOpen ? (
-          <RiNotification2Fill className="text-xl transition" />
+          <RiNotification2Fill className="text-xl md:text-3xl transition" />
         ) : (
-          <RiNotification3Line className="text-xl" />
+          <RiNotification3Line className="text-xl md:text-3xl" />
         )}
       </button>
 
