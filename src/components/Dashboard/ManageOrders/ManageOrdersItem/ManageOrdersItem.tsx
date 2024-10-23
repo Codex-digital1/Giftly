@@ -9,7 +9,7 @@ import useGetAllOrders from "../../../../Hooks/useGetAllOrders";
 
 const ManageOrdersItem = ({ order }: OrderTypesProps) => {
   const [, , refetch] = useGetAllOrders();
-
+console.log(order)
   const axiosPublic = useAxiosPublic();
   // Update Order Status
   const handleUpdateOrderStatus = async (
@@ -37,7 +37,7 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
         />
       </td>
       <TableTd tdHeading={order?.product_name} />
-      <TableTd tdHeading={order?.product_brand} />
+      {/* <TableTd tdHeading={order?.product_brand} /> */}
 
       <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
         <p className="flex justify-center items-center">
@@ -53,7 +53,7 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
         )}
       </td>
 
-      <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
+      <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800 flex justify-center items-center gap-2">
         <div className="space-y-1 text-sm">
           <select
             name="status"
@@ -87,6 +87,7 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
             </option>
           </select>
         </div>
+        {/* <button className=" py-3">View Details</button> */}
       </td>
     </tr>
   );
