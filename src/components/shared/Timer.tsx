@@ -11,13 +11,12 @@ interface TimeRemaining {
 
 interface TimerProps {
   targetDate: string;
-  isUser: boolean;
+  user: any;
+  isOrderPage: boolean;
 }
 
-const Timer: React.FC<TimerProps> = ({ targetDate, isUser }) => {
-  const [timeRemaining, setTimeRemaining] = useState<TimeRemaining | null>(
-    null
-  );
+const Timer: React.FC<TimerProps> = ({ targetDate, user, isOrderPage }) => {
+  const [timeRemaining, setTimeRemaining] = useState<TimeRemaining | null>(null);
 
   useEffect(() => {
     const targetDateObj = new Date(targetDate); // Convert targetDate to Date object
@@ -32,12 +31,8 @@ const Timer: React.FC<TimerProps> = ({ targetDate, isUser }) => {
         setTimeRemaining(null);
       } else {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor(
-          (difference % (1000 * 60 * 60)) / (1000 * 60)
-        );
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
         setTimeRemaining({ days, hours, minutes, seconds });
       }
@@ -47,53 +42,57 @@ const Timer: React.FC<TimerProps> = ({ targetDate, isUser }) => {
   }, [targetDate]);
 
   return (
-    <div className="flex flex-col items-center justify-center bg-[#fff3f5] w-full">
+    <div className={`flex flex-col items-center justify-center ${isOrderPage && 'bg-secondary'}  w-full`}>
       <div className="text-base">
         {timeRemaining ? (
-          isUser ? (
-            <div className="flex flex-row justify-between gap-3 w-full">
-              <p className="flex flex-col items-center">
-                <span className="text-xl font-bold">{timeRemaining.days}</span>
-                <span>Day</span>
-              </p>
-              <p className="flex flex-col items-center">
-                <span className="text-xl font-bold">{timeRemaining.hours}</span>
-                <span>Hours</span>
-              </p>
-              <p className="flex flex-col items-center">
-                <span className="text-xl font-bold">
-                  {timeRemaining.minutes}
+          user ? (
+            <div className="grid grid-flow-col gap-5 text-center auto-cols-max ">
+              <div className="flex flex-col">
+                <span className="countdown font-mono text-xl text-primary">
+                  <span style={{ "--value": timeRemaining.days } as React.CSSProperties}></span>
                 </span>
-                <span>Minutes</span>
-              </p>
-              <p className="flex flex-col items-center">
-                <span className="text-xl font-bold">
-                  {timeRemaining.seconds}
+                days
+              </div>
+              <div className="flex flex-col">
+                <span className="countdown font-mono text-xl text-primary">
+                  <span style={{ "--value": timeRemaining.hours } as React.CSSProperties}></span>
                 </span>
-                <span>Sec</span>
-              </p>
+                hours
+              </div>
+              <div className="flex flex-col">
+                <span className="countdown font-mono text-xl text-primary">
+                  <span style={{ "--value": timeRemaining.minutes } as React.CSSProperties}></span>
+                </span>
+                min
+              </div>
+              <div className="flex flex-col">
+                <span className="countdown font-mono text-xl text-primary">
+                  <span style={{ "--value": timeRemaining.seconds } as React.CSSProperties}></span>
+                </span>
+                sec
+              </div>
             </div>
           ) : (
             <div className="flex flex-row justify-between w-full">
-              <p className="flex items-center">
+              <p className="flex items-center text-primary">
                 <span className="text-base">{timeRemaining.days}</span>
                 <span className="mx-[2px]">:</span>
               </p>
-              <p className="flex items-center">
+              <p className="flex items-center text-primary">
                 <span className="text-base">{timeRemaining.hours}</span>
                 <span className="mx-[2px]">:</span>
               </p>
-              <p className="flex items-center">
+              <p className="flex items-center text-primary">
                 <span className="text-base">{timeRemaining.minutes}</span>
                 <span className="mx-[2px]">:</span>
               </p>
-              <p className="flex items-center">
+              <p className="flex items-center text-primary">
                 <span className="text-base">{timeRemaining.seconds}</span>
               </p>
             </div>
           )
         ) : (
-          <p>Delevery Sheduled....</p>
+          <p>Delivery Scheduled....</p>
         )}
       </div>
     </div>

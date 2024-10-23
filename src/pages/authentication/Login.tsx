@@ -47,7 +47,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="md:flex justify-center px-5 md:px-0 py-10 items-center mt-24 border hover:border-primary duration-700 rounded-xl container mx-auto ">
+    <div className="custom-margin md:flex justify-center px-5 md:px-0 py-10 items-center  border hover:border-primary duration-700 rounded-xl container mx-auto ">
       <div className="hidden md:flex justify-center items-center md:w-1/2">
         <img
           src={getInTouch}

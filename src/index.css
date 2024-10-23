@@ -20,35 +20,100 @@ code {
 
 @layer components {
   .btn-primary {
-    @apply flex items-center gap-2 bg-primary whitespace-nowrap
-    py-1 px-2  text-white text-sm font-normal cursor-pointer rounded hover:bg-[#BF2718] transition-all duration-300 ease-linear capitalize;
+    @apply flex items-center gap-2 bg-primary whitespace-nowrap py-1 px-2 text-white text-sm font-normal cursor-pointer rounded hover:bg-[#BF2718] transition-all duration-300 ease-linear capitalize;
   }
+
   .btn-secondary {
-    @apply py-3 px-6  text-sm   bg-primary text-white  font-semibold cursor-pointer  hover:bg-[#BF2718] transition-all duration-300 ease-linear border-none capitalize;
+    @apply py-3 px-6 text-sm bg-primary text-white font-semibold cursor-pointer hover:bg-[#BF2718] transition-all duration-300 ease-linear border-none capitalize;
+ 
   }
+  .btn-admin {
+    @apply flex items-center gap-2 bg-[#41e49b] whitespace-nowrap py-1 px-2 text-white text-sm font-normal cursor-pointer rounded hover:bg-[#41e49b] transition-all duration-300 ease-linear capitalize;
+ 
+  }
+
+  
+
 }
 
 @layer utilities {
   .section-to-section-margin {
     @apply mt-8 mb-8 md:mt-16 md:mb-16 lg:mt-24 lg:mb-24;
   }
+
+  .custom-margin {
+    @apply mt-[110px] mb-5 md:mt-[150px] md:mb-12;
+  }
+
   .scrollbar-none::-webkit-scrollbar {
     display: none;
   }
 
   .scrollbar-none {
-    -ms-overflow-style: none; /* Internet Explorer and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* Internet Explorer and Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
 }
 
 .inter {
   font-family: "Inter", system-ui;
 }
+
 .steps .step-primary+.step-primary:before,
 .steps .step-primary:after {
   background-color: #ff4d6d;
   color: white
 }
 
-/*  */
+/* translate icon style */
+
+.goog-te-gadget {
+  border: none !important;
+
+}
+.goog-te-gadget-simple {
+  display: flex !important;
+  height: 40px !important;
+  border: none !important;
+  background-color: #FFF3F5 !important;
+  border-radius: 10px;
+}
+
+/* Small screens (sm): 640px and below */
+@media (max-width: 400px) {
+  .goog-te-gadget-simple {
+    height: 20px !important;
+  }
+}
+
+/* Medium screens (md): 768px and below */
+@media (max-width: 768px) {
+  .goog-te-gadget-simple {
+    height: 30px !important;
+  }
+}
+
+/* Large screens (lg): 1024px and below */
+@media (max-width: 1024px) {
+  .goog-te-gadget-simple {
+    height: 35px !important;
+  }
+}
+
+.goog-te-gadget-simple span a,
+.iconColor {
+  color: #ff4d6d !important;
+}
+
+.goog-te-gadget-simple span a span:last-of-type,
+span:nth-of-type(2) {
+  display: none !important;
+}
+
+.goog-te-gadget-simple span a span:nth-of-type(1),
+.goog-te-gadget-icon {
+  display: none !important;
+}
+ 

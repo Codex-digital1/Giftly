@@ -13,7 +13,7 @@ const Register: React.FC = () => {
   const [passwordShow,setPasswordShow]=useState(false)
   const [passwordShow1,setPasswordShow1]=useState(false)
 
-  const { createUser, updateUserProfile, googleLogin,loading } = useAuth() ?? {};
+  const { createUser, updateUserProfile, googleLogin,loading} = useAuth() ?? {};
 
   // handle Register form data
   const handelform = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -38,8 +38,8 @@ const Register: React.FC = () => {
       .then((result) => {
         toast.success("Successfully created account!");
         console.log(result.user);
-
         updateUserProfile?.(nameValue, "");
+        navigate(from);
       })
       .catch((error) => {
         console.log(error);
@@ -59,7 +59,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="md:flex justify-center p-5 rounded-xl items-center mt-24  container mx-auto border hover:border-primary duration-700 ">
+    <div className="custom-margin md:flex justify-center p-5 rounded-xl items-center container mx-auto border hover:border-primary duration-700 ">
       <div className="md:flex hidden justify-center items-center md:w-1/2  ">
         <img
           src={register}
