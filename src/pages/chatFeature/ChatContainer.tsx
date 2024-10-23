@@ -291,7 +291,7 @@ const ChatContainer: React.FC = () => {
 
             <div className="flex h-full overflow-y-scroll scrollbar-none relative ">
 
-                <div className={`sidebar w-[300px] lg:w-[250px]  h-full flex flex-col justify-between overflow-x-hidden absolute md:relative inset-y-0 left-0 transform ${isActive && "-translate-x-full"
+                <div className={`z-50 sidebar w-[300px] lg:w-[250px]  h-full flex flex-col justify-between overflow-x-hidden absolute md:relative inset-y-0 left-0 transform ${isActive && "-translate-x-full"
                     }  md:translate-x-0  transition duration-200 ease-in-out`}>
 
                     <div className="h-2/6 overflow-y-scroll  scrollbar-none  bg-white p-4 border-r">
