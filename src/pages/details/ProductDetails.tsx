@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactImageMagnify from "react-image-magnify";
-import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 // import { FaGoogle } from "react-icons/fa";
 
@@ -49,7 +48,6 @@ const ProductDetails: React.FC = () => {
   const descriptionRef = useRef<HTMLDivElement | null>(null);
   const axiosPublic = useAxiosPublic();
   const [gift, setGift] = useState<Gift | null | undefined>(null);
-  const [count, setCount] = useState(1);
   const [currentImg, setCurrentImg] = useState("");
   const { addToCart, addToWishlist } = useAuth() ?? {};
   const [reviewByProductId, setAllReviewByProductId] = useState([])
@@ -74,11 +72,12 @@ const ProductDetails: React.FC = () => {
     giftName,
     discount = 0,
     price = 0,
-    rating,
     giftImage,
     description,
     type,
     availability,
+    color,
+    size,
   } = gift || {};
 
   const title = `Check out this amazing gift: ${giftName}!`;
@@ -199,12 +198,7 @@ const ProductDetails: React.FC = () => {
               {/* description and title */}
               <div className="space-y-3">
                 <h1 className="text-3xl font-bold">{giftName}</h1>
-                <div className="flex gap-1 items-center">
-                  <Rating style={{ maxWidth: 150 }} value={rating || 0} readOnly />
-                  <span className="ml-3 font-medium text-blue-500 text-sm hover:underline cursor-pointer">
-                    { }27 Reviews
-                  </span>
-                </div>
+               
                 <p className="">{description}</p>
               </div>
               {/* price */}
@@ -224,37 +218,33 @@ const ProductDetails: React.FC = () => {
                 <div className="flex flex-col gap-4">
                   <div className="flex gap-4 items-center">
                     <span className="font-bold w-24">Size:</span>
-                    <span className="uppercase flex gap-2">
-                      <a className="h-8 w-8 border border-primary grid place-content-center">
-                        S
-                      </a>
-                      <a className="h-8 w-8 border border-[#333] grid place-content-center">
-                        M
-                      </a>
-                      <a className="h-8 w-8 border border-[#333] grid place-content-center">
-                        L
-                      </a>
-                    </span>
+                    <p className="uppercase h-8 w-8 border border-primary grid place-content-center">
+                      {size}
+                    </p>
                   </div>
                   <div className="flex gap-4 items-center">
                     <span className="font-bold w-24">Color:</span>
-                    <span className="uppercase flex gap-5 ml-1">
-                      <a className="h-6 w-6 border outline outline-2 outline-offset-4 outline-primary bg-primary"></a>
-                      <a className="h-6 w-6 border outline outline-2 outline-offset-4 outline-[#333] bg-yellow-500"></a>
-                      <a className="h-6 w-6 border outline outline-2 outline-offset-4 outline-[#333] bg-green-500"></a>
-                    </span>
+                    <p className={`ml-[3px] h-6 w-6 border outline outline-2 outline-offset-4 outline-primary bg-${color}`}>
+                      
+                      </p>
                   </div>
                   <div className="flex gap-4 items-center">
-                    <span className="font-bold w-24">Type:</span>
-                    <span>{type}</span>
+                  <p className="font-bold w-24">Type:</p>
+                  <p>{type}</p>
                   </div>
                   <div className="flex gap-4 items-center">
-                    <span className="font-bold w-24">Availability:</span>
-                    <span className="bg-[#a6f6a6] py-1 px-2 rounded-2xl">
-                      {availability}
-                    </span>
+                  <p className="font-bold w-24">Availability:</p>
+                  <p className={` py-1 px-2 rounded-2xl ${availability === 'In Stock'
+              ? 'bg-green-300'
+              : availability === 'Out of Stock'
+                ? 'bg-red-300'
+                : 'bg-gray-300'
+              }`}>
+                    {availability}
+                    </p>
                   </div>
-                  <div className="flex gap-4 items-center">
+                  {/* quantity */}
+                  {/* <div className="flex gap-4 items-center">
                     <span className="font-bold w-24">Quantity:</span>
                     <span className="uppercase flex gap-2">
                       <span
@@ -273,7 +263,7 @@ const ProductDetails: React.FC = () => {
                         +
                       </span>
                     </span>
-                  </div>
+                  </div> */}
                   <div className="flex  gap-4">
                     <button
                       onClick={() => addToCart?.(gift)}

@@ -46,7 +46,7 @@ const DiscountUpForm = () => {
        <Helmet>
         <title>Giftly-Discount</title>
       </Helmet>
-      <div className="w-1/2 border p-5 space-y-3 rounded-xl text-gray-800">
+      <div className=" border p-5 space-y-3 rounded-xl text-gray-800">
         <h1 className="text-2xl font-bold text-center">Upload a New Discount Offer</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Coupon code and percentage */}
