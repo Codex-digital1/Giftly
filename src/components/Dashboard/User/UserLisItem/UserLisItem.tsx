@@ -90,24 +90,6 @@ const UserLisItem = ({ userData, refetch }: { userData: any, refetch: any }) => 
       <TableTd tdHeading={name} />
       <TableTd tdHeading={email} />
 
-      {/* <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
-        <div className="flex gap-1 justify-center">
-          {role === "user" && (
-            <button
-              onClick={() => sweetAlert(userData?.email)} // Pass the email directly
-              className="btn-primary"
-            >
-              <MdBlock /> User
-            </button>
-          )}
-          {role === "admin" && (
-            <button className="btn-admin">
-              <MdBlock /> Admin
-            </button>
-          )}
-        </div>
-      </td> */}
-
       <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
         <div className="space-y-1 text-sm">
           <select

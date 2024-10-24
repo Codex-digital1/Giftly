@@ -19,6 +19,7 @@ type Suggestion = {
 import TranslateComponent from "./TranslateComponent";
 
 
+
 const Navbar: React.FC = () => {
   const axiosPublic=useAxiosPublic()
   const {user,logOut,handleSearchChange,setUser}=useAuth()?? {};
@@ -129,10 +130,10 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
   };
   // Function to handle outside click
   const handleClickOutsideMinScreen = (event: MouseEvent) => {
-      if (searchRefMinScreen.current && !searchRefMinScreen.current.contains(event.target as Node)) {
-        setShowSuggestionsMinScreen(false); // Hide suggestions if clicked outside
-    }
-  };
+    if (searchRefMinScreen.current && !searchRefMinScreen.current.contains(event.target as Node)) {
+      setShowSuggestionsMinScreen(false); // Hide suggestions if clicked outside
+  }
+};
 
   // Set up event listener
   useEffect(() => {

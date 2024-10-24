@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
 import useAuth from "../../Provider/useAuth";
 import GiftCard from "../../components/shared/GiftCard";
@@ -25,7 +26,10 @@ useEffect(() => {
 
   return (
     <>
-      <div className="container mx-auto custom-margin p-4 min-h-[calc(100vh-530px)]">
+      <div className="container mx-auto mt-20 p-4 min-h-[calc(100vh-530px)]">
+      <Helmet>
+        <title>Giftly-AllGift</title>
+      </Helmet>
         <div className="my-4">
           <h3 className="text-2xl font-bold mb-2">Pick Your Gift!</h3>
           <img

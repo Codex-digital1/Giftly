@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { useState } from "react";
 import { ImSpinner10 } from "react-icons/im";
+import { Helmet } from "react-helmet-async";
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
@@ -59,7 +60,10 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="custom-margin md:flex justify-center p-5 rounded-xl items-center container mx-auto border hover:border-primary duration-700 ">
+    <div className="md:flex justify-center p-5 rounded-xl items-center mt-24  container mx-auto border hover:border-primary duration-700 ">
+       <Helmet>
+        <title>Giftly-SignUp</title>
+      </Helmet>
       <div className="md:flex hidden justify-center items-center md:w-1/2  ">
         <img
           src={register}

@@ -2,12 +2,16 @@ import { BsEmojiFrownFill } from "react-icons/bs";
 import SingleOrder from "../../components/Dashboard/MyOrders/SingleOrder/SingleOrder";
 import useGetSpecificOrders from "../../Hooks/useGetSpecificOrders";
 import { OrderTypes } from "../../types/Types";
+import { Helmet } from "react-helmet-async";
 
 const MyOrders = () => {
   const [data] = useGetSpecificOrders();
   console.log(data);
   return (
-    <div className=" p-5 shadow-lg border-t-4 border-primary">
+    <div className="p-5 shadow-lg border-t-4 border-primary">
+      <Helmet>
+        <title>Giftly-Manage-users</title>
+      </Helmet>
       <h2 className="text-2xl font-medium inter my-3 text-center">
         My Orders
       </h2>

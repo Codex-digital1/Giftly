@@ -12,6 +12,7 @@ import { FiGift } from "react-icons/fi";
 import { MdNotificationsActive } from "react-icons/md";
 import getInTouch from "../../../src/img/getintouch2.svg";
 import goal from "../../../src/img/goal.svg";
+import { Helmet } from "react-helmet-async";
 import toast from "react-hot-toast";
 // Services Data
 const servicesData = [
@@ -93,6 +94,9 @@ form.reset();
   }
   return (
     <div className="container mx-auto custom-margin">
+          <Helmet>
+        <title>Giftly-About Us</title>
+      </Helmet>
       {/* About us section */}
       <section className=" border-red-400  mt-20 bg-secondary rounded-t-xl p-2">
         <div className="md:flex items-center ">
