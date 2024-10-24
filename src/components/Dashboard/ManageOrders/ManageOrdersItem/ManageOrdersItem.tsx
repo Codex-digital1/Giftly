@@ -35,8 +35,9 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
       return toast.success(data.message);
     }
 
-  if (!data.success) return toast.error(data.message);
-};
+    if (!data.success) return toast.error(data.message);
+  };
+  // console.log(order.scheduleDate);
   return (
     <tr className="odd:bg-gray-50">
       <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">

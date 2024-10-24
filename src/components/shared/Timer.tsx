@@ -27,7 +27,8 @@ const Timer: React.FC<TimerProps> = ({ targetDate, user, isOrderPage }) => {
 
       if (difference <= 0) {
         clearInterval(interval);
-        toast.success('Scheduled Delivery Experied!');
+        
+        toast.success('Scheduled Delivery Expeired!');
         setTimeRemaining(null);
       } else {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
