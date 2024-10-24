@@ -6,33 +6,39 @@ import GiftAddForm from "../Form/GiftAddForm"
 import GiftUpdateForm from "../Form/GiftUpdateForm"
 import LoadingSpinner from "../../../shared/LoadingSpinner"
 import useAuth from "../../../../Provider/useAuth"
+import { GiftType } from "../../../../types/Types"
 
 const GiftList = () => {
-  const {loading} = useAuth() ?? {};
+  const {loading,refetch} = useAuth() ?? {};
  
     const [gitAddModal, setGiftAddModal] = useState<boolean>(false)
     const [updateGitAddModal, setUpdateGiftAddModal] = useState<boolean>(false)
-    const [selectedGiftId, setSelectedGiftId] = useState<string | null>(null); // This state is used to store the selected gift ID
-console.log(selectedGiftId,'hahah');
+    const [selectedGift, setSelectedGift] = useState<GiftType>();
+
     // Close Add Modal
     const closeGiftAddModal = ()=>{
         setGiftAddModal(false)
-    }
-    // Close Gift Update Modal
-    const closeUpdateGiftAddModal = ()=>{
+        refetch?.()
+      }
+      // Close Gift Update Modal
+      const closeUpdateGiftAddModal = ()=>{
         setUpdateGiftAddModal(false)
+        refetch?.()
     }
   return (
     <div>
-        <div className="flex justify-end mb-4">
-            <button onClick={()=> setGiftAddModal(true)} className="btn-primary">Add New Gift</button>
+        <div className="flex justify-end mb-4 ">
+            <button onClick={()=> setGiftAddModal(true)} className="btn-primary p-3">Add New Gift</button>
             {/* Add Gift Modal */}
-            <MyModal isOpen={gitAddModal}  close={closeGiftAddModal} isLarge={true}>
-                <GiftAddForm/>
+            <MyModal 
+            isOpen={gitAddModal}  
+            close={closeGiftAddModal} 
+            isLarge={true}>
+            <GiftAddForm closeGiftAddModal={closeGiftAddModal}/>
             </MyModal>
             {/* Update Gift Modal */}
             <MyModal isOpen={updateGitAddModal}  close={closeUpdateGiftAddModal} isLarge={true}>
-              <GiftUpdateForm giftId={selectedGiftId}/>
+              <GiftUpdateForm closeUpdateGiftAddModal={closeUpdateGiftAddModal} gift={selectedGift||null}/>
             </MyModal>
         </div>
         <div className="overflow-x-auto">
@@ -52,14 +58,14 @@ console.log(selectedGiftId,'hahah');
         <tbody className="divide-y divide-gray-200 text-center">
       <GiftListItem   
       setUpdateGiftAddModal={setUpdateGiftAddModal}  
-      setSelectedGiftId={setSelectedGiftId}       
+      setSelectedGift={setSelectedGift}       
       />
         </tbody>
       </table>
       {loading && <div className="flex justify-center items-center ">
         <LoadingSpinner card={true} large={false} smallHeight={false} />
         </div>}
-    </div>
+      </div>
     </div>
   )
 }

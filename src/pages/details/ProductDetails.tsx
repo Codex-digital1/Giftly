@@ -2,12 +2,16 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactImageMagnify from "react-image-magnify";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
-import { FaGoogle } from "react-icons/fa";
+// import { FaGoogle } from "react-icons/fa";
+
+import { FacebookShareButton, LinkedinIcon, LinkedinShareButton, TwitterShareButton, WhatsappShareButton } from 'react-share';
+import { FacebookIcon, TwitterIcon, WhatsappIcon } from 'react-share';
+
 import {
   FaAngleLeft,
   FaAngleRight,
-  FaFacebook,
-  FaTwitter,
+  // FaFacebook,
+  // FaTwitter,
 } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
 import useAuth from "../../Provider/useAuth";
@@ -15,7 +19,7 @@ import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import { Link } from "react-router-dom";
 import ShowReview from "../../components/ShowReviewChart/ShowReview";
 import ShowReviewComment from '../../components/ShowReviewChart/ShowReviewComment';
-import { Helmet } from "react-helmet-async";
+import LoadingSpinner from "../../components/shared/LoadingSpinner";
 interface Review {
   review: {
     rating: number | null;
@@ -48,7 +52,11 @@ const ProductDetails: React.FC = () => {
   const [count, setCount] = useState(1);
   const [currentImg, setCurrentImg] = useState("");
   const { addToCart, addToWishlist } = useAuth() ?? {};
-  const[reviewByProductId,setAllReviewByProductId] = useState([])
+  const [reviewByProductId, setAllReviewByProductId] = useState([])
+
+  const shareUrl = window.location.href || `https://giftly-ba979.web.app/productDetails/${id}`;
+  // const title = `Check out this amazing gift: ${product.giftName}!`;
+
   // for getting single gift data
   useEffect(() => {
     const getData = async () => {
@@ -64,14 +72,17 @@ const ProductDetails: React.FC = () => {
   }, [id]);
   const {
     giftName,
-    discount=0,
-    price=0,
+    discount = 0,
+    price = 0,
     rating,
     giftImage,
     description,
     type,
     availability,
   } = gift || {};
+
+  const title = `Check out this amazing gift: ${giftName}!`;
+
   const scrollElement = useRef<HTMLDivElement>(null);
   const scrollRight = () => {
     if (scrollElement.current) {
@@ -87,12 +98,12 @@ const ProductDetails: React.FC = () => {
     setCurrentImg(img);
   };
 
-// added scroll behavior
-    const handleScrollToDescription = () => {
-      if (descriptionRef.current) {
-        descriptionRef.current.scrollIntoView({ behavior: 'smooth' });
-      }
-    };
+  // added scroll behavior
+  const handleScrollToDescription = () => {
+    if (descriptionRef.current) {
+      descriptionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   // get all review for specific product
 
   const getData = async () => {
@@ -102,7 +113,7 @@ const ProductDetails: React.FC = () => {
         const reviews = await response.json();
         const filterReview = reviews?.filter((singleReview: Review) => singleReview?.review.rating !== null)
         setAllReviewByProductId(filterReview)
-        
+
       } else {
         console.log('Failed to fetch reviews');
       }
@@ -115,14 +126,11 @@ const ProductDetails: React.FC = () => {
     getData();
   }, [id]);
 
- 
+
   return (
     <>
-     <Helmet>
-        <title>Giftly-ProductDetails</title>
-      </Helmet>
-      {gift && (
-        <div className="container mx-auto my-10 mt-28">
+      {gift ? (
+        <div className="container mx-auto my-10 custom-margin">
           <div className="w-full flex flex-col md:flex-row gap-6">
             <div className="relative flex flex-col flex-shrink justify-between  w-full  md:w-2/5">
               <div className="max-h-[500px] w-full">
@@ -194,7 +202,7 @@ const ProductDetails: React.FC = () => {
                 <div className="flex gap-1 items-center">
                   <Rating style={{ maxWidth: 150 }} value={rating || 0} readOnly />
                   <span className="ml-3 font-medium text-blue-500 text-sm hover:underline cursor-pointer">
-                    {}27 Reviews
+                    { }27 Reviews
                   </span>
                 </div>
                 <p className="">{description}</p>
@@ -251,7 +259,7 @@ const ProductDetails: React.FC = () => {
                     <span className="uppercase flex gap-2">
                       <span
                         onClick={() => count > 1 && setCount((p) => (p -= 1))}
-                        className="h-8 w-8 border border-[#333] grid place-content-center"
+                        className="h-8 w-8 border border-[#333] grid place-content-center cursor-pointer"
                       >
                         -
                       </span>
@@ -260,32 +268,32 @@ const ProductDetails: React.FC = () => {
                       </span>
                       <span
                         onClick={() => setCount((p) => (p += 1))}
-                        className="h-8 w-8 border border-[#333] grid place-content-center"
+                        className="h-8 w-8 border border-[#333] grid place-content-center cursor-pointer"
                       >
                         +
                       </span>
                     </span>
                   </div>
-                    <div className="flex  gap-4">
-                      <button
-                        onClick={() => addToCart?.(gift)}
-                        className="btn-secondary"
-                      >
-                        Add To Cart
-                      </button>
-                      <button
+                  <div className="flex  gap-4">
+                    <button
+                      onClick={() => addToCart?.(gift)}
+                      className="btn-secondary"
+                    >
+                      Add To Cart
+                    </button>
+                    <button
                       onClick={() => addToWishlist?.(gift)}
                       className="btn-secondary"
                     >
                       Add To Wishlist
                     </button>
-                    </div>
+                  </div>
                   {/* End Shedule Features */}
                   <div
                     className="text-xl flex gap-3 items-center 
                    mt-3"
                   >
-                    <p className="text-4xl font-great-vibes">Share with us: </p>
+                    {/* <p className="text-4xl font-great-vibes">Share with us: </p>
                     <div className="flex gap-2">
                       <span
                         className="hover:text-primary 
@@ -308,6 +316,29 @@ const ProductDetails: React.FC = () => {
                       >
                         <FaGoogle />
                       </span>
+                    </div> */}
+
+
+                    {/*  */}
+                    <div className="mt-6">
+                      <h3 className="text-4xl font-great-vibes">Share this gift:</h3>
+                      <div className="flex gap-3 mt-2">
+                        <FacebookShareButton url={shareUrl} title={title}>
+                          <FacebookIcon size={32} round />
+                        </FacebookShareButton>
+
+                        <TwitterShareButton url={shareUrl} title={title}>
+                          <TwitterIcon size={32} round />
+                        </TwitterShareButton>
+
+                        <WhatsappShareButton url={shareUrl} title={title}>
+                          <WhatsappIcon size={32} round />
+                        </WhatsappShareButton>
+
+                        <LinkedinShareButton url={shareUrl} title={title}>
+                          <LinkedinIcon size={32} round />
+                        </LinkedinShareButton>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -332,7 +363,8 @@ const ProductDetails: React.FC = () => {
           {/* comment component  */}
           <ShowReviewComment refProp={descriptionRef} reviewByProductId={reviewByProductId}></ShowReviewComment>
         </div >
-      )}
+      ) : <LoadingSpinner large={true}/>
+      }
     </>
   );
 }

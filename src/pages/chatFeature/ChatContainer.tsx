@@ -213,10 +213,25 @@ const ChatContainer: React.FC = () => {
         setSelectedImage(null); // Reset the image after sending
     };
 
+    const playSound = () => {
+        const audio = new Audio('/Notification.mp3');
+        audio.volume = 0.9;
+        audio.play();
+    };
+
     const handleSend = () => {
         if (text.trim() || selectedImage) {
             addMessage(text);
+            playSound()
             setText('');
+        }
+    };
+
+    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); 
+            handleSend();
+            playSound()
         }
     };
 
@@ -276,7 +291,7 @@ const ChatContainer: React.FC = () => {
 
             <div className="flex h-full overflow-y-scroll scrollbar-none relative ">
 
-                <div className={`sidebar w-[300px] lg:w-[250px]  h-full flex flex-col justify-between overflow-x-hidden absolute md:relative inset-y-0 left-0 transform ${isActive && "-translate-x-full"
+                <div className={`z-50 sidebar w-[300px] lg:w-[250px]  h-full flex flex-col justify-between overflow-x-hidden absolute md:relative inset-y-0 left-0 transform ${isActive && "-translate-x-full"
                     }  md:translate-x-0  transition duration-200 ease-in-out`}>
 
                     <div className="h-2/6 overflow-y-scroll  scrollbar-none  bg-white p-4 border-r">
@@ -420,7 +435,8 @@ const ChatContainer: React.FC = () => {
                             placeholder="Type your message..."
                             value={text}
                             onChange={(e) => setText(e.target.value)}
-                            onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                            onKeyPress={handleKeyPress}
+                        // onKeyDown={(e) => e.key === "Enter" && handleSend()}
                         />
                         <button
                             type="button"

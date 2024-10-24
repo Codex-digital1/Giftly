@@ -1,14 +1,29 @@
 import { Helmet } from "react-helmet-async";
+import { useEffect, useState } from "react";
 import useAuth from "../../Provider/useAuth";
 import GiftCard from "../../components/shared/GiftCard";
 import LoadingSpinner from "../../components/shared/LoadingSpinner";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const Allgift = () => {
-  const { handleFilterChange, allGifts, gifts, loading } = useAuth() ?? {} ;
-  // console.log(allGifts.map(i=>i.category));
-  const giftCategory: string[] = [
-    ...new Set(gifts?.map((gift) => gift?.category)),
-  ];
+  const axiosPublic=useAxiosPublic()
+  const { handleFilterChange, allGifts, loading } = useAuth() ?? {} ;
+  const [categories, setCategories] = useState<string[]>([]);
+ const fetchCategories = async () => {
+  try {
+      const response = await axiosPublic.get('/api/gifts/categories');
+      setCategories(response.data.data);
+  } catch (error) {
+      console.error('Error fetching categories:', error);
+  } 
+};
+
+useEffect(() => {
+  fetchCategories();
+}, []);
+
+
+
   return (
     <>
       <div className="container mx-auto mt-20 p-4 min-h-[calc(100vh-530px)]">
@@ -24,7 +39,7 @@ const Allgift = () => {
           />
         </div>
         {/* Filters Section */}
-        <div id="all-gift-container" className="my-8">
+        <div id="all-gift-container" className="my-5">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-8">
             {/* Category Filter */}
             <div>
@@ -37,7 +52,7 @@ const Allgift = () => {
                 onChange={handleFilterChange}
               >
                 <option value="">All Products</option>
-                {giftCategory?.map((category: string, i: number) => (
+                {categories?.map((category: string, i: number) => (
                   <option key={i} value={category}>
                     {category}
                   </option>
