@@ -7,7 +7,7 @@ const Users = () => {
   return (
     <div>
        <Helmet>
-        <title>Giftly | Manage-users</title>
+        <title>Giftly-Manage-users</title>
       </Helmet>
        <SectionHeading title="Users List"/>
        <UserList/>

@@ -6,7 +6,7 @@ const Dashboard = () => {
   return (
     <div className='relative min-h-screen md:flex  '>
        <Helmet>
-        <title>Giftly | Dashboard</title>
+        <title>Giftly-Dashboard</title>
       </Helmet>
     {/* Sidebar */}
     <Sidebar />

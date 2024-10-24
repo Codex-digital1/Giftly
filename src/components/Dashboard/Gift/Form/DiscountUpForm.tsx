@@ -44,7 +44,7 @@ const DiscountUpForm = () => {
   return (
     <div className="min-h-screen w-full flex justify-center items-center">
        <Helmet>
-        <title>Giftly | Discount</title>
+        <title>Giftly-Discount</title>
       </Helmet>
       <div className="w-1/2 border p-5 space-y-3 rounded-xl text-gray-800">
         <h1 className="text-2xl font-bold text-center">Upload a New Discount Offer</h1>

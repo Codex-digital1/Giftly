@@ -7,7 +7,7 @@ const Cart = () => {
     return (
         <div>
             <Helmet>
-                <title>Giftly | Cart</title>
+                <title>Giftly-Cart</title>
             </Helmet>
             <MyContainer>
                 <SectionHeading title="My Cart List" />

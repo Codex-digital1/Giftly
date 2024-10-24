@@ -6,7 +6,7 @@ const Gift = () => {
   return (
     <div>
        <Helmet>
-        <title>Giftly | Manage-gift</title>
+        <title>Giftly-Manage-gift</title>
       </Helmet>
       <SectionHeading title="Gift List"/>
       <GiftList/>

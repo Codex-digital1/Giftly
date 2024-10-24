@@ -11,7 +11,7 @@ const StatisticsPage = () => {
   return (
     <>
      <Helmet>
-        <title>Giftly | Statistics</title>
+        <title>Giftly-Statistics</title>
       </Helmet>
      <TopStatistic></TopStatistic>
       <MidStatistic></MidStatistic>

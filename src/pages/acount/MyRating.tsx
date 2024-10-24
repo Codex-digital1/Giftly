@@ -59,7 +59,7 @@ const MyRating = () => {
   return (
     <div className="p-5 border-t-4 border-primary bg-white shadow-lg rounded-lg">
       <Helmet>
-        <title>Giftly | MyRating</title>
+        <title>Giftly-MyRating</title>
       </Helmet>
       <h2 className="text-2xl font-semibold mb-4">My Rating & Reviews</h2>
 

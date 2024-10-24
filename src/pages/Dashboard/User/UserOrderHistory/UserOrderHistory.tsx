@@ -6,7 +6,7 @@ const UserOrderHistory = () => {
   return (
     <div>
        <Helmet>
-        <title>Giftly | Order-history</title>
+        <title>Giftly-Order-history</title>
       </Helmet>
       {" "}
       <SectionHeading title="Order History" />

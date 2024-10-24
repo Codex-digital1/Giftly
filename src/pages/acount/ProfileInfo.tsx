@@ -132,7 +132,7 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
   return (
     <>
      <Helmet>
-        <title>Giftly | Profile</title>
+        <title>Giftly-Profile</title>
       </Helmet>
       <div className="flex justify-center items-center h-80vh">
         {/* <Helmet>

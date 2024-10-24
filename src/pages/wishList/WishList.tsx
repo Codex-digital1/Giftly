@@ -7,7 +7,7 @@ const WishList = () => {
     return (
         <div>
             <Helmet>
-                <title>Giftly | WishList</title>
+                <title>Giftly-WishList</title>
             </Helmet>
             <MyContainer>
                 <SectionHeading title="WishList" />

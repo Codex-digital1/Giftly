@@ -13,7 +13,7 @@ const Allgift = () => {
     <>
       <div className="container mx-auto mt-20 p-4 min-h-[calc(100vh-530px)]">
       <Helmet>
-        <title>Giftly | AllGift</title>
+        <title>Giftly-AllGift</title>
       </Helmet>
         <div className="my-4">
           <h3 className="text-2xl font-bold mb-2">Pick Your Gift!</h3>

@@ -119,7 +119,7 @@ const ProductDetails: React.FC = () => {
   return (
     <>
      <Helmet>
-        <title>Giftly | ProductDetails</title>
+        <title>Giftly-ProductDetails</title>
       </Helmet>
       {gift && (
         <div className="container mx-auto my-10 mt-28">

@@ -68,7 +68,7 @@ const AboutUs = () => {
   return (
     <div className="container mx-auto">
        <Helmet>
-        <title>Giftly | About Us</title>
+        <title>Giftly-About Us</title>
       </Helmet>
       {/* About us section */}
       <section className=" border-red-400  mt-20 bg-secondary rounded-t-xl p-2">

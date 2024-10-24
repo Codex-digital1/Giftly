@@ -7,7 +7,7 @@ const ManageOrders = () => {
   return (
     <div>
        <Helmet>
-        <title>Giftly | ManageOrders</title>
+        <title>Giftly-ManageOrders</title>
       </Helmet>
       <SectionHeading title="Manage Orders" />
       <ManageOrdersList/>
