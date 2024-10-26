@@ -8,12 +8,13 @@ import { useState } from "react";
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location?.state || "/";
+  console.log(location?.state?.from?.pathname);
+  const from = location?.state?.from?.pathname || "/";
   const [show,setShow]=useState(false)
 
 
 //   console.log(location);
-  const { login, googleLogin,loading } = useAuth() ?? {};
+  const { login, googleLogin,loading ,user} = useAuth() ?? {};
   const handelform = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -23,28 +24,28 @@ const Login: React.FC = () => {
 
     const emailValue = email.value;
     const passwordValue = password.value;
+   try {
     await login?.(emailValue, passwordValue)
-      .then((result) => {
-          console.log(result.user);
-          navigate(from)
-        })
-        .catch((error) => {
-            console.log(error.message);
-        });
+    navigate(from)
+   } catch (error) {
+    console.log(error);
+   }
     // console.log(emailValue, passwordValue);
   };
 
   const handleGoogleLogin = async() => {
-    
-    await googleLogin?.()
-      .then((result) => {
-          navigate(from)
-        console.log(result.user);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+     try {
+      await googleLogin?.()
+    navigate(from)
+
+     } catch (error) {
+      console.log(error);
+     }
   };
+  if (user) {
+    navigate(from);
+    return
+  }
 
   return (
     <div className="custom-margin md:flex justify-center px-5 md:px-0 py-10 items-center  border hover:border-primary duration-700 rounded-xl container mx-auto ">
@@ -101,6 +102,7 @@ const Login: React.FC = () => {
               </div>
 
               <button
+              disabled={loading}
                 type="submit"
                 className="w-full py-3 font-medium text-white btn-primary inline-flex space-x-2 items-center justify-center"
               >
@@ -127,6 +129,7 @@ const Login: React.FC = () => {
 
               <button
                 onClick={handleGoogleLogin}
+                disabled={loading}
                 className="w-full text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-primary hover:text-slate-900 hover:shadow transition duration-150"
               >
                 <img

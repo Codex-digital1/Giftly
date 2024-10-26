@@ -268,11 +268,27 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
 
   }
+  // Get token from server
+  const getToken = async (email:string) => {
+    try {
+      const { data } = await axiosPublic.post(
+        `/jwt`,
+        { email },
+        { withCredentials: true }
+      )
+      console.log(data);
+      return data
+    } catch (error) {
+      console.log(error);
+    }
+  }
+ 
 
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        getToken(user?.email ?? '')
         setUser((prevUser) => {
           if (!prevUser) return null; // Handle case where there is no previous user
         
@@ -314,17 +330,29 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   
 
+  
   const logOut = async () => {
-    setLoading(true);
-    try {
-      await signOut(auth);
+    setLoading(true)
+    try{
+      await axiosPublic(`/logout`, {
+        withCredentials: true,
+      }).then(response => {
+        console.log(response.data);
+    })
+      setUser(null)
       toast.success("Logout successful");
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
+      return await signOut(auth)
+    }catch(err){
+      toast.error(err.message);
+      console.log(err);
+    }finally {
       setLoading(false);
     }
-  };
+    
+   
+  }
+
+
   const resetPassword = (email:string) => {
     return sendPasswordResetEmail(auth, email)
   }
@@ -407,7 +435,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         setLoading(true);
         const { data } = await axiosPublic.get("/getAllGift", { params: filters });
-        console.log(data?.data);
+        // console.log(data?.data);
         setAllGifts(data?.data);
       } catch (error) {
         console.log(error);
@@ -563,6 +591,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
 
+  // auth-info
   const authInfo: AuthContextType = {
     user,
     loading,

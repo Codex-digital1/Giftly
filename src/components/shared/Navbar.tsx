@@ -152,11 +152,11 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
       setShowSuggestionsMinScreen(false)
     }, 100);
   }
-  console.log(query);
-  console.log(suggestions);
+  // console.log(query);
+  // console.log(suggestions);
 
   return (
-    <div className="fixed w-full bg-secondary pb-2  z-50 top-0 shadow-2xl">
+    <div className="fixed w-full bg-secondary pb-2 pt-2 space-y-1 md:pt-0  z-50 top-0 shadow-2xl">
       <div className=" container mx-auto bg-secondary md:h-20 flex justify-between items-center  px-2 ">
         {/* Logo */}
         <div className="flex justify-center items-center cursor-pointer text-primary">

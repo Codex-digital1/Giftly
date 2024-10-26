@@ -9,11 +9,11 @@ import { ImSpinner10 } from "react-icons/im";
 const Register: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location?.state || "/";
+  const from = location?.state?.from?.pathname || "/";
   const [passwordShow,setPasswordShow]=useState(false)
   const [passwordShow1,setPasswordShow1]=useState(false)
 
-  const { createUser, updateUserProfile, googleLogin,loading} = useAuth() ?? {};
+  const { createUser, updateUserProfile, googleLogin,loading, user} = useAuth() ?? {};
 
   // handle Register form data
   const handelform = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,6 +40,8 @@ const Register: React.FC = () => {
         console.log(result.user);
         updateUserProfile?.(nameValue, "");
         navigate(from);
+        // window.location.replace(from)
+
       })
       .catch((error) => {
         console.log(error);
@@ -51,12 +53,19 @@ const Register: React.FC = () => {
     await googleLogin?.()
     .then((result) => {
       navigate(from);
+      // window.location.replace(from)
+
       console.log(result.user);
     })
     .catch((error) => {
       console.log(error);
     });
   };
+  if (user) {
+    navigate(from);
+    // window.location.replace(from)
+    return
+  }
 
   return (
     <div className="custom-margin md:flex justify-center p-5 rounded-xl items-center container mx-auto border hover:border-primary duration-700 ">
