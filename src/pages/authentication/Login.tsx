@@ -8,15 +8,17 @@ import { useState } from "react";
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location?.state?.from?.pathname);
+  // console.log(location?.state?.from?.pathname);
   const from = location?.state?.from?.pathname || "/";
   const [show,setShow]=useState(false)
+  const [isLoading,setIsLoading]=useState(false)
 
 
 //   console.log(location);
-  const { login, googleLogin,loading ,user} = useAuth() ?? {};
+  const { login, googleLogin ,user} = useAuth() ?? {};
   const handelform = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true)
 
     const form = e.currentTarget; // Use currentTarget to get the form element
     const email = form.elements.namedItem("email") as HTMLInputElement; // Access the input by name
@@ -25,21 +27,28 @@ const Login: React.FC = () => {
     const emailValue = email.value;
     const passwordValue = password.value;
    try {
-    await login?.(emailValue, passwordValue)
-    navigate(from)
+    const res=await login?.(emailValue, passwordValue)
+    console.log(res);
+    // navigate(from)
    } catch (error) {
     console.log(error);
+   }finally{
+    setIsLoading(false)
    }
     // console.log(emailValue, passwordValue);
   };
 
   const handleGoogleLogin = async() => {
+    setIsLoading(true)
      try {
       await googleLogin?.()
     navigate(from)
 
      } catch (error) {
       console.log(error);
+     }
+     finally{
+      setIsLoading(false)
      }
   };
   if (user) {
@@ -102,11 +111,11 @@ const Login: React.FC = () => {
               </div>
 
               <button
-              disabled={loading}
+              disabled={isLoading}
                 type="submit"
                 className="w-full py-3 font-medium text-white btn-primary inline-flex space-x-2 items-center justify-center"
               >
-                {loading ? (
+                {isLoading ? (
                 <ImSpinner10 className="animate-spin mx-auto text-xl" />
               ) : (
             <><svg
@@ -129,7 +138,7 @@ const Login: React.FC = () => {
 
               <button
                 onClick={handleGoogleLogin}
-                disabled={loading}
+                disabled={isLoading}
                 className="w-full text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-primary hover:text-slate-900 hover:shadow transition duration-150"
               >
                 <img

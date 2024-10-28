@@ -42,9 +42,9 @@ const Notifications = () => {
   useEffect(() => {
     const socketCall = getSocket();
     console.log(socketCall);
-    if (user) {
+    if (user?._id) {
       // socketCall.connect()
-      socketCall.emit("registerUser", user?._id);
+      socketCall.emit('joinRoom', user?._id);
     }
       socketCall.on('connect', () => {
         console.log('Socket connected:', socketCall.id);

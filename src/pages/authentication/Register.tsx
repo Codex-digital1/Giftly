@@ -12,12 +12,15 @@ const Register: React.FC = () => {
   const from = location?.state?.from?.pathname || "/";
   const [passwordShow,setPasswordShow]=useState(false)
   const [passwordShow1,setPasswordShow1]=useState(false)
+  const [isLoading,setIsLoading]=useState(false)
 
-  const { createUser, updateUserProfile, googleLogin,loading, user} = useAuth() ?? {};
+
+  const { createUser, updateUserProfile, googleLogin, user} = useAuth() ?? {};
 
   // handle Register form data
   const handelform = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true)
     const form = e.currentTarget;
     const nameValue = (form.elements.namedItem("name") as HTMLInputElement)
       .value;
@@ -41,23 +44,27 @@ const Register: React.FC = () => {
         updateUserProfile?.(nameValue, "");
         navigate(from);
         // window.location.replace(from)
-
+        setIsLoading(false)
       })
       .catch((error) => {
+        setIsLoading(false)
         console.log(error);
       });
     // navigate(from);
   };
   // Google login
   const handleGoogleLogin = async () => {
+    setIsLoading(true)
     await googleLogin?.()
     .then((result) => {
       navigate(from);
       // window.location.replace(from)
 
       console.log(result.user);
+      setIsLoading(false)
     })
     .catch((error) => {
+      setIsLoading(false)
       console.log(error);
     });
   };
@@ -149,9 +156,10 @@ const Register: React.FC = () => {
 
               <button
                 type="submit"
+                disabled={isLoading}
                 className="w-full py-3 font-medium text-white btn-primary inline-flex space-x-2 items-center justify-center"
               >
-                {loading ? (
+                {isLoading ? (
                 <ImSpinner10 className="animate-spin mx-auto text-xl" />
               ) : (
                 <><svg
@@ -173,6 +181,7 @@ const Register: React.FC = () => {
               </button>
 
               <button
+              disabled={isLoading}
                 onClick={handleGoogleLogin}
                 className="w-full text-center py-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-primary hover:text-slate-900 hover:shadow transition duration-150"
               >
