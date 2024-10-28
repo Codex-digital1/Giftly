@@ -246,12 +246,6 @@ const ChatContainer: React.FC = () => {
     };
 
     return (
-        // style={{
-        //     backgroundImage: `url("${bg}")`,
-        //     backgroundPosition: 'center',
-        //     backgroundSize: 'cover',
-        //     backgroundRepeat: 'no-repeat'
-        // }}
         <div className="mt-[100px] mb-[50px] md:my-[100px] flex flex-col justify-between w-full bg-white shadow-xl container mx-auto  z-50 rounded-lg h-[600px]  md:h-[600px] ">
 
             {/* Chat Header */}
