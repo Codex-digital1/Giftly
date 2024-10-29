@@ -20,14 +20,14 @@ const Carousel: React.FC = () => {
   const axiosPublic = useAxiosPublic();
 
   const swiperRef = useRef<any>(null);
-  const { data: feedbacks = [],isLoading } = useQuery({
+  const { data: feedbacks = [], isLoading } = useQuery({
     queryKey: ["feedbacks"],
     queryFn: async () => {
       const { data } = await axiosPublic.get("/testimonials/feedback");
       return data.data;
     },
   });
- 
+
   const handleMouseEnter = () => {
     if (swiperRef.current) {
       swiperRef.current.swiper.autoplay.stop();
@@ -47,38 +47,40 @@ const Carousel: React.FC = () => {
   };
   return (
     <Container>
-      {isLoading ? <LoadingSpinner card={true} smallHeight={false} large={false}/>:<div className="md:py-10 mx-auto">
-        <Swiper
-          // ref={swiperRef}
-          spaceBetween={30}
-          centeredSlides={true}
-          loop={true}
-          pagination={{
-            clickable: true,
-          }}
-          autoplay={{
-            delay: 5000,
-            disableOnInteraction: true,
-          }}
-          navigation={true}
-          modules={[Autoplay, Pagination, Navigation]}
-          className="mySwiper"
-        >
-          {feedbacks?.map((feedback: Feedback) => (
-           <div key={feedback?._id}>
-             <SwiperSlide
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              onClick={handleClick}
-            >
-              <Slide feedback={feedback} />
-            </SwiperSlide>
-           </div>
-          ))}
-
-        
-        </Swiper>
-      </div>}
+      {isLoading ? (
+        <LoadingSpinner card={true} smallHeight={false} large={false} />
+      ) : (
+        <div className="md:py-10 mx-auto">
+          <Swiper
+            // ref={swiperRef}
+            spaceBetween={30}
+            centeredSlides={true}
+            loop={true}
+            pagination={{
+              clickable: true,
+            }}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: true,
+            }}
+            navigation={true}
+            modules={[Autoplay, Pagination, Navigation]}
+            className="mySwiper"
+          >
+            {feedbacks?.map((feedback: Feedback) => (
+              <div key={feedback?._id}>
+                <SwiperSlide
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                  onClick={handleClick}
+                >
+                  <Slide feedback={feedback} />
+                </SwiperSlide>
+              </div>
+            ))}
+          </Swiper>
+        </div>
+      )}
     </Container>
   );
 };
