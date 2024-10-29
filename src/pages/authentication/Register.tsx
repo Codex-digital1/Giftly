@@ -193,7 +193,7 @@ const Register: React.FC = () => {
                 <span>Login with Google</span>
               </button>
 
-              <p className="text-center">
+              <p className="text-center ">
                 All ready have an account ?{" "}
                 <a
                   href="#"

@@ -141,6 +141,14 @@ export declare interface UserInfo {
    */
   readonly uid: string;
 }
+export declare interface Feedback {
+  rating: number 
+  comment: string 
+  _id: string 
+  ReviewerName: string; 
+  ReviewerProfileImage: string 
+  reviewedAt: Date 
+}
 
 export interface User extends UserInfo {
   readonly emailVerified: boolean;

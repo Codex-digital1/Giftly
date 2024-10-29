@@ -9,7 +9,8 @@ module.exports = {
       },
       fontFamily: {
         'great-vibes': ['Great Vibes', 'cursive'],
-        "playfair-display": ["Playfair Display", "serif"]
+        "playfair-display": ["Playfair Display", "serif"],
+        inter: ['Inter', 'system-ui']
       },
     },
   },
