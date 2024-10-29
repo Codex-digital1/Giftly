@@ -12,6 +12,8 @@ import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 // @ts-ignore
 import ReactImageZoom from 'react-image-zoom';
+import { Link } from "react-router-dom";
+import ShowReviewComment from "../../components/ShowReviewChart/ShowReviewComment";
 interface Review {
   review: {
     rating: number | null;
@@ -252,13 +254,30 @@ const ProductDetails: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="mt-20">
+          {/* <div className="mt-20">
             <h3 className="text-3xl font-bold">Product Reviews</h3>
             <button onClick={handleScrollToDescription}>Scroll to Description</button>
             {reviewByProductId?.map((review, index) => (
               <ShowReview key={index} reviewByProductId={review} />
             ))}
+          </div> */}
+           {/* review section */}
+           <div className="mt-10">
+            <div className="flex flex-col gap-4">
+              <div>
+                <div className="flex flex-wrap gap-4">
+                  <button onClick={handleScrollToDescription} className="btn-secondary">user fedback</button>
+                  <Link to="/dashboard/my-rating">
+                    <button className="btn-secondary">Write a review</button>
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
+          {/* reviewComponent */}
+          <ShowReview reviewByProductId={reviewByProductId}></ShowReview>
+          {/* comment component  */}
+          <ShowReviewComment refProp={descriptionRef} reviewByProductId={reviewByProductId}></ShowReviewComment>
         </div>
       ) : (
         <LoadingSpinner />
