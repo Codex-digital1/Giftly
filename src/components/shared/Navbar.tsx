@@ -153,11 +153,11 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
       setShowSuggestionsMinScreen(false)
     }, 100);
   }
-  console.log(query);
-  console.log(suggestions);
+  // console.log(query);
+  // console.log(suggestions);
 
   return (
-    <div className="fixed w-full bg-secondary pb-2  z-50 top-0 shadow-2xl">
+    <div className="fixed w-full bg-secondary pb-2 pt-2 space-y-1 md:pt-0  z-50 top-0 shadow-2xl">
       <div className=" container mx-auto bg-secondary md:h-20 flex justify-between items-center  px-2 ">
         {/* Logo */}
         <div className="flex justify-center items-center cursor-pointer text-primary">
@@ -318,7 +318,7 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
                       <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
                         {user?.name}
                       </div>
-                      <Link to={"/dashboard"}>
+                      <Link to={"/dashboard/statistics"}>
                         <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
                           Dashboard
                         </div>

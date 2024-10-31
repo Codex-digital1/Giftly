@@ -13,9 +13,9 @@ import toast from "react-hot-toast";
 import auth from "../Firebase/Firebase.config";
 import _ from 'lodash';
 import useAxiosPublic from "../Hooks/useAxiosPublic";
-import { QueryObserverResult, RefetchOptions, useQuery } from "@tanstack/react-query";
+import { FetchNextPageOptions, InfiniteData, InfiniteQueryObserverResult, QueryObserverResult, RefetchOptions, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-
+import { useInfiniteQuery } from "@tanstack/react-query";
 // Define GiftType
 type GiftType = {
   _id: string;
@@ -35,6 +35,7 @@ type GiftType = {
   availability: (boolean | string);
   quantity: number;
 };
+
 
 // Define OrderedGiftType
 type OrderedGiftType = {
@@ -100,6 +101,10 @@ interface AuthContextType {
   setUser: (user: User | null) => void;
   gifts?: GiftType[];
   allGifts?: GiftType[];
+  isFetchingNextPage?: boolean;
+  hasNextPage?: boolean;
+  fetchNextPage?: (options?: FetchNextPageOptions) => 
+    Promise<InfiniteQueryObserverResult<InfiniteData<any, unknown>, Error>>;
   allGifts1?: GiftType[];
   cart: GiftType[];
   addToCart: (gift: GiftType) => void;
@@ -268,11 +273,27 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
 
   }
+  // Get token from server
+  const getToken = async (email:string) => {
+    try {
+      const { data } = await axiosPublic.post(
+        `/jwt`,
+        { email },
+        { withCredentials: true }
+      )
+      console.log(data);
+      return data
+    } catch (error) {
+      console.log(error);
+    }
+  }
+ 
 
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        getToken(user?.email ?? '')
         setUser((prevUser) => {
           if (!prevUser) return null; // Handle case where there is no previous user
         
@@ -314,17 +335,29 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   
 
+  
   const logOut = async () => {
-    setLoading(true);
-    try {
-      await signOut(auth);
+    setLoading(true)
+    try{
+      await axiosPublic(`/logout`, {
+        withCredentials: true,
+      }).then(response => {
+        console.log(response.data);
+    })
+      setUser(null)
       toast.success("Logout successful");
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
+      return await signOut(auth)
+    }catch(err:any){
+      toast.error(err?.message || '');
+      console.log(err);
+    }finally {
       setLoading(false);
     }
-  };
+    
+   
+  }
+
+
   const resetPassword = (email:string) => {
     return sendPasswordResetEmail(auth, email)
   }
@@ -362,6 +395,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     } catch (error) {
       console.error('Error fetching user:', error);
+    }finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -392,7 +427,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     (async () => {
       try {
         setLoading(true);
-        const { data } = await axiosPublic.get("/getAllGiftForHome", { params: filters });
+        const { data } = await axiosPublic.get("/getAllGiftForHome",);
         setGifts(data?.data);
       } catch (error) {
         console.log(error);
@@ -400,22 +435,57 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setLoading(false);
       }
     })();
-  }, [filters]);
+  }, []);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const { data } = await axiosPublic.get("/getAllGift", { params: filters });
-        console.log(data?.data);
-        setAllGifts(data?.data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [filters]);
+  // Define the API response structure
+interface GiftsResponse {
+  data: GiftType[];
+}
+// Define the filters type
+interface Filters {
+  category?: string;
+  priceMin?: number;
+  priceMax?: number;
+  rating?: number;
+  availability?: string;
+  sortBy?: string;
+  search?: string;
+}
+// Fetch function for infinite query
+const fetchGifts = async ({
+  pageParam = 1,
+  queryKey,
+}: {
+  pageParam?: number;
+  queryKey: [string, Filters];
+}): Promise<GiftsResponse> => {
+  const [, filters] = queryKey; // Extract filters from queryKey
+  const response = await axiosPublic.get<GiftsResponse>("/getAllGift", {
+    params: { ...filters, page: pageParam, limit: 12 },
+  });
+  return response.data;
+};
+ // Update the way useInfiniteQuery is called (object form)
+ const {
+  data: fetchGifts12,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+} = useInfiniteQuery<GiftsResponse>({
+  queryKey: ["gifts", filters],
+  // @ts-ignore
+  queryFn: fetchGifts ,
+  getNextPageParam: (lastPage, allPages) => {
+    const currentPage = allPages.length;
+    return lastPage.data.length > 0 ? currentPage + 1 : undefined;
+  },
+});
+useEffect(()=>{
+  // @ts-ignore
+  setAllGifts(fetchGifts12?.pages.flatMap((page) => page?.data) || []);
+},[fetchGifts12])
+
+  
 
   // get review from order collection using user email
   const myAllReview = async () => {
@@ -563,6 +633,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
 
+  // auth-info
   const authInfo: AuthContextType = {
     user,
     loading,
@@ -574,7 +645,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     logOut,
     updateUserProfile,
     gifts,
+    // all gift page
     allGifts,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
     allGifts1,
     refetch,
     cart,
