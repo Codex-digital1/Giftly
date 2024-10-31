@@ -34,7 +34,7 @@ const BestSellinGift = () => {
   const loading: boolean = authContext?.loading || false;
 
   return (
-    <div>
+    <>
       <MyContainer>
         <SectionHeading title="New Arrivals" subTitle="Best Selling Gifts" />
         {loading ? <LoadingSpinner card={true} large={false} smallHeight={false} />:<>
@@ -55,7 +55,7 @@ const BestSellinGift = () => {
         </>}
         
       </MyContainer>
-    </div>
+    </>
   );
 };
 
