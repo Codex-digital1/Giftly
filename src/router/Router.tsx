@@ -124,7 +124,7 @@ const router = createBrowserRouter([
           </PrivateRoute>
       },
       {
-        path: "manage-feedbacks",
+        path: "manage-reviews",
         element: <AllReviews />
       },
       // user

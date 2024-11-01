@@ -171,7 +171,7 @@ const Sidebar = () => {
                   </NavLink>
                   {/* Manage Review */}
                   <NavLink
-                    to="manage-feedbacks"
+                    to="manage-reviews"
                     className={({ isActive }) =>
                       `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-primary   hover:text-white ${
                         isActive ? "bg-primary  text-white" : "text-gray-600"

@@ -1,12 +1,12 @@
 
-import useGetAllReview from "../../../../Hooks/useGetAllReview";
-// import { OrderTypes } from "../../../../types/Types";
 import TableTh from "../../../../components/shared/TableTh";
+import { UseGetAllReview } from "../../../../Hooks/useGetAllReview";
 import AllReviewItems from "./AllReviewItems";
 
+
 const AllReviewList = () => {
-  const [data] = useGetAllReview();
-  console.log(data)
+  const [data] = UseGetAllReview();
+  console.log(9,data)
   return (
     <div>
       <div className="overflow-x-auto">
@@ -22,8 +22,8 @@ const AllReviewList = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-200 text-center">
-            {data?.map((review) => (
-              <AllReviewItems key={review._id} review={review} />
+            {data?.map((orderInfo) => (
+              <AllReviewItems key={orderInfo._id} orderInfo={orderInfo} />
             ))}
           </tbody>
         </table>

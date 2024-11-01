@@ -1,18 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { OrderInfo } from "../types/Types";
 
-const useGetAllReview = () => {
-    const { data, isLoading, refetch } = useQuery({
-        queryKey: ["reviews"],
+// Hook to get all reviews
+export const UseGetAllReview = () => {
+    const { data, isLoading, refetch } = useQuery<OrderInfo[]>({
+        queryKey: ["allReviews"],
         queryFn: async () => {
-            const res = await axios.get(
-                `http://localhost:3000/testimonials/feedback`
-            );
-            
-            return res?.data?.data;
+            const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/gifts/getReviews`);
+            return res?.data;
         },
     });
-    return [data, isLoading, refetch];
+    return [data, isLoading, refetch] as const;
 };
-
-export default useGetAllReview;
