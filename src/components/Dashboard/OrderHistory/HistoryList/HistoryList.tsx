@@ -2,7 +2,6 @@ import useGetAllOrders from "../../../../Hooks/useGetAllOrders";
 import TableTh from "../../../shared/TableTh";
 import TableTd from "../../../shared/TableTd";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
-import LoadingSpinner from "../../../shared/LoadingSpinner";
 interface Product {
   product_image: string[];
   product_name: string;
@@ -12,7 +11,7 @@ interface Product {
 
 }
 const HistoryList: React.FC = () => {
-  const [data, isLoading] = useGetAllOrders();
+  const [data, ] = useGetAllOrders();
   // if (isLoading) return <LoadingSpinner></LoadingSpinner>
   console.log(data)
   return (

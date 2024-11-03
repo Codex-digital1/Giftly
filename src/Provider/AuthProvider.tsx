@@ -8,7 +8,7 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { createContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useEffect, useState, ReactNode, Dispatch, SetStateAction } from "react";
 import toast from "react-hot-toast";
 import auth from "../Firebase/Firebase.config";
 import _ from 'lodash';
@@ -128,7 +128,7 @@ interface AuthContextType {
   cart: CartGiftType[];
   addToCart: (gift: GiftType) => void;
   addToWishlist: (gift: GiftType) => void;
-  setCart: (cart: CartGiftType[]) => [];
+  setCart: Dispatch<SetStateAction<CartGiftType[]>>
 
   wishlist: GiftType[];
   removeToWishlist: (gift: GiftType) => void;

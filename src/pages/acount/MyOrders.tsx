@@ -4,7 +4,6 @@ import useGetSpecificOrders from "../../Hooks/useGetSpecificOrders";
 import { OrderTypes } from "../../types/Types";
 import InfiniteScroll from "react-infinite-scroller";
 import { ImSpinner10 } from "react-icons/im";
-import LoadingSpinner from "../../components/shared/LoadingSpinner";
 
 const MyOrders = () => {
  

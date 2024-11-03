@@ -15,12 +15,6 @@ type DiscountData = {
   discount: number;
   dis: number;
 };
-// Define the type for your state
-interface DateRangeState {
-  startDate: Date | null;
-  endDate: Date | null;
-  key: string;
-}
 
 // import { DateRange, RangeKeyDict } from "react-date-range";
 // import "react-date-range/dist/styles.css"; // Main style file
