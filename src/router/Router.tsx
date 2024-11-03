@@ -26,7 +26,9 @@ import ProfileInfo from './../pages/acount/ProfileInfo';
 import DiscountUpForm from "../components/Dashboard/Gift/Form/DiscountUpForm";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from './AdminRoute';
-
+ 
+import AllReviews from "../pages/Dashboard/Admin/ManageReview/AllReviews";
+ 
 const router = createBrowserRouter([
   {
     path: "/",
@@ -78,7 +80,7 @@ const router = createBrowserRouter([
         path: "statistics",
         element: <PrivateRoute>
           <AdminRoute>
-            <StatisticsPage /><StatisticsPage />
+            <StatisticsPage />
             </AdminRoute>
             </PrivateRoute>,
       },
@@ -121,6 +123,10 @@ const router = createBrowserRouter([
         <ManageOrders />,
           </AdminRoute>
           </PrivateRoute>
+      },
+      {
+        path: "manage-reviews",
+        element: <AllReviews />
       },
       // user
       {

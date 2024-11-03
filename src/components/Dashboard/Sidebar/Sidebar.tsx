@@ -169,6 +169,20 @@ const Sidebar = () => {
 
                     <span className="mx-4 font-medium">Order History</span>
                   </NavLink>
+                  {/* Manage Review */}
+                  <NavLink
+                    to="manage-reviews"
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-primary   hover:text-white ${
+                        isActive ? "bg-primary  text-white" : "text-gray-600"
+                      }`
+                    }
+                  >
+                    <FaHistory />
+
+                    <span className="mx-4 font-medium">Manage feedbacks</span>
+                  </NavLink>
+                  
                   {/* Manage Orders */}
                   <NavLink
                     to="manage-orders"
