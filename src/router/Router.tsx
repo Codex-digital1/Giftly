@@ -79,7 +79,7 @@ const router = createBrowserRouter([
         path: "statistics",
         element: <PrivateRoute>
           <AdminRoute>
-            <StatisticsPage /><StatisticsPage />
+            <StatisticsPage />
             </AdminRoute>
             </PrivateRoute>,
       },
