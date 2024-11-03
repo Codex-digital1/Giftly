@@ -1,14 +1,13 @@
-import MyContainer from "../../components/shared/MyContainer";
+import { Helmet } from "react-helmet-async";
 import WishListItem from "../../components/wishLists/WishListItem";
 
 const WishList = () => {
     return (
         <div>
-           <MyContainer>
-            <div >
+             <Helmet>
+                <title>Giftly-WishList</title>
+            </Helmet>
                 <WishListItem/>
-            </div>
-            </MyContainer> 
         </div>
     );
 };

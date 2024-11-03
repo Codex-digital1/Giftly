@@ -4,6 +4,7 @@ import useGetSpecificOrders from "../../Hooks/useGetSpecificOrders";
 import { OrderTypes } from "../../types/Types";
 import InfiniteScroll from "react-infinite-scroller";
 import { ImSpinner10 } from "react-icons/im";
+import { Helmet } from "react-helmet-async";
 
 const MyOrders = () => {
  
@@ -21,6 +22,9 @@ const MyOrders = () => {
 
   return (
     <div className="p-5 shadow-lg border-t-4 border-primary">
+      <Helmet>
+        <title>Giftly-Manage-users</title>
+      </Helmet>
       <h2 className="text-2xl font-medium inter my-3 text-center">My Orders</h2>
       <InfiniteScroll
       pageStart={0}

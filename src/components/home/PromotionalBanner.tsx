@@ -9,12 +9,10 @@ const PromotionalBanner = () => {
           <div className="space-y-3">
             <h5 className="text-3xl font-great-vibes">Gifts Shop</h5>
             <h2 className="text-3xl font-medium font-playfair-display">
-              Gift More Spend Less
+            🎉 Gifts for Every Occasion, Wrapped in Joy!
             </h2>
             <p className="text-base text-gray-900">
-              Donec id blandit ante. Duis maximus, est quis ultricies euismod,
-              nunc ante vulputate ex, nec volutpat risus risus in ipsum. Sed at
-              purus diam.
+            Express your love and appreciation with gifts that tell a story. Our curated selection is designed to celebrate every emotion, making each gift as special as the person receiving it. Discover unique options and create unforgettable moments for your loved ones!
             </p><br />
             <Link to={"/allGift"} className="btn-secondary">
               shop now
