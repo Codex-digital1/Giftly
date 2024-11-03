@@ -141,6 +141,14 @@ export declare interface UserInfo {
    */
   readonly uid: string;
 }
+export declare interface Feedback {
+  rating: number 
+  comment: string 
+  _id: string 
+  ReviewerName: string; 
+  ReviewerProfileImage: string 
+  reviewedAt: Date 
+}
 
 export interface User extends UserInfo {
   readonly emailVerified: boolean;
@@ -229,6 +237,41 @@ export declare interface ParsedToken {
   /** Map of any additional custom claims. */
   [key: string]: unknown;
 }
+
+
+
+// manage reviews for testimonial
+// types/ReviewTypes.ts
+
+export interface Review {
+  ReviewerName: string | null;
+  ReviewerProfileImage: string | null;
+  comment: string | null;
+  rating: number | null;
+  reviewedAt: string | null;
+}
+
+export interface OrderInfo {
+  _id: string;
+  createdAt: string;
+  isShedule: boolean;
+  order_status: string;
+  payment_status: string;
+  productId: string;
+  product_brand: string;
+  product_image: string[];
+  product_name: string;
+  review: Review;
+  scheduleDate: string | null;
+  sheduleDate: string;
+  total_amount: number;
+  tran_id: string;
+  updatedAt: string;
+  userEmail: string;
+  userName: string;
+  userPhone: string;
+}
+
 
 
 

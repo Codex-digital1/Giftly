@@ -5,9 +5,10 @@ import imgD from "../../assets/placeholder.jpg";
 import ForgotPasswordModal from "../../components/shared/ForgotPasswordModal";
 import UpdateUserModal from "../../components/shared/UpdateUserModal";
 import toast from "react-hot-toast";
+import { Helmet } from 'react-helmet-async';
+
 import LoadingSpinner from "../../components/shared/LoadingSpinner";
-import useAxiosPublic from "../../Hooks/useAxiosPublic";
-import { Helmet } from "react-helmet-async";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 const ProfileInfo = () => {
   const [isOpenPass, setIsOpenPass] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +22,7 @@ const ProfileInfo = () => {
 // Define state for the image file
 const [imageFile, setImageFile] = React.useState<File | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
   // Cloudinary config
   const preset_key = "fkaap0pt";
   const cloud_name = "dhmf91dsb";
@@ -67,7 +68,7 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
           },
         };
         // return console.log(updateData);
-        const res = await axiosPublic.put(`/users/${user?._id}`, updateData);
+        const res = await axiosSecure.put(`/users/${user?._id}`, updateData);
         console.log(res);
         if (res?.data) {
           window.location.reload();
@@ -92,7 +93,7 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
         };
         // return console.log(updateData);
         // console.log(updateData);
-        const res = await axiosPublic.put(`/users/${user?._id}`, updateData);
+        const res = await axiosSecure.put(`/users/${user?._id}`, updateData);
         console.log(res);
         if (res?.data) {
           window.location.reload();

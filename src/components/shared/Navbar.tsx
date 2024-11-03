@@ -145,19 +145,21 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
     };
   }, []);
   const handleSuggestionClick=(giftName:string)=>{
-    console.log(giftName,'132');
+    // console.log(giftName,'132');
     setQuery(giftName)
     handleSearchChange?.(giftName)
-    setTimeout(() =>{ 
+    const currentPath = window.location.pathname;
+    if (currentPath !== '/allGift') {
+      navigate('/allGift');
+    }
       setShowSuggestions(false)
       setShowSuggestionsMinScreen(false)
-    }, 100);
   }
-  console.log(query);
-  console.log(suggestions);
+  // console.log(query);
+  // console.log(suggestions);
 
   return (
-    <div className="fixed w-full bg-secondary pb-2  z-50 top-0 shadow-2xl">
+    <div className="fixed w-full bg-secondary pb-2 pt-2 space-y-1 md:pt-0  z-50 top-0 shadow-2xl">
       <div className=" container mx-auto bg-secondary md:h-20 flex justify-between items-center  px-2 ">
         {/* Logo */}
         <div className="flex justify-center items-center cursor-pointer text-primary">
@@ -199,7 +201,7 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
                             className="p-2 text-left hover:bg-gray-200 cursor-pointer"
                             onClick={(e) => {
                               e.stopPropagation();
-                              console.log('Button clicked:', item?.giftName);
+                              
                               handleSuggestionClick(item?.giftName);
                             }}
                             
@@ -318,7 +320,7 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
                       <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
                         {user?.name}
                       </div>
-                      <Link to={"/dashboard"}>
+                      <Link to={"/dashboard/statistics"}>
                         <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
                           Dashboard
                         </div>

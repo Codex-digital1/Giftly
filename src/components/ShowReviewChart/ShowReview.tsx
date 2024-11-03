@@ -28,12 +28,10 @@ const ShowReview: React.FC<ShowReviewProps> = ({ reviewByProductId }) => {
 
     const averageRating = numberOfRatings > 0 ? sumOfRatings / numberOfRatings : 0;
 
-    console.log("Average Rating:", averageRating);
+    // Total ratings count
+    const totalRatings = reviewByProductId?.length || 0;
 
-    // 1. Total ratings count
-    const totalRatings = reviewByProductId?.length;
-
-    // 2. Count each rating
+    // Count each rating
     const ratingCounts: { [key: number]: number } = {
         5: 0,
         4: 0,
@@ -45,19 +43,19 @@ const ShowReview: React.FC<ShowReviewProps> = ({ reviewByProductId }) => {
     reviewByProductId.forEach((singleReview) => {
         const rating = singleReview?.review.rating || 0;
         if (rating > 0) {
-            // Cast rating as keyof to access ratingCounts correctly
             ratingCounts[rating as keyof typeof ratingCounts] += 1;
         }
     });
 
-    // 3. Calculate percentage for each rating
+    // Calculate percentage for each rating, default to 0% if no reviews
     const ratingPercentages: { [key: number]: number } = {
-        5: (ratingCounts[5] / totalRatings) * 100,
-        4: (ratingCounts[4] / totalRatings) * 100,
-        3: (ratingCounts[3] / totalRatings) * 100,
-        2: (ratingCounts[2] / totalRatings) * 100,
-        1: (ratingCounts[1] / totalRatings) * 100,
+        5: totalRatings > 0 ? (ratingCounts[5] / totalRatings) * 100 : 0,
+        4: totalRatings > 0 ? (ratingCounts[4] / totalRatings) * 100 : 0,
+        3: totalRatings > 0 ? (ratingCounts[3] / totalRatings) * 100 : 0,
+        2: totalRatings > 0 ? (ratingCounts[2] / totalRatings) * 100 : 0,
+        1: totalRatings > 0 ? (ratingCounts[1] / totalRatings) * 100 : 0,
     };
+
 
     return (
         <div className="mt-20 border-t-2 py-10">

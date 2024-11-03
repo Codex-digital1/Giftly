@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
-import { Gift } from "../../types/Types";
+import { GiftType } from "../../types/Types";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import useAuth from "../../Provider/useAuth";
 
 // Define props type for GiftCard component
 interface GiftCardProps {
-  gift: Gift;
+  gift: GiftType;
   drawerToggle?: () => void ;
 }
 
@@ -23,9 +23,10 @@ const GiftCard: React.FC<GiftCardProps> = ({ gift, drawerToggle }) => {
     rating,
     giftImage,
     category,
-  } = gift || {};
+  } = gift 
 
 const handleAdd = () => {
+  // @ts-ignore
   addToCart?.(gift)
     drawerToggle?.()
 }

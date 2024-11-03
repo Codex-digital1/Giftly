@@ -16,7 +16,7 @@ const ManageOrdersList = () => {
               <TableTh tHeading=" Gift Name" />
               {/* <TableTh tHeading="Brand" /> */}
               <TableTh tHeading=" Total Price" />
-              <TableTh tHeading=" Schedule Delevery" />
+              <TableTh tHeading=" Schedule Delivery" />
               <TableTh tHeading="Order Action" />
             </tr>
           </thead>

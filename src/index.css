@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,6 +11,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  top: 0 !important;
 }
 
 code {
@@ -69,6 +70,9 @@ code {
 
 /* translate icon style */
 
+.VIpgJd-ZVi9od-ORHb-OEVmcd{
+  display: none;
+}
 .goog-te-gadget {
   border: none !important;
 
@@ -116,4 +120,18 @@ span:nth-of-type(2) {
 .goog-te-gadget-icon {
   display: none !important;
 }
+/* Global CSS (index.css or app.css) */
+.rdp-day {
+  @apply text-gray-500 hover:bg-gray-100; /* Default day styling */
+}
+.rdp-day_selected {
+  @apply bg-[#ff4d6d] text-white; /* Selected day styling */
+}
+.rdp-day_today {
+  @apply border-2 border-[#ff4d6d] text-slate-950; /* Today’s date styling */
+}
+.rdp-day_disabled {
+  @apply text-gray-300; /* Disabled date styling */
+}
+
  

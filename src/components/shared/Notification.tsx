@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { RiNotification2Fill, RiNotification3Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
-import io from "socket.io-client";
+import { io, Socket } from 'socket.io-client';
 import useAuth from "../../Provider/useAuth";
 
 // Type definition for Notification
@@ -14,8 +14,20 @@ interface Notification {
   read?: boolean;
 }
 
-// Initialize Socket
-const socket = io(import.meta.env.VITE_SERVER_URL, { autoConnect: false });
+let socketCall: Socket;
+
+const getSocket = () => {
+  if (!socketCall) {
+    socketCall = io(import.meta.env.VITE_SERVER_URL, {
+      transports: ['websocket'],
+      withCredentials: true,
+        reconnectionAttempts: 5,  // Max retries
+        reconnectionDelay: 1000,   // Delay between retries
+
+    });
+  }
+  return socketCall;
+};
 
 const Notifications = () => {
   const { user } = useAuth() ?? {};
@@ -28,27 +40,33 @@ const Notifications = () => {
 
   // Register user and listen to socket events
   useEffect(() => {
-    if (user) {
-      socket.connect()
-      socket.emit("registerUser", user?._id);
+    const socketCall = getSocket();
+    console.log(socketCall);
+    if (user?._id) {
+      // socketCall.connect()
+      socketCall.emit('joinRoom', user?._id);
+    }
+      socketCall.on('connect', () => {
+        console.log('Socket connected:', socketCall.id);
+      });
 
-      socket.on("initialNotifications", (data: Notification[]) => {
+      socketCall.on("initialNotifications", (data: Notification[]) => {
         setAndStoreNotifications(data);
       });
 
-      socket.on("newNotification", (notification: Notification) => {
+      socketCall.on("newNotification", (notification: Notification) => {
         handleNewNotification(notification);
       });
-      socket.on("receiveNotification", (notification: Notification) => {
+      socketCall.on("receiveNotification", (notification: Notification) => {
         handleNewNotification(notification);
       });
-    }
+   
 
     // Clean up socket listeners
     return () => {
-      socket.off("initialNotifications");
-      socket.off("newNotification");
-      socket.off("receiveNotification");
+      socketCall.off("initialNotifications");
+      socketCall.off("newNotification");
+      socketCall.off("receiveNotification");
     };
   }, [user]);
 

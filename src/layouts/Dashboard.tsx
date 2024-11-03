@@ -10,7 +10,6 @@ const Dashboard = () => {
       </Helmet>
     {/* Sidebar */}
     <Sidebar />
-
     {/* Outlet --> Dynamic content */}
     <div className='flex-1 md:ml-[270px] '>
       <div className='p-5'>

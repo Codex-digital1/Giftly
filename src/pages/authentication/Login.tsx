@@ -9,14 +9,17 @@ import { Helmet } from "react-helmet-async";
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location?.state || "/";
+  // console.log(location?.state?.from?.pathname);
+  const from = location?.state?.from?.pathname || "/";
   const [show,setShow]=useState(false)
+  const [isLoading,setIsLoading]=useState(false)
 
 
 //   console.log(location);
-  const { login, googleLogin,loading } = useAuth() ?? {};
+  const { login, googleLogin ,user} = useAuth() ?? {};
   const handelform = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true)
 
     const form = e.currentTarget; // Use currentTarget to get the form element
     const email = form.elements.namedItem("email") as HTMLInputElement; // Access the input by name
@@ -24,28 +27,35 @@ const Login: React.FC = () => {
 
     const emailValue = email.value;
     const passwordValue = password.value;
-    await login?.(emailValue, passwordValue)
-      .then((result) => {
-          console.log(result.user);
-          navigate(from)
-        })
-        .catch((error) => {
-            console.log(error.message);
-        });
+   try {
+    const res=await login?.(emailValue, passwordValue)
+    console.log(res);
+    // navigate(from)
+   } catch (error) {
+    console.log(error);
+   }finally{
+    setIsLoading(false)
+   }
     // console.log(emailValue, passwordValue);
   };
 
   const handleGoogleLogin = async() => {
-    
-    await googleLogin?.()
-      .then((result) => {
-          navigate(from)
-        console.log(result.user);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+    setIsLoading(true)
+     try {
+      await googleLogin?.()
+    navigate(from)
+
+     } catch (error) {
+      console.log(error);
+     }
+     finally{
+      setIsLoading(false)
+     }
   };
+  if (user) {
+    navigate(from);
+    return
+  }
 
   return (
     <div className="md:flex justify-center px-5 md:px-0 py-10 items-center mt-24 border hover:border-primary duration-700 rounded-xl container mx-auto ">
@@ -105,10 +115,11 @@ const Login: React.FC = () => {
               </div>
 
               <button
+              disabled={isLoading}
                 type="submit"
                 className="w-full py-3 font-medium text-white btn-primary inline-flex space-x-2 items-center justify-center"
               >
-                {loading ? (
+                {isLoading ? (
                 <ImSpinner10 className="animate-spin mx-auto text-xl" />
               ) : (
             <><svg
@@ -131,6 +142,7 @@ const Login: React.FC = () => {
 
               <button
                 onClick={handleGoogleLogin}
+                disabled={isLoading}
                 className="w-full text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-primary hover:text-slate-900 hover:shadow transition duration-150"
               >
                 <img

@@ -4,15 +4,20 @@ import useAuth from "../../Provider/useAuth";
 import GiftCard from "../../components/shared/GiftCard";
 import LoadingSpinner from "../../components/shared/LoadingSpinner";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import InfiniteScroll from "react-infinite-scroller";
+import { GiftType } from "../../types/Types";
+import { ImSpinner10 } from "react-icons/im";
 
 const Allgift = () => {
   const axiosPublic=useAxiosPublic()
-  const { handleFilterChange, allGifts, loading } = useAuth() ?? {} ;
+  const { handleFilterChange, allGifts, loading,isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage, } = useAuth() ?? {} ;
   const [categories, setCategories] = useState<string[]>([]);
  const fetchCategories = async () => {
   try {
       const response = await axiosPublic.get('/api/gifts/categories');
-      setCategories(response.data.data);
+      setCategories(response?.data?.data);
   } catch (error) {
       console.error('Error fetching categories:', error);
   } 
@@ -75,14 +80,14 @@ useEffect(() => {
                   type="number"
                   onChange={handleFilterChange}
                   placeholder="Min Price"
-                  className="border rounded-md p-2 w-full"
+                  className="border rounded-md p-2 w-full focus:outline-none focus:ring-primary focus:border-primary"
                 />
                 <input
                   name="priceMax"
                   type="number"
                   onChange={handleFilterChange}
                   placeholder="Max Price"
-                  className="border rounded-md p-2 w-full"
+                  className="border rounded-md p-2 w-full focus:outline-none focus:ring-primary focus:border-primary"
                 />
               </div>
               
@@ -113,7 +118,7 @@ useEffect(() => {
               </label>
               <select
                 name="availability"
-                className="block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
                 onChange={handleFilterChange}
               >
                 <option value="all">All</option>
@@ -129,7 +134,7 @@ useEffect(() => {
               </label>
               <select
                 name="sortBy"
-                className="block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
                 onChange={handleFilterChange}
               >
                 <option value="default">Default</option>
@@ -142,13 +147,22 @@ useEffect(() => {
           </div>
           {/* card container */}
           {loading && <LoadingSpinner large={true} card={false} smallHeight={false}  />}
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          <InfiniteScroll
+      pageStart={0}
+      // @ts-ignore
+      loadMore={fetchNextPage}
+      hasMore={hasNextPage || false}
+      loader={<div className="text-center my-10" key={0}>Loading...</div>}
+    >
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {allGifts && allGifts?.length > 0 &&
-              allGifts?.map((gift:any) => <GiftCard key={gift?._id} gift={gift} />)}
+              allGifts?.map((gift:GiftType) => <GiftCard key={gift?._id} gift={gift} />)}
           </div>
+      {isFetchingNextPage && <div><ImSpinner10 className="animate-spin mx-auto text-5xl text-primary text-center my-10" /></div>}
+    </InfiniteScroll>
         </div>
       </div>
+
     </>
   );
 };

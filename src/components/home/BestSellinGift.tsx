@@ -5,34 +5,17 @@ import MyContainer from "../shared/MyContainer";
 // import { drawerPropsType } from "../../types/Types";
 import useAuth from "../../Provider/useAuth";
 import LoadingSpinner from '../shared/LoadingSpinner';
+import { GiftType } from "../../types/Types";
 
 // Define the Gift interface outside the component for reusability
-export interface Gift {
-  _id: string;
-  giftName: string;
-  store: string;
-  brand: string;
-  discount: number;
-  price: number;
-  rating: number;
-  giftImage: string;
-  productAddBy: string;
-  description: string;
-  size: string;
-  color: string;
-  type: string;
-  category: string;
-  availability: boolean;
-  quantity: number;
-}
+
 // const BestSellinGift: React.FC<drawerPropsType> = ({ drawerToggle }) => {
 const BestSellinGift = () => {
   const authContext = useAuth(); 
 
   // Check if authContext exists and contains the gifts and loading properties
-  const gifts: Gift[] = authContext?.gifts as Gift[] || [];
-  const loading: boolean = authContext?.loading || false;
-
+  const gifts: GiftType[] = authContext?.gifts as GiftType[] || [];
+  const loading: boolean = authContext?.loading || false; 
   return (
     <>
       <MyContainer>
