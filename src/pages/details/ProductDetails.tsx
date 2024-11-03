@@ -10,6 +10,7 @@ import ShowReview from "../../components/ShowReviewChart/ShowReview";
 import LoadingSpinner from "../../components/shared/LoadingSpinner";
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
+ 
 // @ts-ignore
 import ReactImageZoom from 'react-image-zoom';
 import { Link } from "react-router-dom";
@@ -74,7 +75,7 @@ const ProductDetails: React.FC = () => {
     type,
     availability,
     color,
-    size,
+    size
   } = gift || {};
 
   const title = `Check out this amazing gift: ${giftName}!`;
@@ -119,12 +120,7 @@ const ProductDetails: React.FC = () => {
   useEffect(() => {
     getData();
   }, [id]);
-  const zoomProps = {
-    width: 500,
-    height: 500,
-    zoomWidth: 600,
-    img: currentImg,
-  };
+ 
 
   return (
     <>
@@ -132,11 +128,13 @@ const ProductDetails: React.FC = () => {
         <div className="container mx-auto my-10 custom-margin">
           <div className="w-full flex flex-col md:flex-row gap-6">
             <div className="relative flex flex-col flex-shrink justify-between w-full md:w-2/5">
-              <div className="max-h-[500px] w-full">
+ 
+                {/* <ReactImageZoom {...zoomProps} /> */}
+            <div className="h-[650px] w-full ">
+              
                 <Zoom>
-                <ReactImageZoom {...zoomProps} />
-
-                  
+                <img className="object-contain h-[500px] w-[500px]" src={currentImg} alt="Zoomable" width="500" height="500" />
+ 
                 </Zoom>
               </div>
 
@@ -173,7 +171,6 @@ const ProductDetails: React.FC = () => {
             <div className="w-full md:w-3/5 p-5 space-y-6 text-[#333]">
               <div className="space-y-3">
                 <h1 className="text-3xl font-bold">{giftName}</h1>
-               
                 <p className="">{description}</p>
               </div>
               <div className="border-y-2 py-5 border-gray-200">

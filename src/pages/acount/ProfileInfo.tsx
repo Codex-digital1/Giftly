@@ -9,6 +9,9 @@ import { Helmet } from 'react-helmet-async';
 
 import LoadingSpinner from "../../components/shared/LoadingSpinner";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+ 
+import { Helmet } from "react-helmet-async";
+ 
 const ProfileInfo = () => {
   const [isOpenPass, setIsOpenPass] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -259,8 +262,8 @@ interface AddressFieldProps {
 
 const AddressField: React.FC<AddressFieldProps> = ({ label, value }) => (
   <div className="flex justify-between">
-    <span className="font-medium text-gray-600">{label}:</span>
-    <span className="text-gray-800">{value || "N/A"}</span>
+    <p className="font-medium text-gray-600">{label}:</p>
+    <p className="text-gray-800">{value || "N/A"}</p>
   </div>
 );
 export default ProfileInfo;
