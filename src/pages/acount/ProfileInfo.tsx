@@ -258,8 +258,8 @@ interface AddressFieldProps {
 
 const AddressField: React.FC<AddressFieldProps> = ({ label, value }) => (
   <div className="flex justify-between">
-    <span className="font-medium text-gray-600">{label}:</span>
-    <span className="text-gray-800">{value || "N/A"}</span>
+    <p className="font-medium text-gray-600">{label}:</p>
+    <p className="text-gray-800">{value || "N/A"}</p>
   </div>
 );
 export default ProfileInfo;
