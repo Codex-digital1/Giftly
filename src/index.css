@@ -11,6 +11,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  top: 0 !important;
 }
 
 code {
@@ -69,6 +70,9 @@ code {
 
 /* translate icon style */
 
+.VIpgJd-ZVi9od-ORHb-OEVmcd{
+  display: none;
+}
 .goog-te-gadget {
   border: none !important;
 

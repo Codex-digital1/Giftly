@@ -10,7 +10,9 @@ import ShowReview from "../../components/ShowReviewChart/ShowReview";
 import LoadingSpinner from "../../components/shared/LoadingSpinner";
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
-
+ 
+// @ts-ignore
+import ReactImageZoom from 'react-image-zoom';
 import { Link } from "react-router-dom";
 import ShowReviewComment from "../../components/ShowReviewChart/ShowReviewComment";
 interface Review {
@@ -118,6 +120,7 @@ const ProductDetails: React.FC = () => {
   useEffect(() => {
     getData();
   }, [id]);
+ 
 
   return (
     <>
@@ -125,11 +128,13 @@ const ProductDetails: React.FC = () => {
         <div className="container mx-auto my-10 custom-margin">
           <div className="w-full flex flex-col md:flex-row gap-6">
             <div className="relative flex flex-col flex-shrink justify-between w-full md:w-2/5">
+ 
                 {/* <ReactImageZoom {...zoomProps} /> */}
             <div className="h-[650px] w-full ">
               
                 <Zoom>
                 <img className="object-contain h-[500px] w-[500px]" src={currentImg} alt="Zoomable" width="500" height="500" />
+ 
                 </Zoom>
               </div>
 

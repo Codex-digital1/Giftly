@@ -15,8 +15,10 @@ const BestSellinGift = () => {
 
   // Check if authContext exists and contains the gifts and loading properties
   const gifts: GiftType[] = authContext?.gifts as GiftType[] || [];
+ 
   const loading: boolean = authContext?.loading || false;
 
+ 
   return (
     <>
       <MyContainer>
