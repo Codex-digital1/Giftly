@@ -12,7 +12,7 @@ const ProfileInfo = () => {
   const [isOpenPass, setIsOpenPass] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { user, loading, updateUserProfile, resetPassword } = useAuth() || {};
+  const { user, loading, updateUserProfile, resetPassword ,setUser } = useAuth() || {};
   // console.log(user?.email);
   // console.log(email);
 
@@ -66,11 +66,11 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
             country,
           },
         };
-        // return console.log(updateData);
         const res = await axiosSecure.put(`/users/${user?._id}`, updateData);
-        console.log(res);
         if (res?.data) {
-          window.location.reload();
+          console.log(res?.data.data);
+          setUser?.(res?.data.data);
+          // window.location.reload();
         }
         setIsLoading?.(false)
       } else {
@@ -90,12 +90,13 @@ const [imageFile, setImageFile] = React.useState<File | null>(null);
             country,
           },
         };
-        // return console.log(updateData);
         // console.log(updateData);
         const res = await axiosSecure.put(`/users/${user?._id}`, updateData);
-        console.log(res);
+        // console.log(res);
         if (res?.data) {
-          window.location.reload();
+          console.log(res?.data.data);
+
+          setUser?.(res?.data.data);
         }
       }
       setIsOpen(false);
