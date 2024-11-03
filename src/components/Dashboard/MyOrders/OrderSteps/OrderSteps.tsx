@@ -5,9 +5,10 @@ import { OrderTypes } from "../../../../types/Types";
 import { useParams } from "react-router-dom";
 
 const StepBar = () => {
-  const [data] = useGetSpecificOrders();
+  const {orders} = useGetSpecificOrders();
+ 
   const { id } = useParams();
-  const trackOrder = data?.find((item: OrderTypes) => item._id === id);
+  const trackOrder = orders?.find((item: OrderTypes) => item._id === id);
   const steps = ["Pending", "Processing", "Shipping", "Delivered"];
 
   // Check Active or False

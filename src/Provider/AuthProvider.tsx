@@ -8,7 +8,7 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { createContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useEffect, useState, ReactNode, Dispatch, SetStateAction } from "react";
 import toast from "react-hot-toast";
 import auth from "../Firebase/Firebase.config";
 import _ from 'lodash';
@@ -34,6 +34,25 @@ type GiftType = {
   category: string;
   availability: (boolean | string);
   quantity: number;
+};
+type CartGiftType = {
+  _id: string;
+  giftName: string;
+  store: string;
+  brand: string;
+  discount: number;
+  price: number;
+  rating: number;
+  giftImage: any;
+  productAddBy: string;
+  description: string;
+  size: string;
+  color: string;
+  type: string;
+  category: string;
+  availability: (boolean | string);
+  quantity: number;
+  productQuantity:number
 };
 
 
@@ -106,9 +125,11 @@ interface AuthContextType {
   fetchNextPage?: (options?: FetchNextPageOptions) => 
     Promise<InfiniteQueryObserverResult<InfiniteData<any, unknown>, Error>>;
   allGifts1?: GiftType[];
-  cart: GiftType[];
+  cart: CartGiftType[];
   addToCart: (gift: GiftType) => void;
   addToWishlist: (gift: GiftType) => void;
+  setCart: Dispatch<SetStateAction<CartGiftType[]>>
+
   wishlist: GiftType[];
   removeToWishlist: (gift: GiftType) => void;
   removeToCart: (gift: GiftType) => void;
@@ -173,10 +194,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [giftOrderCheck, setGiftOrderCheck] = useState<OrderedGiftType | Record<string, never>>({});
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
-  const [cart, setCart] = useState<GiftType[]>(() => {
+  const [cart, setCart] = useState<CartGiftType[]>(() => {
     const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
   });
+  // console.log(cart);
 
   const [wishlist, setWishlist] = useState<GiftType[]>(() => {
     const savedWishlist = localStorage.getItem("wishlist");
@@ -598,7 +620,7 @@ useEffect(()=>{
       return toast.error("Already Added");
     }
     setCart((prevCart) => {
-      const updatedCart = [...prevCart, gift];
+      const updatedCart = [...prevCart, {...gift,productQuantity:1}];
       localStorage.setItem("cart", JSON.stringify(updatedCart));
       return updatedCart;
     });
@@ -655,6 +677,7 @@ useEffect(()=>{
     cart,
     addToCart,
     addToWishlist,
+    setCart,
     wishlist,
     removeToWishlist,
     removeToCart,

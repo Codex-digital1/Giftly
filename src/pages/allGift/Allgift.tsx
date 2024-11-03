@@ -17,7 +17,7 @@ const Allgift = () => {
  const fetchCategories = async () => {
   try {
       const response = await axiosPublic.get('/api/gifts/categories');
-      setCategories(response.data.data);
+      setCategories(response?.data?.data);
   } catch (error) {
       console.error('Error fetching categories:', error);
   } 
@@ -80,14 +80,14 @@ useEffect(() => {
                   type="number"
                   onChange={handleFilterChange}
                   placeholder="Min Price"
-                  className="border rounded-md p-2 w-full"
+                  className="border rounded-md p-2 w-full focus:outline-none focus:ring-primary focus:border-primary"
                 />
                 <input
                   name="priceMax"
                   type="number"
                   onChange={handleFilterChange}
                   placeholder="Max Price"
-                  className="border rounded-md p-2 w-full"
+                  className="border rounded-md p-2 w-full focus:outline-none focus:ring-primary focus:border-primary"
                 />
               </div>
               
@@ -118,7 +118,7 @@ useEffect(() => {
               </label>
               <select
                 name="availability"
-                className="block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
                 onChange={handleFilterChange}
               >
                 <option value="all">All</option>
@@ -134,7 +134,7 @@ useEffect(() => {
               </label>
               <select
                 name="sortBy"
-                className="block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
                 onChange={handleFilterChange}
               >
                 <option value="default">Default</option>

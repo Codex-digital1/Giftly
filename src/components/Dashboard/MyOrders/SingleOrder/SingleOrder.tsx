@@ -4,7 +4,10 @@ import { OrderTypesProps } from "../../../../types/Types";
 import Timer from "../../../shared/Timer";
 import useAuth from "../../../../Provider/useAuth";
 
-const SingleOrder = ({ order }: OrderTypesProps) => {
+const 
+
+
+SingleOrder = ({ order }: OrderTypesProps) => {
 
   const {user} = useAuth() ?? {}
   return (
@@ -27,7 +30,7 @@ const SingleOrder = ({ order }: OrderTypesProps) => {
         </h2>
         <h4 className="text-xl font-bold">{order?.total_amount} ৳</h4>
         <div className="flex flex-col gap-2 items-center">
-          {order.order_status === "Delivered" && (
+          {order?.order_status === "Delivered" && (
             <button className="border border-primary text-primary py-1 px-2 rounded text-sm">
               Completed
             </button>
