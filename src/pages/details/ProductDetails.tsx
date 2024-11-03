@@ -136,15 +136,7 @@ const ProductDetails: React.FC = () => {
                 <Zoom>
                 <ReactImageZoom {...zoomProps} />
 
-                  {/* <Magnifier
-                    src={currentImg}
-                    alt="Gift Image"
-                    style={{
-                      maxWidth: "500px",
-                      maxHeight: "500px",
-                      objectFit: "cover",
-                    }}
-                  /> */}
+                  
                 </Zoom>
               </div>
 
@@ -254,13 +246,6 @@ const ProductDetails: React.FC = () => {
               </div>
             </div>
           </div>
-          {/* <div className="mt-20">
-            <h3 className="text-3xl font-bold">Product Reviews</h3>
-            <button onClick={handleScrollToDescription}>Scroll to Description</button>
-            {reviewByProductId?.map((review, index) => (
-              <ShowReview key={index} reviewByProductId={review} />
-            ))}
-          </div> */}
            {/* review section */}
            <div className="mt-10">
             <div className="flex flex-col gap-4">

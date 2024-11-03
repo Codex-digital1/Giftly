@@ -13,7 +13,7 @@ interface Product {
 }
 const HistoryList: React.FC = () => {
   const [data, isLoading] = useGetAllOrders();
-  if (isLoading) return <LoadingSpinner></LoadingSpinner>
+  // if (isLoading) return <LoadingSpinner></LoadingSpinner>
   console.log(data)
   return (
     <div>

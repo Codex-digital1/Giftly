@@ -5,9 +5,9 @@ import UserOrderHistoryListItem from "./UserOrderHistoryListItem";
 import { BsEmojiFrownFill } from "react-icons/bs";
 
 const UserOrderHistoryList = () => {
-  const [data] = useGetSpecificOrders();
+  const {orders} = useGetSpecificOrders();
   // console.log(data);
-  const deliveredList = data?.filter(
+  const deliveredList = orders?.filter(
     (dList: OrderTypes) => dList.order_status === "Delivered"
   );
   return (

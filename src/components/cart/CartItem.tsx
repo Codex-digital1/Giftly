@@ -22,64 +22,53 @@ interface DateRangeState {
   key: string;
 }
 
-import { DateRange, RangeKeyDict } from "react-date-range";
-import "react-date-range/dist/styles.css"; // Main style file
-import "react-date-range/dist/theme/default.css"; // Theme CSS file
+// import { DateRange, RangeKeyDict } from "react-date-range";
+// import "react-date-range/dist/styles.css"; // Main style file
+// import "react-date-range/dist/theme/default.css"; // Theme CSS file
+import { DayPicker} from "react-day-picker";
+import "react-day-picker/dist/style.css";
 import GiftWrapOptions from "./GiftWrapOptions";
 import MessageInput from "./MessageInput";
 const CartItem = () => {
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
-  const { cart, removeToCart, user } = useAuth() ?? {};
+  const { cart, removeToCart, user, setCart } = useAuth() ?? {};
   const [subTotal, setSubTotal] = useState(0);
   const shipping = 70;
-  const productId = cart?.[0]?._id;
+  const productIds = cart?.map(item=>item?._id);
   const [total, setTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [selectedWrap, setSelectedWrap] = useState<string | null>(null);
-  const [personalMessage, setPersonalMessage] = useState<string>('');
+  const [personalMessage, setPersonalMessage] = useState<string>("");
   // Shedule Delevery State
   const [sheduleDelevery, setSheduleDelevery] = useState<boolean>(false);
   const [discountData, setDiscountData] = useState<DiscountData | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
-  const [state, setState] = useState<DateRangeState[]>([
-    {
-      startDate: new Date(),
-      endDate: new Date(), // Set to today initially
-      key: "selection",
-    },
-  ]);
-  // Handle date selection (only update startDate)
-  const handleSelect = (ranges: RangeKeyDict) => {
-    const { selection } = ranges;
-    // console.log("Selected date:", selection.startDate);
-
-    // Update state to store only the selected startDate
-    setState([
-      {
-        startDate: selection.startDate??null,
-        endDate: selection.startDate ??null, // Use the same date for both
-        key: "selection",
-      },
-    ]);
+  const handleSelect = (date: Date | undefined) => {
+    setSelectedDate(date);
+    console.log("Selected date:", date);
   };
-  const adjustedState = state.map(range => ({
-    ...range,
-    startDate: range.startDate ?? undefined,
-    endDate: range.endDate ?? undefined,
-  }));
 
   const handleWrapSelect = (option: string) => setSelectedWrap(option);
   const handleMessageChange = (message: string) => setPersonalMessage(message);
-  
 
   const discountCode = discountData?.coupon;
   const dis = discountData?.discount ?? 0;
   // Calculate subtotal dynamically based on cart items
   useEffect(() => {
-    const calculatedSubtotal =
-      cart?.reduce((sum, item) => sum + item.price , 0) || 0;
-    setSubTotal(calculatedSubtotal);
+    const calculatedSubtotal = cart?.reduce((sum, item) => {
+
+      if (item.productQuantity>1) {
+        sum+=(item?.price*item?.productQuantity)
+      }else{
+        sum+=item.price
+      }
+      return sum ; // Use 0 if item.price is undefined
+  }, 0) || 0;
+  
+  setSubTotal(calculatedSubtotal);
+  
   }, [cart]);
 
   // Update total when subtotal, shipping, or discount changes
@@ -138,13 +127,13 @@ const CartItem = () => {
       email,
       number,
       address,
-      productId,
-      scheduleDate:state[0]?.startDate,
+      productIds,
+      scheduleDate: selectedDate,
       wrap: selectedWrap,
       message: personalMessage,
+      total
     };
     console.log(paymentDetails);
-  
 
     // Sending the POST request using Axios
     if (user) {
@@ -165,8 +154,32 @@ const CartItem = () => {
   const today = new Date();
   const minSelectableDate = new Date(today);
   minSelectableDate.setDate(today.getDate() + 4);
+  // handleProductQuantityDecrease
+  const handleProductQuantityDecrease = (id: string) => {
+    const singleCartItem = cart?.find(item => item._id === id);
+  
+    // Ensure singleCartItem exists and productQuantity is greater than 1 before decreasing
+    if (!singleCartItem || (singleCartItem.productQuantity ?? 0) <= 1) return;
+    singleCartItem.productQuantity -= 1
+    localStorage.setItem("cart", JSON.stringify(cart));
+    const savedCart = JSON.parse(localStorage.getItem("cart")||'');
+    setCart?.(savedCart||[]);
+  };
+  
+  const handleProductQuantityIncrease = (id: string) => {
+    const singleCartItem = cart?.find(item => item._id === id);
+    if (singleCartItem && singleCartItem.productQuantity !== undefined) {
+      singleCartItem.productQuantity += 1;
+      localStorage.setItem("cart", JSON.stringify(cart));
+      const savedCart = JSON.parse(localStorage.getItem("cart")||'');
+      setCart?.(savedCart||[]);
+    }
+  };
+  
+  
+  // console.log(cart);
   return (
-    <div className=" gap-x-5">
+    <div className="flex flex-col 2xl:flex-row   gap-x-5">
       <div className="overflow-x-auto col-span-8 flex-1">
         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
           <thead className="ltr:text-left rtl:text-right">
@@ -195,17 +208,23 @@ const CartItem = () => {
                 <TableTd tdHeading={item?.giftName} />
                 <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
                   <div className="flex items-center justify-center">
-                    <button className="hover:bg-primary border hover:border-primary text-gray-800 transition-all duration-200 hover:text-white w-8 h-8 flex justify-center items-center ">
-                      <span className="text-lg -mt-[6px]">+</span>
+                    <button
+                      onClick={() => handleProductQuantityDecrease(item?._id)}
+                      className="hover:bg-primary border transition-all duration-200 hover:border-primary text-gray-800 hover:text-white w-8 h-8 flex justify-center items-center "
+                    >
+                      <span className="text-lg -mt-[6px]">-</span>
                     </button>
                     <input
                       type="text"
-                      defaultValue={item?.quantity || 1}
+                      value={item?.productQuantity}
                       className="w-7 h-[33px] bg-slate-100 pl-2 outline-none"
                       readOnly
                     />
-                    <button className="hover:bg-primary border transition-all duration-200 hover:border-primary text-gray-800 hover:text-white w-8 h-8 flex justify-center items-center ">
-                      <span className="text-lg -mt-[6px]">-</span>
+                    <button
+                      onClick={() => handleProductQuantityIncrease(item?._id)}
+                      className="hover:bg-primary border hover:border-primary text-gray-800 transition-all duration-200 hover:text-white w-8 h-8 flex justify-center items-center "
+                    >
+                      <span className="text-lg -mt-[6px]">+</span>
                     </button>
                   </div>
                 </td>
@@ -240,11 +259,11 @@ const CartItem = () => {
       </div>
       {/* Form */}
       <div>
-        <div className="bg-white p-4 rounded-xl border-l-2 border-primary max-w-3xl mx-auto mt-5">
+        <div className="bg-white p-4 rounded-xl border-l-2 border-primary max-w-3xl 2xl:max-w-lg mx-auto mt-5">
           <div>
-            <form onSubmit={handleUserData} className="space-y-5">
+            <form onSubmit={handleUserData} className="space-y-3">
               {/* User details form */}
-              <div className="">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-2 text-sm">
                   <label
                     className="text-sm font-medium leading-none text-zinc-700 dark:text-zinc-300"
@@ -262,24 +281,24 @@ const CartItem = () => {
                     defaultValue={user?.name}
                   />
                 </div>
-                
+                <div className="space-y-2 text-sm">
+                  <label
+                    className="text-sm font-medium leading-none text-zinc-700 dark:text-zinc-300"
+                    htmlFor="email"
+                  >
+                    Phone
+                  </label>
+                  <input
+                    className="flex h-10 w-full rounded-md border px-3 py-2  focus-visible:outline-none dark:border-zinc-700"
+                    required
+                    placeholder="Enter your phone"
+                    name="phone"
+                    type="text"
+                    defaultValue={user?.phoneNumber}
+                  />
+                </div>
               </div>
-              <div className="space-y-2 text-sm">
-                <label
-                  className="text-sm font-medium leading-none text-zinc-700 dark:text-zinc-300"
-                  htmlFor="email"
-                >
-                  Phone
-                </label>
-                <input
-                  className="flex h-10 w-full rounded-md border px-3 py-2  focus-visible:outline-none dark:border-zinc-700"
-                  required
-                  placeholder="Enter your phone"
-                  name="phone"
-                  type="text"
-                  defaultValue={user?.phoneNumber}
-                />
-              </div>
+
               <div className="space-y-2 text-sm mt-2">
                 <label
                   className="text-sm font-medium leading-none text-zinc-700 dark:text-zinc-300"
@@ -295,13 +314,18 @@ const CartItem = () => {
                   type="text"
                   defaultValue={
                     user?.address
-                      ? `${user.address.street || ''} ${user.address.city || ''} ${user.address.state || ''} ${user.address.country || ''} ${user.address.zipCode || ''}`
-                      : ''
+                      ? `${user.address.street || ""} ${
+                          user.address.city || ""
+                        } ${user.address.state || ""} ${
+                          user.address.country || ""
+                        } ${user.address.zipCode || ""}`
+                      : ""
                   }
                 />
               </div>
+              <MessageInput onMessageChange={handleMessageChange} />
+
               <GiftWrapOptions onSelect={handleWrapSelect} />
-      <MessageInput onMessageChange={handleMessageChange} />
               <hr className="mt-4 mb-4" />
 
               {/* Dynamic price details */}
@@ -363,27 +387,28 @@ const CartItem = () => {
                   >
                     Make Scheduled Gifting
                   </label>
-                  
                 </div>
                 {/* DAte INput */}
                 {sheduleDelevery && (
                   <div className="space-y-1 text-sm">
-                    <center
-                    className="cursor-pointer ml-2 text-black text-sm md:text-lg"
-                    
-                  >
-                    Select Scheduled Date <br />
-                    <small>Please select a date that is at least 3 days from today.</small>
-                  </center>
-                    
+                    <center className="cursor-pointer ml-2 text-black text-sm md:text-lg">
+                      Select Scheduled Date <br />
+                      <small>
+                        Please select a date that is at least 3 days from today.
+                      </small>
+                    </center>
+
                     <div className="flex justify-center">
-                      <DateRange
-                        showDateDisplay={false}
-                        rangeColors={["#F6536D"]}
-                        onChange={handleSelect}
-                        moveRangeOnFirstSelection={false}
-                        ranges={adjustedState}
-                        minDate={minSelectableDate}
+                      <DayPicker
+                        mode="single"
+                        selected={selectedDate}
+                        onSelect={handleSelect}
+                        disabled={{ before: minSelectableDate }}
+                        modifiersClassNames={{
+                          selected: "rdp-day_selected",
+                          today: "rdp-day_today",
+                          disabled: "rdp-day_disabled",
+                        }}
                       />
                     </div>
                   </div>
