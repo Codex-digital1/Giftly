@@ -81,8 +81,8 @@ const router = createBrowserRouter([
         element: <PrivateRoute>
           <AdminRoute>
             <StatisticsPage />
-            </AdminRoute>
-            </PrivateRoute>,
+          </AdminRoute>
+        </PrivateRoute>,
       },
       {
         path: "manage-gift",
