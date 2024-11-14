@@ -79,49 +79,49 @@ const router = createBrowserRouter([
         path: "statistics",
         element: <PrivateRoute>
           <AdminRoute>
-            <StatisticsPage /><StatisticsPage />
-            </AdminRoute>
-            </PrivateRoute>,
+            <StatisticsPage />
+          </AdminRoute>
+        </PrivateRoute>,
       },
       {
         path: "manage-gift",
         element: <PrivateRoute>
-        <AdminRoute>
-          <Gift />
+          <AdminRoute>
+            <Gift />
           </AdminRoute>
-          </PrivateRoute>
+        </PrivateRoute>
       },
       {
         path: "discount",
-        element:  <PrivateRoute>
-        <AdminRoute>
-        <DiscountUpForm></DiscountUpForm>
+        element: <PrivateRoute>
+          <AdminRoute>
+            <DiscountUpForm></DiscountUpForm>
           </AdminRoute>
-          </PrivateRoute>,
+        </PrivateRoute>,
       },
       {
         path: "manage-users",
         element: <PrivateRoute>
-        <AdminRoute>
-        <Users />
+          <AdminRoute>
+            <Users />
           </AdminRoute>
-          </PrivateRoute>,
+        </PrivateRoute>,
       },
       {
         path: "order-history",
         element: <PrivateRoute>
-        <AdminRoute>
-        <OrderHistory />,
+          <AdminRoute>
+            <OrderHistory />,
           </AdminRoute>
-          </PrivateRoute>
+        </PrivateRoute>
       },
       {
         path: "manage-orders",
         element: <PrivateRoute>
-        <AdminRoute>
-        <ManageOrders />,
+          <AdminRoute>
+            <ManageOrders />,
           </AdminRoute>
-          </PrivateRoute>
+        </PrivateRoute>
       },
       {
         path: "manage-reviews",

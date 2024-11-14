@@ -13,11 +13,11 @@ const MessageInput: React.FC<Props> = ({ onMessageChange }) => {
   };
 
   return (
-    <div className="mt-4">
-      <label className="block mb-2">Add a Personalized Message:</label>
+    <div className="">
+      <label className="text-sm font-medium leading-none text-zinc-700 dark:text-zinc-300 ">Add a Personalized Message:</label>
       <textarea
-        className="w-full p-2 border border-gray-300 rounded"
-        rows={4}
+        className="w-full mt-2 p-2 border border-gray-300 rounded"
+        rows={1}
         value={message}
         onChange={handleChange}
         placeholder="Write your message here..."

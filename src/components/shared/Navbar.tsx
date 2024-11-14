@@ -145,13 +145,15 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
     };
   }, []);
   const handleSuggestionClick=(giftName:string)=>{
-    console.log(giftName,'132');
+    // console.log(giftName,'132');
     setQuery(giftName)
     handleSearchChange?.(giftName)
-    setTimeout(() =>{ 
+    const currentPath = window.location.pathname;
+    if (currentPath !== '/allGift') {
+      navigate('/allGift');
+    }
       setShowSuggestions(false)
       setShowSuggestionsMinScreen(false)
-    }, 100);
   }
   // console.log(query);
   // console.log(suggestions);
@@ -199,7 +201,7 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
                             className="p-2 text-left hover:bg-gray-200 cursor-pointer"
                             onClick={(e) => {
                               e.stopPropagation();
-                              console.log('Button clicked:', item?.giftName);
+                              
                               handleSuggestionClick(item?.giftName);
                             }}
                             
