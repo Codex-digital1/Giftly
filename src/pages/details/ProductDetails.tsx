@@ -133,8 +133,11 @@ const ProductDetails: React.FC = () => {
             <div className="h-[650px] w-full ">
               
                 <Zoom>
-                <img className="object-contain h-[500px] w-[500px]" src={currentImg} alt="Zoomable" width="500" height="500" />
- 
+
+                <ReactImageZoom {...zoomProps} />
+
+                  
+
                 </Zoom>
               </div>
 
