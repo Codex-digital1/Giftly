@@ -5,169 +5,207 @@ import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
   return (
-   <div className="w-full bg-secondary">
-     <footer className="container mx-auto  px-4  sm:px-6  ">
-      <div className="flex justify-between flex-col py-14 gap-14 lg:gap-20 min-[1124px]:flex-row">
-        <div className="block  xl:max-w-lg">
-          <Link to={"/"} className="flex items-center text-primary">
-            <IoMdGift className="md:text-4xl text-xl font-bold" />
-            <h1 className="md:text-2xl font-bold">Giftly</h1>
-          </Link>
-          <p className="text-lg text-gray-500 mb-5 text-center min-[1124px]:text-left mt-5">
-            Trusted in more than 100 countries & 5 million customers.{" "}
-          </p>
-          <div className="relative  flex-row gap-3  flex items-center justify-between max-[1124px]:max-w-2xl max-[1124px]:mx-auto ">
-            <span className="absolute  left-5 top-4 lg:top-5">
-              <svg
-                width="22"
-                height="18"
-                viewBox="0 0 22 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M1.25201 4L7.15881 7.89529C9.26862 9.16117 10.3235 9.79412 11.4825 9.76654C12.6416 9.73896 13.6652 9.05656 15.7124 7.69175L20.748 4M9 17H13C16.7712 17 18.6569 17 19.8284 15.8284C21 14.6569 21 12.7712 21 9C21 5.22876 21 3.34315 19.8284 2.17157C18.6569 1 16.7712 1 13 1H9C5.22876 1 3.34315 1 2.17157 2.17157C1 3.34315 1 5.22876 1 9C1 12.7712 1 14.6569 2.17157 15.8284C3.34315 17 5.22876 17 9 17Z"
-                  stroke="#ff4d6d"
-                />
-              </svg>
+    <div className="w-full bg-secondary">
+      <footer className="container mx-auto px-4 sm:px-6">
+        <div className="md:flex space-y-5 md:space-y-0 justify-between lg:justify-around  py-14 gap-14 lg:gap-20 ">
+          <div className="block">
+            <Link to={"/"} className="flex items-center text-primary">
+              <IoMdGift className="md:text-4xl text-xl font-bold" />
+              <h1 className="md:text-2xl font-bold">Giftly</h1>
+            </Link>
+            <p className="font-bold ml-2">Customer Care</p>
+            <div className="ml-7">
+              <p className="text-gray-500">Contact us at: <Link to={"/chatInbox"} className="font-medium hover:text-black">Live Chat</Link></p>
+              <p className="text-gray-500">
+                Send us an email:
+                <a
+                  href="mailto:mahinhowlader123@gmail.com"
+                  className="font-medium hover:text-black"
+                >
+                  mahinhowlader123@gmail.com
+                </a>
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col items-center sm:items-start min-[530px]:flex-row max-[1124px]:w-full max-[1124px]:justify-between gap-12 xl:gap-24 max-[1124px]:max-w-2xl max-[1124px]:mx-auto">
+            <div className="block">
+              <h4 className="text-lg text-gray-900 font-medium mb-7 text-center lg:text-left">
+                <Link to={"/"}>Home</Link>
+              </h4>
+              <ul className="grid gap-6 text-center lg:text-left">
+                <li>
+                  <Link
+                    to={"/allGift"}
+                    className="text-gray-600 hover:text-gray-900"
+                  >
+                    All Gift
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={"/dashboard"}
+                    className="text-gray-600 hover:text-gray-900"
+                  >
+                    Dashboard
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="block">
+              <h4 className="text-lg text-gray-900 font-medium mb-7 text-center lg:text-left">
+                Products
+              </h4>
+              <ul className="grid gap-6 text-center lg:text-left">
+                <li>
+                  <Link
+                    to={"/cart"}
+                    className="text-gray-600 hover:text-gray-900"
+                  >
+                    Cart List
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={"/dashboard/my-rating"}
+                    className="text-gray-600 hover:text-gray-900"
+                  >
+                    Reviews
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="block">
+              <h4 className="text-lg text-gray-900 font-medium mb-7 text-center lg:text-left">
+                Get to know us
+              </h4>
+              <ul className="grid gap-6 text-center lg:text-left">
+                <li>
+                  <Link
+                    to={"/aboutUs"}
+                    className="text-gray-600 hover:text-gray-900"
+                  >
+                    About Us
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-center">
+          <div className="flex space-x-5 my-3">
+            <span className="lzd-icon-payment lzd-icon-payment-daraz">
+              <img
+                loading="lazy"
+                src="https://img.lazcdn.com/us/domino/dd7d3db1-047c-4e65-b89e-d710eb539976_BD-139-84.png"
+                alt="cod"
+                style={{ height: 28, width: "100%" }}
+                data-spm-anchor-id="a2a0e.tm80335411.0.i2.530179e0vi5kH4"
+              />
             </span>
-            <input
-              type="text"
-              name="email"
-              className="py-3 px-5 h-14 pl-14 border border-gray-300 rounded-full text-lg text-gray-900 placeholder:text-gray-400 focus:outline-none flex-1 w-full "
-              placeholder="Contact"
-            />
-            <button
-              type="submit"
-              className="h-14 py-3.5 px-7 bg-primary transition-all duration-500 shadow-md rounded-full text-white font-semibold"
-            >
-              Subscribe
-            </button>
+            <span className="lzd-icon-payment lzd-icon-payment-daraz">
+              <img
+                loading="lazy"
+                src="https://img.lazcdn.com/us/domino/27fcee2a-7768-48b2-b369-faf91829bf76_BD-140-84.png"
+                alt="visa"
+                style={{ height: 28, width: "100%" }}
+              />
+            </span>
+            <span className="lzd-icon-payment lzd-icon-payment-daraz">
+              <img
+                loading="lazy"
+                src="https://img.lazcdn.com/us/domino/e369d9f9-eb41-428c-b0c2-07bd60ffdc6e_BD-63-48.png"
+                alt="master-card"
+                style={{ height: 28, width: "100%" }}
+              />
+            </span>
+            <span className="lzd-icon-payment lzd-icon-payment-daraz">
+              <img
+                loading="lazy"
+                src="https://img.lazcdn.com/us/domino/29d575f6-594f-4f9f-82f3-dbbe78a4ae0e_BD-145-84.png"
+                alt="american-express"
+                style={{ height: 28, width: "100%" }}
+              />
+            </span>
+            <span className="lzd-icon-payment lzd-icon-payment-daraz">
+              <img
+                loading="lazy"
+                src="https://img.lazcdn.com/us/domino/9fcd39bd-e3e2-49f0-ad52-bfe54080562d_BD-144-84.png"
+                alt="easy-monthly-installments"
+                style={{ height: 28, width: "100%" }}
+              />
+            </span>
+            <span className="lzd-icon-payment lzd-icon-payment-daraz">
+              <img
+                loading="lazy"
+                src="https://img.lazcdn.com/us/domino/dbfdbbea-19ca-4be1-9b8f-ecb1fabdc6f7_BD-145-86.png"
+                alt="bKash"
+                style={{ height: 28, width: "100%" }}
+              />
+            </span>
+            <span className="lzd-icon-payment lzd-icon-payment-daraz">
+              <img
+                loading="lazy"
+                src="https://img.lazcdn.com/us/domino/395e474e-f67e-4a29-9521-5bc693ca53df_BD-144-84.png"
+                alt="nagad"
+                style={{ height: 28, width: "100%" }}
+              />
+            </span>
+            <span className="lzd-icon-payment lzd-icon-payment-daraz">
+              <img
+                loading="lazy"
+                src="https://img.lazcdn.com/us/domino/7eff036e-acff-4560-890c-fde8e1bb053e_BD-144-84.png"
+                alt="rainbow"
+                style={{ height: 28, width: "100%" }}
+              />
+            </span>
+            <span className="lzd-icon-payment lzd-icon-payment-daraz">
+              <img
+                loading="lazy"
+                src="https://img.lazcdn.com/us/domino/71587ea9-6e32-4728-b251-4513236a8ba5_BD-144-84.png"
+                alt="rocket"
+                style={{ height: 28, width: "100%" }}
+              />
+            </span>
           </div>
         </div>
-        <div className="flex flex-col items-center sm:items-start min-[530px]:flex-row max-[1124px]:w-full max-[1124px]:justify-between gap-12 xl:gap-24 max-[1124px]:max-w-2xl max-[1124px]:mx-auto">
-          <div className="block">
-            <h4 className="text-lg text-gray-900 font-medium mb-7 text-center lg:text-left">
-              Pagedone
-            </h4>
-            <ul className="grid gap-6 text-center lg:text-left">
-              <li>
-                <a href="" className="text-gray-600 hover:text-gray-900">
-                  Home
-                </a>
-              </li>
-              <li>
-                <Link
-                  to={"/allGift"}
-                  className="text-gray-600 hover:text-gray-900"
+        <div className="py-9 border-t border-gray-200">
+          <div className="flex items-center justify-center flex-col gap-8 lg:gap-0 sm:flex-row sm:justify-between">
+            <span className="text-sm text-gray-500 ">
+              ©<a href="https://pagedone.io/">pagedone</a>2024, All rights
+              reserved.
+            </span>
+            <div className="flex  space-x-6 sm:justify-center ">
+              <a href="" className="group flex justify-center items-center ">
+                <FaXTwitter />
+
+              </a>
+              <a href="" className="group flex justify-center items-center ">
+                <svg
+                  className="w-[1.25rem] h-[1.125rem] text-gray-700 group-hover:text-indigo-600"
+                  viewBox="0 0 15 15"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  All Gift
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to={"/aboutUs"}
-                  className="text-gray-600 hover:text-gray-900"
+                  <FaInstagram />
+
+                </svg>
+              </a>
+              <a href="" className="group flex justify-center items-center ">
+                <svg
+                  className="w-[1rem] h-[1rem] text-gray-700 group-hover:text-indigo-600"
+                  viewBox="0 0 13 12"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  About Us
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div className="block">
-            <h4 className="text-lg text-gray-900 font-medium mb-7 text-center lg:text-left">
-              Products
-            </h4>
-            <ul className="grid gap-6 text-center lg:text-left">
-              <li>
-                <a href="" className="text-gray-600 hover:text-gray-900">
-                  Figma UI System
-                </a>
-              </li>
-              <li>
-                <a href="" className="text-gray-600 hover:text-gray-900">
-                  Icons Assets
-                </a>
-              </li>
-              <li>
-                <a href="" className="text-gray-600 hover:text-gray-900">
-                  Responsive Blocks
-                </a>
-              </li>
-              <li>
-                <a href="" className="text-gray-600 hover:text-gray-900">
-                  Components Library
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="block">
-            <h4 className="text-lg text-gray-900 font-medium mb-7 text-center lg:text-left">
-              Support
-            </h4>
-            <ul className="grid gap-6 text-center lg:text-left">
-              <li>
-                <a href="" className="text-gray-600 hover:text-gray-900">
-                  Customer Support
-                </a>
-              </li>
-              <li>
-                <a href="" className="text-gray-600 hover:text-gray-900">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="" className="text-gray-600 hover:text-gray-900">
-                  License
-                </a>
-              </li>
-              <li>
-                <a href="" className="text-gray-600 hover:text-gray-900">
-                  Terms & Conditions
-                </a>
-              </li>
-            </ul>
+                  <FaLinkedinIn />
+
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="py-9 border-t border-gray-200">
-        <div className="flex items-center justify-center flex-col gap-8 lg:gap-0 sm:flex-row sm:justify-between">
-          <span className="text-sm text-gray-500 ">
-            ©<a href="https://pagedone.io/">pagedone</a>2024, All rights
-            reserved.
-          </span>
-          <div className="flex  space-x-6 sm:justify-center ">
-            <a href="" className="group flex justify-center items-center ">
-            <FaXTwitter />
-
-            </a>
-            <a href="" className="group flex justify-center items-center ">
-              <svg
-                className="w-[1.25rem] h-[1.125rem] text-gray-700 group-hover:text-indigo-600"
-                viewBox="0 0 15 15"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-         <FaInstagram />
-
-              </svg>
-            </a>
-            <a href="" className="group flex justify-center items-center ">
-              <svg
-                className="w-[1rem] h-[1rem] text-gray-700 group-hover:text-indigo-600"
-                viewBox="0 0 13 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-             <FaLinkedinIn />
-
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
-   </div>
+      </footer>
+    </div>
   );
 };
 

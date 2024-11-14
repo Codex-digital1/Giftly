@@ -26,8 +26,9 @@ import ProfileInfo from './../pages/acount/ProfileInfo';
 import DiscountUpForm from "../components/Dashboard/Gift/Form/DiscountUpForm";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from './AdminRoute';
+ 
 import AllReviews from "../pages/Dashboard/Admin/ManageReview/AllReviews";
-
+ 
 const router = createBrowserRouter([
   {
     path: "/",
