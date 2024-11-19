@@ -10,7 +10,6 @@ import { Helmet } from 'react-helmet-async';
 import LoadingSpinner from "../../components/shared/LoadingSpinner";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
-import { Helmet} from 'react-helmet-async';
 
 const ProfileInfo = () => {
   const [isOpenPass, setIsOpenPass] = useState(false);

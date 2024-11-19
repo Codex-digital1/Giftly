@@ -50,7 +50,7 @@ const ReviewedGiftCard: React.FC<ReviewedGiftCardProps> = ({ singleGift }) => {
                 </div>
 
                 <div className="flex gap-2 items-center">
-                    <span className="font-bold">Order status:</span>
+                    <span className="font-bold">Delivery status:</span>
                     <p className={`rounded-3xl px-3 py-1 ${
                         order_status === 'Pending'
                           ? 'bg-yellow-300'

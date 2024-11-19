@@ -30,7 +30,7 @@ const NotReviewedGiftCard: React.FC<NotReviewedGiftCardProps> = ({ singleGift })
         <div className="card card-side bg-base-100 shadow-xl rounded-none border-t-2 p-5">
             <figure className='w-1/2 h-[200px] md:w-[300px] md:h-[280px] lg:w-[350px] lg:h-[280px]'>
                 <img
-                    src={product_image[0]} // Ensure you have at least one image in the array
+                    src={product_image[0]}
                     alt="Gift"
                     className="w-full h-full object-cover object-center"
                 />
@@ -50,16 +50,16 @@ const NotReviewedGiftCard: React.FC<NotReviewedGiftCardProps> = ({ singleGift })
                 </div>
 
                 <div className="flex gap-2 items-center">
-                    <span className="font-bold">Order status:</span>
+                    <span className="font-bold">Delivery status:</span>
                     <p className={`rounded-3xl px-3 py-1 ${order_status === 'Pending'
-                            ? 'bg-yellow-300'
-                            : order_status === 'Processing'
-                                ? 'bg-blue-300'
-                                : order_status === 'Shipping'
-                                    ? 'bg-orange-400'
-                                    : order_status === 'Delivered'
-                                        ? 'bg-green-300'
-                                        : 'bg-gray-300'
+                        ? 'bg-yellow-300'
+                        : order_status === 'Processing'
+                            ? 'bg-blue-300'
+                            : order_status === 'Shipping'
+                                ? 'bg-orange-400'
+                                : order_status === 'Delivered'
+                                    ? 'bg-green-300'
+                                    : 'bg-gray-300'
                         }`}>
                         {order_status}
                     </p>
