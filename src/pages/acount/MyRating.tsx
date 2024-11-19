@@ -46,9 +46,8 @@ const MyRating = () => {
       if (data) {
         toast.success("Review submitted successfully");
 
-        // Check if myAllReview is defined before invoking
         if (myAllReview) {
-          await myAllReview(); // Calling the function safely
+          await myAllReview();
         }
       }
     } catch (error) {
@@ -71,28 +70,15 @@ const MyRating = () => {
               className="px-4 py-2 text-lg font-medium cursor-pointer transition duration-200 hover:bg-gray-100 focus:outline-none"
               selectedClassName="border-b-4 border-primary text-primary"
             >
-              Not Reviewed
+              Reviewed
             </Tab>
             <Tab
               className="px-4 py-2 text-lg font-medium cursor-pointer transition duration-200 hover:bg-gray-100 focus:outline-none"
               selectedClassName="border-b-4 border-primary text-primary"
             >
-              Reviewed
+              Not Reviewed
             </Tab>
           </TabList>
-
-          {/* Not Reviewed */}
-          <TabPanel className="grid grid-cols-1 gap-10">
-            {loading ? (
-              <LoadingSpinner smallHeight={true} />
-            ) : notReviewedGifts.length > 0 ? (
-              notReviewedGifts.map((singleGift, index) => {
-                return <NotReviewedGiftCard key={index} singleGift={singleGift} />
-              })
-            ) : (
-              <p className="text-gray-600">No gifts are waiting for a review.</p>
-            )}
-          </TabPanel>
 
           {/* Reviewed */}
           <TabPanel className="grid grid-cols-1 gap-10">
@@ -106,6 +92,19 @@ const MyRating = () => {
               <p className="text-gray-600">You haven't reviewed any services yet.</p>
             )}
           </TabPanel>
+          {/* Not Reviewed */}
+          <TabPanel className="grid grid-cols-1 gap-10">
+            {loading ? (
+              <LoadingSpinner smallHeight={true} />
+            ) : notReviewedGifts.length > 0 ? (
+              notReviewedGifts.map((singleGift, index) => {
+                return <NotReviewedGiftCard key={index} singleGift={singleGift} />
+              })
+            ) : (
+              <p className="text-gray-600">No gifts are waiting for a review.</p>
+            )}
+          </TabPanel>
+
         </Tabs>
 
 

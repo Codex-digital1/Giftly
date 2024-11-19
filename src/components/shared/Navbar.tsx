@@ -21,9 +21,12 @@ import TranslateComponent from "./TranslateComponent";
 
 
 const Navbar: React.FC = () => {
-  const axiosPublic=useAxiosPublic()
-  const {user,logOut,handleSearchChange,setUser}=useAuth()?? {};
+  const axiosPublic = useAxiosPublic()
+  const { user, logOut, handleSearchChange, setUser } = useAuth() ?? {};
 
+  const dashboardRouteDefine = user?.role === 'admin'
+    ? '/dashboard/manage-gift'
+    : '/dashboard/my-orders';
 
 
   const navigate = useNavigate()
@@ -59,7 +62,7 @@ const Navbar: React.FC = () => {
     { name: <MdOutlineManageAccounts />, path: "/account", title: 'Account' },
     { name: <GiSelfLove />, path: "/wishList", title: 'Wishlist', count: wishlistLength },
     { name: <SlBasket />, path: "/cart", title: 'Cart', count: cartLength },
-    { name: <TranslateComponent />,path:"/", title: 'Language'},
+    { name: <TranslateComponent />, path: "/", title: 'Language' },
   ];
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -77,54 +80,54 @@ const Navbar: React.FC = () => {
     };
   }, [isOpen]);
 
-    // Fetch suggestions from the backend
-    const fetchSuggestions = async (searchQuery: string) => {
-        try {
-            setIsLoading(true);
-            const response = await axiosPublic.get(
-                `/api/gifts/suggestions?query=${searchQuery}`
-            );
-            console.log(response);
-            setSuggestions(response.data.data); // Update suggestions list
-        } catch (error) {
-            console.error('Error fetching suggestions:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+  // Fetch suggestions from the backend
+  const fetchSuggestions = async (searchQuery: string) => {
+    try {
+      setIsLoading(true);
+      const response = await axiosPublic.get(
+        `/api/gifts/suggestions?query=${searchQuery}`
+      );
+      console.log(response);
+      setSuggestions(response.data.data); // Update suggestions list
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    // Debounce function to limit the API calls
-    useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            if (query) fetchSuggestions(query);
-        }, 300); // Delay of 300ms
+  // Debounce function to limit the API calls
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (query) fetchSuggestions(query);
+    }, 300); // Delay of 300ms
 
-        return () => clearTimeout(timeoutId); // Cleanup on component unmount
-    }, [query]);
-    const currentPath = window.location.pathname;
+    return () => clearTimeout(timeoutId); // Cleanup on component unmount
+  }, [query]);
+  const currentPath = window.location.pathname;
 
-// console.log(suggestions);
-const handleSearch=(e: React.FormEvent<HTMLFormElement>)=>{
-  e.preventDefault();
-  // const form = e.target as HTMLFormElement;
-  // const searchValue = (form.elements.namedItem('search') as HTMLInputElement)?.value || '';
-  // if(searchValue==='')return
-  handleSearchChange?.(query)
-  // setQuery(searchValue)
-  // setShowSuggestions(true);
-  if (currentPath !== '/allGift') {
-    navigate('/allGift');
-  }  
-}
-const [showSuggestions, setShowSuggestions] = useState(false);
-const [showSuggestionsMinScreen, setShowSuggestionsMinScreen] = useState(false);
+  // console.log(suggestions);
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // const form = e.target as HTMLFormElement;
+    // const searchValue = (form.elements.namedItem('search') as HTMLInputElement)?.value || '';
+    // if(searchValue==='')return
+    handleSearchChange?.(query)
+    // setQuery(searchValue)
+    // setShowSuggestions(true);
+    if (currentPath !== '/allGift') {
+      navigate('/allGift');
+    }
+  }
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [showSuggestionsMinScreen, setShowSuggestionsMinScreen] = useState(false);
 
-const searchRef = useRef<HTMLUListElement | null>(null); // Create a ref for the search component
-const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a ref for the search component
+  const searchRef = useRef<HTMLUListElement | null>(null); // Create a ref for the search component
+  const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a ref for the search component
 
   // Function to handle outside click
   const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+    if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
       setShowSuggestions(false); // Hide suggestions if clicked outside
     }
   };
@@ -132,8 +135,8 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
   const handleClickOutsideMinScreen = (event: MouseEvent) => {
     if (searchRefMinScreen.current && !searchRefMinScreen.current.contains(event.target as Node)) {
       setShowSuggestionsMinScreen(false); // Hide suggestions if clicked outside
-  }
-};
+    }
+  };
 
   // Set up event listener
   useEffect(() => {
@@ -144,7 +147,7 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
       document.removeEventListener('mousedown', handleClickOutsideMinScreen);
     };
   }, []);
-  const handleSuggestionClick=(giftName:string)=>{
+  const handleSuggestionClick = (giftName: string) => {
     // console.log(giftName,'132');
     setQuery(giftName)
     handleSearchChange?.(giftName)
@@ -152,8 +155,8 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
     if (currentPath !== '/allGift') {
       navigate('/allGift');
     }
-      setShowSuggestions(false)
-      setShowSuggestionsMinScreen(false)
+    setShowSuggestions(false)
+    setShowSuggestionsMinScreen(false)
   }
   // console.log(query);
   // console.log(suggestions);
@@ -169,51 +172,51 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
           </Link>
         </div>
 
-      
+
         {/* Input */}
         <div className="relative hidden md:w-1/3 md:flex justify-center items-center">
-        <form  onSubmit={handleSearch} className="w-full">
-          <label className="relative group flex justify-center items-center">
-            <input
-              type="text"
-              name="search"
-              value={query}
-              onChange={(e)=>{
-                setQuery(e.target.value)
-                setShowSuggestions(true);
-              }}
-              className="border border-primary border-opacity-45 md:w-full rounded-lg  md:p-3 p-2  text-black   focus:outline-none focus:border-primary hover:border-primary"
+          <form onSubmit={handleSearch} className="w-full">
+            <label className="relative group flex justify-center items-center">
+              <input
+                type="text"
+                name="search"
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value)
+                  setShowSuggestions(true);
+                }}
+                className="border border-primary border-opacity-45 md:w-full rounded-lg  md:p-3 p-2  text-black   focus:outline-none focus:border-primary hover:border-primary"
 
-              placeholder="find your Gift..."
-            />
-            <button type="submit" className="absolute right-2 md:right-6  mt-0 ">
-              <IoSearch type="" className="group-hover:text-primary text-xl  cursor-pointer" />
-            </button>
-          </label>
-        </form>
-        {isLoading && <p className="absolute top-14 text-sm">Loading...</p>}
-        {showSuggestions && suggestions?.length > 0 && (
-                <ul ref={searchRef} className=" flex flex-col absolute top-12  w-3/4  border bg-white shadow-lg">
-                    {suggestions?.map((item) => (
-                        <button
-                        type="button"
-                            key={item?._id}
-                            className="p-2 text-left hover:bg-gray-200 cursor-pointer"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              
-                              handleSuggestionClick(item?.giftName);
-                            }}
-                            
-                        >
-                            {item?.giftName}
-                        </button>
-                    ))}
-                </ul>
-            )}
+                placeholder="find your Gift..."
+              />
+              <button type="submit" className="absolute right-2 md:right-6  mt-0 ">
+                <IoSearch type="" className="group-hover:text-primary text-xl  cursor-pointer" />
+              </button>
+            </label>
+          </form>
+          {isLoading && <p className="absolute top-14 text-sm">Loading...</p>}
+          {showSuggestions && suggestions?.length > 0 && (
+            <ul ref={searchRef} className=" flex flex-col absolute top-12  w-3/4  border bg-white shadow-lg">
+              {suggestions?.map((item) => (
+                <button
+                  type="button"
+                  key={item?._id}
+                  className="p-2 text-left hover:bg-gray-200 cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+
+                    handleSuggestionClick(item?.giftName);
+                  }}
+
+                >
+                  {item?.giftName}
+                </button>
+              ))}
+            </ul>
+          )}
         </div>
-          {/* Mega menu leftSide */}
-          <nav className="space-x-4 lg:flex hidden">
+        {/* Mega menu leftSide */}
+        <nav className="space-x-4 lg:flex hidden">
           {megaMenu?.slice(0, 3).map((menu) => (
             <NavLink
               key={menu.path}
@@ -228,11 +231,11 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
             </NavLink>
           ))}
         </nav>
-        
+
         {/* mega menu Icons rightSide */}
         <div className=" flex md:gap-5 gap-4">
           <div className="flex justify-center items-center gap-x-3">
-            <Notifications/>
+            <Notifications />
             {megaMenu?.slice(4, 7).map((menu) => (
               <NavLink
                 data-tip={menu?.title}
@@ -320,7 +323,7 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
                       <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
                         {user?.name}
                       </div>
-                      <Link to={"/dashboard/statistics"}>
+                      <Link to={dashboardRouteDefine}>
                         <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer">
                           Dashboard
                         </div>
@@ -363,7 +366,7 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
               type="text"
               name="search"
               value={query}
-              onChange={(e)=>{
+              onChange={(e) => {
                 setQuery(e.target.value)
                 setShowSuggestionsMinScreen(true);
               }}
@@ -373,25 +376,25 @@ const searchRefMinScreen = useRef<HTMLUListElement | null>(null); // Create a re
               placeholder="find your Gift..."
             />
             <button type="submit" className="absolute  right-16  mt-0 ">
-            <IoSearch type="" className="group-hover:text-primary text-xl  cursor-pointer" />
+              <IoSearch type="" className="group-hover:text-primary text-xl  cursor-pointer" />
             </button>
           </label>
         </form>
         {isLoading && <p className="absolute top-10 text-sm">Loading...</p>}
-            {showSuggestionsMinScreen && suggestions.length > 0 && (
-                <ul ref={searchRefMinScreen} className="absolute top-10  w-3/4  border bg-white shadow-lg">
-                    {suggestions?.map((item) => (
-                        <li
-                            key={item?._id}
-                            className="p-2 hover:bg-gray-200 cursor-pointer"
-                            onClick={()=>handleSuggestionClick(item?.giftName)}
-                        >
-                            {item?.giftName}
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </div>
+        {showSuggestionsMinScreen && suggestions.length > 0 && (
+          <ul ref={searchRefMinScreen} className="absolute top-10  w-3/4  border bg-white shadow-lg">
+            {suggestions?.map((item) => (
+              <li
+                key={item?._id}
+                className="p-2 hover:bg-gray-200 cursor-pointer"
+                onClick={() => handleSuggestionClick(item?.giftName)}
+              >
+                {item?.giftName}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 };
