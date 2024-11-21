@@ -9,32 +9,35 @@ import { GiftType } from "../../types/Types";
 import { ImSpinner10 } from "react-icons/im";
 
 const Allgift = () => {
-  const axiosPublic=useAxiosPublic()
-  const { handleFilterChange, allGifts, loading,isFetchingNextPage,
+  const axiosPublic = useAxiosPublic();
+  const {
+    handleFilterChange,
+    allGifts,
+    loading,
+    isFetchingNextPage,
     hasNextPage,
-    fetchNextPage, } = useAuth() ?? {} ;
+    fetchNextPage,
+  } = useAuth() ?? {};
   const [categories, setCategories] = useState<string[]>([]);
- const fetchCategories = async () => {
-  try {
-      const response = await axiosPublic.get('/api/gifts/categories');
+  const fetchCategories = async () => {
+    try {
+      const response = await axiosPublic.get("/api/gifts/categories");
       setCategories(response?.data?.data);
-  } catch (error) {
-      console.error('Error fetching categories:', error);
-  } 
-};
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
 
-useEffect(() => {
-  fetchCategories();
-}, []);
-
-
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   return (
     <>
       <div className="container mx-auto mt-20 p-4 min-h-[calc(100vh-530px)]">
-      <Helmet>
-        <title>Giftly-AllGift</title>
-      </Helmet>
+        <Helmet>
+          <title>Giftly-AllGift</title>
+        </Helmet>
         <div className="my-4">
           <h3 className="text-2xl font-bold mb-2">Pick Your Gift!</h3>
           <img
@@ -90,7 +93,6 @@ useEffect(() => {
                   className="border rounded-md p-2 w-full focus:outline-none focus:ring-primary focus:border-primary"
                 />
               </div>
-              
             </div>
 
             {/* Rating Filter */}
@@ -146,26 +148,37 @@ useEffect(() => {
             </div>
           </div>
           {/* card container */}
-          {loading && <LoadingSpinner large={true} card={false} smallHeight={false}  />}
+          {loading && (
+            <LoadingSpinner large={true} card={false} smallHeight={false} />
+          )}
           <InfiniteScroll
-      pageStart={0}
-      // @ts-ignore
-      loadMore={fetchNextPage}
-      hasMore={hasNextPage || false}
-      loader={<div className="text-center my-10" key={0}>Loading...</div>}
-    >
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {allGifts && allGifts?.length > 0 &&
-              allGifts?.map((gift:GiftType) => <GiftCard key={gift?._id} gift={gift} />)}
-          </div>
-      {isFetchingNextPage && <div><ImSpinner10 className="animate-spin mx-auto text-5xl text-primary text-center my-10" /></div>}
-    </InfiniteScroll>
+            pageStart={0}
+            // @ts-ignore
+            loadMore={fetchNextPage}
+            hasMore={hasNextPage || false}
+            loader={
+              <div className="text-center my-10" key={0}>
+                Loading...
+              </div>
+            }
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              {allGifts &&
+                allGifts?.length > 0 &&
+                allGifts?.map((gift: GiftType) => (
+                  <GiftCard key={gift?._id} gift={gift} />
+                ))}
+            </div>
+            {isFetchingNextPage && (
+              <div>
+                <ImSpinner10 className="animate-spin mx-auto text-5xl text-primary text-center my-10" />
+              </div>
+            )}
+          </InfiniteScroll>
         </div>
       </div>
-
     </>
   );
 };
 
 export default Allgift;
-  
