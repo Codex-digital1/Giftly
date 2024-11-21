@@ -2,28 +2,35 @@ import React from "react";
 import { FaInstagram, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 import { IoMdGift } from "react-icons/io";
 import { Link } from "react-router-dom";
+import useAuth from "../../Provider/useAuth";
 
 const Footer: React.FC = () => {
+  const { user} = useAuth() ?? {};
+  const dashboardRouteDefine = user?.role === 'admin'
+  ? '/dashboard/manage-gift'
+  : '/dashboard/my-orders';
+
   return (
     <div className="w-full bg-secondary">
       <footer className="container mx-auto px-4 sm:px-6">
-        <div className="md:flex space-y-5 md:space-y-0 justify-between lg:justify-around  py-14 gap-14 lg:gap-20 ">
+        <div className="md:flex space-y-5 md:space-y-0 justify-between py-14 gap-14 lg:gap-20 ">
+
           <div className="block">
             <Link to={"/"} className="flex items-center text-primary">
               <IoMdGift className="md:text-4xl text-xl font-bold" />
               <h1 className="md:text-2xl font-bold">Giftly</h1>
             </Link>
-            <p className="font-bold ml-2">Customer Care</p>
-            <div className="ml-7">
-              <p className="text-gray-500">Contact us at: <Link to={"/chatInbox"} className="font-medium hover:text-black">Live Chat</Link></p>
+            <p className="font-bold ">Customer Care</p>
+            <div className="">
+              <p className="text-gray-500">Contact us at: <Link to={"/chatInbox"} className="font-medium hover:text-primary">Live Chat</Link></p>
               <p className="text-gray-500">
                 Send us an email:
-                <a
-                  href="mailto:mahinhowlader123@gmail.com"
-                  className="font-medium hover:text-black"
+                <Link
+                  to={'/aboutUs'}
+                  className="font-medium hover:text-primary"
                 >
-                  mahinhowlader123@gmail.com
-                </a>
+                  admin@gmail.com
+                </Link>
               </p>
             </div>
           </div>
@@ -43,7 +50,7 @@ const Footer: React.FC = () => {
                 </li>
                 <li>
                   <Link
-                    to={"/dashboard"}
+                    to={dashboardRouteDefine}
                     className="text-gray-600 hover:text-gray-900"
                   >
                     Dashboard
@@ -171,8 +178,7 @@ const Footer: React.FC = () => {
         <div className="py-9 border-t border-gray-200">
           <div className="flex items-center justify-center flex-col gap-8 lg:gap-0 sm:flex-row sm:justify-between">
             <span className="text-sm text-gray-500 ">
-              ©<a href="https://pagedone.io/">pagedone</a>2024, All rights
-              reserved.
+            © Giftly {new Date().getFullYear()} All rights reserved. 
             </span>
             <div className="flex  space-x-6 sm:justify-center ">
               <a href="" className="group flex justify-center items-center ">

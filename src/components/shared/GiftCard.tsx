@@ -56,7 +56,7 @@ const handleAdd = () => {
                   <span className="line-through text-gray-600 decoration-primary font-normal text-sm ">
                     {(price + discount).toFixed(2)}৳
                   </span>
-                  <span>{price}৳</span>
+                  <p>{price}৳</p>
                 </h3>
                 {/* Ratings */}
                 <div className="flex justify-center items-center">
