@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { GoogleAuthProvider, UserCredential, sendPasswordResetEmail } from "firebase/auth";
 import {User} from '../../src/types/Types'
 import {
@@ -230,6 +231,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (email: string, password: string): Promise<UserCredential> => {
     setLoading(true);
     try {
+      console.log(email,password)
       return await signInWithEmailAndPassword(auth, email, password);
     } catch (error: any) {
       toast.error(error.message);
@@ -550,7 +552,7 @@ useEffect(()=>{
         }
       }
 
-      console.log(axiosError);
+      // console.log(axiosError);
     }
   };
 
@@ -558,12 +560,12 @@ useEffect(()=>{
   // <<<--------chat feature-------->>>
 
   // Function to get the current  receiver data
-  const getReceiverData = async (receiverName: string) => {
+  const getReceiverData = async (receiverName?: string) => {
 
  
     try {
 
-      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getReceiver/${receiverName}`, { method: 'GET', });
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getReceiver/${receiverName || receiver}`, { method: 'GET', });
 
 
       if (res?.ok) {

@@ -4,17 +4,15 @@ import { OrderTypesProps } from "../../../../types/Types";
 import React, { useState } from "react";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import toast from "react-hot-toast";
-import Timer from "../../../shared/Timer";
 import useGetAllOrders from "../../../../Hooks/useGetAllOrders";
 import MyModal from "../../../shared/MyModal";
 import SinglerOrderAndUserDetails from "../SinglerOrderAndUserDetails/SinglerOrderAndUserDetails";
-import useAuth from "../../../../Provider/useAuth";
+// import useAuth from "../../../../Provider/useAuth";
 
 const ManageOrdersItem = ({ order }: OrderTypesProps) => {
-  const {user} = useAuth() ?? {}
+  // const {user} = useAuth() ?? {}
   const [, , refetch] = useGetAllOrders();
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  console.log(order);
   const axiosPublic = useAxiosPublic();
 
   // Modal Functionality
@@ -56,13 +54,13 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
           <FaBangladeshiTakaSign className="text-sm" />
         </p>
       </td>
-      <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
+      {/* <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
         {order?.isShedule ? (
           <Timer targetDate={order?.scheduleDate} user={user} isOrderPage={false}/>
         ) : (
           "None"
         )}
-      </td>
+      </td> */}
       {/* Order Details Modal */}
       <MyModal isOpen={isOpen} close={closeModal} isLarge={true}>
         <SinglerOrderAndUserDetails  order={order}/>

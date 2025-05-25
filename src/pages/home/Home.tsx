@@ -10,6 +10,8 @@ import Drawer from "../../components/cart/Drawer";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import OfferModal from "./OfferModal";
 import { Helmet } from "react-helmet-async";
+import HowItWorks from "../../components/home/HowItWork";
+import GiftIdeasByOccasion from "../../components/home/GiftIdeasByOccasion";
 type DiscountData = {
   title: string;
   description: string;
@@ -62,9 +64,11 @@ const Home = () => {
       <Category />
       <FeaturedProducts />
       <GiftShopBanner />
+      <GiftIdeasByOccasion/>
       {/*drawerToggle={drawerToggle} */}
       <BestSellinGift />
       <PromotionalBanner />
+      <HowItWorks/>
       <Feedback />
       {/* drawerToggle={drawerToggle} isOpenDrawer={isOpenDrawer}  */}
       <Drawer />
