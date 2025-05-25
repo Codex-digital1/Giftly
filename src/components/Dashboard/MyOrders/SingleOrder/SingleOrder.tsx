@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { OrderTypesProps } from "../../../../types/Types";
-import Timer from "../../../shared/Timer";
-import useAuth from "../../../../Provider/useAuth";
+// import Timer from "../../../shared/Timer";
+// import useAuth from "../../../../Provider/useAuth";
 
 const 
 
 
 SingleOrder = ({ order }: OrderTypesProps) => {
 
-  const {user} = useAuth() ?? {}
+  // const {user} = useAuth() ?? {}
   return (
     <div className="border rounded">
       <div className="w-full h-52 relative">
@@ -18,11 +18,11 @@ SingleOrder = ({ order }: OrderTypesProps) => {
           alt=""
           className="w-full h-52  object-cover"
         />
-        {order?.isShedule && (
+        {/* {order?.isShedule && (
           <div className="absolute bottom-2 w-full">
             <Timer targetDate={order?.scheduleDate} user={user} isOrderPage={true}/>
           </div>
-        )}
+        )} */}
       </div>
       <div className="py-2 px-4 text-center space-y-2">
         <h2 className="text-lg font-semibold text-gray-900">
