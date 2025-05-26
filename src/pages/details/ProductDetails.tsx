@@ -48,7 +48,7 @@ const ProductDetails: React.FC = () => {
   const { addToCart, addToWishlist } = useAuth() ?? {};
   const [reviewByProductId, setAllReviewByProductId] = useState([]);
 
-  const shareUrl = window.location.href || `https://giftly-ba979.web.app/productDetails/${id}`;
+  const shareUrl = window.location.href || `${import.meta.env.VITE_SERVER_URL}/productDetails/${id}`;
 
   // for getting single gift data
   useEffect(() => {
@@ -105,6 +105,7 @@ const ProductDetails: React.FC = () => {
       const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/getAllReviews/${id}`, { method: 'GET' });
       if (response?.ok) {
         const reviews = await response.json();
+        console.log('reviews',reviews)
         const filterReview = reviews?.filter((singleReview: Review) => singleReview?.review.rating !== null);
         setAllReviewByProductId(filterReview);
       } else {

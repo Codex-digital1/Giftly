@@ -16,6 +16,7 @@ const MyOrders = () => {
   // if (isLoading) {
   //   return <LoadingSpinner large={true} smallHeight={true} card= {false}/>;
   // }
+  console.log("Orders:", orders);
 
   return (
     <div className="p-5 shadow-lg border-t-4 border-primary">
