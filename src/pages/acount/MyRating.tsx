@@ -100,9 +100,11 @@ const MyRating: React.FC = () => {
       ReviewerName: currentUser?.name,
     };
 
+    console.log("Submitting review:", reviewPayload);
+
     try {
       const { data } = await axiosPublic.put(
-        `/order/submitReview/${currentUser?.email}`,
+        `/reviews/submitReview/${currentUser?.email}`,
         reviewPayload
       );
       if (data) {

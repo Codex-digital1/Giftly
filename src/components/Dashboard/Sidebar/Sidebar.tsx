@@ -210,7 +210,7 @@ const Sidebar = () => {
                     }
                   >
                     <MdOutlineShoppingCartCheckout className="w-5 h-5" />
-                    <span className="mx-4 font-medium">My Order</span>
+                    <span className="mx-4 font-medium">Order track</span>
                   </NavLink>
                   {/* Order History */}
                   <NavLink

@@ -65,7 +65,7 @@ const NotReviewedGiftCard: React.FC<NotReviewedGiftCardProps> = ({
         </div>
       </div>
       
-      {notReviewedProducts.map((product) => (
+      {notReviewedProducts?.map((product) => (
         <div key={product._id} className="card card-side bg-base-100 shadow-xl rounded-none border-t-2 p-5 flex flex-col md:flex-row">
           {/* Image */}
           <figure className="w-full md:w-[300px] h-[200px] md:h-[280px]">
@@ -92,7 +92,7 @@ const NotReviewedGiftCard: React.FC<NotReviewedGiftCardProps> = ({
               <button
                 onClick={() => handleReviewClick(singleGift.tran_id, product._id)}
                 disabled={!isDelivered}
-                className={`btn btn-sm text-xs whitespace-nowrap border-primary text-primary hover:text-white btn-outline ${isDelivered ? '' : 'opacity-50 cursor-not-allowed'}`}
+                className={`btn btn-sm text-xs whitespace-nowrap border-primary text-primary hover:text-white hover:bg-primary ${isDelivered ? '' : 'opacity-50 cursor-not-allowed'}`}
               >
                 Write a Review
               </button>
