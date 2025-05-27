@@ -6,6 +6,7 @@ import useAuth from "../../Hooks/useAuth";
 import { useEffect } from "react";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
 interface Product {
   _id: string;
@@ -24,7 +25,7 @@ interface Order {
   order_status: string;
   scheduleDate?: string;
   payment_status: string;
-  productIds: Product[];
+  productDetails: Product[];
 }
 
 const MyOrders = () => {
@@ -62,8 +63,6 @@ const MyOrders = () => {
       </div>
     );
   }
-
-  console.log('my orders', myOrders)
   return (
     <div className="p-5 shadow-lg border-t-4 border-primary">
       <Helmet>
@@ -95,13 +94,13 @@ const MyOrders = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {myOrders.map((order) => (
+              {myOrders?.map((order) => (
                 <Fragment key={order._id}>
                   <tr
                     className="hover:bg-gray-50 cursor-pointer"
                     onClick={(e) => {
                       if (!(e.target as HTMLElement).closest('button')) {
-                        toggleExpand(order._id);
+                        toggleExpand(order?._id);
                       }
                     }}
                   >
@@ -111,12 +110,12 @@ const MyOrders = () => {
                           e.stopPropagation();
                           toggleExpand(order._id);
                         }}
-                        className="text-gray-600 hover:text-gray-900"
+                        className="text-red-600 hover:text-red-900 animate-bounce"
                       >
                         {expandedOrder === order._id ? (
-                          <HiChevronUp className="h-5 w-5" />
+                          <HiChevronUp className="h-8 w-8 " />
                         ) : (
-                          <HiChevronDown className="h-5 w-5" />
+                          <HiChevronDown className="h-8 w-8" />
                         )}
                       </button>
                     </td>
@@ -159,7 +158,7 @@ const MyOrders = () => {
                       <td colSpan={6} className="p-4 bg-gray-50">
                         <div className="px-4 py-2 bg-white border rounded-lg">
                           <h3 className="text-lg font-semibold mb-4">
-                            Products ({order.productIds.length})
+                            Products ({order.productDetails.length})
                           </h3>
                           <div className="overflow-x-auto">
                             <table className="w-full">
@@ -170,10 +169,12 @@ const MyOrders = () => {
                                   <th className="px-4 py-2 text-left text-sm">Price</th>
                                   <th className="px-4 py-2 text-left text-sm">Qty</th>
                                   <th className="px-4 py-2 text-left text-sm">Category</th>
+                                  <th className="px-4 py-2 text-left text-sm">Track order</th>
                                 </tr>
                               </thead>
+                              
                               <tbody>
-                                {order.productIds.map((product) => (
+                                {order?.productDetails?.map((product) => (
                                   <tr key={product._id} className="border-t">
                                     <td className="px-4 py-2">
                                       {product.giftImage?.[0] && (
@@ -191,6 +192,14 @@ const MyOrders = () => {
                                     <td className="px-4 py-2">{product.quantity}</td>
                                     <td className="px-4 py-2 capitalize">
                                       {product.category}
+                                    </td>
+                                    <td className="px-4 py-2 capitalize">
+                                      <Link to={`/dashboard/my-orders/order-status/${order?._id}`}>
+
+                                      <button className="btn-primary">
+                                        Track
+                                      </button>
+                                      </Link>
                                     </td>
                                   </tr>
                                 ))}
