@@ -1,12 +1,26 @@
-
 import TableTh from "../../../../components/shared/TableTh";
 import { UseGetAllReview } from "../../../../Hooks/useGetAllReview";
+import { TProductDetail } from "../../../../types/Types";
 import AllReviewItems from "./AllReviewItems";
 
-
+export type TProductWithReview = {
+  _id: string;
+  productId: TProductDetail;
+  userEmail: string;
+  ReviewerName: string;
+  ReviewerProfileImage: string;
+  review: {
+    rating: number;
+    comment: string;
+    reviewedAt: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+};
 const AllReviewList = () => {
   const [data] = UseGetAllReview();
-  console.log(9,data)
+  const reviews = data as TProductWithReview[];
+  console.log(reviews)
   return (
     <div>
       <div className="overflow-x-auto">
@@ -22,8 +36,8 @@ const AllReviewList = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-200 text-center">
-            {data?.map((orderInfo) => (
-              <AllReviewItems key={orderInfo._id} orderInfo={orderInfo} />
+            {reviews?.map((reviewInfo) => (
+              <AllReviewItems key={reviewInfo._id} reviewInfo={reviewInfo} />
             ))}
           </tbody>
         </table>

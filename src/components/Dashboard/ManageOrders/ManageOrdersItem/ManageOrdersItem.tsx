@@ -3,14 +3,15 @@ import TableTd from "../../../shared/TableTd";
 import { OrderTypesProps } from "../../../../types/Types";
 import React, { useState } from "react";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import useGetAllOrders from "../../../../Hooks/useGetAllOrders";
 import MyModal from "../../../shared/MyModal";
 import SinglerOrderAndUserDetails from "../SinglerOrderAndUserDetails/SinglerOrderAndUserDetails";
-// import useAuth from "../../../../Provider/useAuth";
+import useAuth from "../../../../Provider/useAuth";
+import Timer from "../../../shared/Timer";
 
 const ManageOrdersItem = ({ order }: OrderTypesProps) => {
-  // const {user} = useAuth() ?? {}
+  const {user} = useAuth() ?? {}
   const [, , refetch] = useGetAllOrders();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const axiosPublic = useAxiosPublic();
@@ -30,10 +31,10 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
     // Show Alert Message
     if (data.success) {
       refetch();
-      return toast.success(data.message);
+      // return toast.success(data.message);
     }
 
-    if (!data.success) return toast.error(data.message);
+    if (!data.success) return console.log(data.message);
   };
   // console.log(order.scheduleDate);
   return (
@@ -50,17 +51,22 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
 
       <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
         <p className="flex justify-center items-center">
+          {order?.userEmail}
+        </p>
+      </td>
+      <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
+        <p className="flex justify-center items-center">
           <span>{order?.total_amount}</span>
           <FaBangladeshiTakaSign className="text-sm" />
         </p>
       </td>
-      {/* <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
+      <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-800">
         {order?.isShedule ? (
           <Timer targetDate={order?.scheduleDate} user={user} isOrderPage={false}/>
         ) : (
           "None"
         )}
-      </td> */}
+      </td>
       {/* Order Details Modal */}
       <MyModal isOpen={isOpen} close={closeModal} isLarge={true}>
         <SinglerOrderAndUserDetails  order={order}/>

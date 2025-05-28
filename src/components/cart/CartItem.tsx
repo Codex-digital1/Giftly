@@ -41,7 +41,6 @@ const CartItem = () => {
 
   const handleSelect = (date: Date | undefined) => {
     setSelectedDate(date);
-    console.log("Selected date:", date);
   };
 
   const handleWrapSelect = (option: string) => setSelectedWrap(option);
@@ -67,7 +66,9 @@ const CartItem = () => {
 
   // Update total when subtotal, shipping, or discount changes
   useEffect(() => {
-    setTotal(subTotal + shipping - discount);
+     const result = subTotal + shipping - discount;
+  const fixedResult = Number(result.toFixed(2));
+  setTotal(fixedResult);
   }, [subTotal, shipping, discount]);
   const couponRef = useRef<HTMLInputElement>(null);
 
@@ -93,7 +94,6 @@ const CartItem = () => {
       setDiscount(newTotal); // Update the discount state with the new total
     } else {
       toast.error("Coupon code invalid");
-      console.log("Coupon code invalid");
     }
   };
   const handleSheduledDelevery = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -127,7 +127,6 @@ const CartItem = () => {
       message: personalMessage,
       total
     };
-    console.log(paymentDetails);
 
     // Sending the POST request using Axios
     if (user) {
@@ -136,6 +135,7 @@ const CartItem = () => {
         .then((response) => {
           // console.log(response?.data?.url);
           window.location.replace(response?.data?.url);
+          localStorage.removeItem("cart");
           // console.log("Payment details sent successfully:", response.data);
         })
         .catch((error) => {

@@ -1,14 +1,14 @@
 import "./StepBar.css";
 import useGetSpecificOrders from "../../../../Hooks/useGetSpecificOrders";
 import { FaCheck } from "react-icons/fa";
-import { OrderTypes } from "../../../../types/Types";
+import {TOrder } from "../../../../types/Types";
 import { useParams } from "react-router-dom";
 
 const StepBar = () => {
   const {orders} = useGetSpecificOrders();
  
   const { id } = useParams();
-  const trackOrder = orders?.find((item: OrderTypes) => item._id === id);
+  const trackOrder = orders?.find((item: TOrder) => item._id === id);
   const steps = ["Pending", "Processing", "Shipping", "Delivered"];
 
   // Check Active or False

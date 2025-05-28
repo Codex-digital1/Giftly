@@ -19,14 +19,9 @@ type DiscountData = {
 const Home = () => {
 
   const axiosPublic = useAxiosPublic();
-  // const [isOpenDrawer, setIsOpenDrawer] = useState<boolean>(false);
   const [discountData, setDiscountData] = useState<DiscountData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  // const drawerToggle = () => {
-  //   setIsOpenDrawer(!isOpenDrawer);
-  // };
-  // get data from database for show a modal on home page 
   useEffect(() => {
     // Check session storage to see if modal has been shown
     const hasSeenModal = sessionStorage.getItem('hasSeenModal');
@@ -55,8 +50,7 @@ const Home = () => {
       {/* Show the offer modal if data is available and modal is open */}
       {isModalOpen && discountData && (
         <OfferModal
-          title={discountData?.title}
-          description={discountData?.description}
+          discountData={discountData}
           closeModal={closeModal}
         />
       )}

@@ -147,7 +147,8 @@ export declare interface Feedback {
   _id: string 
   ReviewerName: string; 
   ReviewerProfileImage: string 
-  reviewedAt: Date 
+  reviewedAt: Date
+  ReviewId:string 
 }
 
 export interface User extends UserInfo {
@@ -274,4 +275,59 @@ export interface OrderInfo {
 
 
 
+export interface TOrder {
+  _id: string;
+  tran_id: string;
+  productIds: string[];
+  userName: string;
+  userEmail: string;
+  userPhone: string;
+  total_amount: number;
+  payment_status: string;
+  order_status: string;
+  isShedule: boolean;
+  scheduleDate: string; // ISO string
+  wrap: string;
+  message: string;
+  createdAt: string;
+  updatedAt: string;
+  productDetails?: TProductDetail[];
+  productReviews?: TProductReview[];
+}
+
+export interface TProductDetail {
+  _id: string;
+  giftName: string;
+  store: string;
+  brand: string;
+  discount: number;
+  price: number;
+  rating: number;
+  giftImage: string[];
+  productAddBy: string;
+  description: string;
+  size: string;
+  color: string;
+  type: string;
+  category: string;
+  availability: string;
+  quantity: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TProductReview {
+  _id: string;
+  productId: string;
+  userEmail: string;
+  ReviewerName: string;
+  ReviewerProfileImage: string;
+  review: {
+    rating: number;
+    comment: string;
+    reviewedAt: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
 

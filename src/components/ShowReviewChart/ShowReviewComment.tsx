@@ -25,7 +25,7 @@ interface ShowReviewCommentProps {
 const ShowReviewComment: React.FC<ShowReviewCommentProps> = ({ reviewByProductId,refProp }) => {
  
     const { updateReceiverName, getReceiverData, currentUser } = useContext(AuthContext) ?? {};
-    console.log(10, currentUser);
+    // console.log(10, currentUser);
 
     return (
         <div ref={refProp} className="mt-5 relative">

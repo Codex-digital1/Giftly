@@ -5,7 +5,7 @@ const useGetAllOrders = () => {
     queryKey: ["orders"],
     queryFn: async () => {
       const res = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/all-orders`
+        `${import.meta.env.VITE_SERVER_URL}/all-order/products`
       );
       return res.data;
     },
