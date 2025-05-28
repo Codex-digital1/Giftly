@@ -4,32 +4,24 @@ import axios from "axios";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { Rating } from "@smastrom/react-rating";
+import { TProductWithReview } from "./AllReviewList";
 // Define interfaces for the review and order info
-interface ReviewInfo {
-  ReviewerName: string | null;
-  ReviewerProfileImage: string | null;
-  comment: string | null;
-  rating: number | null;
-  reviewedAt: string | null;
-}
-
-interface OrderInfo {
-  review: ReviewInfo;
-
-}
-
 interface SingleReviewDetailsProps {
-  orderInfo: OrderInfo;
+  reviewInfo: TProductWithReview;
   close: () => void;
 }
 
-const SingleReviewDetails: React.FC<SingleReviewDetailsProps> = ({ orderInfo, close }) => {
+const SingleReviewDetails: React.FC<SingleReviewDetailsProps> = ({ reviewInfo, close }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const info = orderInfo?.review;
-  console.log(info)
-
-
+  const info = {
+    ReviewerName: reviewInfo?.ReviewerName,
+    ReviewerProfileImage: reviewInfo?.ReviewerProfileImage,
+    comment: reviewInfo?.review?.comment || '',
+    rating: reviewInfo?.review?.rating || 0,
+    reviewedAt: reviewInfo?.review?.reviewedAt || new Date().toISOString(),
+    ReviewId: reviewInfo?._id
+  };
   const handleSubmit = async () => {
     setLoading(true);
     try {
@@ -70,7 +62,7 @@ const SingleReviewDetails: React.FC<SingleReviewDetailsProps> = ({ orderInfo, cl
       {/* Product Image */}
       <div className="flex justify-center items-center gap-2 flex-wrap">
         <div>
-          <img src={orderInfo?.review?.ReviewerProfileImage ?? undefined} className="w-28 h-28" alt="" />
+          <img src={reviewInfo?.productId?.giftImage[0] ?? undefined} className="w-28 h-28" alt="" />
         </div>
       </div>
       {/* Others Info */}
@@ -78,7 +70,7 @@ const SingleReviewDetails: React.FC<SingleReviewDetailsProps> = ({ orderInfo, cl
         {/* Top Info */}
         <div className="my-2">
           <h2 className="text-lg md:text-2xl lg:text-3xl font-bold">
-            {orderInfo?.review?.ReviewerName}
+            {reviewInfo?.productId?.giftName}
           </h2>
           <div className="flow-root mt-5">
             <dl className="-my-3 divide-y divide-gray-100 text-sm">
@@ -86,12 +78,12 @@ const SingleReviewDetails: React.FC<SingleReviewDetailsProps> = ({ orderInfo, cl
               <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
                 <dt className="font-medium text-gray-900">Rating</dt>
                 <dd className="text-gray-700 sm:col-span-2">
-                  <Rating style={{ maxWidth: 120 }} value={orderInfo?.review?.rating ?? 0} readOnly />
+                  <Rating style={{ maxWidth: 120 }} value={reviewInfo?.review?.rating ?? 0} readOnly />
                 </dd>
               </div>
 
-              <DetailsDt title="Comment" val={orderInfo?.review?.comment || ''} />
-              <DetailsDt title="Reviewed At" val={new Date(orderInfo?.review?.reviewedAt || '').toLocaleDateString()} />
+              <DetailsDt title="Comment" val={reviewInfo?.review?.comment || ''} />
+              <DetailsDt title="Reviewed At" val={new Date(reviewInfo?.review?.reviewedAt || '').toLocaleDateString()} />
             </dl>
             <button
               onClick={handleSubmit}

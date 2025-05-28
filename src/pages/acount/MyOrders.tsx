@@ -1,3 +1,4 @@
+import { Fragment, useState } from "react";
 import { BsEmojiFrownFill } from "react-icons/bs";
 import SingleOrder from "../../components/Dashboard/MyOrders/SingleOrder/SingleOrder";
 import useGetSpecificOrders from "../../Hooks/useGetSpecificOrders";
@@ -6,10 +7,33 @@ import { OrderTypes } from "../../types/Types";
 import InfiniteScroll from "react-infinite-scroller";
 import { ImSpinner10 } from "react-icons/im";
 import { Helmet } from "react-helmet-async";
+import useAuth from "../../Hooks/useAuth";
+import { useEffect } from "react";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import { HiChevronDown, HiChevronUp } from "react-icons/hi";
+import { Link } from "react-router-dom";
+
+interface Product {
+  _id: string;
+  giftName: string;
+  brand: string;
+  price: number;
+  quantity: number;
+  category: string;
+  giftImage: string[];
+}
+
+interface Order {
+  _id: string;
+  tran_id: string;
+  total_amount: number;
+  order_status: string;
+  scheduleDate?: string;
+  payment_status: string;
+  productDetails: Product[];
+}
 
 const MyOrders = () => {
-  const [data] = useGetSpecificOrders();
-
   const { fetchNextPage, hasNextPage, isFetchingNextPage, orders } =
     useGetSpecificOrders();
 
@@ -22,7 +46,7 @@ const MyOrders = () => {
   return (
     <div className="p-5 shadow-lg border-t-4 border-primary">
       <Helmet>
-        <title>Giftly-Manage-users</title>
+        <title>Giftly - My Orders</title>
       </Helmet>
       <h2 className="text-2xl font-medium inter my-3 text-center">My Orders</h2>
       <InfiniteScroll
