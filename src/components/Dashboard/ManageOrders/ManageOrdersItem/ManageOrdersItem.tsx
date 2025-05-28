@@ -6,7 +6,7 @@ import useGetAllOrders from "../../../../Hooks/useGetAllOrders";
 import useAuth from "../../../../Provider/useAuth";
 import Timer from "../../../shared/Timer";
 
-const ManageOrdersItem = ({ order }: OrderTypesProps) => {
+const ManageOrdersItem = ({ order }: { order: OrderTypesProps }) => {
   const { user } = useAuth() ?? {};
   const [, , refetch] = useGetAllOrders();
   const [showProducts, setShowProducts] = useState<boolean>(false);
@@ -26,7 +26,6 @@ const ManageOrdersItem = ({ order }: OrderTypesProps) => {
       console.log(data.message);
     }
   };
-  console.log(order);
   return (
     <>
       {/* Main Order Row */}

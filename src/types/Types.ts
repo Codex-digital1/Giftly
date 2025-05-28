@@ -23,7 +23,7 @@ export interface Gift {
   discount: number;
   price: number;
   rating: number;
-  giftImage: string; 
+  giftImage: string;
   productAddBy: string;
   description: string;
   size: string;
@@ -49,7 +49,7 @@ export interface GiftType {
   color?: string;
   type?: string;
   category?: string;
-  availability: string | boolean; 
+  availability: string | boolean;
   quantity?: number;
 }
 
@@ -72,25 +72,43 @@ export type OrderTypes = {
   isShedule: string;
 };
 
+export type ProductItemType = {
+  _id: string;
+  giftName: string;
+  store: string;
+  brand: string;
+  discount: number;
+  price: number;
+  quantity: number;
+  rating: number;
+  size: string;
+  type: string;
+  availability: string;
+  category: string;
+  color: string;
+  description: string;
+  productAddBy: string;
+  giftImage: string[]; // cloudinary image array
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
+
 export type OrderTypesProps = {
-  order: {
-    _id: string;
-    createdAt: string;
-    order_status: string;
-    payment_status: string;
-    productId: string;
-    product_brand: string;
-    product_image: [string];
-    product_name: string;
-    total_amount: number;
-    tran_id: string;
-    updatedAt: string;
-    userEmail: string;
-    userName: string;
-    userPhone: string;
-    scheduleDate: string;
-    isShedule: string;
-  };
+  _id: string;
+  createdAt: string;
+  order_status: "Pending" | "Processing" | "Shipping" | "Delivered";
+  payment_status: string;
+  productIds: ProductItemType[]; // updated here
+  total_amount: number;
+  tran_id: string;
+  updatedAt: string;
+  userEmail: string;
+  userName: string;
+  userPhone: string;
+  scheduleDate: string;
+  isShedule: boolean;
+  wrap?: string | null;
 };
 
 interface Address {
@@ -115,7 +133,7 @@ export declare interface UserInfo {
   /**
    * The display name of the user.
    */
-  readonly displayName: string | undefined | null ;
+  readonly displayName: string | undefined | null;
   /**
    * The email of the user.
    */
@@ -142,13 +160,13 @@ export declare interface UserInfo {
   readonly uid: string;
 }
 export declare interface Feedback {
-  rating: number 
-  comment: string 
-  _id: string 
-  ReviewerName: string; 
-  ReviewerProfileImage: string 
-  reviewedAt: Date
-  ReviewId:string 
+  rating: number;
+  comment: string;
+  _id: string;
+  ReviewerName: string;
+  ReviewerProfileImage: string;
+  reviewedAt: Date;
+  ReviewId: string;
 }
 
 export interface User extends UserInfo {
@@ -184,7 +202,6 @@ export interface User extends UserInfo {
   toJSON(): object;
 }
 
-
 export declare interface IdTokenResult {
   /**
    * The authentication time formatted as a UTC string.
@@ -219,27 +236,24 @@ export declare interface IdTokenResult {
   claims: ParsedToken;
 }
 
-
 export declare interface ParsedToken {
   /** Expiration time of the token. */
-  'exp'?: string;
+  exp?: string;
   /** UID of the user. */
-  'sub'?: string;
+  sub?: string;
   /** Time at which authentication was performed. */
-  'auth_time'?: string;
+  auth_time?: string;
   /** Issuance time of the token. */
-  'iat'?: string;
+  iat?: string;
   /** Firebase specific claims, containing the provider(s) used to authenticate the user. */
-  'firebase'?: {
-      'sign_in_provider'?: string;
-      'sign_in_second_factor'?: string;
-      'identities'?: Record<string, string>;
+  firebase?: {
+    sign_in_provider?: string;
+    sign_in_second_factor?: string;
+    identities?: Record<string, string>;
   };
   /** Map of any additional custom claims. */
   [key: string]: unknown;
 }
-
-
 
 // manage reviews for testimonial
 // types/ReviewTypes.ts
@@ -272,8 +286,6 @@ export interface OrderInfo {
   userName: string;
   userPhone: string;
 }
-
-
 
 export interface TOrder {
   _id: string;
@@ -330,4 +342,3 @@ export interface TProductReview {
   createdAt: string;
   updatedAt: string;
 }
-

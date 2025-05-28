@@ -1,5 +1,5 @@
 import useGetAllOrders from "../../../../Hooks/useGetAllOrders";
-import { OrderTypes } from "../../../../types/Types";
+import { OrderTypesProps } from "../../../../types/Types";
 import TableTh from "../../../shared/TableTh";
 import ManageOrdersItem from "../ManageOrdersItem/ManageOrdersItem";
 
@@ -12,8 +12,6 @@ const ManageOrdersList = () => {
         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
           <thead className="ltr:text-left rtl:text-right">
             <tr>
-              {/* <TableTh tHeading="Image" />
-              <TableTh tHeading=" Gift Name" /> */}
               <TableTh tHeading="User email" />
               <TableTh tHeading=" Total Price" />
               <TableTh tHeading=" Schedule Delivery" />
@@ -22,7 +20,7 @@ const ManageOrdersList = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-200 text-center">
-            {data?.map((order: OrderTypes) => (
+            {data?.map((order: OrderTypesProps) => (
               <ManageOrdersItem key={order._id} order={order} />
             ))}
           </tbody>
