@@ -55,7 +55,7 @@ const TopStatistic = () => {
           return (
             <div
               key={ind}
-              className="p-4 md:p-6 rounded-md bg-secondary space-y-6"
+              className="p-4 md:p-6 rounded-md bg-gray-100  space-y-6"
             >
               {/* title */}
               <div className="flex justify-between items-center gap-3 relative">

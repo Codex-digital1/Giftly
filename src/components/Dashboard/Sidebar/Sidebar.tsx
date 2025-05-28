@@ -3,7 +3,7 @@ import { GrLogout } from "react-icons/gr";
 import { FcSettings } from "react-icons/fc";
 import { AiOutlineBars } from "react-icons/ai";
 import { BsGraphUp, BsStars } from "react-icons/bs";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { IoMdGift } from "react-icons/io";
 import { ImUsers } from "react-icons/im";
@@ -11,17 +11,15 @@ import { ImUsers } from "react-icons/im";
 import { MdDiscount, MdOutlineShoppingCartCheckout } from "react-icons/md";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import { FaHistory } from "react-icons/fa";
-import { GiSelfLove } from "react-icons/gi";
 
 interface UserRole {
   role: string; // Define role structure
 }
 const Sidebar = () => {
   const [isActive, setActive] = useState(false);
-  const navigate = useNavigate();
   const [role, setRole] = useState<UserRole | undefined>(undefined);
  
-  const { logOut, user } = useAuth() ?? {};
+  const { logOut, user,setUser } = useAuth() ?? {};
   const axiosPublic = useAxiosPublic();
   // Sidebar Responsive Handler
   const handleToggle = () => {
@@ -29,18 +27,18 @@ const Sidebar = () => {
   };
   const handleLogOut = () => {
     logOut?.();
-    navigate('/')
+    setUser?.(null)
   };
 
   //  Check if user exists before making the API call
   useEffect(() => {
     // Check if user is not null or undefined and email exists
-    if (user && user.email) {
+    if (user && user?.email) {
       axiosPublic
-        .get(`/getAUser/${user.email}`)
+        .get(`/getAUser/${user?.email}`)
         .then((response) => {
           setRole(response?.data?.data);
-          console.log(response);
+          // console.log(response);
         })
         .catch((error) => {
           console.error("Error fetching user data:", error);
@@ -171,6 +169,20 @@ const Sidebar = () => {
 
                     <span className="mx-4 font-medium">Order History</span>
                   </NavLink>
+                  {/* Manage Review */}
+                  <NavLink
+                    to="manage-reviews"
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-primary   hover:text-white ${
+                        isActive ? "bg-primary  text-white" : "text-gray-600"
+                      }`
+                    }
+                  >
+                    <FaHistory />
+
+                    <span className="mx-4 font-medium">Manage feedbacks</span>
+                  </NavLink>
+                  
                   {/* Manage Orders */}
                   <NavLink
                     to="manage-orders"
@@ -187,6 +199,7 @@ const Sidebar = () => {
               ) : (
                 <div>
                   {/* user dashboard */}
+                  {user?.role==='user' &&<>
                   {/* my order */}
                   <NavLink
                     to="my-orders"
@@ -211,19 +224,6 @@ const Sidebar = () => {
                     <FaHistory />
                     <span className="mx-4 font-medium">Order History</span>
                   </NavLink>
-                  {/* my wishlist */}
-                  <NavLink
-                    to="my-wishlist"
-                    className={({ isActive }) =>
-                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-primary   hover:text-white ${
-                        isActive ? "bg-primary  text-white" : "text-gray-600"
-                      }`
-                    }
-                  >
-                    <GiSelfLove />
-
-                    <span className="mx-4 font-medium">My Wishlist</span>
-                  </NavLink>
                   {/* my rating */}
                   <NavLink
                     to="my-rating"
@@ -236,7 +236,7 @@ const Sidebar = () => {
                     <BsStars />
 
                     <span className="mx-4 font-medium">My rating</span>
-                  </NavLink>
+                  </NavLink></>}
                 </div>
               )}
             </nav>

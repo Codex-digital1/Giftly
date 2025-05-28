@@ -41,7 +41,7 @@ const BottomStatistic = () => {
           return (
             <div
               key={ind}
-              className="p-4 md:p-6 rounded-md bg-secondary flex flex-col  text-center justify-center lg:justify-start lg:items-start items-center gap-4 md:gap-6"
+              className="p-4 md:p-6 rounded-md bg-gray-100 flex flex-col  text-center justify-center lg:justify-start lg:items-start items-center gap-4 md:gap-6"
             >
               {/* image */}
               <img

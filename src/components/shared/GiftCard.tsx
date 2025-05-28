@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
-import { Gift } from "../../types/Types";
+import { GiftType } from "../../types/Types";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import useAuth from "../../Provider/useAuth";
 
 // Define props type for GiftCard component
 interface GiftCardProps {
-  gift: Gift;
+  gift: GiftType;
   drawerToggle?: () => void ;
 }
 
@@ -23,14 +23,12 @@ const GiftCard: React.FC<GiftCardProps> = ({ gift, drawerToggle }) => {
     rating,
     giftImage,
     category,
-  } = gift || {};
+  } = gift 
 
 const handleAdd = () => {
+  // @ts-ignore
   addToCart?.(gift)
-   
     drawerToggle?.()
-
-  
 }
   return (
     <>
@@ -58,7 +56,7 @@ const handleAdd = () => {
                   <span className="line-through text-gray-600 decoration-primary font-normal text-sm ">
                     {(price + discount).toFixed(2)}৳
                   </span>
-                  <span>{price}৳</span>
+                  <p>{price}৳</p>
                 </h3>
                 {/* Ratings */}
                 <div className="flex justify-center items-center">
@@ -74,7 +72,10 @@ const handleAdd = () => {
                 <span>Add to cart</span>
               </div>
               <div className="btn-primary">
-                <span>Buy Now</span>
+                <Link to={`/productDetails/${_id}`}>
+                
+                <span>Buy Now</span></Link>
+              
               </div>
             </div>
           </div>

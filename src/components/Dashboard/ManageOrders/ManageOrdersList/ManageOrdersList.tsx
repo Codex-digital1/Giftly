@@ -5,7 +5,7 @@ import ManageOrdersItem from "../ManageOrdersItem/ManageOrdersItem";
 
 const ManageOrdersList = () => {
   const [data] = useGetAllOrders();
-  console.log(data);
+  // console.log(data);
   return (
     <div>
       <div className="overflow-x-auto">
@@ -14,10 +14,10 @@ const ManageOrdersList = () => {
             <tr>
               <TableTh tHeading="Image" />
               <TableTh tHeading=" Gift Name" />
-              <TableTh tHeading="Brand" />
+              {/* <TableTh tHeading="Brand" /> */}
               <TableTh tHeading=" Total Price" />
-              <TableTh tHeading=" Schedule Delevery" />
-              <TableTh tHeading="Order Status" />
+              <TableTh tHeading=" Schedule Delivery" />
+              <TableTh tHeading="Order Action" />
             </tr>
           </thead>
 

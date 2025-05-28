@@ -4,21 +4,45 @@ import {
   FaLinkedinIn,
   FaTwitter,
 } from "react-icons/fa6";
+import { TiMessages } from "react-icons/ti";
+
+
 import aboutUsImage from "../../../src/img/aboutUs.svg";
 import aboutGift from "../../../src/img/logo.png";
 import { TbPlayerPlayFilled, TbTruckDelivery } from "react-icons/tb";
-import { RiSecurePaymentLine } from "react-icons/ri";
-import { FiGift } from "react-icons/fi";
+import { RiCalendarScheduleLine, RiSecurePaymentLine } from "react-icons/ri";
 import { MdNotificationsActive } from "react-icons/md";
 import getInTouch from "../../../src/img/getintouch2.svg";
 import goal from "../../../src/img/goal.svg";
+import { Helmet } from "react-helmet-async";
+import toast from "react-hot-toast";
+import { IoShareSocialOutline } from "react-icons/io5";
+import { GiDrippingStar } from "react-icons/gi";
+import { GrLanguage } from "react-icons/gr";
+import { Link } from "react-router-dom";
 // Services Data
 const servicesData = [
   {
-    icon: <TbTruckDelivery />,
+    icon: <MdNotificationsActive />,
+    title: "Real-time Notifications",
+    describe:
+      "Get immediate updates on your gift's delivery status. preferences, ensuring a memorable . You'll receive real-time notifications to ensure you're always in the loop from the moment your gift is sent to its final delivery.",
+  },
+
+  {
+    icon: <RiCalendarScheduleLine />,
     title: "Scheduled Deliveries",
     describe:
       "Ensure your gifts are delivered on time by scheduling them for future dates. Whether it’s for a birthday, anniversary, you can plan ahead and let Giftly handle the timely delivery, making the occasion even more special. ",
+  },
+  {
+    icon: <GiDrippingStar />
+
+
+    ,
+    title: " Review and Rating Feature ",
+    describe:
+      "Help others make informed decisions by leaving reviews and ratings on gifts you've purchased. Share your experience, rate the quality of the products, and make it easier for others to find the perfect gift.",
   },
   {
     icon: <RiSecurePaymentLine />,
@@ -27,17 +51,34 @@ const servicesData = [
       "Enjoy peace of mind with multiple secure payment options, including credit cards, PayPal, and more. We prioritize safety, ensuring that your transactions are secure and hassle-free during checkout.",
   },
   {
-    icon: <FiGift />,
-    title: "Customizable Gifts",
+    icon: <TiMessages />
+    ,
+    title: "Live Chat Support",
     describe:
-      "Make your gifts unique by customizing everything from colors to themes. Choose from various options to personalize your gift, adding a personal touch that reflects the recipient’s and thoughtful experience.",
+      "Get real-time help from our support team and chat with other users for gift advice. Admin support is also available for any urgent issues.",
+  },
+
+  {
+    icon: <IoShareSocialOutline />
+    ,
+    title: "Gift Sharing on Social Media",
+    describe:
+      "Easily share your favorite gifts from our website on platforms like Facebook, Twitter, WhatsApp, and LinkedIn. Spread the joy and let your loved ones know what you're gifting",
+  },
+
+  {
+    icon: <TbTruckDelivery />,
+    title: "Track Gift Delivery Status",
+    describe:
+      "Easily track your gift's journey and get updates on its delivery status. You’ll know exactly when it was dispatched and when it was delivered to your loved ones.",
   },
   {
-    icon: <MdNotificationsActive />,
-    title: "Real-time Notifications",
+    icon:<GrLanguage/>,
+    title: " Multiple Language Support",
     describe:
-      "Get immediate updates on your gift's delivery status. preferences, ensuring a memorable . You'll receive real-time notifications to ensure you're always in the loop from the moment your gift is sent to its final delivery.",
+      "Our platform offers multiple language options, allowing users to shop and explore gifts in the language they are most comfortable with, making the shopping experience even more inclusive.",
   },
+  
 ];
 
 const goalData = [
@@ -64,8 +105,36 @@ const goalData = [
 ];
 
 const AboutUs = () => {
+  async function handleSubmit(event:any) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const form = event.target;
+
+    formData.append("access_key", "461dcc70-1753-44fa-b3a6-7b9327ed43a0");
+
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: json
+    });
+    const result = await response.json();
+    if (result.success) {
+      toast.success('Successfully send ')
+form.reset();
+        console.log(result);
+    }
+  }
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto custom-margin">
+          <Helmet>
+        <title>Giftly-About Us</title>
+      </Helmet>
       {/* About us section */}
       <section className=" border-red-400  mt-20 bg-secondary rounded-t-xl p-2">
         <div className="md:flex items-center ">
@@ -111,9 +180,9 @@ const AboutUs = () => {
                 <FaFacebookF />
               </button>
 
-              <button className=" btn-primary h-12 w-24 flex justify-center">
+              <Link to='/login' className=" btn-primary h-12 w-24 flex justify-center">
                 Join Now
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -123,9 +192,9 @@ const AboutUs = () => {
         <h1 className="text-xl font-bold text-primary mt-3">Services</h1>
         <hr className="w-40 border border-primary mb-3" />
         <div className="flex justify-center">
-          <div className="grid lg:grid-cols-4 md:grid-cols-3 justify-center gap-x-2 items-center gap-y-2">
+          <div className="grid lg:grid-cols-4 md:grid-cols-2 justify-center gap-x-2 items-center gap-y-2">
             {servicesData?.map((cartData) => (
-              <div className="w-[373px] h-[182px] border rounded-xl p-4 space-y-3 bg-white  cursor-pointer  hover:border-primary duration-500">
+              <div className=" md:h-[200px] border rounded-xl p-4 space-y-3 bg-white  cursor-pointer  hover:border-primary duration-500">
                 <h1 className="flex gap-x-2 items-center text-xl font-semibold">
                   <span className="text-primary text-3xl">
                     {cartData?.icon}
@@ -152,14 +221,14 @@ const AboutUs = () => {
       </div>
       {/* Our Goal */}
       <section className="flex flex-col-reverse md:flex-row border-l-4 border-primary rounded-3xl mt-10">
-        <div className=" flex-1 flex items-center p-4">
+        <div className=" flex-1 flex items-center p-4 ">
           <div className="space-y-4">
             {goalData?.map((data) => (
               <div className="flex gap-x-2">
                 <FaArrowRightLong className="w-24 text-2xl text-primary " />
                 <h1 className="text-justify">
                   <span className="font-semibold">{data?.title}</span>
-                  <span>{data?.description}</span>
+                  <p>{data?.description}</p>
                 </h1>
               </div>
             ))}
@@ -169,6 +238,9 @@ const AboutUs = () => {
           <img src={goal} className=" h-[500px]" alt="goal" />
         </div>
       </section>
+
+ 
+
 
       {/* Get in touch ! */}
       <section className="md:flex justify-center items-center md:h-[500px] border-r-4 border-primary rounded-3xl">
@@ -190,7 +262,7 @@ const AboutUs = () => {
               assistance, or want to give feedback, reach out to us at:
             </p>
           </div>
-          <form className="w-full  space-y-2">
+          <form onSubmit={handleSubmit} className="w-full  space-y-2">
             <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
               <label className="block font-medium" htmlFor="name">
                 Name
@@ -201,6 +273,7 @@ const AboutUs = () => {
                 placeholder="Your Name"
                 name="name"
                 type="text"
+                required
               />
             </div>
             <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
@@ -213,6 +286,7 @@ const AboutUs = () => {
                 placeholder="Your Email"
                 name="email"
                 type="email"
+                required
               />
             </div>
             <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
@@ -224,6 +298,8 @@ const AboutUs = () => {
                 id="_message"
                 placeholder="what's in your mind"
                 name="message"
+                required
+
               />
             </div>
             <button className="btn-primary h-10 w-28">Send Message</button>

@@ -24,7 +24,11 @@ import StatisticsPage from "../pages/Dashboard/Admin/Statistics/StatisticsPage";
 import ProductDetails from './../pages/details/ProductDetails';
 import ProfileInfo from './../pages/acount/ProfileInfo';
 import DiscountUpForm from "../components/Dashboard/Gift/Form/DiscountUpForm";
-
+import PrivateRoute from "./PrivateRoute";
+import AdminRoute from './AdminRoute';
+ 
+import AllReviews from "../pages/Dashboard/Admin/ManageReview/AllReviews";
+ 
 const router = createBrowserRouter([
   {
     path: "/",
@@ -61,14 +65,6 @@ const router = createBrowserRouter([
         element: <ProductDetails></ProductDetails>,
       },
       {
-        path: "/login",
-        element: <Login></Login>,
-      },
-      {
-        path: "/signUp",
-        element: <Register></Register>,
-      },
-      {
         path: "/chatInbox",
         element: <ChatContainer />,
       },
@@ -77,48 +73,73 @@ const router = createBrowserRouter([
   // dash board for user and admin
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: <PrivateRoute><Dashboard /></PrivateRoute>,
     children: [
+      // Admin Routes
       {
         path: "statistics",
-        element: <StatisticsPage />,
-      },
-      {
-        path: "manage-users",
-        element: <Users />,
+        element: <PrivateRoute>
+          <AdminRoute>
+            <StatisticsPage />
+          </AdminRoute>
+        </PrivateRoute>,
       },
       {
         path: "manage-gift",
-        element: <Gift />,
+        element: <PrivateRoute>
+          <AdminRoute>
+            <Gift />
+          </AdminRoute>
+        </PrivateRoute>
       },
       {
         path: "discount",
-        element: <DiscountUpForm></DiscountUpForm> ,
+        element: <PrivateRoute>
+          <AdminRoute>
+            <DiscountUpForm></DiscountUpForm>
+          </AdminRoute>
+        </PrivateRoute>,
       },
       {
         path: "manage-users",
-        element: <Users />,
+        element: <PrivateRoute>
+          <AdminRoute>
+            <Users />
+          </AdminRoute>
+        </PrivateRoute>,
       },
       {
         path: "order-history",
-        element: <OrderHistory />,
+        element: <PrivateRoute>
+          <AdminRoute>
+            <OrderHistory />,
+          </AdminRoute>
+        </PrivateRoute>
       },
       {
         path: "manage-orders",
-        element: <ManageOrders />,
+        element: <PrivateRoute>
+          <AdminRoute>
+            <ManageOrders />,
+          </AdminRoute>
+        </PrivateRoute>
+      },
+      {
+        path: "manage-reviews",
+        element: <AllReviews />
       },
       // user
       {
         path: "my-orders",
-        element: <MyOrders></MyOrders>,
+        element: <PrivateRoute><MyOrders></MyOrders></PrivateRoute>,
       },
       {
         path: "user/order-history",
-        element: <UserOrderHistory />,
+        element: <PrivateRoute><UserOrderHistory /></PrivateRoute>,
       },
       {
         path: "my-orders/order-status/:id",
-        element: <OrderTracking />,
+        element: <PrivateRoute><OrderTracking /></PrivateRoute>,
       },
 
       {
@@ -127,14 +148,22 @@ const router = createBrowserRouter([
       },
       {
         path: "my-rating",
-        element: <MyRating></MyRating>,
+        element: <PrivateRoute><MyRating></MyRating></PrivateRoute>,
       },
       // shared
       {
         path: "profile",
-        element: <ProfileInfo></ProfileInfo>,
+        element: <PrivateRoute><ProfileInfo></ProfileInfo></PrivateRoute>,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login></Login>,
+  },
+  {
+    path: "/signUp",
+    element: <Register></Register>,
   },
 ]);
 

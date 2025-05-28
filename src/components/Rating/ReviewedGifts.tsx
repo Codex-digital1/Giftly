@@ -26,7 +26,7 @@ const ReviewedGiftCard: React.FC<ReviewedGiftCardProps> = ({ singleGift }) => {
 
     const { product_image, product_name, product_brand, order_status, review, tran_id } = singleGift || {};
 
-
+    console.log(singleGift?.product_brand)
     return (
         <div className="card card-side bg-base-100 shadow-xl rounded-none border-t-2 p-5">
             <figure className='w-1/2 h-[200px] md:w-[300px] md:h-[280px] lg:w-[350px] lg:h-[280px]'>
@@ -44,24 +44,31 @@ const ReviewedGiftCard: React.FC<ReviewedGiftCardProps> = ({ singleGift }) => {
 
                     <div className="flex gap-2 items-center">
                         <span className="font-bold">Brand:</span>
-                        <span className="">
-                            {product_brand}
-                        </span>
+                        
+                        <p>{product_brand}</p>
                     </div>
                 </div>
 
                 <div className="flex gap-2 items-center">
-                    <span className="font-bold">Order status:</span>
-                    <span className="bg-[#a6f6a6] py-1 px-2 rounded-2xl">
+                    <span className="font-bold">Delivery status:</span>
+                    <p className={`rounded-3xl px-3 py-1 ${
+                        order_status === 'Pending'
+                          ? 'bg-yellow-300'
+                          : order_status === 'Processing'
+                          ? 'bg-blue-300'
+                          : order_status === 'Shipping'
+                          ? 'bg-orange-400'
+                          : order_status === 'Delivered'
+                          ? 'bg-green-300'
+                          : 'bg-gray-300'
+                      }`}>
                         {order_status}
-                    </span>
+                    </p>
                 </div>
 
                 <div className="flex gap-1 items-center mt-2 mb-3">
                     <Rating style={{ maxWidth: 120 }} value={review?.rating ?? 0} readOnly />
-                    <span className="ml-1   text-xl font-medium">
-                        {`${review?.rating}`}
-                    </span>
+                    
                 </div>
 
                 <div className="mt-6">

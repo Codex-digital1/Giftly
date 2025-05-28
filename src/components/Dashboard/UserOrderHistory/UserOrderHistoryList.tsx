@@ -5,10 +5,9 @@ import UserOrderHistoryListItem from "./UserOrderHistoryListItem";
 import { BsEmojiFrownFill } from "react-icons/bs";
 
 const UserOrderHistoryList = () => {
-  const [data] = useGetSpecificOrders();
-  //order_status Delivered
+  const {orders} = useGetSpecificOrders();
   // console.log(data);
-  const deleverdList = data?.filter(
+  const deliveredList = orders?.filter(
     (dList: OrderTypes) => dList.order_status === "Delivered"
   );
   return (
@@ -25,8 +24,8 @@ const UserOrderHistoryList = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-200 text-center">
-            {deleverdList?.length > 0 ? (
-              deleverdList?.map((order: OrderTypes) => (
+            {deliveredList?.length > 0 ? (
+              deliveredList?.map((order: OrderTypes) => (
                 <UserOrderHistoryListItem key={order._id} order={order} />
               ))
             ) : (

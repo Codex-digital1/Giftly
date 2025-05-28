@@ -2,7 +2,7 @@ import React from 'react';
 import useAuth from '../../Provider/useAuth';
 
 interface GiftType {
-    product_image: string[]; // Assuming it's an array of image URLs
+    product_image: string[];
     product_name: string;
     product_brand: string;
     review: {
@@ -26,12 +26,11 @@ const NotReviewedGiftCard: React.FC<NotReviewedGiftCardProps> = ({ singleGift })
     }
     const { product_image, product_name, product_brand, review, tran_id, order_status } = singleGift || {};
 
-
     return (
         <div className="card card-side bg-base-100 shadow-xl rounded-none border-t-2 p-5">
             <figure className='w-1/2 h-[200px] md:w-[300px] md:h-[280px] lg:w-[350px] lg:h-[280px]'>
                 <img
-                    src={product_image[0]} // Ensure you have at least one image in the array
+                    src={product_image[0]}
                     alt="Gift"
                     className="w-full h-full object-cover object-center"
                 />
@@ -44,17 +43,26 @@ const NotReviewedGiftCard: React.FC<NotReviewedGiftCardProps> = ({ singleGift })
 
                     <div className="flex gap-2 items-center">
                         <span className="font-bold">Brand:</span>
-                        <span className="">
-                            {product_brand}
-                        </span>
+
+                        <p>{product_brand}</p>
+
                     </div>
                 </div>
 
                 <div className="flex gap-2 items-center">
-                    <span className="font-bold">Order status:</span>
-                    <span className="bg-orange-400 py-1 px-2 rounded-2xl">
+                    <span className="font-bold">Delivery status:</span>
+                    <p className={`rounded-3xl px-3 py-1 ${order_status === 'Pending'
+                        ? 'bg-yellow-300'
+                        : order_status === 'Processing'
+                            ? 'bg-blue-300'
+                            : order_status === 'Shipping'
+                                ? 'bg-orange-400'
+                                : order_status === 'Delivered'
+                                    ? 'bg-green-300'
+                                    : 'bg-gray-300'
+                        }`}>
                         {order_status}
-                    </span>
+                    </p>
                 </div>
                 <p>{review?.comment}</p>
                 <div className="mt-6">

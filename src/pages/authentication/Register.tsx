@@ -5,19 +5,23 @@ import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { useState } from "react";
 import { ImSpinner10 } from "react-icons/im";
+import { Helmet } from "react-helmet-async";
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location?.state || "/";
+  const from = location?.state?.from?.pathname || "/";
   const [passwordShow,setPasswordShow]=useState(false)
   const [passwordShow1,setPasswordShow1]=useState(false)
+  const [isLoading,setIsLoading]=useState(false)
 
-  const { createUser, updateUserProfile, googleLogin,loading } = useAuth() ?? {};
+
+  const { createUser, updateUserProfile, googleLogin, user} = useAuth() ?? {};
 
   // handle Register form data
   const handelform = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true)
     const form = e.currentTarget;
     const nameValue = (form.elements.namedItem("name") as HTMLInputElement)
       .value;
@@ -38,28 +42,44 @@ const Register: React.FC = () => {
       .then((result) => {
         toast.success("Successfully created account!");
         console.log(result.user);
-
         updateUserProfile?.(nameValue, "");
+        navigate(from);
+        // window.location.replace(from)
+        setIsLoading(false)
       })
       .catch((error) => {
+        setIsLoading(false)
         console.log(error);
       });
     // navigate(from);
   };
   // Google login
   const handleGoogleLogin = async () => {
+    setIsLoading(true)
     await googleLogin?.()
     .then((result) => {
       navigate(from);
+      // window.location.replace(from)
+
       console.log(result.user);
+      setIsLoading(false)
     })
     .catch((error) => {
+      setIsLoading(false)
       console.log(error);
     });
   };
+  if (user) {
+    navigate(from);
+    // window.location.replace(from)
+    return
+  }
 
   return (
     <div className="md:flex justify-center p-5 rounded-xl items-center mt-24  container mx-auto border hover:border-primary duration-700 ">
+       <Helmet>
+        <title>Giftly-SignUp</title>
+      </Helmet>
       <div className="md:flex hidden justify-center items-center md:w-1/2  ">
         <img
           src={register}
@@ -140,9 +160,10 @@ const Register: React.FC = () => {
 
               <button
                 type="submit"
+                disabled={isLoading}
                 className="w-full py-3 font-medium text-white btn-primary inline-flex space-x-2 items-center justify-center"
               >
-                {loading ? (
+                {isLoading ? (
                 <ImSpinner10 className="animate-spin mx-auto text-xl" />
               ) : (
                 <><svg
@@ -164,6 +185,7 @@ const Register: React.FC = () => {
               </button>
 
               <button
+              disabled={isLoading}
                 onClick={handleGoogleLogin}
                 className="w-full text-center py-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-primary hover:text-slate-900 hover:shadow transition duration-150"
               >
@@ -175,7 +197,7 @@ const Register: React.FC = () => {
                 <span>Login with Google</span>
               </button>
 
-              <p className="text-center">
+              <p className="text-center ">
                 All ready have an account ?{" "}
                 <a
                   href="#"
