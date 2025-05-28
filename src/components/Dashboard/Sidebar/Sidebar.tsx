@@ -210,10 +210,10 @@ const Sidebar = () => {
                     }
                   >
                     <MdOutlineShoppingCartCheckout className="w-5 h-5" />
-                    <span className="mx-4 font-medium">My Order</span>
+                    <span className="mx-4 font-medium">Track Orders</span>
                   </NavLink>
                   {/* Order History */}
-                  <NavLink
+                  {/* <NavLink
                     to="user/order-history"
                     className={({ isActive }) =>
                       `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-primary   hover:text-white ${
@@ -223,7 +223,7 @@ const Sidebar = () => {
                   >
                     <FaHistory />
                     <span className="mx-4 font-medium">Order History</span>
-                  </NavLink>
+                  </NavLink> */}
                   {/* my rating */}
                   <NavLink
                     to="my-rating"

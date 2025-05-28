@@ -39,7 +39,11 @@ const WishListItem = () => {
                 <div className="flex mb-5 text-white gap-3 justify-center items-center">
                   <div
                     className="btn-primary"
-                    onClick={() => addToCart?.(item)}
+                    onClick={async () => {
+                      addToCart?.(item);
+                      localStorage.removeItem("wishlist");
+                      location.reload()
+                    }}
                   >
                     <span>
                       <FaCartPlus />

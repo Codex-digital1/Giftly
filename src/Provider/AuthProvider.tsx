@@ -557,6 +557,34 @@ useEffect(()=>{
   };
 
 
+  // new order and review workflow
+  // Order check before review
+  // const getOrderDataById = async (userId: string, userEmail: string,productId:string) => {
+  //   try {
+  //     // '/get-order-product/:productId'
+  //     const { data } = await axiosPublic.get(`/get-order-product/${productId}`, );
+  //     if (data?.data?.tran_id) {
+  //       setGiftOrderCheck(data.data);
+  //       setIsModalVisible(true);
+  //     } else {
+  //       toast.error("No order found with this product ID and email");
+  //     }
+  //   } catch (error: any) {
+  //     const axiosError = error as AxiosError;
+
+  //     if (axiosError?.response) {
+  //       const errorData = axiosError?.response?.data as { message: string }
+  //       if (axiosError?.response?.status === 404) {
+  //         toast.error(errorData.message || "No order found");
+  //       } else {
+  //         toast.error("Something went wrong. Please try again later.");
+  //       }
+  //     }
+
+  //     // console.log(axiosError);
+  //   }
+  // };
+
   // <<<--------chat feature-------->>>
 
   // Function to get the current  receiver data
@@ -709,7 +737,11 @@ useEffect(()=>{
     receiver,
     setSender,
     setReceiver,
-    updateReceiverName
+    updateReceiverName,
+
+
+    // new order and review workflow
+    // getOrderDataById
 
   };
 

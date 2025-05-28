@@ -19,7 +19,7 @@ import Register from "../pages/authentication/Register";
 import Success from "../pages/success/Success";
 import OrderTracking from "../pages/Dashboard/User/OrderTracking/OrderTracking";
 import ChatContainer from "../pages/chatFeature/ChatContainer";
-import UserOrderHistory from "../pages/Dashboard/User/UserOrderHistory/UserOrderHistory";
+// import UserOrderHistory from "../pages/Dashboard/User/UserOrderHistory/UserOrderHistory";
 import StatisticsPage from "../pages/Dashboard/Admin/Statistics/StatisticsPage";
 import ProductDetails from './../pages/details/ProductDetails';
 import ProfileInfo from './../pages/acount/ProfileInfo';
@@ -133,10 +133,10 @@ const router = createBrowserRouter([
         path: "my-orders",
         element: <PrivateRoute><MyOrders></MyOrders></PrivateRoute>,
       },
-      {
-        path: "user/order-history",
-        element: <PrivateRoute><UserOrderHistory /></PrivateRoute>,
-      },
+      // {
+      //   path: "user/order-history",
+      //   element: <PrivateRoute><UserOrderHistory /></PrivateRoute>,
+      // },
       {
         path: "my-orders/order-status/:id",
         element: <PrivateRoute><OrderTracking /></PrivateRoute>,

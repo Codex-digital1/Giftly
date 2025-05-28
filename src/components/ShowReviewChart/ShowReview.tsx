@@ -1,20 +1,14 @@
 import { Rating } from "@smastrom/react-rating";
 import React from "react";
-
-interface Review {
-    rating: number;
-}
-
-interface ReviewByProductId {
-    review: Review;
-}
+import { TProductReview } from "../../types/Types";
 
 interface ShowReviewProps {
-    reviewByProductId: ReviewByProductId[];
+    reviewByProductId: TProductReview[];
 }
 
 const ShowReview: React.FC<ShowReviewProps> = ({ reviewByProductId }) => {
-    // Calculate the sum and number of ratings in one pass
+    console.log("Review by Product ID:", reviewByProductId);
+// Calculate the sum and number of ratings in one pass
     const { sumOfRatings, numberOfRatings } = reviewByProductId.reduce(
         (acc, currentObj) => {
             const rating = currentObj.review?.rating || 0;

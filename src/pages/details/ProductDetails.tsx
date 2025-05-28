@@ -13,11 +13,7 @@ import 'react-medium-image-zoom/dist/styles.css';
 
 import { Link } from "react-router-dom";
 import ShowReviewComment from "../../components/ShowReviewChart/ShowReviewComment";
-interface Review {
-  review: {
-    rating: number | null;
-  };
-}
+import { TProductReview } from "../../types/Types";
 
 // Define the types for the gift object
 interface Gift {
@@ -48,7 +44,7 @@ const ProductDetails: React.FC = () => {
   const { addToCart, addToWishlist } = useAuth() ?? {};
   const [reviewByProductId, setAllReviewByProductId] = useState([]);
 
-  const shareUrl = window.location.href || `https://giftly-ba979.web.app/productDetails/${id}`;
+  const shareUrl = window.location.href || `${import.meta.env.VITE_SERVER_URL}/productDetails/${id}`;
 
   // for getting single gift data
   useEffect(() => {
@@ -102,11 +98,10 @@ const ProductDetails: React.FC = () => {
   // Get all review for specific product
   const getData = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/getAllReviews/${id}`, { method: 'GET' });
+      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/get-reviews/${id}`, { method: 'GET' });
       if (response?.ok) {
         const reviews = await response.json();
-        const filterReview = reviews?.filter((singleReview: Review) => singleReview?.review.rating !== null);
-        setAllReviewByProductId(filterReview);
+        setAllReviewByProductId(reviews || []);
       } else {
         console.log('Failed to fetch reviews');
       }
