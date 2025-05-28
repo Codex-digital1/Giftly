@@ -13,7 +13,6 @@ import 'react-medium-image-zoom/dist/styles.css';
 
 import { Link } from "react-router-dom";
 import ShowReviewComment from "../../components/ShowReviewChart/ShowReviewComment";
-import { TProductReview } from "../../types/Types";
 
 // Define the types for the gift object
 interface Gift {
