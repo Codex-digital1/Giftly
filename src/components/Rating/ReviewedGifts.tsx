@@ -1,5 +1,4 @@
 import React from "react";
-import useAuth from "../../Provider/useAuth";
 import { Rating } from "@smastrom/react-rating";
 
 interface ProductDetail {

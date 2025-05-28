@@ -1,8 +1,9 @@
-import { OrderTypesProps } from "../../../../types/Types";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import DetailsDt from "../../../shared/DetailsDt";
 
-const SinglerOrderAndUserDetails = ({ order }: OrderTypesProps) => {
-  console.log(order?.product_image);
+const SinglerOrderAndUserDetails = ({ order }: any) => {
+  
   return (
     <div>
       {/* Product Image */}

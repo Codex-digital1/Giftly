@@ -1,5 +1,4 @@
 import { Helmet } from "react-helmet-async";
-import UserOrderHistoryList from "../../../../components/Dashboard/UserOrderHistory/UserOrderHistoryList";
 import SectionHeading from "../../../../components/shared/SectionHeading";
 
 const UserOrderHistory = () => {
@@ -11,7 +10,7 @@ const UserOrderHistory = () => {
       {" "}
       <SectionHeading title="Order History" />
       {/* <UserOrderHistory/> */}
-      <UserOrderHistoryList />
+      {/* <UserOrderHistoryList /> */}
     </div>
   );
 };

@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import useAuth from '../../Provider/useAuth';
 
 interface ProductDetail {
   _id: string;

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import TableTd from "../../../../components/shared/TableTd";
-import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import MyModal from "../../../../components/shared/MyModal";
 import SingleReviewDetails from "./SingleReviewDetails";
 import { TProductWithReview } from "./AllReviewList";
