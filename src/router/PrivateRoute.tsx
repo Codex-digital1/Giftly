@@ -8,17 +8,17 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-  const { user, loading } = useAuth()??{};
+  const { user, isSpinLoading } = useAuth() ?? {};
   const location = useLocation();
 
-  if (loading){
+  if (isSpinLoading) {
     return <LoadingSpinner smallHeight={false} card={false} large={true} />;
   }
-  if (user){
-     return <>{children}</>;
-    }
-  
-  return <Navigate to="/login" state={{ from: location }} replace />
+   if (user) {
+    return <>{children}</>;
+  }
+
+  return <Navigate to="/login" state={{ from: location }} replace />;
 };
 
 export default PrivateRoute;

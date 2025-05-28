@@ -2,14 +2,14 @@ const dashboardUserData = [
     {
       image: "https://avatars.githubusercontent.com/u/130208279?v=4",
       name: "Hammad Sadi",
-      email: "john.doe@example.com",
+      email: "hammad.sadi@yahoo.com",
       role: "Admin",
       color: "#007bff",
     },
     {
       image: "https://avatars.githubusercontent.com/u/155248034?v=4",
       name: "Sajjad Hosen Sohan",
-      email: "jane.smith@example.com",
+      email: "mdshohansajjad@example.com",
       role: "Admin",
       color: "#ffc107",
     },
@@ -24,7 +24,7 @@ const dashboardUserData = [
     {
       image: "https://avatars.githubusercontent.com/u/155246328?v=4",
       name: "Amir Hosen Antar",
-      email: "designimb@gmail.com",
+      email: "amir@gmail.com",
       role: "Admin",
       color: "#007bff",
     },

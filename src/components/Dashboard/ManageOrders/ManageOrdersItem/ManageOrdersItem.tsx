@@ -85,7 +85,7 @@ const ManageOrdersItem = ({ order }: { order: OrderTypesProps }) => {
             </select>
 
             <button
-              className="py-2 px-3 bg-gray-700 rounded-md text-white"
+              className="py-2 px-3 bg-primary rounded-md text-white"
               onClick={() => setShowProducts(!showProducts)}
             >
               {showProducts ? "Hide Products" : "Show Products"}

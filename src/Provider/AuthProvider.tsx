@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { GoogleAuthProvider, UserCredential, sendPasswordResetEmail } from "firebase/auth";
-import {User} from '../../src/types/Types'
+import {
+  GoogleAuthProvider,
+  UserCredential,
+  sendPasswordResetEmail,
+} from "firebase/auth";
+import { User } from "../../src/types/Types";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -9,12 +13,26 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { createContext, useEffect, useState, ReactNode, Dispatch, SetStateAction } from "react";
+import {
+  createContext,
+  useEffect,
+  useState,
+  ReactNode,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import toast from "react-hot-toast";
 import auth from "../Firebase/Firebase.config";
-import _ from 'lodash';
+import _ from "lodash";
 import useAxiosPublic from "../Hooks/useAxiosPublic";
-import { FetchNextPageOptions, InfiniteData, InfiniteQueryObserverResult, QueryObserverResult, RefetchOptions, useQuery } from "@tanstack/react-query";
+import {
+  FetchNextPageOptions,
+  InfiniteData,
+  InfiniteQueryObserverResult,
+  QueryObserverResult,
+  RefetchOptions,
+  useQuery,
+} from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useInfiniteQuery } from "@tanstack/react-query";
 // Define GiftType
@@ -33,7 +51,7 @@ type GiftType = {
   color: string;
   type: string;
   category: string;
-  availability: (boolean | string);
+  availability: boolean | string;
   quantity: number;
 };
 type CartGiftType = {
@@ -51,11 +69,10 @@ type CartGiftType = {
   color: string;
   type: string;
   category: string;
-  availability: (boolean | string);
+  availability: boolean | string;
   quantity: number;
-  productQuantity:number
+  productQuantity: number;
 };
-
 
 // Define OrderedGiftType
 type OrderedGiftType = {
@@ -99,9 +116,7 @@ interface CurrentUser {
     sender: string;
     receiver: string;
   };
-
 }
-
 
 // Define AuthContextType
 interface AuthContextType {
@@ -111,10 +126,16 @@ interface AuthContextType {
   getData: any;
   loading: boolean;
   setLoading: (loading: boolean) => void;
+
+  isSpinLoading: boolean;
+  setSpinLoading: (isSpinLoading: boolean) => void;
+
   login: (email: string, password: string) => Promise<UserCredential>;
   createUser: (email: string, password: string) => Promise<UserCredential>;
   googleLogin: () => Promise<UserCredential>;
-  refetch: (options?: RefetchOptions) => Promise<QueryObserverResult<any, Error>>;
+  refetch: (
+    options?: RefetchOptions
+  ) => Promise<QueryObserverResult<any, Error>>;
   logOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   updateUserProfile: (name: string, photoURL: string) => Promise<void>;
@@ -123,19 +144,22 @@ interface AuthContextType {
   allGifts?: GiftType[];
   isFetchingNextPage?: boolean;
   hasNextPage?: boolean;
-  fetchNextPage?: (options?: FetchNextPageOptions) => 
-    Promise<InfiniteQueryObserverResult<InfiniteData<any, unknown>, Error>>;
+  fetchNextPage?: (
+    options?: FetchNextPageOptions
+  ) => Promise<InfiniteQueryObserverResult<InfiniteData<any, unknown>, Error>>;
   allGifts1?: GiftType[];
   cart: CartGiftType[];
   addToCart: (gift: GiftType) => void;
   addToWishlist: (gift: GiftType) => void;
-  setCart: Dispatch<SetStateAction<CartGiftType[]>>
+  setCart: Dispatch<SetStateAction<CartGiftType[]>>;
 
   wishlist: GiftType[];
   removeToWishlist: (gift: GiftType) => void;
   removeToCart: (gift: GiftType) => void;
-  handleSearchChange: (searchValue:string) => void;
-  handleFilterChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  handleSearchChange: (searchValue: string) => void;
+  handleFilterChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
   filters: {
     category: string;
     priceMin: number;
@@ -152,18 +176,18 @@ interface AuthContextType {
   giftOrderCheck: OrderedGiftType | Record<string, never>;
   isModalVisible: boolean;
   setIsModalVisible: (visible: boolean) => void | undefined;
-  myAllReview: (() => Promise<void> | undefined);
+  myAllReview: () => Promise<void> | undefined;
 
   // chat feature >>>
-  getReceiverData: ((receiverName: string) => Promise<void>) | undefined
+  getReceiverData: ((receiverName: string) => Promise<void>) | undefined;
   currentUser: CurrentUser | null;
   setCurrentUser: (user: CurrentUser | null) => void;
-  receiverInfo: CurrentUser | null
-  sender: string | null
-  receiver: string | null
-  setSender: React.Dispatch<React.SetStateAction<string | null>>
-  setReceiver: React.Dispatch<React.SetStateAction<string | null>>
-  updateReceiverName: ((receiverName: string) => Promise<void>) | undefined
+  receiverInfo: CurrentUser | null;
+  sender: string | null;
+  receiver: string | null;
+  setSender: React.Dispatch<React.SetStateAction<string | null>>;
+  setReceiver: React.Dispatch<React.SetStateAction<string | null>>;
+  updateReceiverName: ((receiverName: string) => Promise<void>) | undefined;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -173,9 +197,10 @@ interface AuthProviderProps {
 }
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const axiosPublic = useAxiosPublic()
+  const axiosPublic = useAxiosPublic();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isSpinLoading, setSpinLoading] = useState<boolean>(true);
   const provider = new GoogleAuthProvider();
   // get all user
   const [allUser, setAllUsers] = useState<any[]>([]);
@@ -184,15 +209,16 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [sender, setSender] = useState<string | null>(null);
   const [receiver, setReceiver] = useState<string | null>(null);
-  const [receiverInfo, setReceiverInfo] = useState<CurrentUser | null>(null)
- 
+  const [receiverInfo, setReceiverInfo] = useState<CurrentUser | null>(null);
 
   const [gifts, setGifts] = useState<GiftType[]>([]);
   const [allGifts, setAllGifts] = useState<GiftType[]>([]);
 
   // Define review and modal states
   const [myReviewItem, setMyReviewItem] = useState<OrderedGiftType[]>([]);
-  const [giftOrderCheck, setGiftOrderCheck] = useState<OrderedGiftType | Record<string, never>>({});
+  const [giftOrderCheck, setGiftOrderCheck] = useState<
+    OrderedGiftType | Record<string, never>
+  >({});
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   const [cart, setCart] = useState<CartGiftType[]>(() => {
@@ -207,16 +233,19 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   });
 
   const [filters, setFilters] = useState({
-    category: '',
+    category: "",
     priceMin: 0,
     priceMax: 5000000,
     rating: 0,
-    availability: 'all',
-    sortBy: '',
-    search: ''
+    availability: "all",
+    sortBy: "",
+    search: "",
   });
 
-  const createUser = async (email: string, password: string): Promise<UserCredential> => {
+  const createUser = async (
+    email: string,
+    password: string
+  ): Promise<UserCredential> => {
     setLoading(true);
     try {
       return await createUserWithEmailAndPassword(auth, email, password);
@@ -228,10 +257,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const login = async (email: string, password: string): Promise<UserCredential> => {
+  const login = async (
+    email: string,
+    password: string
+  ): Promise<UserCredential> => {
     setLoading(true);
     try {
-      console.log(email,password)
+      console.log(email, password);
       return await signInWithEmailAndPassword(auth, email, password);
     } catch (error: any) {
       toast.error(error.message);
@@ -258,69 +290,73 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const updateUserProfile = async (name: string, photoURL: string) => {
     if (auth?.currentUser) {
       try {
-        await updateProfile(auth.currentUser, { displayName: name, photoURL: photoURL, });
-        toast.success('Profile updated successfully!');
+        await updateProfile(auth.currentUser, {
+          displayName: name,
+          photoURL: photoURL,
+        });
+        toast.success("Profile updated successfully!");
       } catch (error: any) {
         toast.error("Failed to update profile: " + error.message);
       }
     } else {
       toast.error("User not authenticated.");
     }
-  };// save user
+  }; // save user
   const saveUser = async (user: any) => {
-    const alternateImage = `https://picsum.photos/id/${_.random(1, 1000)}/200/300`;
+    const alternateImage = `https://picsum.photos/id/${_.random(
+      1,
+      1000
+    )}/200/300`;
     // console.log(user);
     const currentUser = {
       email: user?.email,
       name: user?.displayName || "Anonymous",
       profileImage: user?.photoURL || alternateImage,
-      role: 'user',
-      phoneNumber: user?.phoneNumber || '',
+      role: "user",
+      phoneNumber: user?.phoneNumber || "",
       address: {
-        street: user?.street || '',
-        city: user?.city || '',
-        state: user?.state || '',
-        zipCode: user?.zipCode || '',
-        country: user?.country || '',
+        street: user?.street || "",
+        city: user?.city || "",
+        state: user?.state || "",
+        zipCode: user?.zipCode || "",
+        country: user?.country || "",
       },
       chat: {
         sender: user?.displayName || "Anonymous",
-        receiver: "Admin"
-      }
-    }
-    await axiosPublic.post('/users', currentUser)
-      .then(response => {
-        return (response.data);
+        receiver: "Admin",
+      },
+    };
+    await axiosPublic
+      .post("/users", currentUser)
+      .then((response) => {
+        return response.data;
       })
-      .catch(error => {
-        console.error('There was an error!', error);
+      .catch((error) => {
+        console.error("There was an error!", error);
       });
-
-  }
+  };
   // Get token from server
-  const getToken = async (email:string) => {
+  const getToken = async (email: string) => {
     try {
       const { data } = await axiosPublic.post(
         `/jwt`,
         { email },
         { withCredentials: true }
-      )
+      );
       console.log(data);
-      return data
+      return data;
     } catch (error) {
       console.log(error);
     }
-  }
- 
-
+  };
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        getToken(user?.email ?? '')
+        getToken(user?.email ?? "");
         setUser((prevUser) => {
           if (!prevUser) return null; // Handle case where there is no previous user
-        
+
           return {
             ...prevUser,
             phoneNumber: prevUser.phoneNumber ?? undefined, // Convert null to undefined
@@ -328,76 +364,74 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             isAnonymous: false,
           };
         });
-        setTimeout(() => {
           saveUser(user);
-          getAUser(user?.email ?? "")
-        }, 2000);
+          getAUser(user?.email ?? "");
+        
         // getToken(currentUser.email)
       }
       setLoading(false);
+      setSpinLoading(false);
     });
     return () => {
       unSubscribe();
     };
   }, []);
 
+  const getAUser = async (email: string) => {
+    setLoading(true);
 
-    const getAUser=async(email:string)=>{
-      setLoading(true);
-    
-      await axiosPublic.get(`/getAUser/${email}`)
-      .then(response => {
+    await axiosPublic
+      .get(`/getAUser/${email}`)
+      .then((response) => {
         // console.log(response.data.data);
-        setUser(prev => ({ ...prev, ...response?.data?.data })); 
-    setLoading(false);
+        setUser((prev) => ({ ...prev, ...response?.data?.data }));
+        setLoading(false);
 
-// console.log(user);
+        // console.log(user);
       })
-      .catch(error => {
-        console.error('There was an error!', error);
+      .catch((error) => {
+        console.error("There was an error!", error);
       });
-    }
-  
+  };
 
-  
   const logOut = async () => {
-    setLoading(true)
-    try{
+    setLoading(true);
+    try {
       await axiosPublic(`/logout`, {
         withCredentials: true,
-      }).then(response => {
+      }).then((response) => {
         console.log(response.data);
-    })
-      setUser(null)
+      });
+      setUser(null);
       toast.success("Logout successful");
-      return await signOut(auth)
-    }catch(err:any){
-      toast.error(err?.message || '');
+      return await signOut(auth);
+    } catch (err: any) {
+      toast.error(err?.message || "");
       console.log(err);
-    }finally {
+    } finally {
       setLoading(false);
     }
-    
-   
-  }
+  };
 
-
-  const resetPassword = (email:string) => {
-    return sendPasswordResetEmail(auth, email)
-  }
+  const resetPassword = (email: string) => {
+    return sendPasswordResetEmail(auth, email);
+  };
 
   // Fetch all users
   const getData = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getUsers`, { method: 'GET' });
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/user/getUsers`,
+        { method: "GET" }
+      );
       if (response.ok) {
         const users = await response.json();
         setAllUsers(users);
       } else {
-        console.log('Failed to fetch users');
+        console.log("Failed to fetch users");
       }
     } catch (error) {
-      console.error('Error fetching users:', error);
+      console.error("Error fetching users:", error);
     }
   };
 
@@ -409,17 +443,20 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const getSingleUser = async () => {
     try {
       setLoading?.(true);
-      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getUser/${user?.email}`, { method: 'GET' });
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/user/getUser/${user?.email}`,
+        { method: "GET" }
+      );
       if (response.ok) {
         const currentGetUser = await response.json();
         setCurrentUser(currentGetUser);
         setLoading?.(false);
       } else {
-        console.log('Failed to fetch user data');
+        console.log("Failed to fetch user data");
       }
     } catch (error) {
-      console.error('Error fetching user:', error);
-    }finally {
+      console.error("Error fetching user:", error);
+    } finally {
       setLoading(false);
     }
   };
@@ -429,29 +466,27 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, [user?.email]);
 
-
   const { data: allGifts1, refetch } = useQuery({
-    queryKey: ['all-gift'],
+    queryKey: ["all-gift"],
     queryFn: async () => {
       try {
         setLoading(true);
-        const { data } = await axiosPublic.get("/getAllGift")
-        return data?.data
-
+        const { data } = await axiosPublic.get("/getAllGift");
+        return data?.data;
       } catch (error) {
         console.log(error);
       } finally {
         setLoading(false);
       }
-    }
-  })
+    },
+  });
   // console.log(allGifts1);p
- 
+
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        const { data } = await axiosPublic.get("/getAllGiftForHome",);
+        const { data } = await axiosPublic.get("/getAllGiftForHome");
         setGifts(data?.data);
       } catch (error) {
         console.log(error);
@@ -462,62 +497,61 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   // Define the API response structure
-interface GiftsResponse {
-  data: GiftType[];
-}
-// Define the filters type
-interface Filters {
-  category?: string;
-  priceMin?: number;
-  priceMax?: number;
-  rating?: number;
-  availability?: string;
-  sortBy?: string;
-  search?: string;
-}
-// Fetch function for infinite query
-const fetchGifts = async ({
-  pageParam = 1,
-  queryKey,
-}: {
-  pageParam?: number;
-  queryKey: [string, Filters];
-}): Promise<GiftsResponse> => {
-  const [, filters] = queryKey; // Extract filters from queryKey
-  const response = await axiosPublic.get<GiftsResponse>("/getAllGift", {
-    params: { ...filters, page: pageParam, limit: 12 },
+  interface GiftsResponse {
+    data: GiftType[];
+  }
+  // Define the filters type
+  interface Filters {
+    category?: string;
+    priceMin?: number;
+    priceMax?: number;
+    rating?: number;
+    availability?: string;
+    sortBy?: string;
+    search?: string;
+  }
+  // Fetch function for infinite query
+  const fetchGifts = async ({
+    pageParam = 1,
+    queryKey,
+  }: {
+    pageParam?: number;
+    queryKey: [string, Filters];
+  }): Promise<GiftsResponse> => {
+    const [, filters] = queryKey; // Extract filters from queryKey
+    const response = await axiosPublic.get<GiftsResponse>("/getAllGift", {
+      params: { ...filters, page: pageParam, limit: 12 },
+    });
+    return response.data;
+  };
+  // Update the way useInfiniteQuery is called (object form)
+  const {
+    data: fetchGifts12,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery<GiftsResponse>({
+    queryKey: ["gifts", filters],
+    // @ts-ignore
+    queryFn: fetchGifts,
+    getNextPageParam: (lastPage, allPages) => {
+      const currentPage = allPages.length;
+      return lastPage.data.length > 0 ? currentPage + 1 : undefined;
+    },
   });
-  return response.data;
-};
- // Update the way useInfiniteQuery is called (object form)
- const {
-  data: fetchGifts12,
-  fetchNextPage,
-  hasNextPage,
-  isFetchingNextPage,
-} = useInfiniteQuery<GiftsResponse>({
-  queryKey: ["gifts", filters],
-  // @ts-ignore
-  queryFn: fetchGifts ,
-  getNextPageParam: (lastPage, allPages) => {
-    const currentPage = allPages.length;
-    return lastPage.data.length > 0 ? currentPage + 1 : undefined;
-  },
-});
-useEffect(()=>{
-  // @ts-ignore
-  setAllGifts(fetchGifts12?.pages.flatMap((page) => page?.data) || []);
-},[fetchGifts12])
-
-  
+  useEffect(() => {
+    // @ts-ignore
+    setAllGifts(fetchGifts12?.pages.flatMap((page) => page?.data) || []);
+  }, [fetchGifts12]);
 
   // get review from order collection using user email
   const myAllReview = async () => {
     try {
       setLoading(true);
-      const { data } = await axiosPublic.get(`/user/getReviewer/${user?.email}`);
+      const { data } = await axiosPublic.get(
+        `/user/getReviewer/${user?.email}`
+      );
       setMyReviewItem(data);
-
     } catch (error) {
       console.log(error);
     } finally {
@@ -526,9 +560,8 @@ useEffect(()=>{
   };
 
   useEffect(() => {
-    myAllReview()
+    myAllReview();
   }, [user?.email]);
-
 
   // Order check before review
   const orderCheck = async (id: string, mail: string) => {
@@ -544,7 +577,7 @@ useEffect(()=>{
       const axiosError = error as AxiosError;
 
       if (axiosError?.response) {
-        const errorData = axiosError?.response?.data as { message: string }
+        const errorData = axiosError?.response?.data as { message: string };
         if (axiosError?.response?.status === 404) {
           toast.error(errorData.message || "No order found");
         } else {
@@ -555,7 +588,6 @@ useEffect(()=>{
       // console.log(axiosError);
     }
   };
-
 
   // new order and review workflow
   // Order check before review
@@ -589,59 +621,65 @@ useEffect(()=>{
 
   // Function to get the current  receiver data
   const getReceiverData = async (receiverName?: string) => {
-
- 
     try {
-
-      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/getReceiver/${receiverName || receiver}`, { method: 'GET', });
-
+      const res = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/user/getReceiver/${
+          receiverName || receiver
+        }`,
+        { method: "GET" }
+      );
 
       if (res?.ok) {
         const getCurrentReceiver = await res.json();
- 
-        setReceiverInfo(getCurrentReceiver);
 
+        setReceiverInfo(getCurrentReceiver);
       } else {
-        console.log('Failed to get current receiver');
+        console.log("Failed to get current receiver");
       }
     } catch (error) {
-      console.error('Error updating receiver:', error);
+      console.error("Error updating receiver:", error);
     }
   };
 
   const updateReceiverName = async (receiverName: string): Promise<void> => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/updateReceiver/${currentUser?._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ receiver: receiverName }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/user/updateReceiver/${
+          currentUser?._id
+        }`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ receiver: receiverName }),
+        }
+      );
 
       if (response.ok) {
         const updatedUser = await response.json();
- 
+
         setCurrentUser(updatedUser);
-        setSender(updatedUser?.chat.sender)
-        setReceiver(updatedUser?.chat.receiver)
+        setSender(updatedUser?.chat.sender);
+        setReceiver(updatedUser?.chat.receiver);
       } else {
-        console.log('Failed to update receiver');
+        console.log("Failed to update receiver");
       }
     } catch (error) {
-      console.error('Error updating receiver:', error);
+      console.error("Error updating receiver:", error);
     }
   };
 
-
   // console.log(309, giftOrderCheck)
 
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleFilterChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     e.preventDefault();
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
 
-  const handleSearchChange = (searchValue:string) => {
+  const handleSearchChange = (searchValue: string) => {
     setFilters({ ...filters, search: searchValue });
   };
   const addToCart = (gift: GiftType) => {
@@ -650,7 +688,7 @@ useEffect(()=>{
       return toast.error("Already Added");
     }
     setCart((prevCart) => {
-      const updatedCart = [...prevCart, {...gift,productQuantity:1}];
+      const updatedCart = [...prevCart, { ...gift, productQuantity: 1 }];
       localStorage.setItem("cart", JSON.stringify(updatedCart));
       return updatedCart;
     });
@@ -683,7 +721,6 @@ useEffect(()=>{
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     toast.error(`${gift.giftName} removed from Cart successfully`);
   };
-
 
   // auth-info
   const authInfo: AuthContextType = {
@@ -738,17 +775,12 @@ useEffect(()=>{
     setSender,
     setReceiver,
     updateReceiverName,
-
-
-    // new order and review workflow
-    // getOrderDataById
-
+    isSpinLoading,
+    setSpinLoading,
   };
 
   return (
-    <AuthContext.Provider value={authInfo}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );
 };
 
